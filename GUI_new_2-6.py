@@ -442,11 +442,11 @@ def get_data(): # Start recording
 
                 status.pack(side="bottom", fill="x")
 
-                status.set("Phase 3 schedules sent. All schedules transferred.") 
+                status.set("Recording began.") 
 
             i=i+1
     except:
-        print('Stopped recording and disconnected to the device')
+        print('Stopped recording and disconnected from the boxes')
 
 
 def save_conf(): # Save schedule configuration
@@ -782,7 +782,7 @@ def disconnect():  # close the serial_obj thread
 
     status.pack(side="bottom", fill="x")
 
-    status.set("Stopped recording and disconnected to the device.")
+    status.set("Stopped recording and disconnected from the boxes.")
 
         
 
