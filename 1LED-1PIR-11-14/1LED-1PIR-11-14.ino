@@ -2265,7 +2265,7 @@ void printMeasurement()
   int PIR10 = digitalRead(DIn10);
 
   // sensor value sampling for 1-min
-  for (int i = 0; i < 9999; i++)
+  for (int i = 0; i < 999; i++)
   {
     PIR1 = PIR1 + digitalRead(DIn1);
     PIR2 = PIR2 + digitalRead(DIn2);
@@ -2278,7 +2278,7 @@ void printMeasurement()
     PIR9 = PIR9 + digitalRead(DIn9);
     PIR10 = PIR10 + digitalRead(DIn10);
 
-    delay(5); // sampling 10000 times per minute
+    delay(60); // sampling 1000 times per minute
   }
 
   // 1-min summation
