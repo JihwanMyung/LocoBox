@@ -16,6 +16,12 @@ except ImportError:
 #from tkinter import tix
 import threading #to run Arduino loop and tkinter loop alongside
 
+# Global variables
+# for Box1
+global box1_set,hourOn1_1, minOn1_1,  hourOff1_1,     minOff1_1,   dark1_1, light1_1
+global date1_2,  month1_2,  year1_2, hourFrom1_2, minuteFrom1_2, hourOn1_2, minOn1_2, hourOff1_2, minOff1_2, dark1_2, light1_2
+global date1_3,  month1_3,  year1_3, hourFrom1_3, minuteFrom1_3, hourOn1_3, minOn1_3, hourOff1_3, minOff1_3, dark1_3, light1_3
+
 # Version information
 def about():
     return messagebox.showinfo("About",
