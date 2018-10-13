@@ -4,12 +4,9 @@ LocomotorBox is a set of Arduino software and GUI interface for running 10 Locom
 
 ### Prerequisites
 
-The following Arduino softwasre is used:
-Arduino 1.8.7
+The following Arduino softwasre is used: Arduino 1.8.7
 
-The following Python versions are used:
-Python 3.7.0
-Pyserial 3.4
+The following Python versions are used: Python 3.7.0, Pyserial 3.4
 
 ### Installation
 
@@ -23,7 +20,7 @@ This software system requires Arduino Mega 2560 for controlling 10 boxes and a d
 ## Authors
 
 * Jihwan Myung - initial work
-* Truong Hung Vuong - further development on Python GUI interface
+* Vuong Truong - further development on Python GUI interface
 
 ## Acknowledgments
 
