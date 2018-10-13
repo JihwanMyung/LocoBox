@@ -12,6 +12,7 @@ try:
     from tkinter import filedialog
 except ImportError:
     fileDialog = tk.filedialog
+
 #from tkinter import tix
 import threading #to run Arduino loop and tkinter loop alongside
 
@@ -226,38 +227,46 @@ def get_data(): # Start recording
             i=i+1
     except:
         print('Stopped recording and disconnected from the boxes')
+
 def writeToJSONFile(filename, data):
     filePathNameWExt = filename
     with open(filePathNameWExt, 'w') as fp:
         json.dump(data, fp)
+
 def save_conf(): # Save schedule configuration
     status.pack(side="bottom", fill="x")
     status.set("Saving the schedule configuration...")
     config={}
     config['hourOn1_1'] = hourOn1_1
     config['minOn1_1'] = minOn1_1
-    config['hourOff1_1'] = minOff1_1
+    config['hourOff1_1'] = hourOff1_1
     config['minOff1_1'] = minOff1_1
+
     config['hourOn2_1'] = hourOn2_1
     config['minOn2_1'] = minOn2_1
     config['hourOff2_1'] = hourOff2_1
     config['minOff2_1'] = minOff2_1
+
     config['hourOn3_1'] = hourOn3_1
     config['minOn3_1'] = minOn3_1
     config['hourOff3_1'] = hourOff3_1
     config['minOff3_1'] = minOff3_1
+
     config['hourOn4_1'] = hourOn4_1
     config['minOn4_1'] = minOn4_1
     config['hourOff4_1'] = hourOff4_1
     config['minOff4_1'] = minOff4_1
+
     config['hourOn5_1'] = hourOn5_1
     config['minOn5_1'] = minOn5_1
     config['hourOff5_1'] = hourOff5_1
     config['minOff5_1'] = minOff5_1
+
     config['hourOn6_1'] = hourOn6_1
     config['minOn6_1'] = minOn6_1
     config['hourOff6_1'] = hourOff6_1
     config['minOff6_1'] = minOff6_1
+
     config['hourOn7_1'] = hourOn7_1
     config['minOn7_1'] = minOn7_1
     config['hourOff7_1'] = hourOff7_1
@@ -521,11 +530,11 @@ def read_conf(): # Read schedule configuration
     configfilename = filedialog.askopenfilename()
     with open(configfilename) as data_file:
         config = json.load(data_file)
-    Label(tab11, text=config, wraplength=1000).grid(column=0, row= 3, columnspan='100', sticky='we')
+#    Label(tab11, text=config, wraplength=1000).grid(column=0, row= 3, columnspan='100', sticky='we')
     
     hourOn1_1 = config['hourOn1_1'] 
     minOn1_1 = config['minOn1_1'] 
-    minOff1_1 = config['hourOff1_1']
+    hourOff1_1 = config['hourOff1_1']
     minOff1_1 = config['minOff1_1'] 
     hourOn2_1 = config['hourOn2_1']
     minOn2_1 = config['minOn2_1'] 
@@ -799,10 +808,98 @@ def read_conf(): # Read schedule configuration
     minuteFrom9_3 = config['minuteFrom9_3'] 
     hourFrom10_3 = config['hourFrom10_3'] 
     minuteFrom10_3 = config['minuteFrom10_3'] 
-    
+
+    show_conf()
+
     status.pack(side="bottom", fill="x")
     status.set("The schedule configuration is loaded.")
 
+def show_conf(): # Show schedule configuration
+    col11_1=Label(tab11, text='Phase 1')
+    col11_2=Label(tab11, text='Phase 2')
+    col11_3=Label(tab11, text='Phase 3')
+
+    row11_1=Label(tab11, text='Box1')
+    row11_2=Label(tab11, text='Box2')
+    row11_3=Label(tab11, text='Box3')
+    row11_4=Label(tab11, text='Box4')
+    row11_5=Label(tab11, text='Box5')
+    row11_6=Label(tab11, text='Box6')
+    row11_7=Label(tab11, text='Box7')
+    row11_8=Label(tab11, text='Box8')
+    row11_9=Label(tab11, text='Box9')
+    row11_10=Label(tab11, text='Box10')
+
+    col11_1.grid(column=2,row=1,padx=5)
+    col11_2.grid(column=3,row=1,padx=5)
+    col11_3.grid(column=4,row=1,padx=5)
+
+    row11_1.grid(column=1,row=2,padx=2,pady=0)
+    row11_2.grid(column=1,row=3,padx=2,pady=0)
+    row11_3.grid(column=1,row=4,padx=2,pady=0)
+    row11_4.grid(column=1,row=5,padx=2,pady=0)
+    row11_5.grid(column=1,row=6,padx=2,pady=0)
+    row11_6.grid(column=1,row=7,padx=2,pady=0)
+    row11_7.grid(column=1,row=8,padx=2,pady=0)
+    row11_8.grid(column=1,row=9,padx=2,pady=0)
+    row11_9.grid(column=1,row=10,padx=2,pady=0)
+    row11_10.grid(column=1,row=11,padx=2,pady=0)
+
+    if light1_1=='0' and dark1_1=='0':
+        box1pha1_LD=Label(tab11, text=hourOn1_1+":"+minOn1_1+" on > "+hourOff1_1+":"+minOff1_1+" off")
+        box1pha1_LD.grid(column=2,row=2,padx=2,pady=0)
+        box1pha2_LD=Label(tab11, text=hourOn1_2+":"+minOn1_2+" on > "+hourOff1_2+":"+minOff1_2+" off")
+        box1pha2_LD.grid(column=3,row=2,padx=2,pady=0)
+        box1pha3_LD=Label(tab11, text=hourOn1_3+":"+minOn1_3+" on > "+hourOff1_3+":"+minOff1_3+" off")
+        box1pha3_LD.grid(column=4,row=2,padx=2,pady=0)
+    if light1_2=='0' and dark1_2=='1':
+        box1pha1_LD=Label(tab11, text="DD")
+        box1pha1_LD.grid(column=2,row=2,padx=2,pady=0)
+    if light1_3=='1' and dark1_3=='0':
+        box1pha1_LD=Label(tab11, text="LL")
+        box1pha1_LD.grid(column=2,row=2,padx=2,pady=0)
+
+    if light2_1=='0' and dark2_1=='0':       
+        box2pha1_LD=Label(tab11, text=hourOn2_1+":"+minOn2_1+" on > "+hourOff2_1+":"+minOff2_1+" off")
+        box2pha1_LD.grid(column=2,row=3,padx=2,pady=0)
+        box2pha2_LD=Label(tab11, text=hourOn2_2+":"+minOn2_2+" on > "+hourOff2_2+":"+minOff2_2+" off")
+        box2pha2_LD.grid(column=3,row=3,padx=2,pady=0)
+        box2pha3_LD=Label(tab11, text=hourOn2_3+":"+minOn2_3+" on > "+hourOff2_3+":"+minOff2_3+" off")
+        box2pha3_LD.grid(column=4,row=3,padx=2,pady=0)
+    if light2_2=='0' and dark2_2=='1':
+        box1pha1_LD=Label(tab11, text="DD")
+        box1pha1_LD.grid(column=2,row=2,padx=2,pady=0)
+    if light2_3=='1' and dark2_3=='0':
+        box1pha1_LD=Label(tab11, text="LL")
+        box1pha1_LD.grid(column=2,row=2,padx=2,pady=0)
+
+    if light3_1=='0' and dark3_1=='0':
+        box3pha1_LD=Label(tab11, text=hourOn3_1+":"+minOn3_1+" on > "+hourOff3_1+":"+minOff3_1+" off")
+        box3pha1_LD.grid(column=2,row=4,padx=2,pady=0)
+        box3pha2_LD=Label(tab11, text=hourOn3_2+":"+minOn3_2+" on > "+hourOff3_2+":"+minOff3_2+" off")
+        box3pha2_LD.grid(column=3,row=4,padx=2,pady=0)
+        box3pha3_LD=Label(tab11, text=hourOn3_3+":"+minOn3_3+" on > "+hourOff3_3+":"+minOff3_3+" off")
+        box3pha3_LD.grid(column=4,row=4,padx=2,pady=0)
+    if light3_2=='0' and dark3_2=='1':
+        box1pha1_LD=Label(tab11, text="DD")
+        box1pha1_LD.grid(column=2,row=2,padx=2,pady=0)
+    if light3_3=='1' and dark3_3=='0':
+        box1pha1_LD=Label(tab11, text="LL")
+        box1pha1_LD.grid(column=2,row=2,padx=2,pady=0)
+
+    if light4_1=='0' and dark4_1=='0':
+        box4pha1_LD=Label(tab11, text=hourOn4_1+":"+minOn4_1+" on > "+hourOff4_1+":"+minOff4_1+" off")
+        box4pha1_LD.grid(column=2,row=5,padx=2,pady=0)
+        box4pha2_LD=Label(tab11, text=hourOn4_2+":"+minOn4_2+" on > "+hourOff4_2+":"+minOff4_2+" off")
+        box4pha2_LD.grid(column=3,row=5,padx=2,pady=0)
+        box4pha3_LD=Label(tab11, text=hourOn4_3+":"+minOn4_3+" on > "+hourOff4_3+":"+minOff4_3+" off")
+        box4pha3_LD.grid(column=4,row=5,padx=2,pady=0)
+    if light4_2=='0' and dark4_2=='1':
+        box1pha1_LD=Label(tab11, text="DD")
+        box1pha1_LD.grid(column=2,row=2,padx=2,pady=0)
+    if light4_3=='1' and dark4_3=='0':
+        box1pha1_LD=Label(tab11, text="LL")
+        box1pha1_LD.grid(column=2,row=2,padx=2,pady=0)
 
 def connect():  # Start to connect and call get_data - Link to Start in Recording menu
     port = port_entry.get()
@@ -1657,6 +1754,7 @@ def getAllBoxSchedule():
     getBox10Schedule()
     status.pack(side="bottom", fill="x")
     status.set("Schedules for all boxes are set.")
+    show_conf()
 
 if __name__ == '__main__':
     #### All of the components and their positions in the GUI ####
@@ -1707,6 +1805,7 @@ if __name__ == '__main__':
     #create setting menu
     settingmenu = Menu(menu)
     settingmenu.add_command(label='Set all boxes', command=getAllBoxSchedule)
+    settingmenu.add_command(label='Show Schedule', command=show_conf)
     menu.add_cascade(label='Setting', menu=settingmenu)
     #create recording menu
     recordingmenu = Menu(menu)
@@ -1742,7 +1841,7 @@ if __name__ == '__main__':
     tab_control.add(tab8, text='Box8')
     tab_control.add(tab9, text='Box9')
     tab_control.add(tab10, text='Box10')
-    tab_control.add(tab11, text='Schedule Loaded')
+    tab_control.add(tab11, text='Schedule')
 
     #Display all available serial ports
     openPorts=serial_ports()
