@@ -1,15 +1,9 @@
 import serial   # For Serial communication
-
 import time     # Required for using delay functions
-
 import datetime # For date-time setting and timedelta calculations
-
 import sys
-
 import glob
-
 import tkinter as tk
-
 from tkinter import * #import INIT set of tkinter library for GUI
 
 from tkinter import ttk
