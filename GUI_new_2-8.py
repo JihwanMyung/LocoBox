@@ -19,7 +19,7 @@ global hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, hourOn2_1, minOn2_1, hourOff2
 global hourOn3_1, minOn3_1, hourOff3_1, minOff3_1, hourOn4_1, minOn4_1, hourOff4_1, minOff4_1 
 global hourOn5_1, minOn5_1, hourOff5_1, minOff5_1, hourOn6_1, minOn6_1,  hourOff6_1, minOff6_1  
 global hourOn7_1, minOn7_1, hourOff7_1, minOff7_1, hourOn8_1, minOn8_1, hourOff8_1, minOff8_1 
-global hourOn9_1, minOn9_1, hourOff9_1, minOff10_1
+global hourOn9_1, minOn9_1, hourOff9_1, minOff9_1, hourOn10_1, minOn10_1, hourOff10_1, minOff10_1
 global dark1_1, light1_1, dark2_1, light2_1, dark3_1, light3_1, dark4_1, light4_1, dark5_1, light5_1  
 global dark6_1, light6_1, dark7_1, light7_1, dark8_1, light8_1, dark9_1, light9_1, dark10_1, light10_1  
 global hourOn3_2, minOn3_2, hourOff3_2, minOff3_2, hourOn1_2, minOn1_2, hourOff1_2, minOff1_2
@@ -29,7 +29,7 @@ global hourOn7_2, minOn7_2, hourOff7_2, minOff7_2, hourOn8_2, minOn8_2, hourOff8
 global hourOn9_2, minOn9_2, hourOff9_2, minOff9_2, hourOn10_2, minOn10_2, hourOff10_2, minOff10_2  
 global dark1_2, light1_2, dark2_2, light2_2, dark3_2, light3_2, dark4_2, light4_2, dark5_2, light5_2 
 global dark6_2, light6_2, dark7_2, light7_2, dark8_2, light8_2, dark9_2, light9_2, dark10_2, light10_2 
-global date1_2, year1_2, year1_2, date2_2, month2_2, year2_2, date3_2, month3_2, year3_2, date4_2, month4_2, year4_2 
+global date1_2, month1_2, year1_2, date2_2, month2_2, year2_2, date3_2, month3_2, year3_2, date4_2, month4_2, year4_2 
 global date5_2, month5_2, year5_2, date6_2, month6_2, year6_2, date7_2, month7_2, year7_2  
 global date8_2, month8_2, year8_2, date9_2, month9_2, year9_2, date10_2, month10_2, year10_2 
 global hourFrom1_2, minuteFrom1_2, hourFrom2_2, minuteFrom2_2, hourFrom3_2, minuteFrom3_2, hourFrom4_2, minuteFrom4_2
@@ -56,9 +56,7 @@ def about():
                                 "Version 0.2.8\n"+
                                 "Oct 14, 2018\n\n"+
                                 "Jihwan Myung & Vuong Truong\n"+
-                                "Laboratory of Braintime\n"+
-                                "Taipei Medical University\n"+
-                                "& Shuang Ho Hospital\n")
+                                "Laboratory of Braintime")
 
 # Define and create serial object function
 def create_serial_obj(portPath, baud_rate, timeout):
@@ -277,32 +275,26 @@ def save_conf(): # Save schedule configuration
     config['minOn1_1'] = minOn1_1
     config['hourOff1_1'] = hourOff1_1
     config['minOff1_1'] = minOff1_1
-
     config['hourOn2_1'] = hourOn2_1
     config['minOn2_1'] = minOn2_1
     config['hourOff2_1'] = hourOff2_1
     config['minOff2_1'] = minOff2_1
-
     config['hourOn3_1'] = hourOn3_1
     config['minOn3_1'] = minOn3_1
     config['hourOff3_1'] = hourOff3_1
     config['minOff3_1'] = minOff3_1
-
     config['hourOn4_1'] = hourOn4_1
     config['minOn4_1'] = minOn4_1
     config['hourOff4_1'] = hourOff4_1
     config['minOff4_1'] = minOff4_1
-
     config['hourOn5_1'] = hourOn5_1
     config['minOn5_1'] = minOn5_1
     config['hourOff5_1'] = hourOff5_1
     config['minOff5_1'] = minOff5_1
-
     config['hourOn6_1'] = hourOn6_1
     config['minOn6_1'] = minOn6_1
     config['hourOff6_1'] = hourOff6_1
     config['minOff6_1'] = minOff6_1
-
     config['hourOn7_1'] = hourOn7_1
     config['minOn7_1'] = minOn7_1
     config['hourOff7_1'] = hourOff7_1
@@ -314,6 +306,10 @@ def save_conf(): # Save schedule configuration
     config['hourOn9_1'] = hourOn9_1
     config['minOn9_1'] = minOn9_1
     config['hourOff9_1'] = hourOff9_1
+    config['minOff9_1'] = minOff9_1
+    config['hourOn10_1'] = hourOn10_1
+    config['minOn10_1'] = minOn10_1
+    config['hourOff10_1'] = hourOff10_1
     config['minOff10_1'] = minOff10_1
     config['dark1_1'] = dark1_1
     config['light1_1'] = light1_1
@@ -396,7 +392,7 @@ def save_conf(): # Save schedule configuration
     config['dark10_2'] = dark10_2
     config['light10_2'] = light10_2
     config['date1_2'] = date1_2
-    config['month1_2'] = year1_2
+    config['month1_2'] = month1_2
     config['year1_2'] = year1_2
     config['date2_2'] = date2_2
     config['month2_2'] = month2_2
@@ -571,7 +567,7 @@ def read_conf(): # Read schedule configuration
     global hourOn3_1, minOn3_1, hourOff3_1, minOff3_1, hourOn4_1, minOn4_1, hourOff4_1, minOff4_1 
     global hourOn5_1, minOn5_1, hourOff5_1, minOff5_1, hourOn6_1, minOn6_1,  hourOff6_1, minOff6_1  
     global hourOn7_1, minOn7_1, hourOff7_1, minOff7_1, hourOn8_1, minOn8_1, hourOff8_1, minOff8_1 
-    global hourOn9_1, minOn9_1, hourOff9_1, minOff10_1
+    global hourOn9_1, minOn9_1, hourOff9_1, minOff9_1, hourOn10_1, minOn10_1, hourOff10_1, minOff10_1
     global dark1_1, light1_1, dark2_1, light2_1, dark3_1, light3_1, dark4_1, light4_1, dark5_1, light5_1  
     global dark6_1, light6_1, dark7_1, light7_1, dark8_1, light8_1, dark9_1, light9_1, dark10_1, light10_1  
     global hourOn3_2, minOn3_2, hourOff3_2, minOff3_2, hourOn1_2, minOn1_2, hourOff1_2, minOff1_2
@@ -581,7 +577,7 @@ def read_conf(): # Read schedule configuration
     global hourOn9_2, minOn9_2, hourOff9_2, minOff9_2, hourOn10_2, minOn10_2, hourOff10_2, minOff10_2  
     global dark1_2, light1_2, dark2_2, light2_2, dark3_2, light3_2, dark4_2, light4_2, dark5_2, light5_2 
     global dark6_2, light6_2, dark7_2, light7_2, dark8_2, light8_2, dark9_2, light9_2, dark10_2, light10_2 
-    global date1_2, year1_2, year1_2, date2_2, month2_2, year2_2, date3_2, month3_2, year3_2, date4_2, month4_2, year4_2 
+    global date1_2, month1_2, year1_2, date2_2, month2_2, year2_2, date3_2, month3_2, year3_2, date4_2, month4_2, year4_2 
     global date5_2, month5_2, year5_2, date6_2, month6_2, year6_2, date7_2, month7_2, year7_2  
     global date8_2, month8_2, year8_2, date9_2, month9_2, year9_2, date10_2, month10_2, year10_2 
     global hourFrom1_2, minuteFrom1_2, hourFrom2_2, minuteFrom2_2, hourFrom3_2, minuteFrom3_2, hourFrom4_2, minuteFrom4_2
@@ -636,6 +632,10 @@ def read_conf(): # Read schedule configuration
     hourOn9_1 =config['hourOn9_1'] 
     minOn9_1 = config['minOn9_1'] 
     hourOff9_1 = config['hourOff9_1'] 
+    minOff9_1 = config['minOff9_1'] 
+    hourOn10_1 =config['hourOn10_1'] 
+    minOn10_1 = config['minOn10_1']   
+    hourOff10_1 = config['hourOff10_1'] 
     minOff10_1 = config['minOff10_1'] 
     dark1_1 = config['dark1_1'] 
     light1_1 = config['light1_1']
@@ -718,7 +718,7 @@ def read_conf(): # Read schedule configuration
     dark10_2 = config['dark10_2'] 
     light10_2 = config['light10_2'] 
     date1_2 = config['date1_2']
-    year1_2 = config['month1_2'] 
+    month1_2 = config['month1_2'] 
     year1_2 = config['year1_2'] 
     date2_2 = config['date2_2'] 
     month2_2 = config['month2_2'] 
@@ -888,7 +888,7 @@ def show_conf(): # Show schedule configuration
     global hourOn3_1, minOn3_1, hourOff3_1, minOff3_1, hourOn4_1, minOn4_1, hourOff4_1, minOff4_1 
     global hourOn5_1, minOn5_1, hourOff5_1, minOff5_1, hourOn6_1, minOn6_1,  hourOff6_1, minOff6_1  
     global hourOn7_1, minOn7_1, hourOff7_1, minOff7_1, hourOn8_1, minOn8_1, hourOff8_1, minOff8_1 
-    global hourOn9_1, minOn9_1, hourOff9_1, minOff10_1
+    global hourOn9_1, minOn9_1, hourOff9_1, minOff9_1, hourOn10_1, minOn10_1, hourOff10_1, minOff10_1
     global dark1_1, light1_1, dark2_1, light2_1, dark3_1, light3_1, dark4_1, light4_1, dark5_1, light5_1  
     global dark6_1, light6_1, dark7_1, light7_1, dark8_1, light8_1, dark9_1, light9_1, dark10_1, light10_1  
     global hourOn3_2, minOn3_2, hourOff3_2, minOff3_2, hourOn1_2, minOn1_2, hourOff1_2, minOff1_2
@@ -898,7 +898,7 @@ def show_conf(): # Show schedule configuration
     global hourOn9_2, minOn9_2, hourOff9_2, minOff9_2, hourOn10_2, minOn10_2, hourOff10_2, minOff10_2  
     global dark1_2, light1_2, dark2_2, light2_2, dark3_2, light3_2, dark4_2, light4_2, dark5_2, light5_2 
     global dark6_2, light6_2, dark7_2, light7_2, dark8_2, light8_2, dark9_2, light9_2, dark10_2, light10_2 
-    global date1_2, year1_2, year1_2, date2_2, month2_2, year2_2, date3_2, month3_2, year3_2, date4_2, month4_2, year4_2 
+    global date1_2, month1_2, year1_2, date2_2, month2_2, year2_2, date3_2, month3_2, year3_2, date4_2, month4_2, year4_2 
     global date5_2, month5_2, year5_2, date6_2, month6_2, year6_2, date7_2, month7_2, year7_2  
     global date8_2, month8_2, year8_2, date9_2, month9_2, year9_2, date10_2, month10_2, year10_2 
     global hourFrom1_2, minuteFrom1_2, hourFrom2_2, minuteFrom2_2, hourFrom3_2, minuteFrom3_2, hourFrom4_2, minuteFrom4_2
