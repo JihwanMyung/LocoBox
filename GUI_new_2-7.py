@@ -17,10 +17,282 @@ except ImportError:
 import threading #to run Arduino loop and tkinter loop alongside
 
 # Global variables
-# for Box1
-global box1_set,hourOn1_1, minOn1_1,  hourOff1_1,     minOff1_1,   dark1_1, light1_1
-global date1_2,  month1_2,  year1_2, hourFrom1_2, minuteFrom1_2, hourOn1_2, minOn1_2, hourOff1_2, minOff1_2, dark1_2, light1_2
-global date1_3,  month1_3,  year1_3, hourFrom1_3, minuteFrom1_3, hourOn1_3, minOn1_3, hourOff1_3, minOff1_3, dark1_3, light1_3
+global hourOn1_1
+global minOn1_1
+global hourOff1_1 
+global minOff1_1
+global hourOn2_1
+global minOn2_1 
+global hourOff2_1 
+global minOff2_1 
+global hourOn3_1 
+global minOn3_1 
+global hourOff3_1 
+global minOff3_1 
+global hourOn4_1 
+global minOn4_1 
+global hourOff4_1  
+global minOff4_1 
+global hourOn5_1 
+global minOn5_1
+global hourOff5_1 
+global minOff5_1 
+global hourOn6_1 
+global minOn6_1 
+global hourOff6_1 
+global minOff6_1  
+global hourOn7_1  
+global minOn7_1  
+global hourOff7_1  
+global minOff7_1  
+global hourOn8_1  
+global minOn8_1 
+global hourOff8_1  
+global minOff8_1 
+global hourOn9_1 
+global minOn9_1  
+global hourOff9_1 
+global minOff10_1 
+global dark1_1 
+global light1_1 
+global dark2_1
+global light2_1
+global dark3_1 
+global light3_1 
+global dark4_1
+global light4_1
+global dark5_1 
+global light5_1 
+global dark6_1  
+global light6_1  
+global dark7_1 
+global light7_1  
+global dark8_1 
+global light8_1 
+global dark9_1 
+global light9_1 
+global dark10_1 
+global light10_1 
+global hourOn1_2 
+global minOn1_2 
+global hourOff1_2
+global minOff1_2  
+global hourOn2_2  
+global minOn2_2  
+global hourOff2_2  
+global minOff2_2 
+global hourOn3_2
+global minOn3_2
+global hourOff3_2 
+global minOff3_2 
+global hourOn4_2 
+global minOn4_2 
+global hourOff4_2  
+global minOff4_2  
+global hourOn5_2  
+global minOn5_2 
+global hourOff5_2  
+global minOff5_2 
+global hourOn6_2 
+global minOn6_2 
+global hourOff6_2 
+global minOff6_2
+global hourOn7_2  
+global minOn7_2 
+global hourOff7_2 
+global minOff7_2 
+global hourOn8_2 
+global minOn8_2 
+global hourOff8_2  
+global minOff8_2 
+global hourOn9_2
+global minOn9_2 
+global hourOff9_2 
+global minOff9_2 
+global hourOn10_2 
+global minOn10_2 
+global hourOff10_2  
+global minOff10_2 
+global dark1_2 
+global light1_2 
+global dark2_2 
+global light2_2  
+global dark3_2 
+global light3_2
+global dark4_2 
+global light4_2 
+global dark5_2 
+global light5_2 
+global dark6_2 
+global light6_2 
+global dark7_2 
+global light7_2 
+global dark8_2 
+global light8_2 
+global dark9_2 
+global light9_2 
+global dark10_2 
+global light10_2 
+global date1_2 
+global year1_2 
+global year1_2 
+global date2_2 
+global month2_2 
+global year2_2 
+global date3_2 
+global month3_2 
+global year3_2 
+global date4_2 
+global month4_2 
+global year4_2 
+global date5_2 
+global month5_2 
+global year5_2
+global hourFrom1_2 
+global minuteFrom1_2 
+global hourFrom2_2 
+global minuteFrom2_2
+global hourFrom3_2 
+global minuteFrom3_2 
+global hourFrom4_2 
+global minuteFrom4_2 
+global hourFrom5_2
+global minuteFrom5_2 
+global date6_2  
+global month6_2 
+global year6_2 
+global date7_2 
+global month7_2 
+global year7_2 
+global date8_2 
+global month8_2
+global year8_2 
+global date9_2 
+global month9_2 
+global year9_2 
+global date10_2 
+global month10_2 
+global year10_2 
+global hourFrom6_2 
+global minuteFrom6_2 
+global hourFrom7_2 
+global minuteFrom7_2
+global hourFrom8_2
+global minuteFrom8_2 
+global hourFrom9_2 
+global minuteFrom9_2 
+global hourFrom10_2 
+global minuteFrom10_2 
+global hourOn1_3 
+global minOn1_3 
+global hourOff1_3
+global minOff1_3 
+global hourOn2_3 
+global minOn2_3 
+global hourOff2_3
+global minOff2_3 
+global hourOn3_3 
+global minOn3_3
+global hourOff3_3 
+global minOff3_3 
+global hourOn4_3 
+global minOn4_3 
+global hourOff4_3 
+global minOff4_3 
+global hourOn5_3 
+global minOn5_3 
+global hourOff5_3 
+global minOff5_3 
+global hourOn6_3  
+global minOn6_3 
+global hourOff6_3 
+global minOff6_3  
+global hourOn7_3 
+global minOn7_3 
+global hourOff7_3
+global minOff7_3 
+global hourOn8_3 
+global minOn8_3
+global hourOff8_3 
+global minOff8_3 
+global hourOn9_3 
+global minOn9_3 
+global hourOff9_3 
+global minOff9_3 
+global hourOn10_3
+global minOn10_3 
+global hourOff10_3 
+global minOff10_3 
+global dark1_3 
+global light1_3 
+global dark2_3 
+global light2_3  
+global dark3_3 
+global light3_3 
+global dark4_3 
+global light4_3 
+global dark5_3 
+global light5_3 
+global dark6_3 
+global light6_3 
+global dark7_3 
+global light7_3 
+global dark8_3 
+global light8_3  
+global dark9_3 
+global light9_3 
+global dark10_3  
+global light10_3 
+global date1_3 
+global month1_3 
+global year1_3 
+global date2_3 
+global month2_3 
+global year2_3 
+global date3_3 
+global month3_3 
+global year3_3 
+global date4_3 
+global month4_3 
+global year4_3 
+global date5_3
+global month5_3 
+global year5_3 
+global hourFrom1_3 
+global minuteFrom1_3 
+global hourFrom2_3
+global minuteFrom2_3 
+global hourFrom3_3 
+global minuteFrom3_3  
+global hourFrom4_3 
+global minuteFrom4_3 
+global hourFrom5_3 
+global minuteFrom5_3 
+global date6_3  
+global month6_3 
+global year6_3 
+global date7_3 
+global month7_3  
+global year7_3 
+global date8_3 
+global month8_3 
+global year8_3 
+global date9_3 
+global month9_3 
+global year9_3 
+global date10_3 
+global month10_3 
+global year10_3 
+global hourFrom6_3  
+global minuteFrom6_3 
+global hourFrom7_3 
+global minuteFrom7_3 
+global hourFrom8_3  
+global minuteFrom8_3 
+global hourFrom9_3  
+global minuteFrom9_3  
+global hourFrom10_3 
+global minuteFrom10_3 
 
 # Version information
 def about():
@@ -537,7 +809,41 @@ def read_conf(): # Read schedule configuration
     with open(configfilename) as data_file:
         config = json.load(data_file)
 #    Label(tab11, text=config, wraplength=1000).grid(column=0, row= 3, columnspan='100', sticky='we')
-    
+
+    global hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, hourOn2_1, minOn2_1, hourOff2_1, minOff2_1 
+    global hourOn3_1, minOn3_1, hourOff3_1, minOff3_1, hourOn4_1, minOn4_1, hourOff4_1, minOff4_1 
+    global hourOn5_1, minOn5_1, hourOff5_1, minOff5_1, hourOn6_1, minOn6_1,  hourOff6_1, minOff6_1  
+    global hourOn7_1, minOn7_1, hourOff7_1, minOff7_1, hourOn8_1, minOn8_1, hourOff8_1, minOff8_1 
+    global hourOn9_1, minOn9_1, hourOff9_1, minOff10_1
+    global dark1_1, light1_1, dark2_1, light2_1, dark3_1, light3_1, dark4_1, light4_1, dark5_1, light5_1  
+    global dark6_1, light6_1, dark7_1, light7_1, dark8_1, light8_1, dark9_1, light9_1, dark10_1, light10_1  
+    global hourOn3_2, minOn3_2, hourOff3_2, minOff3_2, hourOn1_2, minOn1_2, hourOff1_2, minOff1_2
+    global hourOn2_2, minOn2_2, hourOff2_2, minOff2_2, hourOn4_2, minOn4_2, hourOff4_2, minOff4_2 
+    global hourOn5_2, minOn5_2, hourOff5_2, minOff5_2, hourOn6_2, minOn6_2, hourOff6_2, minOff6_2 
+    global hourOn7_2, minOn7_2, hourOff7_2, minOff7_2, hourOn8_2, minOn8_2, hourOff8_2, minOff8_2 
+    global hourOn9_2, minOn9_2, hourOff9_2, minOff9_2, hourOn10_2, minOn10_2, hourOff10_2, minOff10_2  
+    global dark1_2, light1_2, dark2_2, light2_2, dark3_2, light3_2, dark4_2, light4_2, dark5_2, light5_2 
+    global dark6_2, light6_2, dark7_2, light7_2, dark8_2, light8_2, dark9_2, light9_2, dark10_2, light10_2 
+    global date1_2, year1_2, year1_2, date2_2, month2_2, year2_2, date3_2, month3_2, year3_2, date4_2, month4_2, year4_2 
+    global date5_2, month5_2, year5_2, date6_2, month6_2, year6_2, date7_2, month7_2, year7_2  
+    global date8_2, month8_2, year8_2, date9_2, month9_2, year9_2, date10_2, month10_2, year10_2 
+    global hourFrom1_2, minuteFrom1_2, hourFrom2_2, minuteFrom2_2, hourFrom3_2, minuteFrom3_2, hourFrom4_2, minuteFrom4_2
+    global hourFrom5_2, minuteFrom5_2, hourFrom6_2, minuteFrom6_2, hourFrom7_2, minuteFrom7_2, hourFrom8_2, minuteFrom8_2
+    global hourFrom9_2, minuteFrom9_2, hourFrom10_2, minuteFrom10_2
+    global hourOn1_3, minOn1_3, hourOff1_3, minOff1_3, hourOn2_3, minOn2_3, hourOff2_3, minOff2_3
+    global hourOn3_3, minOn3_3, hourOff3_3, minOff3_3, hourOn4_3, minOn4_3, hourOff4_3, minOff4_3 
+    global hourOn5_3, minOn5_3, hourOff5_3, minOff5_3, hourOn6_3, minOn6_3, hourOff6_3, minOff6_3  
+    global hourOn7_3, minOn7_3, hourOff7_3, minOff7_3, hourOn8_3, minOn8_3, hourOff8_3, minOff8_3 
+    global hourOn9_3, minOn9_3, hourOff9_3, minOff9_3, hourOn10_3, minOn10_3, hourOff10_3, minOff10_3
+    global dark1_3, light1_3, dark2_3, light2_3, dark3_3, light3_3, dark4_3, light4_3, dark5_3, light5_3
+    global dark6_3, light6_3, dark7_3, light7_3, dark8_3, light8_3, dark9_3, light9_3, dark10_3, light10_3 
+    global date1_3, month1_3, year1_3, date2_3, month2_3, year2_3, date3_3, month3_3, year3_3, date4_3, month4_3, year4_3 
+    global date5_3, month5_3, year5_3, date6_3, month6_3, year6_3, date7_3, month7_3, year7_3, date8_3, month8_3, year8_3 
+    global date9_3, month9_3, year9_3, date10_3, month10_3, year10_3 
+    global hourFrom1_3, minuteFrom1_3, hourFrom2_3, minuteFrom2_3, hourFrom3_3, minuteFrom3_3, hourFrom4_3, minuteFrom4_3 
+    global hourFrom5_3, minuteFrom5_3, hourFrom6_3, minuteFrom6_3, hourFrom7_3, minuteFrom7_3, hourFrom8_3, minuteFrom8_3 
+    global hourFrom9_3, minuteFrom9_3, hourFrom10_3, minuteFrom10_3 
+
     hourOn1_1 = config['hourOn1_1'] 
     minOn1_1 = config['minOn1_1'] 
     hourOff1_1 = config['hourOff1_1']
@@ -821,6 +1127,40 @@ def read_conf(): # Read schedule configuration
     status.set("The schedule configuration is loaded.")
 
 def show_conf(): # Show schedule configuration
+    global hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, hourOn2_1, minOn2_1, hourOff2_1, minOff2_1 
+    global hourOn3_1, minOn3_1, hourOff3_1, minOff3_1, hourOn4_1, minOn4_1, hourOff4_1, minOff4_1 
+    global hourOn5_1, minOn5_1, hourOff5_1, minOff5_1, hourOn6_1, minOn6_1,  hourOff6_1, minOff6_1  
+    global hourOn7_1, minOn7_1, hourOff7_1, minOff7_1, hourOn8_1, minOn8_1, hourOff8_1, minOff8_1 
+    global hourOn9_1, minOn9_1, hourOff9_1, minOff10_1
+    global dark1_1, light1_1, dark2_1, light2_1, dark3_1, light3_1, dark4_1, light4_1, dark5_1, light5_1  
+    global dark6_1, light6_1, dark7_1, light7_1, dark8_1, light8_1, dark9_1, light9_1, dark10_1, light10_1  
+    global hourOn3_2, minOn3_2, hourOff3_2, minOff3_2, hourOn1_2, minOn1_2, hourOff1_2, minOff1_2
+    global hourOn2_2, minOn2_2, hourOff2_2, minOff2_2, hourOn4_2, minOn4_2, hourOff4_2, minOff4_2 
+    global hourOn5_2, minOn5_2, hourOff5_2, minOff5_2, hourOn6_2, minOn6_2, hourOff6_2, minOff6_2 
+    global hourOn7_2, minOn7_2, hourOff7_2, minOff7_2, hourOn8_2, minOn8_2, hourOff8_2, minOff8_2 
+    global hourOn9_2, minOn9_2, hourOff9_2, minOff9_2, hourOn10_2, minOn10_2, hourOff10_2, minOff10_2  
+    global dark1_2, light1_2, dark2_2, light2_2, dark3_2, light3_2, dark4_2, light4_2, dark5_2, light5_2 
+    global dark6_2, light6_2, dark7_2, light7_2, dark8_2, light8_2, dark9_2, light9_2, dark10_2, light10_2 
+    global date1_2, year1_2, year1_2, date2_2, month2_2, year2_2, date3_2, month3_2, year3_2, date4_2, month4_2, year4_2 
+    global date5_2, month5_2, year5_2, date6_2, month6_2, year6_2, date7_2, month7_2, year7_2  
+    global date8_2, month8_2, year8_2, date9_2, month9_2, year9_2, date10_2, month10_2, year10_2 
+    global hourFrom1_2, minuteFrom1_2, hourFrom2_2, minuteFrom2_2, hourFrom3_2, minuteFrom3_2, hourFrom4_2, minuteFrom4_2
+    global hourFrom5_2, minuteFrom5_2, hourFrom6_2, minuteFrom6_2, hourFrom7_2, minuteFrom7_2, hourFrom8_2, minuteFrom8_2
+    global hourFrom9_2, minuteFrom9_2, hourFrom10_2, minuteFrom10_2
+    global hourOn1_3, minOn1_3, hourOff1_3, minOff1_3, hourOn2_3, minOn2_3, hourOff2_3, minOff2_3
+    global hourOn3_3, minOn3_3, hourOff3_3, minOff3_3, hourOn4_3, minOn4_3, hourOff4_3, minOff4_3 
+    global hourOn5_3, minOn5_3, hourOff5_3, minOff5_3, hourOn6_3, minOn6_3, hourOff6_3, minOff6_3  
+    global hourOn7_3, minOn7_3, hourOff7_3, minOff7_3, hourOn8_3, minOn8_3, hourOff8_3, minOff8_3 
+    global hourOn9_3, minOn9_3, hourOff9_3, minOff9_3, hourOn10_3, minOn10_3, hourOff10_3, minOff10_3
+    global dark1_3, light1_3, dark2_3, light2_3, dark3_3, light3_3, dark4_3, light4_3, dark5_3, light5_3
+    global dark6_3, light6_3, dark7_3, light7_3, dark8_3, light8_3, dark9_3, light9_3, dark10_3, light10_3 
+    global date1_3, month1_3, year1_3, date2_3, month2_3, year2_3, date3_3, month3_3, year3_3, date4_3, month4_3, year4_3 
+    global date5_3, month5_3, year5_3, date6_3, month6_3, year6_3, date7_3, month7_3, year7_3, date8_3, month8_3, year8_3 
+    global date9_3, month9_3, year9_3, date10_3, month10_3, year10_3 
+    global hourFrom1_3, minuteFrom1_3, hourFrom2_3, minuteFrom2_3, hourFrom3_3, minuteFrom3_3, hourFrom4_3, minuteFrom4_3 
+    global hourFrom5_3, minuteFrom5_3, hourFrom6_3, minuteFrom6_3, hourFrom7_3, minuteFrom7_3, hourFrom8_3, minuteFrom8_3 
+    global hourFrom9_3, minuteFrom9_3, hourFrom10_3, minuteFrom10_3 
+
     col11_1=Label(tab11, text='Phase 1')
     col11_2=Label(tab11, text='Phase 2')
     col11_3=Label(tab11, text='Phase 3')
@@ -851,61 +1191,605 @@ def show_conf(): # Show schedule configuration
     row11_9.grid(column=1,row=10,padx=2,pady=0)
     row11_10.grid(column=1,row=11,padx=2,pady=0)
 
-    if light1_1=='0' and dark1_1=='0':
-        box1pha1_LD=Label(tab11, text=hourOn1_1+":"+minOn1_1+" on > "+hourOff1_1+":"+minOff1_1+" off")
-        box1pha1_LD.grid(column=2,row=2,padx=2,pady=0)
-        box1pha2_LD=Label(tab11, text=hourOn1_2+":"+minOn1_2+" on > "+hourOff1_2+":"+minOff1_2+" off")
-        box1pha2_LD.grid(column=3,row=2,padx=2,pady=0)
-        box1pha3_LD=Label(tab11, text=hourOn1_3+":"+minOn1_3+" on > "+hourOff1_3+":"+minOff1_3+" off")
-        box1pha3_LD.grid(column=4,row=2,padx=2,pady=0)
-    if light1_2=='0' and dark1_2=='1':
-        box1pha1_LD=Label(tab11, text="DD")
-        box1pha1_LD.grid(column=2,row=2,padx=2,pady=0)
-    if light1_3=='1' and dark1_3=='0':
-        box1pha1_LD=Label(tab11, text="LL")
-        box1pha1_LD.grid(column=2,row=2,padx=2,pady=0)
+    box1pha1text=StringVar()
+    box1pha1text.set("                                ")
+    box1pha1_LD=Label(tab11, textvariable=box1pha1text, width=32)
+    box1pha1_LD.grid(column=2,row=2,padx=2,pady=0)
+    box1pha2text=StringVar()
+    box1pha2text.set("                                ")
+    box1pha2_LD=Label(tab11, textvariable=box1pha2text, width=32)
+    box1pha2_LD.grid(column=3,row=2,padx=2,pady=0)
+    box1pha3text=StringVar()
+    box1pha3text.set("                                ")
+    box1pha3_LD=Label(tab11, textvariable=box1pha3text, width=32)
+    box1pha3_LD.grid(column=4,row=2,padx=2,pady=0)
+    window.update_idletasks()
 
-    if light2_1=='0' and dark2_1=='0':       
-        box2pha1_LD=Label(tab11, text=hourOn2_1+":"+minOn2_1+" on > "+hourOff2_1+":"+minOff2_1+" off")
-        box2pha1_LD.grid(column=2,row=3,padx=2,pady=0)
-        box2pha2_LD=Label(tab11, text=hourOn2_2+":"+minOn2_2+" on > "+hourOff2_2+":"+minOff2_2+" off")
-        box2pha2_LD.grid(column=3,row=3,padx=2,pady=0)
-        box2pha3_LD=Label(tab11, text=hourOn2_3+":"+minOn2_3+" on > "+hourOff2_3+":"+minOff2_3+" off")
-        box2pha3_LD.grid(column=4,row=3,padx=2,pady=0)
+    box2pha1text=StringVar()
+    box2pha1text.set("                                ")
+    box2pha1_LD=Label(tab11, textvariable=box2pha1text, width=32)
+    box2pha1_LD.grid(column=2,row=3,padx=2,pady=0)
+    box2pha2text=StringVar()
+    box2pha2text.set("                                ")
+    box2pha2_LD=Label(tab11, textvariable=box2pha2text, width=32)
+    box2pha2_LD.grid(column=3,row=3,padx=2,pady=0)
+    box2pha3text=StringVar()
+    box2pha3text.set("                                ")
+    box2pha3_LD=Label(tab11, textvariable=box2pha3text, width=32)
+    box2pha3_LD.grid(column=4,row=3,padx=2,pady=0)
+    window.update_idletasks()
+
+    box3pha1text=StringVar()
+    box3pha1text.set("                                ")
+    box3pha1_LD=Label(tab11, textvariable=box3pha1text, width=32)
+    box3pha1_LD.grid(column=2,row=4,padx=2,pady=0)
+    box3pha2text=StringVar()
+    box3pha2text.set("                                ")
+    box3pha2_LD=Label(tab11, textvariable=box3pha2text, width=32)
+    box3pha2_LD.grid(column=3,row=4,padx=2,pady=0)
+    box3pha3text=StringVar()
+    box3pha3text.set("                                ")
+    box3pha3_LD=Label(tab11, textvariable=box3pha3text, width=32)
+    box3pha3_LD.grid(column=4,row=4,padx=2,pady=0)
+    window.update_idletasks()
+
+    box4pha1text=StringVar()
+    box4pha1text.set("                                ")
+    box4pha1_LD=Label(tab11, textvariable=box4pha1text, width=32)
+    box4pha1_LD.grid(column=2,row=5,padx=2,pady=0)
+    box4pha2text=StringVar()
+    box4pha2text.set("                                ")
+    box4pha2_LD=Label(tab11, textvariable=box4pha2text, width=32)
+    box4pha2_LD.grid(column=3,row=5,padx=2,pady=0)
+    box4pha3text=StringVar()
+    box4pha3text.set("                                ")
+    box4pha3_LD=Label(tab11, textvariable=box4pha3text, width=32)
+    box4pha3_LD.grid(column=4,row=5,padx=2,pady=0)
+    window.update_idletasks()
+
+    box5pha1text=StringVar()
+    box5pha1text.set("                                ")
+    box5pha1_LD=Label(tab11, textvariable=box5pha1text, width=32)
+    box5pha1_LD.grid(column=2,row=6,padx=2,pady=0)
+    box5pha2text=StringVar()
+    box5pha2text.set("                                ")
+    box5pha2_LD=Label(tab11, textvariable=box5pha2text, width=32)
+    box5pha2_LD.grid(column=3,row=6,padx=2,pady=0)
+    box5pha3text=StringVar()
+    box5pha3text.set("                                ")
+    box5pha3_LD=Label(tab11, textvariable=box5pha3text, width=32)
+    box5pha3_LD.grid(column=4,row=6,padx=2,pady=0)
+    window.update_idletasks()
+
+    box6pha1text=StringVar()
+    box6pha1text.set("                                ")
+    box6pha1_LD=Label(tab11, textvariable=box6pha1text, width=32)
+    box6pha1_LD.grid(column=2,row=7,padx=2,pady=0)
+    box6pha2text=StringVar()
+    box6pha2text.set("                                ")
+    box6pha2_LD=Label(tab11, textvariable=box6pha2text, width=32)
+    box6pha2_LD.grid(column=3,row=7,padx=2,pady=0)
+    box6pha3text=StringVar()
+    box6pha3text.set("                                ")
+    box6pha3_LD=Label(tab11, textvariable=box6pha3text, width=32)
+    box6pha3_LD.grid(column=4,row=7,padx=2,pady=0)
+    window.update_idletasks()
+
+    box7pha1text=StringVar()
+    box7pha1text.set("                                ")
+    box7pha1_LD=Label(tab11, textvariable=box7pha1text, width=32)
+    box7pha1_LD.grid(column=2,row=8,padx=2,pady=0)
+    box7pha2text=StringVar()
+    box7pha2text.set("                                ")
+    box7pha2_LD=Label(tab11, textvariable=box7pha2text, width=32)
+    box7pha2_LD.grid(column=3,row=8,padx=2,pady=0)
+    box7pha3text=StringVar()
+    box7pha3text.set("                                ")
+    box7pha3_LD=Label(tab11, textvariable=box7pha3text, width=32)
+    box7pha3_LD.grid(column=4,row=8,padx=2,pady=0)
+    window.update_idletasks()
+
+    box8pha1text=StringVar()
+    box8pha1text.set("                                ")
+    box8pha1_LD=Label(tab11, textvariable=box8pha1text, width=32)
+    box8pha1_LD.grid(column=2,row=9,padx=2,pady=0)
+    box8pha2text=StringVar()
+    box8pha2text.set("                                ")
+    box8pha2_LD=Label(tab11, textvariable=box8pha2text, width=32)
+    box8pha2_LD.grid(column=3,row=9,padx=2,pady=0)
+    box8pha3text=StringVar()
+    box8pha3text.set("                                ")
+    box8pha3_LD=Label(tab11, textvariable=box8pha3text, width=32)
+    box8pha3_LD.grid(column=4,row=9,padx=2,pady=0)
+    window.update_idletasks()
+
+    box9pha1text=StringVar()
+    box9pha1text.set("                                ")
+    box9pha1_LD=Label(tab11, textvariable=box9pha1text, width=32)
+    box9pha1_LD.grid(column=2,row=10,padx=2,pady=0)
+    box9pha2text=StringVar()
+    box9pha2text.set("                                ")
+    box9pha2_LD=Label(tab11, textvariable=box9pha2text, width=32)
+    box9pha2_LD.grid(column=3,row=10,padx=2,pady=0)
+    box9pha3text=StringVar()
+    box9pha3text.set("                                ")
+    box9pha3_LD=Label(tab11, textvariable=box9pha3text, width=32)
+    box9pha3_LD.grid(column=4,row=10,padx=2,pady=0)
+    window.update_idletasks()
+
+    box10pha1text=StringVar()
+    box10pha1text.set("                                ")
+    box10pha1_LD=Label(tab11, textvariable=box10pha1text, width=32)
+    box10pha1_LD.grid(column=2,row=11,padx=2,pady=0)
+    box10pha2text=StringVar()
+    box10pha2text.set("                                ")
+    box10pha2_LD=Label(tab11, textvariable=box10pha2text, width=32)
+    box10pha2_LD.grid(column=3,row=11,padx=2,pady=0)
+    box10pha3text=StringVar()
+    box10pha3text.set("                                ")
+    box10pha3_LD=Label(tab11, textvariable=box10pha3text, width=32)
+    box10pha3_LD.grid(column=4,row=11,padx=2,pady=0)
+    window.update_idletasks()
+
+    if light1_1=='0' and dark1_1=='0':
+        box1pha1text.set("                                ")
+        window.update_idletasks()
+        box1pha1text.set("From recording onset"+" | "+hourOn1_1+":"+minOn1_1+" on > "+hourOff1_1+":"+minOff1_1+" off")
+        window.update_idletasks()
+    if light1_2=='0' and dark1_2=='0':
+        box1pha2text.set("                                ")
+        window.update_idletasks()
+        box1pha2text.set(year1_2+"/"+month1_2+"/"+date1_2+" "+hourFrom2_2+":"+minuteFrom1_2+" | "+hourOn1_2+":"+minOn1_2+" on > "+hourOff1_2+":"+minOff1_2+" off")
+        window.update_idletasks()
+    if light1_3=='0' and dark1_3=='0':
+        box1pha3text.set("                                ")
+        window.update_idletasks()
+        box1pha3text.set(year1_3+"/"+month1_3+"/"+date1_3+" "+hourFrom2_3+":"+minuteFrom1_3+" | "+hourOn1_3+":"+minOn1_3+" on > "+hourOff1_3+":"+minOff1_3+" off")
+        window.update_idletasks()
+    if light1_1=='0' and dark1_1=='1':
+        box1pha1text.set("                                ")
+        window.update_idletasks()
+        box1pha1text.set("From recording onset"+" | "+"DD")
+        window.update_idletasks()
+    if light1_2=='0' and dark1_2=='1':
+        box1pha2text.set("                                ")
+        window.update_idletasks()
+        box1pha2text.set(year1_2+"/"+month1_2+"/"+date1_2+" "+hourFrom2_2+":"+minuteFrom1_2+" | "+"DD")
+        window.update_idletasks()
+    if light1_3=='0' and dark1_3=='1':
+        box1pha3text.set("                                ")
+        window.update_idletasks()
+        box1pha3text.set(year1_3+"/"+month1_3+"/"+date1_3+" "+hourFrom2_3+":"+minuteFrom1_3+" | "+"DD")
+        window.update_idletasks()
+    if light1_1=='1' and dark1_1=='0':
+        box1pha1text.set("                                ")
+        window.update_idletasks()
+        box1pha1text.set("From recording onset"+" | "+"LL")
+        window.update_idletasks()
+    if light1_2=='1' and dark1_2=='0':
+        box1pha2text.set("                                ")
+        window.update_idletasks()
+        box1pha2text.set(year1_2+"/"+month1_2+"/"+date1_2+" "+hourFrom2_2+":"+minuteFrom1_2+" | "+"LL")
+        window.update_idletasks()
+    if light1_3=='1' and dark1_3=='0':
+        box1pha3text.set("                                 ")
+        window.update_idletasks()
+        box1pha3text.set(year1_3+"/"+month1_3+"/"+date1_3+" "+hourFrom2_3+":"+minuteFrom1_3+" | "+"LL")
+        window.update_idletasks()
+
+    if light2_1=='0' and dark2_1=='0':
+        box2pha1text.set("                                ")
+        window.update_idletasks()
+        box2pha1text.set("From recording onset"+" | "+hourOn2_1+":"+minOn2_1+" on > "+hourOff2_1+":"+minOff2_1+" off")
+        window.update_idletasks()
+    if light2_2=='0' and dark2_2=='0':
+        box2pha2text.set("                                ")
+        window.update_idletasks()
+        box2pha2text.set(year2_2+"/"+month2_2+"/"+date2_2+" "+hourFrom2_2+":"+minuteFrom2_2+" | "+hourOn2_2+":"+minOn2_2+" on > "+hourOff2_2+":"+minOff2_2+" off")
+        window.update_idletasks()
+    if light2_3=='0' and dark2_3=='0':
+        box2pha3text.set("                                ")
+        window.update_idletasks()
+        box2pha3text.set(year2_3+"/"+month2_3+"/"+date2_3+" "+hourFrom2_3+":"+minuteFrom2_3+" | "+hourOn2_3+":"+minOn2_3+" on > "+hourOff2_3+":"+minOff2_3+" off")
+        window.update_idletasks()
+    if light2_1=='0' and dark2_1=='1':
+        box2pha1text.set("                                ")
+        window.update_idletasks()
+        box2pha1text.set("From recording onset"+" | "+"DD")
+        window.update_idletasks()
     if light2_2=='0' and dark2_2=='1':
-        box1pha1_LD=Label(tab11, text="DD")
-        box1pha1_LD.grid(column=2,row=2,padx=2,pady=0)
+        box2pha2text.set("                                ")
+        window.update_idletasks()
+        box2pha2text.set(year2_2+"/"+month2_2+"/"+date2_2+" "+hourFrom2_2+":"+minuteFrom2_2+" | "+"DD")
+        window.update_idletasks()
+    if light2_3=='0' and dark2_3=='1':
+        box2pha3text.set("                                ")
+        window.update_idletasks()
+        box2pha3text.set(year2_3+"/"+month2_3+"/"+date2_3+" "+hourFrom2_3+":"+minuteFrom2_3+" | "+"DD")
+        window.update_idletasks()
+    if light2_1=='1' and dark2_1=='0':
+        box2pha1text.set("                                ")
+        window.update_idletasks()
+        box2pha1text.set("From recording onset"+" | "+"LL")
+        window.update_idletasks()
+    if light2_2=='1' and dark2_2=='0':
+        box2pha2text.set("                                ")
+        window.update_idletasks()
+        box2pha2text.set(year2_2+"/"+month2_2+"/"+date2_2+" "+hourFrom2_2+":"+minuteFrom2_2+" | "+"LL")
+        window.update_idletasks()
     if light2_3=='1' and dark2_3=='0':
-        box1pha1_LD=Label(tab11, text="LL")
-        box1pha1_LD.grid(column=2,row=2,padx=2,pady=0)
+        box2pha3text.set("                                 ")
+        window.update_idletasks()
+        box2pha3text.set(year2_3+"/"+month2_3+"/"+date2_3+" "+hourFrom2_3+":"+minuteFrom2_3+" | "+"LL")
+        window.update_idletasks()
 
     if light3_1=='0' and dark3_1=='0':
-        box3pha1_LD=Label(tab11, text=hourOn3_1+":"+minOn3_1+" on > "+hourOff3_1+":"+minOff3_1+" off")
-        box3pha1_LD.grid(column=2,row=4,padx=2,pady=0)
-        box3pha2_LD=Label(tab11, text=hourOn3_2+":"+minOn3_2+" on > "+hourOff3_2+":"+minOff3_2+" off")
-        box3pha2_LD.grid(column=3,row=4,padx=2,pady=0)
-        box3pha3_LD=Label(tab11, text=hourOn3_3+":"+minOn3_3+" on > "+hourOff3_3+":"+minOff3_3+" off")
-        box3pha3_LD.grid(column=4,row=4,padx=2,pady=0)
+        box3pha1text.set("                                ")
+        window.update_idletasks()
+        box3pha1text.set("From recording onset"+" | "+hourOn3_1+":"+minOn3_1+" on > "+hourOff3_1+":"+minOff3_1+" off")
+        window.update_idletasks()
+    if light3_2=='0' and dark3_2=='0':
+        box3pha2text.set("                                ")
+        window.update_idletasks()
+        box3pha2text.set(year3_2+"/"+month3_2+"/"+date3_2+" "+hourFrom3_2+":"+minuteFrom3_2+" | "+hourOn3_2+":"+minOn3_2+" on > "+hourOff3_2+":"+minOff3_2+" off")
+        window.update_idletasks()
+    if light3_3=='0' and dark3_3=='0':
+        box3pha3text.set("                                ")
+        window.update_idletasks()
+        box3pha3text.set(year3_3+"/"+month3_3+"/"+date3_3+" "+hourFrom3_3+":"+minuteFrom3_3+" | "+hourOn3_3+":"+minOn3_3+" on > "+hourOff3_3+":"+minOff3_3+" off")
+        window.update_idletasks()
+    if light3_1=='0' and dark3_1=='1':
+        box3pha1text.set("                                ")
+        window.update_idletasks()
+        box3pha1text.set("From recording onset"+" | "+"DD")
+        window.update_idletasks()
     if light3_2=='0' and dark3_2=='1':
-        box1pha1_LD=Label(tab11, text="DD")
-        box1pha1_LD.grid(column=2,row=2,padx=2,pady=0)
+        box3pha2text.set("                                ")
+        window.update_idletasks()
+        box3pha2text.set(year3_2+"/"+month3_2+"/"+date3_2+" "+hourFrom3_2+":"+minuteFrom3_2+" | "+"DD")
+        window.update_idletasks()
+    if light3_3=='0' and dark3_3=='1':
+        box3pha3text.set("                                ")
+        window.update_idletasks()
+        box3pha3text.set(year3_3+"/"+month3_3+"/"+date3_3+" "+hourFrom3_3+":"+minuteFrom3_3+" | "+"DD")
+        window.update_idletasks()
+    if light3_1=='1' and dark3_1=='0':
+        box3pha1text.set("                                ")
+        window.update_idletasks()
+        box3pha1text.set("From recording onset"+" | "+"LL")
+        window.update_idletasks()
+    if light3_2=='1' and dark3_2=='0':
+        box3pha2text.set("                                ")
+        window.update_idletasks()
+        box3pha2text.set(year3_2+"/"+month3_2+"/"+date3_2+" "+hourFrom3_2+":"+minuteFrom3_2+" | "+"LL")
+        window.update_idletasks()
     if light3_3=='1' and dark3_3=='0':
-        box1pha1_LD=Label(tab11, text="LL")
-        box1pha1_LD.grid(column=2,row=2,padx=2,pady=0)
+        box3pha3text.set("                                 ")
+        window.update_idletasks()
+        box3pha3text.set(year3_3+"/"+month3_3+"/"+date3_3+" "+hourFrom3_3+":"+minuteFrom3_3+" | "+"LL")
+        window.update_idletasks()
 
     if light4_1=='0' and dark4_1=='0':
-        box4pha1_LD=Label(tab11, text=hourOn4_1+":"+minOn4_1+" on > "+hourOff4_1+":"+minOff4_1+" off")
-        box4pha1_LD.grid(column=2,row=5,padx=2,pady=0)
-        box4pha2_LD=Label(tab11, text=hourOn4_2+":"+minOn4_2+" on > "+hourOff4_2+":"+minOff4_2+" off")
-        box4pha2_LD.grid(column=3,row=5,padx=2,pady=0)
-        box4pha3_LD=Label(tab11, text=hourOn4_3+":"+minOn4_3+" on > "+hourOff4_3+":"+minOff4_3+" off")
-        box4pha3_LD.grid(column=4,row=5,padx=2,pady=0)
+        box4pha1text.set("                                ")
+        window.update_idletasks()
+        box4pha1text.set("From recording onset"+" | "+hourOn4_1+":"+minOn4_1+" on > "+hourOff4_1+":"+minOff4_1+" off")
+        window.update_idletasks()
+    if light4_2=='0' and dark4_2=='0':
+        box4pha2text.set("                                ")
+        window.update_idletasks()
+        box4pha2text.set(year4_2+"/"+month4_2+"/"+date4_2+" "+hourFrom4_2+":"+minuteFrom4_2+" | "+hourOn4_2+":"+minOn4_2+" on > "+hourOff4_2+":"+minOff4_2+" off")
+        window.update_idletasks()
+    if light4_3=='0' and dark4_3=='0':
+        box4pha3text.set("                                ")
+        window.update_idletasks()
+        box4pha3text.set(year4_3+"/"+month4_3+"/"+date4_3+" "+hourFrom4_3+":"+minuteFrom4_3+" | "+hourOn4_3+":"+minOn4_3+" on > "+hourOff4_3+":"+minOff4_3+" off")
+        window.update_idletasks()
+    if light4_1=='0' and dark4_1=='1':
+        box4pha1text.set("                                ")
+        window.update_idletasks()
+        box4pha1text.set("From recording onset"+" | "+"DD")
+        window.update_idletasks()
     if light4_2=='0' and dark4_2=='1':
-        box1pha1_LD=Label(tab11, text="DD")
-        box1pha1_LD.grid(column=2,row=2,padx=2,pady=0)
+        box4pha2text.set("                                ")
+        window.update_idletasks()
+        box4pha2text.set(year4_2+"/"+month4_2+"/"+date4_2+" "+hourFrom4_2+":"+minuteFrom4_2+" | "+"DD")
+        window.update_idletasks()
+    if light4_3=='0' and dark4_3=='1':
+        box4pha3text.set("                                ")
+        window.update_idletasks()
+        box4pha3text.set(year4_3+"/"+month4_3+"/"+date4_3+" "+hourFrom4_3+":"+minuteFrom4_3+" | "+"DD")
+        window.update_idletasks()
+    if light4_1=='1' and dark4_1=='0':
+        box4pha1text.set("                                ")
+        window.update_idletasks()
+        box4pha1text.set("From recording onset"+" | "+"LL")
+        window.update_idletasks()
+    if light4_2=='1' and dark4_2=='0':
+        box4pha2text.set("                                ")
+        window.update_idletasks()
+        box4pha2text.set(year4_2+"/"+month4_2+"/"+date4_2+" "+hourFrom4_2+":"+minuteFrom4_2+" | "+"LL")
+        window.update_idletasks()
     if light4_3=='1' and dark4_3=='0':
-        box1pha1_LD=Label(tab11, text="LL")
-        box1pha1_LD.grid(column=2,row=2,padx=2,pady=0)
+        box4pha3text.set("                                 ")
+        window.update_idletasks()
+        box4pha3text.set(year4_3+"/"+month4_3+"/"+date4_3+" "+hourFrom4_3+":"+minuteFrom4_3+" | "+"LL")
+        window.update_idletasks()
+
+    if light5_1=='0' and dark5_1=='0':
+        box5pha1text.set("                                ")
+        window.update_idletasks()
+        box5pha1text.set("From recording onset"+" | "+hourOn5_1+":"+minOn5_1+" on > "+hourOff5_1+":"+minOff5_1+" off")
+        window.update_idletasks()
+    if light5_2=='0' and dark5_2=='0':
+        box5pha2text.set("                                ")
+        window.update_idletasks()
+        box5pha2text.set(year5_2+"/"+month5_2+"/"+date5_2+" "+hourFrom5_2+":"+minuteFrom5_2+" | "+hourOn5_2+":"+minOn5_2+" on > "+hourOff5_2+":"+minOff5_2+" off")
+        window.update_idletasks()
+    if light5_3=='0' and dark5_3=='0':
+        box5pha3text.set("                                ")
+        window.update_idletasks()
+        box5pha3text.set(year5_3+"/"+month5_3+"/"+date5_3+" "+hourFrom5_3+":"+minuteFrom5_3+" | "+hourOn5_3+":"+minOn5_3+" on > "+hourOff5_3+":"+minOff5_3+" off")
+        window.update_idletasks()
+    if light5_1=='0' and dark5_1=='1':
+        box5pha1text.set("                                ")
+        window.update_idletasks()
+        box5pha1text.set("From recording onset"+" | "+"DD")
+        window.update_idletasks()
+    if light5_2=='0' and dark5_2=='1':
+        box5pha2text.set("                                ")
+        window.update_idletasks()
+        box5pha2text.set(year5_2+"/"+month5_2+"/"+date5_2+" "+hourFrom5_2+":"+minuteFrom5_2+" | "+"DD")
+        window.update_idletasks()
+    if light5_3=='0' and dark5_3=='1':
+        box5pha3text.set("                                ")
+        window.update_idletasks()
+        box5pha3text.set(year5_3+"/"+month5_3+"/"+date5_3+" "+hourFrom5_3+":"+minuteFrom5_3+" | "+"DD")
+        window.update_idletasks()
+    if light5_1=='1' and dark5_1=='0':
+        box5pha1text.set("                                ")
+        window.update_idletasks()
+        box5pha1text.set("From recording onset"+" | "+"LL")
+        window.update_idletasks()
+    if light5_2=='1' and dark5_2=='0':
+        box5pha2text.set("                                ")
+        window.update_idletasks()
+        box5pha2text.set(year5_2+"/"+month5_2+"/"+date5_2+" "+hourFrom5_2+":"+minuteFrom5_2+" | "+"LL")
+        window.update_idletasks()
+    if light5_3=='1' and dark5_3=='0':
+        box5pha3text.set("                                 ")
+        window.update_idletasks()
+        box5pha3text.set(year5_3+"/"+month5_3+"/"+date5_3+" "+hourFrom5_3+":"+minuteFrom5_3+" | "+"LL")
+        window.update_idletasks()
+
+    if light6_1=='0' and dark6_1=='0':
+        box6pha1text.set("                                ")
+        window.update_idletasks()
+        box6pha1text.set("From recording onset"+" | "+hourOn6_1+":"+minOn6_1+" on > "+hourOff6_1+":"+minOff6_1+" off")
+        window.update_idletasks()
+    if light6_2=='0' and dark6_2=='0':
+        box6pha2text.set("                                ")
+        window.update_idletasks()
+        box6pha2text.set(year6_2+"/"+month6_2+"/"+date6_2+" "+hourFrom6_2+":"+minuteFrom6_2+" | "+hourOn6_2+":"+minOn6_2+" on > "+hourOff6_2+":"+minOff6_2+" off")
+        window.update_idletasks()
+    if light6_3=='0' and dark6_3=='0':
+        box6pha3text.set("                                ")
+        window.update_idletasks()
+        box6pha3text.set(year6_3+"/"+month6_3+"/"+date6_3+" "+hourFrom6_3+":"+minuteFrom6_3+" | "+hourOn6_3+":"+minOn6_3+" on > "+hourOff6_3+":"+minOff6_3+" off")
+        window.update_idletasks()
+    if light6_1=='0' and dark6_1=='1':
+        box6pha1text.set("                                ")
+        window.update_idletasks()
+        box6pha1text.set("From recording onset"+" | "+"DD")
+        window.update_idletasks()
+    if light6_2=='0' and dark6_2=='1':
+        box6pha2text.set("                                ")
+        window.update_idletasks()
+        box6pha2text.set(year6_2+"/"+month6_2+"/"+date6_2+" "+hourFrom6_2+":"+minuteFrom6_2+" | "+"DD")
+        window.update_idletasks()
+    if light6_3=='0' and dark6_3=='1':
+        box6pha3text.set("                                ")
+        window.update_idletasks()
+        box6pha3text.set(year6_3+"/"+month6_3+"/"+date6_3+" "+hourFrom6_3+":"+minuteFrom6_3+" | "+"DD")
+        window.update_idletasks()
+    if light6_1=='1' and dark6_1=='0':
+        box6pha1text.set("                                ")
+        window.update_idletasks()
+        box6pha1text.set("From recording onset"+" | "+"LL")
+        window.update_idletasks()
+    if light6_2=='1' and dark6_2=='0':
+        box6pha2text.set("                                ")
+        window.update_idletasks()
+        box6pha2text.set(year6_2+"/"+month6_2+"/"+date6_2+" "+hourFrom6_2+":"+minuteFrom6_2+" | "+"LL")
+        window.update_idletasks()
+    if light6_3=='1' and dark6_3=='0':
+        box6pha3text.set("                                 ")
+        window.update_idletasks()
+        box6pha3text.set(year6_3+"/"+month6_3+"/"+date6_3+" "+hourFrom6_3+":"+minuteFrom6_3+" | "+"LL")
+        window.update_idletasks()
+
+    if light7_1=='0' and dark7_1=='0':
+        box7pha1text.set("                                ")
+        window.update_idletasks()
+        box7pha1text.set("From recording onset"+" | "+hourOn7_1+":"+minOn7_1+" on > "+hourOff7_1+":"+minOff7_1+" off")
+        window.update_idletasks()
+    if light7_2=='0' and dark7_2=='0':
+        box7pha2text.set("                                ")
+        window.update_idletasks()
+        box7pha2text.set(year7_2+"/"+month7_2+"/"+date7_2+" "+hourFrom7_2+":"+minuteFrom7_2+" | "+hourOn7_2+":"+minOn7_2+" on > "+hourOff7_2+":"+minOff7_2+" off")
+        window.update_idletasks()
+    if light7_3=='0' and dark7_3=='0':
+        box7pha3text.set("                                ")
+        window.update_idletasks()
+        box7pha3text.set(year7_3+"/"+month7_3+"/"+date7_3+" "+hourFrom7_3+":"+minuteFrom7_3+" | "+hourOn7_3+":"+minOn7_3+" on > "+hourOff7_3+":"+minOff7_3+" off")
+        window.update_idletasks()
+    if light7_1=='0' and dark7_1=='1':
+        box7pha1text.set("                                ")
+        window.update_idletasks()
+        box7pha1text.set("From recording onset"+" | "+"DD")
+        window.update_idletasks()
+    if light7_2=='0' and dark7_2=='1':
+        box7pha2text.set("                                ")
+        window.update_idletasks()
+        box7pha2text.set(year7_2+"/"+month7_2+"/"+date7_2+" "+hourFrom7_2+":"+minuteFrom7_2+" | "+"DD")
+        window.update_idletasks()
+    if light7_3=='0' and dark7_3=='1':
+        box7pha3text.set("                                ")
+        window.update_idletasks()
+        box7pha3text.set(year7_3+"/"+month7_3+"/"+date7_3+" "+hourFrom7_3+":"+minuteFrom7_3+" | "+"DD")
+        window.update_idletasks()
+    if light7_1=='1' and dark7_1=='0':
+        box7pha1text.set("                                ")
+        window.update_idletasks()
+        box7pha1text.set("From recording onset"+" | "+"LL")
+        window.update_idletasks()
+    if light7_2=='1' and dark7_2=='0':
+        box7pha2text.set("                                ")
+        window.update_idletasks()
+        box7pha2text.set(year7_2+"/"+month7_2+"/"+date7_2+" "+hourFrom7_2+":"+minuteFrom7_2+" | "+"LL")
+        window.update_idletasks()
+    if light7_3=='1' and dark7_3=='0':
+        box7pha3text.set("                                 ")
+        window.update_idletasks()
+        box7pha3text.set(year7_3+"/"+month7_3+"/"+date7_3+" "+hourFrom7_3+":"+minuteFrom7_3+" | "+"LL")
+        window.update_idletasks()
+
+    if light8_1=='0' and dark8_1=='0':
+        box8pha1text.set("                                ")
+        window.update_idletasks()
+        box8pha1text.set("From recording onset"+" | "+hourOn8_1+":"+minOn8_1+" on > "+hourOff8_1+":"+minOff8_1+" off")
+        window.update_idletasks()
+    if light8_2=='0' and dark8_2=='0':
+        box8pha2text.set("                                ")
+        window.update_idletasks()
+        box8pha2text.set(year8_2+"/"+month8_2+"/"+date8_2+" "+hourFrom8_2+":"+minuteFrom8_2+" | "+hourOn8_2+":"+minOn8_2+" on > "+hourOff8_2+":"+minOff8_2+" off")
+        window.update_idletasks()
+    if light8_3=='0' and dark8_3=='0':
+        box8pha3text.set("                                ")
+        window.update_idletasks()
+        box8pha3text.set(year8_3+"/"+month8_3+"/"+date8_3+" "+hourFrom8_3+":"+minuteFrom8_3+" | "+hourOn8_3+":"+minOn8_3+" on > "+hourOff8_3+":"+minOff8_3+" off")
+        window.update_idletasks()
+    if light8_1=='0' and dark8_1=='1':
+        box8pha1text.set("                                ")
+        window.update_idletasks()
+        box8pha1text.set("From recording onset"+" | "+"DD")
+        window.update_idletasks()
+    if light8_2=='0' and dark8_2=='1':
+        box8pha2text.set("                                ")
+        window.update_idletasks()
+        box8pha2text.set(year8_2+"/"+month8_2+"/"+date8_2+" "+hourFrom8_2+":"+minuteFrom8_2+" | "+"DD")
+        window.update_idletasks()
+    if light8_3=='0' and dark8_3=='1':
+        box8pha3text.set("                                ")
+        window.update_idletasks()
+        box8pha3text.set(year8_3+"/"+month8_3+"/"+date8_3+" "+hourFrom8_3+":"+minuteFrom8_3+" | "+"DD")
+        window.update_idletasks()
+    if light8_1=='1' and dark8_1=='0':
+        box8pha1text.set("                                ")
+        window.update_idletasks()
+        box8pha1text.set("From recording onset"+" | "+"LL")
+        window.update_idletasks()
+    if light8_2=='1' and dark8_2=='0':
+        box8pha2text.set("                                ")
+        window.update_idletasks()
+        box8pha2text.set(year8_2+"/"+month8_2+"/"+date8_2+" "+hourFrom8_2+":"+minuteFrom8_2+" | "+"LL")
+        window.update_idletasks()
+    if light8_3=='1' and dark8_3=='0':
+        box8pha3text.set("                                 ")
+        window.update_idletasks()
+        box8pha3text.set(year8_3+"/"+month8_3+"/"+date8_3+" "+hourFrom8_3+":"+minuteFrom8_3+" | "+"LL")
+        window.update_idletasks()
+
+    if light9_1=='0' and dark9_1=='0':
+        box9pha1text.set("                                ")
+        window.update_idletasks()
+        box9pha1text.set("From recording onset"+" | "+hourOn9_1+":"+minOn9_1+" on > "+hourOff9_1+":"+minOff9_1+" off")
+        window.update_idletasks()
+    if light9_2=='0' and dark9_2=='0':
+        box9pha2text.set("                                ")
+        window.update_idletasks()
+        box9pha2text.set(year9_2+"/"+month9_2+"/"+date9_2+" "+hourFrom9_2+":"+minuteFrom9_2+" | "+hourOn9_2+":"+minOn9_2+" on > "+hourOff9_2+":"+minOff9_2+" off")
+        window.update_idletasks()
+    if light9_3=='0' and dark9_3=='0':
+        box9pha3text.set("                                ")
+        window.update_idletasks()
+        box9pha3text.set(year9_3+"/"+month9_3+"/"+date9_3+" "+hourFrom9_3+":"+minuteFrom9_3+" | "+hourOn9_3+":"+minOn9_3+" on > "+hourOff9_3+":"+minOff9_3+" off")
+        window.update_idletasks()
+    if light9_1=='0' and dark9_1=='1':
+        box9pha1text.set("                                ")
+        window.update_idletasks()
+        box9pha1text.set("From recording onset"+" | "+"DD")
+        window.update_idletasks()
+    if light9_2=='0' and dark9_2=='1':
+        box9pha2text.set("                                ")
+        window.update_idletasks()
+        box9pha2text.set(year9_2+"/"+month9_2+"/"+date9_2+" "+hourFrom9_2+":"+minuteFrom9_2+" | "+"DD")
+        window.update_idletasks()
+    if light9_3=='0' and dark9_3=='1':
+        box9pha3text.set("                                ")
+        window.update_idletasks()
+        box9pha3text.set(year9_3+"/"+month9_3+"/"+date9_3+" "+hourFrom9_3+":"+minuteFrom9_3+" | "+"DD")
+        window.update_idletasks()
+    if light9_1=='1' and dark9_1=='0':
+        box9pha1text.set("                                ")
+        window.update_idletasks()
+        box9pha1text.set("From recording onset"+" | "+"LL")
+        window.update_idletasks()
+    if light9_2=='1' and dark9_2=='0':
+        box9pha2text.set("                                ")
+        window.update_idletasks()
+        box9pha2text.set(year9_2+"/"+month9_2+"/"+date9_2+" "+hourFrom9_2+":"+minuteFrom9_2+" | "+"LL")
+        window.update_idletasks()
+    if light9_3=='1' and dark9_3=='0':
+        box9pha3text.set("                                 ")
+        window.update_idletasks()
+        box9pha3text.set(year9_3+"/"+month9_3+"/"+date9_3+" "+hourFrom9_3+":"+minuteFrom9_3+" | "+"LL")
+        window.update_idletasks()
+
+    if light10_1=='0' and dark10_1=='0':
+        box10pha1text.set("                                ")
+        window.update_idletasks()
+        box10pha1text.set("From recording onset"+" | "+hourOn10_1+":"+minOn10_1+" on > "+hourOff10_1+":"+minOff10_1+" off")
+        window.update_idletasks()
+    if light10_2=='0' and dark10_2=='0':
+        box10pha2text.set("                                ")
+        window.update_idletasks()
+        box10pha2text.set(year10_2+"/"+month10_2+"/"+date10_2+" "+hourFrom10_2+":"+minuteFrom10_2+" | "+hourOn10_2+":"+minOn10_2+" on > "+hourOff10_2+":"+minOff10_2+" off")
+        window.update_idletasks()
+    if light10_3=='0' and dark10_3=='0':
+        box10pha3text.set("                                ")
+        window.update_idletasks()
+        box10pha3text.set(year10_3+"/"+month10_3+"/"+date10_3+" "+hourFrom10_3+":"+minuteFrom10_3+" | "+hourOn10_3+":"+minOn10_3+" on > "+hourOff10_3+":"+minOff10_3+" off")
+        window.update_idletasks()
+    if light10_1=='0' and dark10_1=='1':
+        box10pha1text.set("                                ")
+        window.update_idletasks()
+        box10pha1text.set("From recording onset"+" | "+"DD")
+        window.update_idletasks()
+    if light10_2=='0' and dark10_2=='1':
+        box10pha2text.set("                                ")
+        window.update_idletasks()
+        box10pha2text.set(year10_2+"/"+month10_2+"/"+date10_2+" "+hourFrom10_2+":"+minuteFrom10_2+" | "+"DD")
+        window.update_idletasks()
+    if light10_3=='0' and dark10_3=='1':
+        box10pha3text.set("                                ")
+        window.update_idletasks()
+        box10pha3text.set(year10_3+"/"+month10_3+"/"+date10_3+" "+hourFrom10_3+":"+minuteFrom10_3+" | "+"DD")
+        window.update_idletasks()
+    if light10_1=='1' and dark10_1=='0':
+        box10pha1text.set("                                ")
+        window.update_idletasks()
+        box10pha1text.set("From recording onset"+" | "+"LL")
+        window.update_idletasks()
+    if light10_2=='1' and dark10_2=='0':
+        box10pha2text.set("                                ")
+        window.update_idletasks()
+        box10pha2text.set(year10_2+"/"+month10_2+"/"+date10_2+" "+hourFrom10_2+":"+minuteFrom10_2+" | "+"LL")
+        window.update_idletasks()
+    if light10_3=='1' and dark10_3=='0':
+        box10pha3text.set("                                 ")
+        window.update_idletasks()
+        box10pha3text.set(year10_3+"/"+month10_3+"/"+date10_3+" "+hourFrom10_3+":"+minuteFrom10_3+" | "+"LL")
+        window.update_idletasks()
 
 def connect():  # Start to connect and call get_data - Link to Start in Recording menu
     port = port_entry.get()
