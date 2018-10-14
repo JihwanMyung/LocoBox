@@ -284,26 +284,17 @@ def get_data(): # Start recording
                 box10rec_text.set('Recording on-going.')
                 window.update_idletasks()
             i=i+1
-            if len(string2)>=139:
-                box1rec_text.set('LED1: '+string2[20:25]+'  '+'PIR1: '+string2[27:32])
-            if len(string2)>=139:
-                box2rec_text.set('LED2: '+string2[34:39]+'  '+'PIR2: '+string2[41:46])
-            if len(string2)>=139:
-                box3rec_text.set('LED3: '+string2[48:53]+'  '+'PIR3: '+string2[55:60])
-            if len(string2)>=139:
-                box4rec_text.set('LED4: '+string2[61:66]+'  '+'PIR4: '+string2[68:73])
-            if len(string2)>=139:
-                box5rec_text.set('LED5: '+string2[75:80]+'  '+'PIR5: '+string2[81:86])
-            if len(string2)>=139:
-                box6rec_text.set('LED6: '+string2[88:93]+'  '+'PIR6: '+string2[95:100])
-            if len(string2)>=139:
-                box7rec_text.set('LED7: '+string2[102:107]+'  '+'PIR7: '+string2[109:114])
-            if len(string2)>=139:
-                box8rec_text.set('LED8: '+string2[116:121]+'  '+'PIR8: '+string2[123:128])
-            if len(string2)>=139:
-                box9rec_text.set('LED9: '+string2[130:135]+'  '+'PIR9: '+string2[137:142])
-            if len(string2)>=139:
-                box10rec_text.set('LED10: '+string2[144:149]+'  '+'PIR10: '+string2[151:156])
+            if len(string2)>=138:
+                box1rec_text.set('LED1: '+string2[20:25]+'  '+'PIR1: '+string2[26:31])
+                box2rec_text.set('LED2: '+string2[32:36]+'  '+'PIR2: '+string2[38:42])
+                box3rec_text.set('LED3: '+string2[44:48]+'  '+'PIR3: '+string2[50:54])
+                box4rec_text.set('LED4: '+string2[56:60]+'  '+'PIR4: '+string2[62:66])
+                box5rec_text.set('LED5: '+string2[68:72]+'  '+'PIR5: '+string2[74:78])
+                box6rec_text.set('LED6: '+string2[80:84]+'  '+'PIR6: '+string2[86:90])
+                box7rec_text.set('LED7: '+string2[92:96]+'  '+'PIR7: '+string2[98:102])
+                box8rec_text.set('LED8: '+string2[104:108]+'  '+'PIR8: '+string2[110:114])
+                box9rec_text.set('LED9: '+string2[116:120]+'  '+'PIR9: '+string2[122:126])
+                box10rec_text.set('LED10: '+string2[128:132]+'  '+'PIR10: '+string2[134:138])
     except:
         print('Stopped recording and disconnected from the boxes.')
         status.pack(side='bottom', fill='x')
