@@ -116,11 +116,23 @@ status = StatusBar(window)
 
 ###Define functions
 def destruct(): # Quit the program
+    print('LocoBox ended.')
     window.quit()
 
 def get_data(): # Start recording
     status.pack(side='bottom', fill='x')
     status.set('Starting the recording...')
+    box1rec_text.set("Preparing for recording.")
+    box2rec_text.set("Preparing for recording.")
+    box3rec_text.set("Preparing for recording.")
+    box4rec_text.set("Preparing for recording.")
+    box5rec_text.set("Preparing for recording.")
+    box6rec_text.set("Preparing for recording.")
+    box7rec_text.set("Preparing for recording.")
+    box8rec_text.set("Preparing for recording.")
+    box9rec_text.set("Preparing for recording.")
+    box10rec_text.set("Preparing for recording.")
+    window.update_idletasks()
     i=0
     #init csv file and write the COM port name
     headers = port_entry.get()
@@ -260,9 +272,33 @@ def get_data(): # Start recording
                                             hourFrom10_3+minuteFrom10_3))
                 status.pack(side='bottom', fill='x')
                 status.set('All schedules transferred. Recording began.') 
+                box1rec_text.set("Recording on-going.")
+                box2rec_text.set("Recording on-going.")
+                box3rec_text.set("Recording on-going.")
+                box4rec_text.set("Recording on-going.")
+                box5rec_text.set("Recording on-going.")
+                box6rec_text.set("Recording on-going.")
+                box7rec_text.set("Recording on-going.")
+                box8rec_text.set("Recording on-going.")
+                box9rec_text.set("Recording on-going.")
+                box10rec_text.set("Recording on-going.")
+                window.update_idletasks()
             i=i+1
     except:
-        print('Stopped recording and disconnected from the boxes')
+        print('Stopped recording and disconnected from the boxes.')
+        status.pack(side='bottom', fill='x')
+        status.set('Stopped recording and disconnected from the boxes.') 
+        box1rec_text.set("Recording stopped.")
+        box2rec_text.set("Recording stopped.")
+        box3rec_text.set("Recording stopped.")
+        box4rec_text.set("Recording stopped.")
+        box5rec_text.set("Recording stopped.")
+        box6rec_text.set("Recording stopped.")
+        box7rec_text.set("Recording stopped.")
+        box8rec_text.set("Recording stopped.")
+        box9rec_text.set("Recording stopped.")
+        box10rec_text.set("Recording stopped.")
+        window.update_idletasks()
 
 def writeToJSONFile(filename, data):
     filePathNameWExt = filename
@@ -1595,6 +1631,17 @@ def disconnect():  # close the serial_obj thread
     print(threading.enumerate())
     status.pack(side='bottom', fill='x')
     status.set('Stopped recording and disconnected from the boxes.')
+    box1rec_text.set("Recording stopped.")
+    box2rec_text.set("Recording stopped.")
+    box3rec_text.set("Recording stopped.")
+    box4rec_text.set("Recording stopped.")
+    box5rec_text.set("Recording stopped.")
+    box6rec_text.set("Recording stopped.")
+    box7rec_text.set("Recording stopped.")
+    box8rec_text.set("Recording stopped.")
+    box9rec_text.set("Recording stopped.")
+    box10rec_text.set("Recording stopped.")
+    window.update_idletasks()
         
 def getBox1Schedule(): 
     global hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, dark1_1, light1_1
@@ -2740,6 +2787,13 @@ if __name__ == '__main__':
     btnAll1.grid(column=1, row=4+row_adj, pady=5, columnspan='1', sticky='w')
     box1sched_stat.grid(column=3, row=4+row_adj, columnspan='8', sticky='w')
     window.update_idletasks()
+    tab1_title2 = Label(tab1, text= 'Recording status', anchor='center')
+    tab1_title2.grid(column=0, row= row_adj+6, columnspan='27', sticky='we')
+    box1rec_text=StringVar()
+    box1rec_text.set("Recording not started yet.")
+    box1rec_stat=Label(tab1, textvariable=box1rec_text, anchor='center', justify=LEFT)
+    box1rec_stat.grid(column=0, row= row_adj+7, columnspan='27', sticky='we')
+    window.update_idletasks()
 
     # Box2
     btn2 = Button(tab2, text='  Set  ', command=getBox2Schedule)
@@ -2940,6 +2994,13 @@ if __name__ == '__main__':
     btn2.grid(column=0, row=4+row_adj, padx=25, pady=5, columnspan='2', sticky='w')
     btnAll2.grid(column=1, row=4+row_adj, pady=5, columnspan='1', sticky='w')
     box2sched_stat.grid(column=3, row=4+row_adj, columnspan='8', sticky='w')
+    window.update_idletasks()
+    tab2_title2 = Label(tab2, text= 'Recording status', anchor='center')
+    tab2_title2.grid(column=0, row= row_adj+6, columnspan='27', sticky='we')
+    box2rec_text=StringVar()
+    box2rec_text.set("Recording not started yet.")
+    box2rec_stat=Label(tab2, textvariable=box2rec_text, anchor='center', justify=LEFT)
+    box2rec_stat.grid(column=0, row= row_adj+7, columnspan='27', sticky='we')
     window.update_idletasks()
 
     # Box3
@@ -3142,7 +3203,14 @@ if __name__ == '__main__':
     btnAll3.grid(column=1, row=4+row_adj, pady=5, columnspan='1', sticky='w')
     box3sched_stat.grid(column=3, row=4+row_adj, columnspan='8', sticky='w')
     window.update_idletasks()
-
+    tab3_title2 = Label(tab3, text= 'Recording status', anchor='center')
+    tab3_title2.grid(column=0, row= row_adj+6, columnspan='27', sticky='we')
+    box3rec_text=StringVar()
+    box3rec_text.set("Recording not started yet.")
+    box3rec_stat=Label(tab3, textvariable=box3rec_text, anchor='center', justify=LEFT)
+    box3rec_stat.grid(column=0, row= row_adj+7, columnspan='27', sticky='we')
+    window.update_idletasks()
+    
     # Box4
     btn4 = Button(tab4, text='  Set  ', command=getBox4Schedule)
     btnAll4 = Button(tab4, text='Set All', command=getAllBoxSchedule)
@@ -3342,6 +3410,13 @@ if __name__ == '__main__':
     btn4.grid(column=0, row=4+row_adj, padx=25, pady=5, columnspan='2', sticky='w')
     btnAll4.grid(column=1, row=4+row_adj, pady=5, columnspan='1', sticky='w')
     box4sched_stat.grid(column=3, row=4+row_adj, columnspan='8', sticky='w')
+    window.update_idletasks()
+    tab4_title2 = Label(tab4, text= 'Recording status', anchor='center')
+    tab4_title2.grid(column=0, row= row_adj+6, columnspan='27', sticky='we')
+    box4rec_text=StringVar()
+    box4rec_text.set("Recording not started yet.")
+    box4rec_stat=Label(tab4, textvariable=box4rec_text, anchor='center', justify=LEFT)
+    box4rec_stat.grid(column=0, row= row_adj+7, columnspan='27', sticky='we')
     window.update_idletasks()
 
     # Box5
@@ -3544,6 +3619,13 @@ if __name__ == '__main__':
     btnAll5.grid(column=1, row=4+row_adj, pady=5, columnspan='1', sticky='w')
     box5sched_stat.grid(column=3, row=4+row_adj, columnspan='8', sticky='w')
     window.update_idletasks()
+    tab5_title2 = Label(tab5, text= 'Recording status', anchor='center')
+    tab5_title2.grid(column=0, row= row_adj+6, columnspan='27', sticky='we')
+    box5rec_text=StringVar()
+    box5rec_text.set("Recording not started yet.")
+    box5rec_stat=Label(tab5, textvariable=box5rec_text, anchor='center', justify=LEFT)
+    box5rec_stat.grid(column=0, row= row_adj+7, columnspan='27', sticky='we')
+    window.update_idletasks()
 
     # Box6
     btn6 = Button(tab6, text='  Set  ', command=getBox6Schedule)
@@ -3744,6 +3826,13 @@ if __name__ == '__main__':
     btn6.grid(column=0, row=4+row_adj, padx=25, pady=5, columnspan='2', sticky='w')
     btnAll6.grid(column=1, row=4+row_adj, pady=5, columnspan='1', sticky='w')
     box6sched_stat.grid(column=3, row=4+row_adj, columnspan='8', sticky='w')
+    window.update_idletasks()
+    tab6_title2 = Label(tab6, text= 'Recording status', anchor='center')
+    tab6_title2.grid(column=0, row= row_adj+6, columnspan='27', sticky='we')
+    box6rec_text=StringVar()
+    box6rec_text.set("Recording not started yet.")
+    box6rec_stat=Label(tab6, textvariable=box6rec_text, anchor='center', justify=LEFT)
+    box6rec_stat.grid(column=0, row= row_adj+7, columnspan='27', sticky='we')
     window.update_idletasks()
 
     # Box7
@@ -3946,6 +4035,13 @@ if __name__ == '__main__':
     btnAll7.grid(column=1, row=4+row_adj, pady=5, columnspan='1', sticky='w')
     box7sched_stat.grid(column=3, row=4+row_adj, columnspan='8', sticky='w')
     window.update_idletasks()
+    tab7_title2 = Label(tab7, text= 'Recording status', anchor='center')
+    tab7_title2.grid(column=0, row= row_adj+6, columnspan='27', sticky='we')
+    box7rec_text=StringVar()
+    box7rec_text.set("Recording not started yet.")
+    box7rec_stat=Label(tab7, textvariable=box7rec_text, anchor='center', justify=LEFT)
+    box7rec_stat.grid(column=0, row= row_adj+7, columnspan='27', sticky='we')
+    window.update_idletasks()
 
     # Box8
     btn8 = Button(tab8, text='  Set  ', command=getBox8Schedule)
@@ -4146,6 +4242,13 @@ if __name__ == '__main__':
     btn8.grid(column=0, row=4+row_adj, padx=25, pady=5, columnspan='2', sticky='w')
     btnAll8.grid(column=1, row=4+row_adj, pady=5, columnspan='1', sticky='w')
     box8sched_stat.grid(column=3, row=4+row_adj, columnspan='8', sticky='w')
+    window.update_idletasks()
+    tab8_title2 = Label(tab8, text= 'Recording status', anchor='center')
+    tab8_title2.grid(column=0, row= row_adj+6, columnspan='27', sticky='we')
+    box8rec_text=StringVar()
+    box8rec_text.set("Recording not started yet.")
+    box8rec_stat=Label(tab8, textvariable=box8rec_text, anchor='center', justify=LEFT)
+    box8rec_stat.grid(column=0, row= row_adj+7, columnspan='27', sticky='we')
     window.update_idletasks()
 
     # Box9
@@ -4348,6 +4451,13 @@ if __name__ == '__main__':
     btnAll9.grid(column=1, row=4+row_adj, pady=5, columnspan='1', sticky='w')
     box9sched_stat.grid(column=3, row=4+row_adj, columnspan='8', sticky='w')
     window.update_idletasks()
+    tab9_title2 = Label(tab9, text= 'Recording status', anchor='center')
+    tab9_title2.grid(column=0, row= row_adj+6, columnspan='27', sticky='we')
+    box9rec_text=StringVar()
+    box9rec_text.set("Recording not started yet.")
+    box9rec_stat=Label(tab9, textvariable=box9rec_text, anchor='center', justify=LEFT)
+    box9rec_stat.grid(column=0, row= row_adj+7, columnspan='27', sticky='we')
+    window.update_idletasks()
 
     # Box10
     btn10 = Button(tab10, text='  Set  ', command=getBox10Schedule)
@@ -4549,6 +4659,13 @@ if __name__ == '__main__':
     btnAll10.grid(column=1, row=4+row_adj, pady=5, columnspan='1', sticky='w')
     tab_control.pack(expand=1, fill='both')
     box10sched_stat.grid(column=3, row=4+row_adj, columnspan='8', sticky='w')
+    window.update_idletasks()
+    tab10_title2 = Label(tab10, text= 'Recording status', anchor='center')
+    tab10_title2.grid(column=0, row= row_adj+6, columnspan='27', sticky='we')
+    box10rec_text=StringVar()
+    box10rec_text.set("Recording not started yet.")
+    box10rec_stat=Label(tab10, textvariable=box10rec_text, anchor='center', justify=LEFT)
+    box10rec_stat.grid(column=0, row= row_adj+7, columnspan='27', sticky='we')
     window.update_idletasks()
 
     ### Main loop
