@@ -122,16 +122,16 @@ def destruct(): # Quit the program
 def get_data(): # Start recording
     status.pack(side='bottom', fill='x')
     status.set('Starting the recording...')
-    box1rec_text.set("Preparing for recording.")
-    box2rec_text.set("Preparing for recording.")
-    box3rec_text.set("Preparing for recording.")
-    box4rec_text.set("Preparing for recording.")
-    box5rec_text.set("Preparing for recording.")
-    box6rec_text.set("Preparing for recording.")
-    box7rec_text.set("Preparing for recording.")
-    box8rec_text.set("Preparing for recording.")
-    box9rec_text.set("Preparing for recording.")
-    box10rec_text.set("Preparing for recording.")
+    box1rec_text.set('Preparing for recording.')
+    box2rec_text.set('Preparing for recording.')
+    box3rec_text.set('Preparing for recording.')
+    box4rec_text.set('Preparing for recording.')
+    box5rec_text.set('Preparing for recording.')
+    box6rec_text.set('Preparing for recording.')
+    box7rec_text.set('Preparing for recording.')
+    box8rec_text.set('Preparing for recording.')
+    box9rec_text.set('Preparing for recording.')
+    box10rec_text.set('Preparing for recording.')
     window.update_idletasks()
     i=0
     #init csv file and write the COM port name
@@ -149,7 +149,7 @@ def get_data(): # Start recording
                 with open(filename,'a') as w:
                     w.write(string2)
                 w.close()
-            print (string2)
+            print(string2)
             if i==0:
                 print('Synching time...')
                 status.pack(side='bottom', fill='x')
@@ -272,32 +272,52 @@ def get_data(): # Start recording
                                             hourFrom10_3+minuteFrom10_3))
                 status.pack(side='bottom', fill='x')
                 status.set('All schedules transferred. Recording began.') 
-                box1rec_text.set("Recording on-going.")
-                box2rec_text.set("Recording on-going.")
-                box3rec_text.set("Recording on-going.")
-                box4rec_text.set("Recording on-going.")
-                box5rec_text.set("Recording on-going.")
-                box6rec_text.set("Recording on-going.")
-                box7rec_text.set("Recording on-going.")
-                box8rec_text.set("Recording on-going.")
-                box9rec_text.set("Recording on-going.")
-                box10rec_text.set("Recording on-going.")
+                box1rec_text.set('Recording on-going.')
+                box2rec_text.set('Recording on-going.')
+                box3rec_text.set('Recording on-going.')
+                box4rec_text.set('Recording on-going.')
+                box5rec_text.set('Recording on-going.')
+                box6rec_text.set('Recording on-going.')
+                box7rec_text.set('Recording on-going.')
+                box8rec_text.set('Recording on-going.')
+                box9rec_text.set('Recording on-going.')
+                box10rec_text.set('Recording on-going.')
                 window.update_idletasks()
             i=i+1
+            if len(string2)>=139:
+                box1rec_text.set('LED1: '+string2[20:24]+'  '+'PIR1: '+string2[26:30])
+            if len(string2)>=139:
+                box2rec_text.set('LED2: '+string2[32:36]+'  '+'PIR2: '+string2[38:42])
+            if len(string2)>=139:
+                box3rec_text.set('LED3: '+string2[44:48]+'  '+'PIR3: '+string2[50:54])
+            if len(string2)>=139:
+                box4rec_text.set('LED4: '+string2[56:60]+'  '+'PIR4: '+string2[62:66])
+            if len(string2)>=139:
+                box5rec_text.set('LED5: '+string2[68:72]+'  '+'PIR5: '+string2[74:78])
+            if len(string2)>=139:
+                box6rec_text.set('LED6: '+string2[80:84]+'  '+'PIR6: '+string2[86:90])
+            if len(string2)>=139:
+                box7rec_text.set('LED7: '+string2[92:96]+'  '+'PIR7: '+string2[98:102])
+            if len(string2)>=139:
+                box8rec_text.set('LED8: '+string2[104:108]+'  '+'PIR8: '+string2[110:114])
+            if len(string2)>=139:
+                box9rec_text.set('LED9: '+string2[116:120]+'  '+'PIR9: '+string2[122:126])
+            if len(string2)>=139:
+                box10rec_text.set('LED10: '+string2[128:132]+'  '+'PIR10: '+string2[134:138])
     except:
         print('Stopped recording and disconnected from the boxes.')
         status.pack(side='bottom', fill='x')
         status.set('Stopped recording and disconnected from the boxes.') 
-        box1rec_text.set("Recording stopped.")
-        box2rec_text.set("Recording stopped.")
-        box3rec_text.set("Recording stopped.")
-        box4rec_text.set("Recording stopped.")
-        box5rec_text.set("Recording stopped.")
-        box6rec_text.set("Recording stopped.")
-        box7rec_text.set("Recording stopped.")
-        box8rec_text.set("Recording stopped.")
-        box9rec_text.set("Recording stopped.")
-        box10rec_text.set("Recording stopped.")
+        box1rec_text.set('Recording stopped.')
+        box2rec_text.set('Recording stopped.')
+        box3rec_text.set('Recording stopped.')
+        box4rec_text.set('Recording stopped.')
+        box5rec_text.set('Recording stopped.')
+        box6rec_text.set('Recording stopped.')
+        box7rec_text.set('Recording stopped.')
+        box8rec_text.set('Recording stopped.')
+        box9rec_text.set('Recording stopped.')
+        box10rec_text.set('Recording stopped.')
         window.update_idletasks()
 
 def writeToJSONFile(filename, data):
@@ -920,16 +940,16 @@ def read_conf(): # Read schedule configuration
 
     status.pack(side='bottom', fill='x')
     status.set('The schedule configuration is loaded.')
-    box1sched_text.set("Box1 schedule loaded.")
-    box2sched_text.set("Box2 schedule loaded.")
-    box3sched_text.set("Box3 schedule loaded.")
-    box4sched_text.set("Box4 schedule loaded.")
-    box5sched_text.set("Box5 schedule loaded.")
-    box6sched_text.set("Box6 schedule loaded.")
-    box7sched_text.set("Box7 schedule loaded.")
-    box8sched_text.set("Box8 schedule loaded.")
-    box9sched_text.set("Box9 schedule loaded.")
-    box10sched_text.set("Box10 schedule loaded.")
+    box1sched_text.set('Box1 schedule loaded.')
+    box2sched_text.set('Box2 schedule loaded.')
+    box3sched_text.set('Box3 schedule loaded.')
+    box4sched_text.set('Box4 schedule loaded.')
+    box5sched_text.set('Box5 schedule loaded.')
+    box6sched_text.set('Box6 schedule loaded.')
+    box7sched_text.set('Box7 schedule loaded.')
+    box8sched_text.set('Box8 schedule loaded.')
+    box9sched_text.set('Box9 schedule loaded.')
+    box10sched_text.set('Box10 schedule loaded.')
     window.update_idletasks()
 
 def show_conf(): # Show schedule configuration
@@ -1631,16 +1651,16 @@ def disconnect():  # close the serial_obj thread
     print(threading.enumerate())
     status.pack(side='bottom', fill='x')
     status.set('Stopped recording and disconnected from the boxes.')
-    box1rec_text.set("Recording stopped.")
-    box2rec_text.set("Recording stopped.")
-    box3rec_text.set("Recording stopped.")
-    box4rec_text.set("Recording stopped.")
-    box5rec_text.set("Recording stopped.")
-    box6rec_text.set("Recording stopped.")
-    box7rec_text.set("Recording stopped.")
-    box8rec_text.set("Recording stopped.")
-    box9rec_text.set("Recording stopped.")
-    box10rec_text.set("Recording stopped.")
+    box1rec_text.set('Recording stopped.')
+    box2rec_text.set('Recording stopped.')
+    box3rec_text.set('Recording stopped.')
+    box4rec_text.set('Recording stopped.')
+    box5rec_text.set('Recording stopped.')
+    box6rec_text.set('Recording stopped.')
+    box7rec_text.set('Recording stopped.')
+    box8rec_text.set('Recording stopped.')
+    box9rec_text.set('Recording stopped.')
+    box10rec_text.set('Recording stopped.')
     window.update_idletasks()
         
 def getBox1Schedule(): 
@@ -1700,7 +1720,7 @@ def getBox1Schedule():
         light1_3='1'
     status.pack(side='bottom', fill='x')
     status.set('Box1 schedule is set.')
-    box1sched_text.set("Box1 schedule set.")
+    box1sched_text.set('Box1 schedule set.')
     window.update_idletasks()
 
 def getBox2Schedule(): 
@@ -1760,7 +1780,7 @@ def getBox2Schedule():
         light2_3='1'
     status.pack(side='bottom', fill='x')
     status.set('Box2 schedule is set.')
-    box2sched_text.set("Box2 schedule set.")
+    box2sched_text.set('Box2 schedule set.')
     window.update_idletasks()
 
 def getBox3Schedule(): 
@@ -1820,7 +1840,7 @@ def getBox3Schedule():
         light3_3='1'
     status.pack(side='bottom', fill='x')
     status.set('Box3 schedule is set.')
-    box3sched_text.set("Box3 schedule set.")
+    box3sched_text.set('Box3 schedule set.')
     window.update_idletasks()
 
 def getBox4Schedule(): 
@@ -1880,7 +1900,7 @@ def getBox4Schedule():
         light4_3='1'
     status.pack(side='bottom', fill='x')
     status.set('Box4 schedule is set.')
-    box4sched_text.set("Box4 schedule set.")
+    box4sched_text.set('Box4 schedule set.')
     window.update_idletasks()
 
 def getBox5Schedule(): 
@@ -1940,7 +1960,7 @@ def getBox5Schedule():
         light5_3='1'
     status.pack(side='bottom', fill='x')
     status.set('Box5 schedule is set.')
-    box5sched_text.set("Box5 schedule set.")
+    box5sched_text.set('Box5 schedule set.')
     window.update_idletasks()
 
 def getBox6Schedule(): 
@@ -2000,7 +2020,7 @@ def getBox6Schedule():
         light6_3='1'
     status.pack(side='bottom', fill='x')
     status.set('Box6 schedule is set.')
-    box6sched_text.set("Box6 schedule set.")
+    box6sched_text.set('Box6 schedule set.')
     window.update_idletasks()
 
 def getBox7Schedule(): 
@@ -2060,7 +2080,7 @@ def getBox7Schedule():
         light7_3='1'
     status.pack(side='bottom', fill='x')
     status.set('Box7 schedule is set.')
-    box7sched_text.set("Box7 schedule set.")
+    box7sched_text.set('Box7 schedule set.')
     window.update_idletasks()
 
 def getBox8Schedule(): 
@@ -2120,7 +2140,7 @@ def getBox8Schedule():
         light8_3='1'
     status.pack(side='bottom', fill='x')
     status.set('Box8 schedule is set.')
-    box8sched_text.set("Box8 schedule set.")
+    box8sched_text.set('Box8 schedule set.')
     window.update_idletasks()
 
 def getBox9Schedule(): 
@@ -2180,7 +2200,7 @@ def getBox9Schedule():
         light9_3='1'
     status.pack(side='bottom', fill='x')
     status.set('Box9 schedule is set.')
-    box9sched_text.set("Box9 schedule set.")
+    box9sched_text.set('Box9 schedule set.')
     window.update_idletasks()
 
 def getBox10Schedule(): 
@@ -2240,7 +2260,7 @@ def getBox10Schedule():
         light10_3='1'
     status.pack(side='bottom', fill='x') # Ackowledge in the Status Bar
     status.set('Box10 schedule is set.')
-    box10sched_text.set("Box10 schedule set.")
+    box10sched_text.set('Box10 schedule set.')
     window.update_idletasks()
 
 def getAllBoxSchedule(): 
@@ -2386,7 +2406,7 @@ if __name__ == '__main__':
     capSep1 = ttk.Separator(tab1, orient=HORIZONTAL)
     capSep1.grid(column=0, row = row_adj+5, columnspan='27', sticky='we')
     box1sched_text=StringVar()
-    box1sched_text.set("Schedule not set.")
+    box1sched_text.set('Schedule not set.')
     box1sched_stat=Label(tab1, textvariable=box1sched_text, anchor=W, justify=LEFT)
         # phase 1
     phaseLabel1_1=Label(tab1, text='Phase 1')
@@ -2583,7 +2603,7 @@ if __name__ == '__main__':
     tab1_title2 = Label(tab1, text= 'Recording status', anchor='center')
     tab1_title2.grid(column=0, row= row_adj+6, columnspan='27', sticky='we')
     box1rec_text=StringVar()
-    box1rec_text.set("Recording not started yet.")
+    box1rec_text.set('Recording not started yet.')
     box1rec_stat=Label(tab1, textvariable=box1rec_text, anchor='center', justify=LEFT)
     box1rec_stat.grid(column=0, row= row_adj+7, columnspan='27', sticky='we')
     window.update_idletasks()
@@ -2596,7 +2616,7 @@ if __name__ == '__main__':
     capSep2 = ttk.Separator(tab2, orient=HORIZONTAL)
     capSep2.grid(column=0, row = row_adj+5, columnspan='27', sticky='we')
     box2sched_text=StringVar()
-    box2sched_text.set("Schedule not set.")
+    box2sched_text.set('Schedule not set.')
     box2sched_stat=Label(tab2, textvariable=box2sched_text, anchor=W, justify=LEFT)
         # phase 1
     phaseLabel2_1=Label(tab2, text='Phase 1')
@@ -2791,7 +2811,7 @@ if __name__ == '__main__':
     tab2_title2 = Label(tab2, text= 'Recording status', anchor='center')
     tab2_title2.grid(column=0, row= row_adj+6, columnspan='27', sticky='we')
     box2rec_text=StringVar()
-    box2rec_text.set("Recording not started yet.")
+    box2rec_text.set('Recording not started yet.')
     box2rec_stat=Label(tab2, textvariable=box2rec_text, anchor='center', justify=LEFT)
     box2rec_stat.grid(column=0, row= row_adj+7, columnspan='27', sticky='we')
     window.update_idletasks()
@@ -2804,7 +2824,7 @@ if __name__ == '__main__':
     capSep3 = ttk.Separator(tab3, orient=HORIZONTAL)
     capSep3.grid(column=0, row = row_adj+5, columnspan='27', sticky='we')
     box3sched_text=StringVar()
-    box3sched_text.set("Schedule not set.")
+    box3sched_text.set('Schedule not set.')
     box3sched_stat=Label(tab3, textvariable=box3sched_text, anchor=W, justify=LEFT)
         # phase 1
     phaseLabel3_1=Label(tab3, text='Phase 1')
@@ -2999,7 +3019,7 @@ if __name__ == '__main__':
     tab3_title2 = Label(tab3, text= 'Recording status', anchor='center')
     tab3_title2.grid(column=0, row= row_adj+6, columnspan='27', sticky='we')
     box3rec_text=StringVar()
-    box3rec_text.set("Recording not started yet.")
+    box3rec_text.set('Recording not started yet.')
     box3rec_stat=Label(tab3, textvariable=box3rec_text, anchor='center', justify=LEFT)
     box3rec_stat.grid(column=0, row= row_adj+7, columnspan='27', sticky='we')
     window.update_idletasks()
@@ -3012,7 +3032,7 @@ if __name__ == '__main__':
     capSep4 = ttk.Separator(tab4, orient=HORIZONTAL)
     capSep4.grid(column=0, row = row_adj+5, columnspan='27', sticky='we')
     box4sched_text=StringVar()
-    box4sched_text.set("Schedule not set.")
+    box4sched_text.set('Schedule not set.')
     box4sched_stat=Label(tab4, textvariable=box4sched_text, anchor=W, justify=LEFT)
         # phase 1
     phaseLabel4_1=Label(tab4, text='Phase 1')
@@ -3207,7 +3227,7 @@ if __name__ == '__main__':
     tab4_title2 = Label(tab4, text= 'Recording status', anchor='center')
     tab4_title2.grid(column=0, row= row_adj+6, columnspan='27', sticky='we')
     box4rec_text=StringVar()
-    box4rec_text.set("Recording not started yet.")
+    box4rec_text.set('Recording not started yet.')
     box4rec_stat=Label(tab4, textvariable=box4rec_text, anchor='center', justify=LEFT)
     box4rec_stat.grid(column=0, row= row_adj+7, columnspan='27', sticky='we')
     window.update_idletasks()
@@ -3220,7 +3240,7 @@ if __name__ == '__main__':
     capSep5 = ttk.Separator(tab5, orient=HORIZONTAL)
     capSep5.grid(column=0, row = row_adj+5, columnspan='27', sticky='we')
     box5sched_text=StringVar()
-    box5sched_text.set("Schedule not set.")
+    box5sched_text.set('Schedule not set.')
     box5sched_stat=Label(tab5, textvariable=box5sched_text, anchor=W, justify=LEFT)
         # phase 1
     phaseLabel5_1=Label(tab5, text='Phase 1')
@@ -3415,7 +3435,7 @@ if __name__ == '__main__':
     tab5_title2 = Label(tab5, text= 'Recording status', anchor='center')
     tab5_title2.grid(column=0, row= row_adj+6, columnspan='27', sticky='we')
     box5rec_text=StringVar()
-    box5rec_text.set("Recording not started yet.")
+    box5rec_text.set('Recording not started yet.')
     box5rec_stat=Label(tab5, textvariable=box5rec_text, anchor='center', justify=LEFT)
     box5rec_stat.grid(column=0, row= row_adj+7, columnspan='27', sticky='we')
     window.update_idletasks()
@@ -3428,7 +3448,7 @@ if __name__ == '__main__':
     capSep6 = ttk.Separator(tab6, orient=HORIZONTAL)
     capSep6.grid(column=0, row = row_adj+5, columnspan='27', sticky='we')
     box6sched_text=StringVar()
-    box6sched_text.set("Schedule not set.")
+    box6sched_text.set('Schedule not set.')
     box6sched_stat=Label(tab6, textvariable=box6sched_text, anchor=W, justify=LEFT)
         # phase 1
     phaseLabel6_1=Label(tab6, text='Phase 1')
@@ -3623,7 +3643,7 @@ if __name__ == '__main__':
     tab6_title2 = Label(tab6, text= 'Recording status', anchor='center')
     tab6_title2.grid(column=0, row= row_adj+6, columnspan='27', sticky='we')
     box6rec_text=StringVar()
-    box6rec_text.set("Recording not started yet.")
+    box6rec_text.set('Recording not started yet.')
     box6rec_stat=Label(tab6, textvariable=box6rec_text, anchor='center', justify=LEFT)
     box6rec_stat.grid(column=0, row= row_adj+7, columnspan='27', sticky='we')
     window.update_idletasks()
@@ -3636,7 +3656,7 @@ if __name__ == '__main__':
     capSep7 = ttk.Separator(tab7, orient=HORIZONTAL)
     capSep7.grid(column=0, row = row_adj+5, columnspan='27', sticky='we')
     box7sched_text=StringVar()
-    box7sched_text.set("Schedule not set.")
+    box7sched_text.set('Schedule not set.')
     box7sched_stat=Label(tab7, textvariable=box7sched_text, anchor=W, justify=LEFT)
         # phase 1
     phaseLabel7_1=Label(tab7, text='Phase 1')
@@ -3831,7 +3851,7 @@ if __name__ == '__main__':
     tab7_title2 = Label(tab7, text= 'Recording status', anchor='center')
     tab7_title2.grid(column=0, row= row_adj+6, columnspan='27', sticky='we')
     box7rec_text=StringVar()
-    box7rec_text.set("Recording not started yet.")
+    box7rec_text.set('Recording not started yet.')
     box7rec_stat=Label(tab7, textvariable=box7rec_text, anchor='center', justify=LEFT)
     box7rec_stat.grid(column=0, row= row_adj+7, columnspan='27', sticky='we')
     window.update_idletasks()
@@ -3844,7 +3864,7 @@ if __name__ == '__main__':
     capSep8 = ttk.Separator(tab8, orient=HORIZONTAL)
     capSep8.grid(column=0, row = row_adj+5, columnspan='27', sticky='we')
     box8sched_text=StringVar()
-    box8sched_text.set("Schedule not set.")
+    box8sched_text.set('Schedule not set.')
     box8sched_stat=Label(tab8, textvariable=box8sched_text, anchor=W, justify=LEFT)
         # phase 1
     phaseLabel8_1=Label(tab8, text='Phase 1')
@@ -4039,7 +4059,7 @@ if __name__ == '__main__':
     tab8_title2 = Label(tab8, text= 'Recording status', anchor='center')
     tab8_title2.grid(column=0, row= row_adj+6, columnspan='27', sticky='we')
     box8rec_text=StringVar()
-    box8rec_text.set("Recording not started yet.")
+    box8rec_text.set('Recording not started yet.')
     box8rec_stat=Label(tab8, textvariable=box8rec_text, anchor='center', justify=LEFT)
     box8rec_stat.grid(column=0, row= row_adj+7, columnspan='27', sticky='we')
     window.update_idletasks()
@@ -4052,7 +4072,7 @@ if __name__ == '__main__':
     capSep9 = ttk.Separator(tab9, orient=HORIZONTAL)
     capSep9.grid(column=0, row = row_adj+5, columnspan='27', sticky='we')
     box9sched_text=StringVar()
-    box9sched_text.set("Schedule not set.")
+    box9sched_text.set('Schedule not set.')
     box9sched_stat=Label(tab9, textvariable=box9sched_text, anchor=W, justify=LEFT)
         # phase 1
     phaseLabel9_1=Label(tab9, text='Phase 1')
@@ -4247,7 +4267,7 @@ if __name__ == '__main__':
     tab9_title2 = Label(tab9, text= 'Recording status', anchor='center')
     tab9_title2.grid(column=0, row= row_adj+6, columnspan='27', sticky='we')
     box9rec_text=StringVar()
-    box9rec_text.set("Recording not started yet.")
+    box9rec_text.set('Recording not started yet.')
     box9rec_stat=Label(tab9, textvariable=box9rec_text, anchor='center', justify=LEFT)
     box9rec_stat.grid(column=0, row= row_adj+7, columnspan='27', sticky='we')
     window.update_idletasks()
@@ -4260,7 +4280,7 @@ if __name__ == '__main__':
     capSep10 = ttk.Separator(tab10, orient=HORIZONTAL)
     capSep10.grid(column=0, row = row_adj+5, columnspan='27', sticky='we')
     box10sched_text=StringVar()
-    box10sched_text.set("Schedule not set.")
+    box10sched_text.set('Schedule not set.')
     box10sched_stat=Label(tab10, textvariable=box10sched_text, anchor=W, justify=LEFT)
         # phase 1
     phaseLabel10_1=Label(tab10, text='Phase 1')
@@ -4456,7 +4476,7 @@ if __name__ == '__main__':
     tab10_title2 = Label(tab10, text= 'Recording status', anchor='center')
     tab10_title2.grid(column=0, row= row_adj+6, columnspan='27', sticky='we')
     box10rec_text=StringVar()
-    box10rec_text.set("Recording not started yet.")
+    box10rec_text.set('Recording not started yet.')
     box10rec_stat=Label(tab10, textvariable=box10rec_text, anchor='center', justify=LEFT)
     box10rec_stat.grid(column=0, row= row_adj+7, columnspan='27', sticky='we')
     window.update_idletasks()
