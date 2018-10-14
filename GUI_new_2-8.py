@@ -55,10 +55,10 @@ def about():
                                 "10-BOX Schedule Setter\n\n"+
                                 "Version 0.2.8\n"+
                                 "Oct 14, 2018\n\n"+
-                                "By Jihwan Myung and Vuong Truong\n"+
+                                "Jihwan Myung & Vuong Truong\n"+
                                 "Laboratory of Braintime\n"+
-                                "Taipei Medical University &\n"+
-                                "Shuang Ho Hospital\n")
+                                "Taipei Medical University\n"+
+                                "& Shuang Ho Hospital\n")
 
 # Define and create serial object function
 def create_serial_obj(portPath, baud_rate, timeout):
