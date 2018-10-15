@@ -168,16 +168,11 @@ def get_data(): # Start recording
                                             hourOn8_1+minOn8_1+hourOff8_1+minOff8_1+
                                             hourOn9_1+minOn9_1+hourOff9_1+minOff9_1+
                                             hourOn10_1+minOn10_1+hourOff10_1+minOff10_1+
-                                            dark1_1+light1_1+
-                                            dark2_1+light2_1+
-                                            dark3_1+light3_1+
-                                            dark4_1+light4_1+
-                                            dark5_1+light5_1+
-                                            dark6_1+light6_1+
-                                            dark7_1+light7_1+
-                                            dark8_1+light8_1+
-                                            dark9_1+light9_1+
-                                            dark10_1+light10_1))
+                                            dark1_1+light1_1+dark2_1+light2_1+
+                                            dark3_1+light3_1+dark4_1+light4_1+
+                                            dark5_1+light5_1+dark6_1+light6_1+
+                                            dark7_1+light7_1+dark8_1+light8_1+
+                                            dark9_1+light9_1+dark10_1+light10_1))
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 1 schedules sent.')                              
             if i==3:
@@ -192,38 +187,23 @@ def get_data(): # Start recording
                                             hourOn8_2+minOn8_2+hourOff8_2+minOff8_2+
                                             hourOn9_2+minOn9_2+hourOff9_2+minOff9_2+
                                             hourOn10_2+minOn10_2+hourOff10_2+minOff10_2+
-                                            dark1_2+light1_2+
-                                            dark2_2+light2_2+
-                                            dark3_2+light3_2+
-                                            dark4_2+light4_2+
-                                            dark5_2+light5_2+
-                                            dark6_2+light6_2+
-                                            dark7_2+light7_2+
-                                            dark8_2+light8_2+
-                                            dark9_2+light9_2+
-                                            dark10_2+light10_2))
+                                            dark1_2+light1_2+dark2_2+light2_2+
+                                            dark3_2+light3_2+dark4_2+light4_2+
+                                            dark5_2+light5_2+dark6_2+light6_2+
+                                            dark7_2+light7_2+dark8_2+light8_2+
+                                            dark9_2+light9_2+dark10_2+light10_2))
             if i==5:
-                serial_obj.write(str.encode(date1_2+month1_2+year1_2+
-                                            date2_2+month2_2+year2_2+
-                                            date3_2+month3_2+year3_2+
-                                            date4_2+month4_2+year4_2+
-                                            date5_2+month5_2+year5_2+
-                                            hourFrom1_2+minuteFrom1_2+
-                                            hourFrom2_2+minuteFrom2_2+
-                                            hourFrom3_2+minuteFrom3_2+
-                                            hourFrom4_2+minuteFrom4_2+
-                                            hourFrom5_2+minuteFrom5_2))  
+                serial_obj.write(str.encode(date1_2+month1_2+year1_2+date2_2+month2_2+year2_2+
+                                            date3_2+month3_2+year3_2+date4_2+month4_2+year4_2+
+                                            date5_2+month5_2+year5_2+hourFrom1_2+minuteFrom1_2+
+                                            hourFrom2_2+minuteFrom2_2+hourFrom3_2+minuteFrom3_2+
+                                            hourFrom4_2+minuteFrom4_2+hourFrom5_2+minuteFrom5_2))  
             if i==6:
-                serial_obj.write(str.encode(date6_2+month6_2+year6_2+
-                                            date7_2+month7_2+year7_2+
-                                            date8_2+month8_2+year8_2+
-                                            date9_2+month9_2+year9_2+
-                                            date10_2+month10_2+year10_2+
-                                            hourFrom6_2+minuteFrom6_2+
-                                            hourFrom7_2+minuteFrom7_2+
-                                            hourFrom8_2+minuteFrom8_2+
-                                            hourFrom9_2+minuteFrom9_2+
-                                            hourFrom10_2+minuteFrom10_2))
+                serial_obj.write(str.encode(date6_2+month6_2+year6_2+date7_2+month7_2+year7_2+
+                                            date8_2+month8_2+year8_2+date9_2+month9_2+year9_2+
+                                            date10_2+month10_2+year10_2+hourFrom6_2+minuteFrom6_2+
+                                            hourFrom7_2+minuteFrom7_2+hourFrom8_2+minuteFrom8_2+
+                                            hourFrom9_2+minuteFrom9_2+hourFrom10_2+minuteFrom10_2))
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 2 schedules sent.')   
             if i==7:
@@ -238,38 +218,23 @@ def get_data(): # Start recording
                                             hourOn8_3+minOn8_3+hourOff8_3+minOff8_3+
                                             hourOn9_3+minOn9_3+hourOff9_3+minOff9_3+
                                             hourOn10_3+minOn10_3+hourOff10_3+minOff10_3+
-                                            dark1_3+light1_3+
-                                            dark2_3+light2_3+
-                                            dark3_3+light3_3+
-                                            dark4_3+light4_3+
-                                            dark5_3+light5_3+
-                                            dark6_3+light6_3+
-                                            dark7_3+light7_3+
-                                            dark8_3+light8_3+
-                                            dark9_3+light9_3+
-                                            dark10_3+light10_3))
+                                            dark1_3+light1_3+dark2_3+light2_3+
+                                            dark3_3+light3_3+dark4_3+light4_3+
+                                            dark5_3+light5_3+dark6_3+light6_3+
+                                            dark7_3+light7_3+dark8_3+light8_3+
+                                            dark9_3+light9_3+dark10_3+light10_3))
             if i==9:
-                serial_obj.write(str.encode(date1_3+month1_3+year1_3+
-                                            date2_3+month2_3+year2_3+
-                                            date3_3+month3_3+year3_3+
-                                            date4_3+month4_3+year4_3+
-                                            date5_3+month5_3+year5_3+
-                                            hourFrom1_3+minuteFrom1_3+
-                                            hourFrom2_3+minuteFrom2_3+
-                                            hourFrom3_3+minuteFrom3_3+
-                                            hourFrom4_3+minuteFrom4_3+
-                                            hourFrom5_3+minuteFrom5_3)) 
+                serial_obj.write(str.encode(date1_3+month1_3+year1_3+date2_3+month2_3+year2_3+
+                                            date3_3+month3_3+year3_3+date4_3+month4_3+year4_3+
+                                            date5_3+month5_3+year5_3+hourFrom1_3+minuteFrom1_3+
+                                            hourFrom2_3+minuteFrom2_3+hourFrom3_3+minuteFrom3_3+
+                                            hourFrom4_3+minuteFrom4_3+hourFrom5_3+minuteFrom5_3)) 
             if i==10:
-                serial_obj.write(str.encode(date6_3+month6_3+year6_3+
-                                            date7_3+month7_3+year7_3+
-                                            date8_3+month8_3+year8_3+
-                                            date9_3+month9_3+year9_3+
-                                            date10_3+month10_3+year10_3+
-                                            hourFrom6_3+minuteFrom6_3+
-                                            hourFrom7_3+minuteFrom7_3+
-                                            hourFrom8_3+minuteFrom8_3+
-                                            hourFrom9_3+minuteFrom9_3+
-                                            hourFrom10_3+minuteFrom10_3))
+                serial_obj.write(str.encode(date6_3+month6_3+year6_3+date7_3+month7_3+year7_3+
+                                            date8_3+month8_3+year8_3+date9_3+month9_3+year9_3+
+                                            date10_3+month10_3+year10_3+hourFrom6_3+minuteFrom6_3+
+                                            hourFrom7_3+minuteFrom7_3+hourFrom8_3+minuteFrom8_3+
+                                            hourFrom9_3+minuteFrom9_3+hourFrom10_3+minuteFrom10_3))
                 status.pack(side='bottom', fill='x')
                 status.set('All schedules transferred. Recording began.') 
                 box1rec_text.set('Recording on-going.')
@@ -285,16 +250,17 @@ def get_data(): # Start recording
                 window.update_idletasks()
             i=i+1
             if len(string2)>=138:
-                box1rec_text.set('LED1: '+string2[20:25]+'  '+'PIR1: '+string2[26:31])
-                box2rec_text.set('LED2: '+string2[32:36]+'  '+'PIR2: '+string2[38:42])
-                box3rec_text.set('LED3: '+string2[44:48]+'  '+'PIR3: '+string2[50:54])
-                box4rec_text.set('LED4: '+string2[56:60]+'  '+'PIR4: '+string2[62:66])
-                box5rec_text.set('LED5: '+string2[68:72]+'  '+'PIR5: '+string2[74:78])
-                box6rec_text.set('LED6: '+string2[80:84]+'  '+'PIR6: '+string2[86:90])
-                box7rec_text.set('LED7: '+string2[92:96]+'  '+'PIR7: '+string2[98:102])
-                box8rec_text.set('LED8: '+string2[104:108]+'  '+'PIR8: '+string2[110:114])
-                box9rec_text.set('LED9: '+string2[116:120]+'  '+'PIR9: '+string2[122:126])
-                box10rec_text.set('LED10: '+string2[128:132]+'  '+'PIR10: '+string2[134:138])
+                datapoint=i-11
+                box1rec_text.set('#'+datapoint+'  '+'Time: '+string2[0:8]+'  '+'LED1: '+string2[20:25]+'  '+'PIR1: '+string2[26:31])
+                box2rec_text.set('#'+datapoint+'  '+'Time: '+string2[0:8]+'  '+'LED2: '+string2[32:37]+'  '+'PIR2: '+string2[38:43])
+                box3rec_text.set('#'+datapoint+'  '+'Time: '+string2[0:8]+'  '+'LED3: '+string2[44:49]+'  '+'PIR3: '+string2[50:55])
+                box4rec_text.set('#'+datapoint+'  '+'Time: '+string2[0:8]+'  '+'LED4: '+string2[56:61]+'  '+'PIR4: '+string2[62:67])
+                box5rec_text.set('#'+datapoint+'  '+'Time: '+string2[0:8]+'  '+'LED5: '+string2[68:73]+'  '+'PIR5: '+string2[74:79])
+                box6rec_text.set('#'+datapoint+'  '+'Time: '+string2[0:8]+'  '+'LED6: '+string2[80:85]+'  '+'PIR6: '+string2[86:91])
+                box7rec_text.set('#'+datapoint+'  '+'Time: '+string2[0:8]+'  '+'LED7: '+string2[92:97]+'  '+'PIR7: '+string2[98:103])
+                box8rec_text.set('#'+datapoint+'  '+'Time: '+string2[0:8]+'  '+'LED8: '+string2[104:109]+'  '+'PIR8: '+string2[110:115])
+                box9rec_text.set('#'+datapoint+'  '+'Time: '+string2[0:8]+'  '+'LED9: '+string2[116:121]+'  '+'PIR9: '+string2[122:127])
+                box10rec_text.set('#'+datapoint+'  '+'Time: '+string2[0:8]+'  '+'LED10: '+string2[128:133]+'  '+'PIR10: '+string2[134:139])
     except:
         print('Stopped recording and disconnected from the boxes.')
         status.pack(side='bottom', fill='x')
