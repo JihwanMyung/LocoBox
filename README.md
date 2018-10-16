@@ -1,6 +1,5 @@
 # LocomotorBox
 
-<<<<<<< HEAD
 LocomotorBox is a set of Arduino software and GUI interface for running 10 Locomotor-Boxes with pre-set schedules.
 
 ### Prerequisites
@@ -20,13 +19,12 @@ This software system requires Arduino Mega 2560 for controlling 10 boxes and a d
 
 ## Authors
 
-* Jihwan Myung - initial work
+* Jihwan Myung - initial work and Ardino-Python interface
 * Vuong Truong - further development on Python GUI interface
 
 ## Acknowledgments
 
 Yufen (Janice) Huang helped with improving box design. Vuong Truong and Ying-Ling Shen helped with soldering electrical components. Niall Duncan and Tzu-Yu Hsu contributed financially to support initial purchase of boxes and prototyping materials.
 This work was supported by Taiwan Ministry of Science and Technology (MOST) grants (107-2311-B-038-001-MY2, 107-2410-H-038-004-MY2).
-=======
+
 See braintimelab for main branch.
->>>>>>> a6106375db129eb393265b33de011bafe1fe5afa
