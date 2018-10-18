@@ -68,8 +68,8 @@ def about():
     return messagebox.showinfo('About',
                                 '10-Box Schedule Setter\n'+
                                 'LocoBox.py\n\n'+
-                                'Version 0.2.10\n'+
-                                'Oct 15, 2018\n\n'+
+                                'Version 0.2.11\n'+
+                                'Oct 17, 2018\n\n'+
                                 'Jihwan Myung & Vuong Truong\n'+
                                 'Laboratory of Braintime\n\n'+
                                 'https://github.com/braintimelab/LocomotorBox')
@@ -130,7 +130,7 @@ if sys.platform.startswith('win'):
 elif sys.platform.startswith('darwin'):
     window.geometry('1000x440')
 elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-    window.geometry('730x420')
+    window.geometry('850x420')
 else:
     window.geometry('1000x440')
 status = StatusBar(window)
@@ -2452,8 +2452,8 @@ if __name__ == '__main__':
         btnSave.place(x=685, y=360)
         btnRun.place(x=745, y=360)
     elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-        btnSave.place(x=610, y=360)
-        btnRun.place(x=660, y=360)
+        btnSave.place(x=645, y=360)
+        btnRun.place(x=710, y=360)
     else:
         btnSave.place(x=685, y=360)
         btnRun.place(x=745, y=360)
@@ -2461,7 +2461,7 @@ if __name__ == '__main__':
     row_adj = 3  # useful when a new row is added above
 
     # Box1
-    btn1 = Button(tab1, text='  Set  ', command=lambda: OnButtonClick(1))
+    btn1 = Button(tab1, text=' Set ', command=lambda: OnButtonClick(1))
     btnAll1 = Button(tab1, text='Set All', command=getAllBoxSchedule)
     tab1_title = Label(tab1, text= 'LED schedule', anchor='center')
     tab1_title.grid(column=0, row= -1+row_adj, columnspan='27', sticky='we')
