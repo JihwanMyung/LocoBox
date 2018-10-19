@@ -14,6 +14,8 @@ try:
 except ImportError:
     fileDialog = tk.filedialog
 import threading #to run Arduino loop and tkinter loop alongside
+import serial.tools.list_ports #for identifying Arduino port
+import numpy as np
 
 # Global variables
 global hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, hourOn2_1, minOn2_1, hourOff2_1, minOff2_1 
@@ -84,23 +86,23 @@ def create_serial_obj(portPath, baud_rate, timeout):
 
 # Find open serial ports
 def serial_ports():
-    ''' Lists serial port names
-        :raises EnvironmentError:
-            On unsupported or unknown platforms
-        :returns:
-            A list of the serial ports available on the system
-    '''
+    arduino_ports = [
+        p.device
+        for p in serial.tools.list_ports.comports()
+        if 'Arduino' or 'Generic CDC' in p.description
+    ]
     if sys.platform.startswith('win'):
-        ports = ['COM%s' % (i + 1) for i in range(256)]
+        arduino_ports = ['COM%s' % (i + 1) for i in range(256)]
     elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
         # this excludes your current terminal '/dev/tty'
-        ports = glob.glob('/dev/tty[A-Za-z]*')
+        arduino_ports = glob.glob('/dev/tty[A-Za-z]*')
     elif sys.platform.startswith('darwin'):
-        ports = glob.glob('/dev/tty.*')
+        arduino_ports = glob.glob('/dev/tty.*')
     else:
         raise EnvironmentError('Unsupported platform')
+        
     result = []
-    for port in ports:
+    for port in arduino_ports:
         try:
             s = serial.Serial(port)
             s.close()
@@ -140,7 +142,7 @@ def destruct(): # Quit the program
     print('LocoBox ended.')
     window.quit()
 
-def get_data(): # Start recording
+def get_data(istate=0): # Start recording
     status.pack(side='bottom', fill='x')
     status.set('Starting the recording...')
     box1rec_text.set('Preparing for recording.')
@@ -154,7 +156,7 @@ def get_data(): # Start recording
     box9rec_text.set('Preparing for recording.')
     box10rec_text.set('Preparing for recording.')
     window.update_idletasks()
-    i=0
+    i=istate
     counti=0
     #init csv file and write the COM port name
     headers = port_entry.get()
@@ -166,7 +168,7 @@ def get_data(): # Start recording
     global dead
     try:
         while True:
-            string2=serial_obj.readline().decode('utf-8')
+            string2 = serial_obj.readline().decode('utf-8')
             if string2 != '':
                 with open(filename,'a') as w:
                     w.write(string2)
@@ -898,7 +900,9 @@ def read_conf(): # Read schedule configuration
     hourFrom10_3 = config['hourFrom10_3'] 
     minuteFrom10_3 = config['minuteFrom10_3'] 
 
+    btnRun['state']='normal'
     show_conf()
+    window.update_idletasks()
 
     status.pack(side='bottom', fill='x')
     status.set('The schedule configuration is loaded.')
@@ -1600,7 +1604,7 @@ def connect():  # Start to connect and call get_data - Link to Start in Recordin
         status.pack(side='bottom', fill='x')
         status.set('Missing baud rate and port number.')
         return
-    t1 = threading.Thread(target=get_data)
+    t1 = threading.Thread(target=lambda:get_data(0))
     t1.daemon = True
     t1.start()
 
@@ -2371,7 +2375,8 @@ if __name__ == '__main__':
     menu.add_cascade(label='Setting', menu=settingmenu)
     #create recording menu
     recordingmenu = Menu(menu)
-    recordingmenu.add_command(label='Start', command=connect)
+    recordingmenu.add_command(label='Start new', command=connect)
+    recordingmenu.add_command(label='Start revised', command=lambda:get_data(1))
     recordingmenu.add_separator()
     recordingmenu.add_command(label='Stop', command=disconnect)
     menu.add_cascade(label='Recording', menu=recordingmenu)
@@ -2406,7 +2411,13 @@ if __name__ == '__main__':
     tab_control.add(tab11, text='Schedules')
 
     #Display all available serial ports
-    openPorts=serial_ports()
+    #openPorts=serial_ports()
+    ports = list(serial.tools.list_ports.comports())
+    for p in ports:
+        print(p)
+    openPorts=p.device
+    if len(np.shape(openPorts)) == 0:
+        openPorts=[openPorts]
     status.pack(side='bottom', fill='x')
     status.set('Available ports: '+', '.join(map(str,openPorts)))
 
@@ -2439,12 +2450,14 @@ if __name__ == '__main__':
     btnSave = Button(text=' Save ', command=save_conf, state='disabled')
     btnRun = Button(text= ' Recording Start ', command=connect, state='disabled')
   
+    # if box settings of all 10 boxes are done, activate save and run buttons
     if setBox1+setBox2+setBox3+setBox4+setBox5+setBox6+setBox7+setBox8+setBox9+setBox10 == 10:
         btnSave['state']='normal'
         btnRun['state']='normal'
         show_conf()
         window.update_idletasks()
-  
+
+    # button positions change depending on OS
     if sys.platform.startswith('win'):
         btnSave.place(x=610, y=360)
         btnRun.place(x=660, y=360)
