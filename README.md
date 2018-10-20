@@ -8,6 +8,8 @@ The following Arduino software is used: Arduino 1.8.7
 
 The following Python versions are used: Python 3.7.0, Pyserial 3.4
 
+The LcomotorBox (LocoBox) GUI interface has been optimized for Windows, macOS, and Linux (tested on Ubuntu).
+
 ### Installation
 
 Download Arduino .ino file and Python3 .py file. Upload .ino to Arduino microcontroller using Arduino software.
@@ -19,7 +21,7 @@ This software system requires Arduino Mega 2560 for controlling 10 boxes and a d
 
 ## Authors
 
-* Jihwan Myung - initial work and Ardino-Python interface
+* Jihwan Myung - initial work and further development
 * Vuong Truong - further development on Python GUI interface
 
 ## Acknowledgments
