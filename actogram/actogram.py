@@ -75,13 +75,12 @@ fig, axes = plt.subplots(nrows=n_group, ncols=2)
 # Plot the 1st column
 j = 0
 for name, group in dategroup:
-    group[pir].plot.area(
-        ax=axes[j, 0], sharey=True, fontsize=8)
+    group[pir].plot.area(ax=axes[j, 0], sharey=True, fontsize=8)
     (group[led]*50).plot.area(linewidth=0, ax=axes[j, 0],
                               colormap="Pastel1", sharey=True)
-    # y_axis = axes[j, 0].axes.get_yaxis()
-    # y_axis.set_visible(False)
     axes[j, 0].axes.set_yticklabels([])
+    axes[j, 0].axes.set_xticklabels([0, 3, 6, 9, 12, 15, 18, 21])
+    axes[j, 0].axes.set_xlabel('Time')
     axes[j, 0].axes.set_ylabel(
         str(group[pir].index.date[0].day)+'/' + str(group[pir].index.date[0].month), rotation=0, size=8)
     if j < n_group-1:
