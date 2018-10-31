@@ -30,10 +30,14 @@ while True:
     # df['PIR01'][:i].plot(ax = ax)
     x = df.index[:i]
     y = df['PIR01'][:i]
-    ax.plot(x, y)
+    ax.plot(x, y, color='blue')
+    if i % 20 == 0:
+        ax.clear()
+        x = df.index[:(i+10)]
+        y = df['PIR01'][:i+10]
     plt.draw()
-    plt.savefig('gif/books_read'+str(i)+'.png')
-    plt.pause(0.2)
+    # plt.savefig('gif/books_read'+str(i)+'.png')
+    plt.pause(0.00001)
     i += 1
 
 
