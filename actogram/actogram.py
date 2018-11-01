@@ -12,7 +12,8 @@ box = 'BOX1'
 pir = 'PIR01'
 led = 'LED01'
 
-df = pd.read_table('test.txt', sep='\s+', skiprows=23, index_col=None)
+df = pd.read_table('BOX2-COM4-20181018.txt', sep='\s+',
+                   skiprows=23, index_col=None)
 df.index = pd.to_datetime(df['MO/DY/YEAR']+' ' + df['HH:MM:SS'],
                           format="%m/%d/%Y %H:%M:%S")
 df0 = pd.DataFrame(
@@ -76,8 +77,8 @@ fig, axes = plt.subplots(nrows=n_group, ncols=2)
 j = 0
 for name, group in dategroup:
     group[pir].plot.area(ax=axes[j, 0], sharey=True, fontsize=8)
-    (group[led]*50).plot.area(linewidth=0, ax=axes[j, 0],
-                              colormap="Pastel1", sharey=True)
+    (group[led]*500).plot.area(linewidth=0, ax=axes[j, 0],
+                               colormap="Pastel1", sharey=True)
     axes[j, 0].axes.set_yticklabels([])
     axes[j, 0].axes.set_xticklabels([0, 3, 6, 9, 12, 15, 18, 21])
     axes[j, 0].axes.set_xlabel('Time')
@@ -92,8 +93,8 @@ for name, group in dategroup:
 i = 0
 for name, group in dategroup2:
     group[pir].plot.area(ax=axes[i, 1], sharey=True)
-    (group[led]*50).plot.area(linewidth=0,
-                              colormap="Pastel1", ax=axes[i, 1], sharey=True)
+    (group[led]*500).plot.area(linewidth=0,
+                               colormap="Pastel1", ax=axes[i, 1], sharey=True)
     x_axis = axes[i, 1].axes.get_xaxis()
     x_axis.set_visible(False)
     y_axis = axes[i, 1].axes.get_yaxis()
