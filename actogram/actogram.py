@@ -90,9 +90,9 @@ for name, group in dategroup:
                                cmap=my_cmap, sharey=True)
     axes[j, 0].axes.set_yticklabels([])
     axes[j, 0].axes.set_xticklabels([0, 3, 6, 9, 12, 15, 18, 21, 24], rotation=0, size=8.5)
-    axes[j, 0].axes.set_xlabel('Hour of day', rotation=0, size=8)
+    axes[j, 0].axes.set_xlabel('Hour of day', rotation=0, size=9)
     axes[j, 0].axes.set_ylabel(
-        str(group[pir].index.date[0].month) + '/' + str(group[pir].index.date[0].day) + ' ', rotation=0, size=8)
+        str(group[pir].index.date[0].month) + '/' + str(group[pir].index.date[0].day) + ' ', rotation=0, size=9)
     if j < n_group-1:
         x_axis = axes[j, 0].axes.get_xaxis()
         x_axis.set_visible(False)
