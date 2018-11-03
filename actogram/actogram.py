@@ -6,11 +6,13 @@ import matplotlib.pylab as plt
 import matplotlib
 import matplotlib.animation as animation
 from matplotlib import style
+from matplotlib.colors import ListedColormap
 style.use('seaborn-colorblind')
+hfont = {'fontname':'Helvetica'}
 
-box = 'BOX1'
-pir = 'PIR01'
-led = 'LED01'
+box = 'BOX2'
+pir = 'PIR02'
+led = 'LED02'
 
 df = pd.read_table('BOX2-COM4-20181018.txt', sep='\s+',
                    skiprows=23, index_col=None)
@@ -73,17 +75,24 @@ n_group = dategroup.ngroups
 
 fig, axes = plt.subplots(nrows=n_group, ncols=2)
 
+# Half-opaque grayscale colormap 
+# by Bart https://stackoverflow.com/questions/37327308/add-alpha-to-an-existing-matplotlib-colormap
+cmap = plt.cm.gray
+my_cmap = cmap(np.arange(cmap.N))
+my_cmap[:,-1] = np.linspace(0.2, 1, cmap.N)
+my_cmap = ListedColormap(my_cmap)
+
 # Plot the 1st column
 j = 0
 for name, group in dategroup:
-    group[pir].plot.area(ax=axes[j, 0], sharey=True, fontsize=8)
-    (group[led]*500).plot.area(linewidth=0, ax=axes[j, 0],
-                               colormap="Pastel1", sharey=True)
+    group[pir].plot.area(ax=axes[j, 0], sharey=True, cmap='gray')
+    ((1-group[led])*1000).plot.area(linewidth=0, ax=axes[j, 0],
+                               cmap=my_cmap, sharey=True)
     axes[j, 0].axes.set_yticklabels([])
-    axes[j, 0].axes.set_xticklabels([0, 3, 6, 9, 12, 15, 18, 21])
-    axes[j, 0].axes.set_xlabel('Time')
+    axes[j, 0].axes.set_xticklabels([0, 3, 6, 9, 12, 15, 18, 21, 24], rotation=0, size=8.5)
+    axes[j, 0].axes.set_xlabel('Hour of day', rotation=0, size=8)
     axes[j, 0].axes.set_ylabel(
-        str(group[pir].index.date[0].day)+'/' + str(group[pir].index.date[0].month), rotation=0, size=8)
+        str(group[pir].index.date[0].month) + '/' + str(group[pir].index.date[0].day) + ' ', rotation=0, size=8)
     if j < n_group-1:
         x_axis = axes[j, 0].axes.get_xaxis()
         x_axis.set_visible(False)
@@ -92,9 +101,9 @@ for name, group in dategroup:
 # Plot the 2nd column
 i = 0
 for name, group in dategroup2:
-    group[pir].plot.area(ax=axes[i, 1], sharey=True)
-    (group[led]*500).plot.area(linewidth=0,
-                               colormap="Pastel1", ax=axes[i, 1], sharey=True)
+    group[pir].plot.area(ax=axes[i, 1], sharey=True, cmap='gray')
+    ((1-group[led])*1000).plot.area(linewidth=0,
+                               cmap=my_cmap, ax=axes[i, 1], sharey=True)
     x_axis = axes[i, 1].axes.get_xaxis()
     x_axis.set_visible(False)
     y_axis = axes[i, 1].axes.get_yaxis()
