@@ -11,6 +11,8 @@ from matplotlib.pyplot import figure
 from matplotlib.widgets import Slider
 style.use('seaborn-colorblind')
 
+pd.set_option("display.max_rows", None)
+
 box = 'BOX2'
 pir = 'PIR02'
 led = 'LED02'
@@ -73,7 +75,10 @@ dategroup2 = df2.groupby(pd.Grouper(freq='D'))
 plt.rcParams['axes.autolimit_mode'] = 'round_numbers'
 plt.rcParams['axes.xmargin'] = 0.
 plt.rcParams['axes.ymargin'] = 0.1
-plt.rcParams['xtick.direction'] = 'out'
+#plt.rcParams['xtick.direction'] = 'out'
+plt.rcParams['axes.linewidth'] = 0.5 # axis thickness
+plt.rcParams['font.family'] = ['sans serif']
+plt.rcParams['font.size'] = 10
 
 n_group = dategroup.ngroups
 
@@ -95,27 +100,28 @@ j = 0
 for name, group in dategroup:
     (group[pir]*scale).plot.area(ax=axes[j, 0], sharey=True, cmap='gray', figsize=(4.5, 0.2*n_group))
     ((1-group[led])*800).plot.area(linewidth=0, ax=axes[j, 0],
-                               cmap=my_cmap, sharey=True)
+                            cmap=my_cmap, sharey=True)
     axes[j, 0].axes.set_yticklabels([])
+    axes[j, 0].axes.set_yticks([])
     axes[j, 0].axes.set_xticklabels([0, 3, 6, 9, 12, 15, 18, 21, 24], rotation=0, size=8.5)
-    axes[j, 0].axes.set_ylim(0,800)
+    axes[j, 0].axes.set_ylim(1,800)
     axes[j, 0].axes.set_xlabel('Hour of day', rotation=0, size=9)
     axes[j, 0].axes.set_ylabel(
         str(group[pir].index.date[0].month) + '/' + str(group[pir].index.date[0].day) + ' ', rotation=0, size=9)
+    axes[j, 0].yaxis.set_label_coords(-0.125,0.0)
     if j < n_group-1:
         x_axis = axes[j, 0].axes.get_xaxis()
         x_axis.set_visible(False)
     j = j+1
-
 # Plot the 2nd column
 i = 0
 for name, group in dategroup2:
-    (group[pir]*scale).plot.area(ax=axes[i, 1], sharey=True, cmap='gray', figsize=(4.5, 0.2*n_group))
+    (group[pir]*scale).plot.area(ax=axes[i, 1], sharey=True, cmap='gray', figsize=(4.3, 0.2*n_group))
     ((1-group[led])*800).plot.area(linewidth=0,
-                               cmap=my_cmap, ax=axes[i, 1], sharey=True)
+                            cmap=my_cmap, ax=axes[i, 1], sharey=True)
     x_axis = axes[i, 1].axes.get_xaxis()
     x_axis.set_visible(False)
-    axes[i, 1].axes.set_ylim(0,800)
+    axes[i, 1].axes.set_ylim(1,800)
     y_axis = axes[i, 1].axes.get_yaxis()
     y_axis.set_visible(False)
     i = i+1
