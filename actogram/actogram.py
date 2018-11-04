@@ -14,8 +14,11 @@ style.use('seaborn-colorblind')
 box = 'BOX2'
 pir = 'PIR02'
 led = 'LED02'
+#filename = 'BOX1-3-20181018.txt'
+#filename = 'BOX2-COM4-20181018.txt'
+filename = 'BOX1-COM3-20181012.txt'
 
-df = pd.read_table('BOX2-COM4-20181018.txt', sep='\s+',
+df = pd.read_table(filename, sep='\s+',
                    skiprows=23, index_col=None)
 df.index = pd.to_datetime(df['MO/DY/YEAR']+' ' + df['HH:MM:SS'],
                           format="%m/%d/%Y %H:%M:%S")
@@ -83,10 +86,14 @@ my_cmap = cmap(np.arange(cmap.N))
 my_cmap[:,-1] = np.linspace(0.2, 1, cmap.N)
 my_cmap = ListedColormap(my_cmap)
 
+# scale to 1000 if max PIR is 60
+scale = 1000/max(group[pir])
+
+# Double-plot actogram
 # Plot the 1st column
 j = 0
 for name, group in dategroup:
-    group[pir].plot.area(ax=axes[j, 0], sharey=True, cmap='gray', figsize=(6, 2))
+    (group[pir]*scale).plot.area(ax=axes[j, 0], sharey=True, cmap='gray', figsize=(4.5, 0.2*n_group))
     ((1-group[led])*800).plot.area(linewidth=0, ax=axes[j, 0],
                                cmap=my_cmap, sharey=True)
     axes[j, 0].axes.set_yticklabels([])
@@ -103,7 +110,7 @@ for name, group in dategroup:
 # Plot the 2nd column
 i = 0
 for name, group in dategroup2:
-    group[pir].plot.area(ax=axes[i, 1], sharey=True, cmap='gray', figsize=(6, 2))
+    (group[pir]*scale).plot.area(ax=axes[i, 1], sharey=True, cmap='gray', figsize=(4.5, 0.2*n_group))
     ((1-group[led])*800).plot.area(linewidth=0,
                                cmap=my_cmap, ax=axes[i, 1], sharey=True)
     x_axis = axes[i, 1].axes.get_xaxis()
@@ -115,6 +122,6 @@ for name, group in dategroup2:
 
 fig.subplots_adjust(left=0.12, right=0.9, bottom=0.3, wspace=0, hspace=0)
 plt.axis('off')
-plt.suptitle(box)
+plt.suptitle(box, size=9)
 plt.savefig(box+'.png')
 plt.show()
