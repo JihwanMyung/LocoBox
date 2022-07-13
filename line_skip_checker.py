@@ -6,9 +6,12 @@ import time     # Required for using delay functions
 
 #nltk.download('punkt')
 #datetime.strptime(datetime_str, '%m/%d/%y %H:%M:%S')
+
+filename = 'BOXL1-L5-20210502'
+
 times = []
 
-with open('LocoBox_12Phase/BOXL1-L5-20210502.txt') as f:
+with open(filename +'.txt') as f:
     for _ in range(51):
         next(f)
     for line in f:
@@ -33,7 +36,7 @@ for a,b in zip(times1, times2):
 irregular_intervals = []
 for i, interval in enumerate(intervals):
     if interval > 60:
-        irregular_intervals.append((i,interval)) #tuple of the index in the original
+        irregular_intervals.append((i,interval)) #tuple of the index in the original, interval was 120 for all irregulars
 
 
 
@@ -43,6 +46,7 @@ for i in range(len(irregular_intervals)-1):
     
     irr_interval_diffs.append(diff)
 
-print(irr_interval_diffs)
-
+rawinterval = {'indx_diffe_between_skips': irr_interval_diffs}
+intdf = pd.DataFrame(rawinterval)
+intdf.to_csv('Interval_comparisons/'+filename +'.csv', index=False)
 
