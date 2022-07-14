@@ -4,9 +4,9 @@ import datetime # For date-time setting and timedelta calculations
 import platform
 import glob
 import tkinter as tk
-from tkinter import * #import INIT set of tkinter library for GUI
-from tkinter import ttk
-from tkinter import messagebox
+from tkinter import Tk, Frame, Canvas, Scrollbar, sys, Label, SUNKEN, W, X, Menu, IntVar, VERTICAL, HORIZONTAL, Spinbox, Entry, ttk, messagebox, Button, StringVar, LEFT, RIGHT, Radiobutton
+#from tkinter import * #import INIT set of tkinter library for GUI
+
 from tkinter.filedialog import askopenfilename
 import json
 try:
@@ -140,7 +140,7 @@ if sys.platform.startswith('win'):
 elif sys.platform.startswith('darwin'):
     window.geometry('1000x440')
 elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-    window.geometry('1100x420')
+    window.geometry('1100x620')
 else:
     window.geometry('1000x440')
 status = StatusBar(window)
@@ -3719,8 +3719,9 @@ if __name__ == '__main__':
     tab_control.add(ParentFrame11, text='Schedules')
     #tab11
 
-    canvas1 = Canvas(ParentFrame1, width=750, height=200) #, highlightbackground="red", highlightthickness=2
+    canvas1 = Canvas(ParentFrame1, width=750, height=300) #, highlightbackground="red", highlightthickness=2
     scroll1 = Scrollbar(ParentFrame1, orient=VERTICAL, command=canvas1.yview)
+    
     canvas1.grid(row=0, column=0)
     scroll1.grid(row=0, column=1, sticky='ns')
     tab1 = Frame(canvas1, width=200, height=300)#, highlightbackground="black", highlightthickness=1
