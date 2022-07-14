@@ -63,6 +63,8 @@ for filename in os.listdir(directory):
         for i, interval in enumerate(intervals):
             if interval > 60:
                 irregular_intervals.append((i,interval)) #tuple of the index in the original, interval was 120 for all irregulars
+                if interval > 120:
+                    print(interval)
 
 
 
