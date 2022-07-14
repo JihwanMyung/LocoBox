@@ -8,9 +8,11 @@ import os
 #nltk.download('punkt')
 #datetime.strptime(datetime_str, '%m/%d/%y %H:%M:%S')
 directory = 'Prev_locobox_data'
-times = []
 
 for filename in os.listdir(directory):
+    times = []
+    passed = False
+
     fullpath = os.path.join(directory, filename)
     # checking if it is a file
     if os.path.isfile(fullpath):
@@ -21,17 +23,30 @@ for filename in os.listdir(directory):
 
             
             for line in f:
-                token_line = nltk.word_tokenize(line)
 
-                if token_line[0] != 'HH:MM:SS':
+                token_line = nltk.word_tokenize(line)
+                
+                if token_line == []:
+                    next(f)
+
+                elif passed:
+                    times.append(datetime.strptime(token_line[0], '%H:%M:%S'))
+                    #print(token_line[0])
+
+                elif 'HH:MM:SS' in line:
+                    passed = True
                     for _ in range(2):
                         next(f)
 
-                if token_line == []:
-                    next(f)
-                else:
-                    times.append(datetime.strptime(token_line[0], '%H:%M:%S'))
+                elif 'HH:MM:SS' not in token_line:
                     #print(token_line[0])
+                    for _ in range(2):
+                        next(f)
+                
+
+
+                
+                
 
         times1 = times[1:]
         times2 = times[:-1]
