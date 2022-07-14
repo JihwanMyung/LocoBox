@@ -2404,6 +2404,8 @@ if __name__ == '__main__':
     menu.add_cascade(label='Help', menu=aboutmenu)
     window.config(menu=menu)
 
+    #TABS
+
     tab_control = ttk.Notebook(window)
     tab1 = ttk.Frame(tab_control)
     tab2 = ttk.Frame(tab_control)
@@ -2464,6 +2466,8 @@ if __name__ == '__main__':
     configfilename_entry = Entry(width = 25)
     configfilename_entry.place(x=440, y=360)
     configfilename_entry.insert(0,'BOX1-sched-'+date_string+'.json')
+
+    #BUTTONS
 
     btnSave = Button(text=' Save ', command=save_conf, state='disabled')
     btnRun = Button(text= ' Recording Start ', command=connect, state='disabled')
