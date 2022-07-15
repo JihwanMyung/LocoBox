@@ -92,6 +92,11 @@ global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date
 
 
 global setBox1, setBox2, setBox3, setBox4, setBox5
+global setBox6, setBox7, setBox8, setBox9, setBox10
+
+use10boxes = False
+
+
 
 # Preset values
 setBox1=0
@@ -99,6 +104,11 @@ setBox2=0
 setBox3=0
 setBox4=0
 setBox5=0
+setBox6=0
+setBox7=0
+setBox8=0
+setBox9=0
+setBox10=0
 
 # Version information
 def about():
@@ -111,6 +121,7 @@ def about():
                                 'Laboratory of Braintime\n\n'+
                                 'https://github.com/braintimelab/LocomotorBox')
 
+#SERIAL
 # Define and create serial object function
 def create_serial_obj(portPath, baud_rate, timeout):
     '''
@@ -132,6 +143,8 @@ class StatusBar(Frame): # scan open serial ports
         self.label.config(text='')
         self.label.update_idletasks()
 
+
+#GUI
 #Initialize the windows size and name
 window = Tk()
 window.title('LocoBox (1-5_box)')
@@ -158,6 +171,12 @@ def get_data(istate=0): # Start recording
     box3rec_text.set('Preparing for recording.')
     box4rec_text.set('Preparing for recording.')
     box5rec_text.set('Preparing for recording.')
+    if use10boxes:
+        box6rec_text.set('Preparing for recording.')
+        box7rec_text.set('Preparing for recording.')
+        box8rec_text.set('Preparing for recording.')
+        box9rec_text.set('Preparing for recording.')
+        box10rec_text.set('Preparing for recording.')
     window.update_idletasks()
     i=istate
     counti=0
@@ -405,6 +424,12 @@ def get_data(istate=0): # Start recording
                 box3rec_text.set('Recording on-going.')
                 box4rec_text.set('Recording on-going.')
                 box5rec_text.set('Recording on-going.')
+                if use10boxes:
+                    box6rec_text.set('Recording on-going.')
+                    box7rec_text.set('Recording on-going.')
+                    box8rec_text.set('Recording on-going.')
+                    box9rec_text.set('Recording on-going.')
+                    box10rec_text.set('Recording on-going.')
                 window.update_idletasks()
             i=i+1
             
@@ -431,6 +456,12 @@ def get_data(istate=0): # Start recording
         box3rec_text.set('Recording stopped.')
         box4rec_text.set('Recording stopped.')
         box5rec_text.set('Recording stopped.')
+        if use10boxes:
+            box6rec_text.set('Recording stopped.')
+            box7rec_text.set('Recording stopped.')
+            box8rec_text.set('Recording stopped.')
+            box9rec_text.set('Recording stopped.')
+            box10rec_text.set('Recording stopped.')
         window.update_idletasks()
 
 def writeToJSONFile(filename, data):
@@ -652,7 +683,6 @@ def save_conf(): # Save schedule configuration
     writeToJSONFile(configfilename, config)
     status.pack(side='bottom', fill='x')
     status.set('Schedule configuration saved.')
-
 
 
 def read_data(): # Read data from file for plotting
@@ -926,6 +956,13 @@ def read_conf(): # Read schedule configuration
     box3sched_text.set('Box3 schedule loaded.')
     box4sched_text.set('Box4 schedule loaded.')
     box5sched_text.set('Box5 schedule loaded.')
+    if  use10boxes:
+        box6sched_text.set('Box6 schedule loaded.')
+        box7sched_text.set('Box7 schedule loaded.')
+        box8sched_text.set('Box8 schedule loaded.')
+        box9sched_text.set('Box9 schedule loaded.')
+        box10sched_text.set('Box10 schedule loaded.')
+
     
     window.update_idletasks()
 
@@ -2295,9 +2332,6 @@ def show_conf(): # Show schedule configuration
         window.update_idletasks()
         box5pha12text.set(year5_12+'/'+month5_12+'/'+date5_12+' '+hourFrom5_12+':'+minuteFrom5_12+' | '+'LL')
         window.update_idletasks()  
-     
-
-    
 
 def connect():  # Start to connect and call get_data - Link to Start in Recording menu
     port = port_entry.get()
@@ -3687,6 +3721,7 @@ if __name__ == '__main__':
     menu.add_cascade(label='File', menu=filemenu)
     #create setting menu
     settingmenu = Menu(menu)
+    settingmenu.add_command(label='10 boxes mode', command=getAllBoxSchedule)
     settingmenu.add_command(label='Set all boxes', command=getAllBoxSchedule)
     settingmenu.add_command(label='Show schedule', command=show_conf)
     menu.add_cascade(label='Setting', menu=settingmenu)
@@ -3853,6 +3888,7 @@ if __name__ == '__main__':
     configfilename_entry.place(x=440, y=310)
     configfilename_entry.insert(0,'BOX1-5-sched-'+date_string+'.json')
 
+    
     btnSave = Button(text=' Save ', command=save_conf, state='disabled')
     btnRun = Button(text= ' Recording Start ', command=connect, state='disabled')
   
