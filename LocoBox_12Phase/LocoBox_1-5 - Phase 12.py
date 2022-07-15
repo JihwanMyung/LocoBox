@@ -3720,11 +3720,13 @@ if __name__ == '__main__':
 
     #tab1
 
-    canvas1 = Canvas(ParentFrame1, width=750, height=300) #, highlightbackground="red", highlightthickness=2
+    canvas1 = Canvas(ParentFrame1, width=850, height=200) #, highlightbackground="red", highlightthickness=2
     scroll1 = Scrollbar(ParentFrame1, orient=VERTICAL, command=canvas1.yview)
+    
     
     canvas1.grid(row=0, column=0)
     scroll1.grid(row=0, column=1, sticky='ns')
+    
     canvas1.config(yscrollcommand=scroll1.set)
     tab1 = Frame(canvas1, width=200, height=300)#, highlightbackground="black", highlightthickness=1
     tab1.bind(
