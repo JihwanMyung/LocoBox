@@ -174,6 +174,8 @@ class GUI:
             root.geometry('1000x440')
         
         self.status = StatusBar(self.root)
+
+        
         
 
 
@@ -236,6 +238,26 @@ class GUI:
         self.ParentFrame9.destroy() 
         self.ParentFrame10.destroy() 
 
+    def set_ports_baud_timeout_filename(self):
+        self.port_entry = Spinbox(values=openPorts, width=25)
+        self.port_entry.delete(0,'end')
+        self.port_entry.insert(0,openPorts[0]) #first port is the default 
+        self.port_entry.place(x = 80, y = 270)
+        self.baud_entry = Spinbox(values=(300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, 115200), width=7)
+        self.baud_entry.delete(0,'end')
+        self.baud_entry.insert(0,'9600')
+        self.baud_entry.place(x = 440, y = 270)
+        self.timeout_entry = Entry(width = 4)
+        self.timeout_entry.place(x=635,y=270)
+        self.timeout_entry.insert(0,'10')
+        self.filename_entry = Entry(width = 25)
+        self.filename_entry.place(x=80, y=310)
+        date_string = time.strftime('%Y%m%d') # predefine a default filename with ISO date    
+        self.filename_entry.insert(0,'BOX1-5-'+date_string+'.txt')
+        self.configfilename_entry = Entry(width = 25)
+        self.configfilename_entry.place(x=440, y=310)
+        self.configfilename_entry.insert(0,'BOX1-5-sched-'+date_string+'.json')
+
     
 
 
@@ -265,8 +287,8 @@ def get_data(istate=0): # Start recording
     i=istate
     counti=0
     #init csv file and write the COM port name
-    headers = port_entry.get()
-    filename= filename_entry.get()
+    headers = window.port_entry.get()
+    filename= window.filename_entry.get()
     with open(filename,'w', encoding='utf-8') as w:
                 w.write(headers+'\n')
     w.close()
@@ -3874,13 +3896,13 @@ if __name__ == '__main__':
     window.filemenu.add_command(label='Quit', command=destruct)
     window.menu.add_cascade(label='File', menu=window.filemenu)
     #create setting menu
-    window.settingmenu = Menu(menu)
+    
     window.settingmenu.add_command(label='10 boxes mode', command=clickUse10Boxes)
     window.settingmenu.add_command(label='Set all boxes', command=getAllBoxSchedule)
     window.settingmenu.add_command(label='Show schedule', command=show_conf)
     window.menu.add_cascade(label='Setting', menu=window.settingmenu)
     #create recording menu
-    window.recordingmenu = Menu(menu)
+    
     window.recordingmenu.add_command(label='Start new', command=connect)
     window.recordingmenu.entryconfig('Start new', state='disabled')
     #recordingmenu.add_command(label='Start revised', command=lambda:get_data(1))
@@ -3888,7 +3910,7 @@ if __name__ == '__main__':
     window.recordingmenu.add_command(label='Stop', command=disconnect)
     window.menu.add_cascade(label='Recording', menu=window.recordingmenu)
     #create About menu
-    window.aboutmenu = Menu(menu)
+    
     window.aboutmenu.add_command(label='About LocoBox', command=about)
     window.menu.add_cascade(label='Help', menu=window.aboutmenu)
     window.root.config(menu=menu)
@@ -3934,24 +3956,26 @@ if __name__ == '__main__':
     Label(text= 'File').place(x=40, y=310)
     Label(text= 'Schedule').place(x=363, y=310)
 
-    port_entry = Spinbox(values=openPorts, width=25)
-    port_entry.delete(0,'end')
-    port_entry.insert(0,openPorts[0]) #first port is the default 
-    port_entry.place(x = 80, y = 270)
-    baud_entry = Spinbox(values=(300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, 115200), width=7)
-    baud_entry.delete(0,'end')
-    baud_entry.insert(0,'9600')
-    baud_entry.place(x = 440, y = 270)
-    timeout_entry = Entry(width = 4)
-    timeout_entry.place(x=635,y=270)
-    timeout_entry.insert(0,'10')
-    filename_entry = Entry(width = 25)
-    filename_entry.place(x=80, y=310)
-    date_string = time.strftime('%Y%m%d') # predefine a default filename with ISO date    
-    filename_entry.insert(0,'BOX1-5-'+date_string+'.txt')
-    configfilename_entry = Entry(width = 25)
-    configfilename_entry.place(x=440, y=310)
-    configfilename_entry.insert(0,'BOX1-5-sched-'+date_string+'.json')
+    window.set_ports_baud_timeout_filename()
+
+    # port_entry = Spinbox(values=openPorts, width=25)
+    # port_entry.delete(0,'end')
+    # port_entry.insert(0,openPorts[0]) #first port is the default 
+    # port_entry.place(x = 80, y = 270)
+    # baud_entry = Spinbox(values=(300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, 115200), width=7)
+    # baud_entry.delete(0,'end')
+    # baud_entry.insert(0,'9600')
+    # baud_entry.place(x = 440, y = 270)
+    # timeout_entry = Entry(width = 4)
+    # timeout_entry.place(x=635,y=270)
+    # timeout_entry.insert(0,'10')
+    # filename_entry = Entry(width = 25)
+    # filename_entry.place(x=80, y=310)
+    # date_string = time.strftime('%Y%m%d') # predefine a default filename with ISO date    
+    # filename_entry.insert(0,'BOX1-5-'+date_string+'.txt')
+    # configfilename_entry = Entry(width = 25)
+    # configfilename_entry.place(x=440, y=310)
+    # configfilename_entry.insert(0,'BOX1-5-sched-'+date_string+'.json')
 
     
     btnSave = Button(text=' Save ', command=save_conf, state='disabled')
@@ -3964,7 +3988,7 @@ if __name__ == '__main__':
             btnSave['state']='normal'
             btnRun['state']='normal'
             btn10['state']='disabled'
-            recordingmenu.entryconfig('Start new', state='normal')
+            window.recordingmenu.entryconfig('Start new', state='normal')
             show_conf()
             window.update_idletasks()
 
@@ -3974,7 +3998,7 @@ if __name__ == '__main__':
             btnSave['state']='normal'
             btnRun['state']='normal'
             btn10['state']='normal'
-            recordingmenu.entryconfig('Start new', state='normal')
+            window.recordingmenu.entryconfig('Start new', state='normal')
             show_conf()
             window.update_idletasks()
     
