@@ -3,6 +3,7 @@ import time     # Required for using delay functions
 import datetime # For date-time setting and timedelta calculations
 import platform
 import glob
+import sys
 import tkinter as tk
 from tkinter import Tk, Frame, Canvas, Scrollbar, sys, Label, SUNKEN, W, X, Menu, IntVar, VERTICAL, HORIZONTAL, Spinbox, Entry, ttk, messagebox, Button, StringVar, LEFT, RIGHT, Radiobutton
 #from tkinter import * #import INIT set of tkinter library for GUI
@@ -161,6 +162,7 @@ class GUI:
         self.recordingmenu = Menu(self.menu)
         self.aboutmenu = Menu(self.menu)
         self.tab_control = ttk.Notebook(root)
+        
 
         if sys.platform.startswith('win'):
             root.geometry('770x420')
@@ -172,6 +174,7 @@ class GUI:
             root.geometry('1000x440')
         
         self.status = StatusBar(self.root)
+        
 
 
     def removethis(self):
@@ -186,19 +189,45 @@ class GUI:
     
 
     def add_primary_frames(self): #1 to 5
-        self.ParentFrame1 = ttk.Frame(window.tab_control)
-        self.ParentFrame2 = ttk.Frame(window.tab_control)
-        self.ParentFrame3 = ttk.Frame(window.tab_control)
-        self.ParentFrame4 = ttk.Frame(window.tab_control)
-        self.ParentFrame5 = ttk.Frame(window.tab_control)
+        self.ParentFrame1 = ttk.Frame(self.tab_control)
+        self.ParentFrame2 = ttk.Frame(self.tab_control)
+        self.ParentFrame3 = ttk.Frame(self.tab_control)
+        self.ParentFrame4 = ttk.Frame(self.tab_control)
+        self.ParentFrame5 = ttk.Frame(self.tab_control)
+        self.ParentFrame11 = ttk.Frame(self.tab_control)
+
+        self.tab_control.add(self.ParentFrame1, text='Box1')
+        self.tab_control.add(self.ParentFrame2, text='Box2')
+        self.tab_control.add(self.ParentFrame3, text='Box3')
+        self.tab_control.add(self.ParentFrame4, text='Box4')
+        self.tab_control.add(self.ParentFrame5, text='Box5')
+        self.tab_control.add(self.ParentFrame11, text='Schedules')        
+        
+        self.tab1 = create_tab(self.ParentFrame1)
+        self.tab2 = create_tab(self.ParentFrame2)
+        self.tab3 = create_tab(self.ParentFrame3)
+        self.tab4 = create_tab(self.ParentFrame4)
+        self.tab5 = create_tab(self.ParentFrame5)
+        self.tab11 = create_tab(self.ParentFrame11)
 
 
     def add_secondary_frames(self):
-        self.ParentFrame6 = ttk.Frame(window.tab_control)
-        self.ParentFrame7 = ttk.Frame(window.tab_control)
-        self.ParentFrame8 = ttk.Frame(window.tab_control)
-        self.ParentFrame9 = ttk.Frame(window.tab_control)
-        self.ParentFrame10 = ttk.Frame(window.tab_control)
+        self.ParentFrame6 = ttk.Frame(self.tab_control)
+        self.ParentFrame7 = ttk.Frame(self.tab_control)
+        self.ParentFrame8 = ttk.Frame(self.tab_control)
+        self.ParentFrame9 = ttk.Frame(self.tab_control)
+        self.ParentFrame10 = ttk.Frame(self.tab_control)
+        
+        self.tab_control.add(self.ParentFrame6, text='Box6')
+        self.tab_control.add(self.ParentFrame7, text='Box7')
+        self.tab_control.add(self.ParentFrame8, text='Box8')
+        self.tab_control.add(self.ParentFrame9, text='Box9')
+        self.tab_control.add(self.ParentFrame10, text='Box10')
+        self.tab6 = create_tab(self.ParentFrame6)
+        self.tab7 = create_tab(self.ParentFrame7)
+        self.tab8 = create_tab(self.ParentFrame8)
+        self.tab9 = create_tab(self.ParentFrame9)
+        self.tab10 = create_tab(self.ParentFrame10)
 
     def del_secondary_frames(self):
         self.ParentFrame6.destroy() 
@@ -2938,8 +2967,8 @@ def getBox2Schedule():
         dark2_12='0'
         light2_12='1'
     
-    status.pack(side='bottom', fill='x')
-    status.set('Box2 schedule is set.')
+    window.status.pack(side='bottom', fill='x')
+    window.status.set('Box2 schedule is set.')
     box2sched_text.set('Box2 schedule set.')
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
@@ -3182,8 +3211,8 @@ def getBox3Schedule():
         dark3_12='0'
         light3_12='1'
 
-    status.pack(side='bottom', fill='x')
-    status.set('Box3 schedule is set.')
+    window.status.pack(side='bottom', fill='x')
+    window.status.set('Box3 schedule is set.')
     box3sched_text.set('Box3 schedule set.')
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
@@ -3426,8 +3455,8 @@ def getBox4Schedule():
         dark4_12='0'
         light4_12='1'
 
-    status.pack(side='bottom', fill='x')
-    status.set('Box4 schedule is set.')
+    window.status.pack(side='bottom', fill='x')
+    window.status.set('Box4 schedule is set.')
     box4sched_text.set('Box4 schedule set.')
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
@@ -3670,8 +3699,8 @@ def getBox5Schedule():
         dark5_12='0'
         light5_12='1'
 
-    status.pack(side='bottom', fill='x')
-    status.set('Box5 schedule is set.')
+    window.status.pack(side='bottom', fill='x')
+    window.status.set('Box5 schedule is set.')
     box5sched_text.set('Box5 schedule set.')
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
@@ -3693,8 +3722,8 @@ def getAllBoxSchedule():
         getBox8Schedule()
         getBox9Schedule()
         getBox10Schedule()
-    status.pack(side='bottom', fill='x')
-    status.set('Schedules for all boxes are set.')
+    window.status.pack(side='bottom', fill='x')
+    window.status.set('Schedules for all boxes are set.')
     show_conf()
     btnSave['state']='normal'
     btnRun['state']='normal'
@@ -3708,6 +3737,7 @@ def clickUse10Boxes():
     if use10boxes:
         use10boxes = False
         window.del_secondary_frames()
+        window.title = root.title('LocoBox (1-5_box)')
 
     else:
         use10boxes = True 
@@ -3722,6 +3752,7 @@ def clickUse10Boxes():
         tab8 = create_tab(window.ParentFrame8)
         tab9 = create_tab(window.ParentFrame9)
         tab10 = create_tab(window.ParentFrame10)   
+        window.title = root.title('LocoBox (1-10_boxes)')
         
     print(use10boxes)
     window.status.pack(side='bottom', fill='x')
@@ -3862,28 +3893,19 @@ if __name__ == '__main__':
     menu.add_cascade(label='Help', menu=aboutmenu)
     root.config(menu=menu)
 
-    #tab_control = ttk.Notebook(window)
-    ParentFrame1 = ttk.Frame(window.tab_control)
-    ParentFrame2 = ttk.Frame(window.tab_control)
-    ParentFrame3 = ttk.Frame(window.tab_control)
-    ParentFrame4 = ttk.Frame(window.tab_control)
-    ParentFrame5 = ttk.Frame(window.tab_control)
-    ParentFrame11 = ttk.Frame(window.tab_control)  
-
-
-    window.tab_control.add(ParentFrame1, text='Box1')
-    window.tab_control.add(ParentFrame2, text='Box2')
-    window.tab_control.add(ParentFrame3, text='Box3')
-    window.tab_control.add(ParentFrame4, text='Box4')
-    window.tab_control.add(ParentFrame5, text='Box5')
-    window.tab_control.add(ParentFrame11, text='Schedules')        
     
-    tab1 = create_tab(ParentFrame1)
-    tab2 = create_tab(ParentFrame2)
-    tab3 = create_tab(ParentFrame3)
-    tab4 = create_tab(ParentFrame4)
-    tab5 = create_tab(ParentFrame5)
-    tab11 = create_tab(ParentFrame11)
+    window.add_primary_frames()
+
+    tab1 = window.tab1
+    tab2 = window.tab2
+    tab3 = window.tab3
+    tab4 = window.tab4
+    tab5 = window.tab5
+    tab11 = window.tab11
+
+
+
+    
 
     if use10boxes:
         
@@ -3992,41 +4014,41 @@ if __name__ == '__main__':
     row_adj = 3  # useful when a new row is added above
 
     # Box1
-    btn1 = Button(tab1, text='  Set  ', command=lambda: OnButtonClick(1))
-    btnAll1 = Button(tab1, text='Set All', command=getAllBoxSchedule)
-    tab1_title = Label(tab1, text= 'LED schedule', anchor='center')
+    btn1 = Button(window.tab1, text='  Set  ', command=lambda: OnButtonClick(1))
+    btnAll1 = Button(window.tab1, text='Set All', command=getAllBoxSchedule)
+    tab1_title = Label(window.tab1, text= 'LED schedule', anchor='center')
     tab1_title.grid(column=0, row= -1+row_adj, columnspan='27', sticky='we')
     #capSep1 = ttk.Separator(tab1, orient=HORIZONTAL)
     #capSep1.grid(column=0, row = row_adj+5, columnspan='27', sticky='we')
     box1sched_text=StringVar()
     box1sched_text.set('Schedule not set.')
-    box1sched_stat=Label(tab1, textvariable=box1sched_text, anchor=W, justify=LEFT)
+    box1sched_stat=Label(window.tab1, textvariable=box1sched_text, anchor=W, justify=LEFT)
         # phase 1
-    phaseLabel1_1 = Label(tab1, text='Phase 1')
+    phaseLabel1_1 = Label(window.tab1, text='Phase 1')
     dateLabel = time.strftime('%H:%M   %Y/%m/%d') # reads time for Phase 1 start-time
-    fromLabel1_1 = Label(tab1, text='From:')
-    date_label1 = Label(tab1, text=dateLabel+' (HH:MN YYYY/MO/DD)')
-    rad1_A_1 = Radiobutton(tab1, text='LD', variable=var1_1, value=1)
-    lbl1_A_1 = Label(tab1, text= 'On:')
-    spin1_A_1 = Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f')
-    spin1_B_1 = Spinbox(tab1, from_=00, to=59, width=3, format='%02.0f')
+    fromLabel1_1 = Label(window.tab1, text='From:')
+    date_label1 = Label(window.tab1, text=dateLabel+' (HH:MN YYYY/MO/DD)')
+    rad1_A_1 = Radiobutton(window.tab1, text='LD', variable=var1_1, value=1)
+    lbl1_A_1 = Label(window.tab1, text= 'On:')
+    spin1_A_1 = Spinbox(window.tab1, from_=00, to=24, width=3, format='%02.0f')
+    spin1_B_1 = Spinbox(window.tab1, from_=00, to=59, width=3, format='%02.0f')
     spin1_A_1.delete(0,'end')
     spin1_A_1.insert(0,'07')
     spin1_B_1.delete(0,'end')
     spin1_B_1.insert(0,'00')
-    label1_h1_1 = Label(tab1, text=':')
-    label1_m1_1 = Label(tab1, text='')
-    lbl1_B_1 = Label(tab1, text= 'Off:')
-    spin1_C_1 = Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f')
-    spin1_D_1 = Spinbox(tab1, from_=00, to=59, width=3, format='%02.0f')
+    label1_h1_1 = Label(window.tab1, text=':')
+    label1_m1_1 = Label(window.tab1, text='')
+    lbl1_B_1 = Label(window.tab1, text= 'Off:')
+    spin1_C_1 = Spinbox(window.tab1, from_=00, to=24, width=3, format='%02.0f')
+    spin1_D_1 = Spinbox(window.tab1, from_=00, to=59, width=3, format='%02.0f')
     spin1_C_1.delete(0,'end')
     spin1_C_1.insert(0,'19')
     spin1_D_1.delete(0,'end')
     spin1_D_1.insert(0,'00')
-    label1_h2_1 = Label(tab1, text=':')
-    label1_m2_1 = Label(tab1, text='')
-    rad1_B_1 = Radiobutton(tab1, text='DD', variable=var1_1, value=2)
-    rad1_C_1 = Radiobutton(tab1, text='LL', variable=var1_1, value=3)
+    label1_h2_1 = Label(window.tab1, text=':')
+    label1_m2_1 = Label(window.tab1, text='')
+    rad1_B_1 = Radiobutton(window.tab1, text='DD', variable=var1_1, value=2)
+    rad1_C_1 = Radiobutton(window.tab1, text='LL', variable=var1_1, value=3)
     phaseLabel1_1.grid(column=0, row=1+row_adj, padx=15, pady=5)
     fromLabel1_1.grid(column=1,row=1+row_adj)
     date_label1.grid(column=2, row=1+row_adj, columnspan='10', sticky='w')
