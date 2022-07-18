@@ -3789,88 +3789,24 @@ if __name__ == '__main__':
         tab_control.add(ParentFrame9, text='Box9')
         tab_control.add(ParentFrame10, text='Box10')
 
-    #tab1
+   
 
     
     tab1 = create_tab(ParentFrame1)
+    tab2 = create_tab(ParentFrame2)
+    tab3 = create_tab(ParentFrame3)
+    tab4 = create_tab(ParentFrame4)
+    tab5 = create_tab(ParentFrame5)
+    tab11 = create_tab(ParentFrame11)
 
-#tab2
-    canvas2 = Canvas(ParentFrame2, width=850, height=200)
-    scroll2 = Scrollbar(ParentFrame2, orient=VERTICAL, command=canvas2.yview)
-    canvas2.grid(row=0, column=0)
-    scroll2.grid(row=0, column=1, sticky='ns')
-    canvas2.config(yscrollcommand=scroll2.set)
-    tab2 = Frame(canvas2, width=200, height=300)
-    tab2.bind(
-    "<Configure>",
-    lambda e: canvas2.configure(
-        scrollregion=canvas2.bbox("all")
-        )
-    )
-
-    canvas2.create_window(400, 175, window=tab2)
-
-#tab3
-    canvas3 = Canvas(ParentFrame3, width=850, height=200)
-    scroll3 = Scrollbar(ParentFrame3, orient=VERTICAL, command=canvas3.yview)
-    canvas3.grid(row=0, column=0)
-    scroll3.grid(row=0, column=1, sticky='ns')
-    canvas3.config(yscrollcommand=scroll3.set)
-    tab3 = Frame(canvas3, width=200, height=300)
-    tab3.bind(
-    "<Configure>",
-    lambda e: canvas3.configure(
-        scrollregion=canvas3.bbox("all")
-        )
-    )
-    canvas3.create_window(400, 175, window=tab3)   
+    if use10boxes:
+        tab6 = create_tab(ParentFrame6)
+        tab7 = create_tab(ParentFrame7)
+        tab8 = create_tab(ParentFrame8)
+        tab9 = create_tab(ParentFrame9)
+        tab10 = create_tab(ParentFrame10)
 
 
-#tab 4 
-    canvas4 = Canvas(ParentFrame4, width=850, height=200)
-    scroll4 = Scrollbar(ParentFrame4, orient=VERTICAL, command=canvas4.yview)
-    canvas4.grid(row=0, column=0)
-    scroll4.grid(row=0, column=1, sticky='ns')
-    canvas4.config(yscrollcommand=scroll4.set)
-    tab4 = Frame(canvas4, width=200, height=300)
-    tab4.bind(
-    "<Configure>",
-    lambda e: canvas4.configure(
-        scrollregion=canvas4.bbox("all")
-        )
-    )
-    canvas4.create_window(400, 175, window=tab4)
-
-
-#tab 5
-    canvas5 = Canvas(ParentFrame5, width=850, height=200)
-    scroll5 = Scrollbar(ParentFrame5, orient=VERTICAL, command=canvas5.yview)
-    canvas5.grid(row=0, column=0)
-    scroll5.grid(row=0, column=1, sticky='ns')
-    canvas5.config(yscrollcommand=scroll5.set)
-    tab5 = Frame(canvas5, width=200, height=300)
-    tab5.bind(
-    "<Configure>",
-    lambda e: canvas5.configure(
-        scrollregion=canvas5.bbox("all")
-        )
-    )
-    canvas5.create_window(400, 175, window=tab5)
-    
-    #CANVAS 11 for schedules
-    canvas11 = Canvas(ParentFrame11, width=850, height=200) #, highlightbackground="red", highlightthickness=2
-    scroll11 = Scrollbar(ParentFrame11, orient=HORIZONTAL, command=canvas11.xview, width=20)
-    canvas11.grid(row=0, column=0)
-    scroll11.grid(row=1, column=0, sticky='nsew')
-    canvas11.config(yscrollcommand=scroll11.set)
-    tab11 = Frame(canvas11, width=200, height=300)#, highlightbackground="black", highlightthickness=1
-    tab11.bind(
-    "<Configure>",
-    lambda e: canvas11.configure(
-        scrollregion=canvas11.bbox("all")
-        )
-    )
-    canvas11.create_window(400, 175, window=tab11)
     
    
 
