@@ -3630,7 +3630,7 @@ def getAllBoxSchedule():
     window.update_idletasks()
 
 
-def create_tab(i, parentframe):
+def create_tab(parentframe):
     canvas = Canvas(parentframe, width=850, height=200)
     scroll = Scrollbar(parentframe, orient=VERTICAL, command=canvas.yview)
     canvas.grid(row=0, column=0)
@@ -3791,23 +3791,8 @@ if __name__ == '__main__':
 
     #tab1
 
-    # canvas1 = Canvas(ParentFrame1, width=850, height=200) #, highlightbackground="red", highlightthickness=2
-    # scroll1 = Scrollbar(ParentFrame1, orient=VERTICAL, command=canvas1.yview)
     
-    
-    # canvas1.grid(row=0, column=0)
-    # scroll1.grid(row=0, column=1, sticky='ns')
-    
-    # canvas1.config(yscrollcommand=scroll1.set)
-    # tab1 = Frame(canvas1, width=200, height=300)#, highlightbackground="black", highlightthickness=1
-    # tab1.bind(
-    # "<Configure>",
-    # lambda e: canvas1.configure(
-    #     scrollregion=canvas1.bbox("all")
-    #     )
-    # )
-    # canvas1.create_window(400, 175, window=tab1)
-    tab1 = create_tab(1, ParentFrame1)
+    tab1 = create_tab(ParentFrame1)
 
 #tab2
     canvas2 = Canvas(ParentFrame2, width=850, height=200)
