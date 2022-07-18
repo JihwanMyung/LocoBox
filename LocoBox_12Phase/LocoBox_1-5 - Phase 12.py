@@ -314,8 +314,8 @@ def get_data(istate=0): # Start recording
                                             hourFrom2_2+minuteFrom2_2+hourFrom3_2+minuteFrom3_2+
                                             hourFrom4_2+minuteFrom4_2+hourFrom5_2+minuteFrom5_2))
                
-                status.pack(side='bottom', fill='x')
-                status.set('Phase 2 schedules sent.')    
+                window.status.pack(side='bottom', fill='x')
+                window.status.set('Phase 2 schedules sent.')    
             if i==6:
                 serial_obj.write(str.encode(hourOn1_3+minOn1_3+hourOff1_3+minOff1_3+hourOn2_3+minOn2_3+hourOff2_3+minOff2_3+
                                             hourOn3_3+minOn3_3+hourOff3_3+minOff3_3+hourOn4_3+minOn4_3+hourOff4_3+minOff4_3+
@@ -332,8 +332,8 @@ def get_data(istate=0): # Start recording
                                             hourFrom2_3+minuteFrom2_3+hourFrom3_3+minuteFrom3_3+
                                             hourFrom4_3+minuteFrom4_3+hourFrom5_3+minuteFrom5_3))
                 
-                status.pack(side='bottom', fill='x')
-                status.set('Phase 3 schedules sent.')
+                window.status.pack(side='bottom', fill='x')
+                window.status.set('Phase 3 schedules sent.')
             if i==9:
                 serial_obj.write(str.encode(hourOn1_4+minOn1_4+hourOff1_4+minOff1_4+hourOn2_4+minOn2_4+hourOff2_4+minOff2_4+
                                             hourOn3_4+minOn3_4+hourOff3_4+minOff3_4+hourOn4_4+minOn4_4+hourOff4_4+minOff4_4+
@@ -1029,7 +1029,7 @@ def read_conf(): # Read schedule configuration
     minuteFrom5_4 = config['minuteFrom5_4'] 
      
     btnRun['state']='normal'
-    recordingmenu.entryconfig('Start new', state='normal')
+    window.recordingmenu.entryconfig('Start new', state='normal')
     show_conf()
     window.update_idletasks()
 
@@ -2729,7 +2729,7 @@ def getBox1Schedule():
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
         btnRun['state']='normal'  
-        recordingmenu.entryconfig('Start new', state='normal')
+        window.recordingmenu.entryconfig('Start new', state='normal')
         show_conf()
     window.update_idletasks()
 
@@ -2973,7 +2973,7 @@ def getBox2Schedule():
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
         btnRun['state']='normal'
-        recordingmenu.entryconfig('Start new', state='normal')
+        window.recordingmenu.entryconfig('Start new', state='normal')
         show_conf()
     window.update_idletasks()
 
@@ -3217,7 +3217,7 @@ def getBox3Schedule():
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
         btnRun['state']='normal'
-        recordingmenu.entryconfig('Start new', state='normal')
+        window.recordingmenu.entryconfig('Start new', state='normal')
         show_conf()
     window.update_idletasks()
 
@@ -3461,7 +3461,7 @@ def getBox4Schedule():
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
         btnRun['state']='normal'
-        recordingmenu.entryconfig('Start new', state='normal')
+        window.recordingmenu.entryconfig('Start new', state='normal')
         show_conf()
     window.update_idletasks()
 
@@ -3705,7 +3705,7 @@ def getBox5Schedule():
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
         btnRun['state']='normal'
-        recordingmenu.entryconfig('Start new', state='normal')
+        window.recordingmenu.entryconfig('Start new', state='normal')
         show_conf()
     window.update_idletasks()
 
@@ -3867,31 +3867,31 @@ if __name__ == '__main__':
     
     
     #Create file menu
-    filemenu = Menu(menu)
-    filemenu.add_command(label='Load schedules', command=read_conf)
-    filemenu.add_command(label='Save schedules', command=save_conf)
-    filemenu.add_separator()
-    filemenu.add_command(label='Quit', command=destruct)
-    menu.add_cascade(label='File', menu=filemenu)
+    
+    window.filemenu.add_command(label='Load schedules', command=read_conf)
+    window.filemenu.add_command(label='Save schedules', command=save_conf)
+    window.filemenu.add_separator()
+    window.filemenu.add_command(label='Quit', command=destruct)
+    window.menu.add_cascade(label='File', menu=window.filemenu)
     #create setting menu
-    settingmenu = Menu(menu)
-    settingmenu.add_command(label='10 boxes mode', command=clickUse10Boxes)
-    settingmenu.add_command(label='Set all boxes', command=getAllBoxSchedule)
-    settingmenu.add_command(label='Show schedule', command=show_conf)
-    menu.add_cascade(label='Setting', menu=settingmenu)
+    window.settingmenu = Menu(menu)
+    window.settingmenu.add_command(label='10 boxes mode', command=clickUse10Boxes)
+    window.settingmenu.add_command(label='Set all boxes', command=getAllBoxSchedule)
+    window.settingmenu.add_command(label='Show schedule', command=show_conf)
+    window.menu.add_cascade(label='Setting', menu=window.settingmenu)
     #create recording menu
-    recordingmenu = Menu(menu)
-    recordingmenu.add_command(label='Start new', command=connect)
-    recordingmenu.entryconfig('Start new', state='disabled')
+    window.recordingmenu = Menu(menu)
+    window.recordingmenu.add_command(label='Start new', command=connect)
+    window.recordingmenu.entryconfig('Start new', state='disabled')
     #recordingmenu.add_command(label='Start revised', command=lambda:get_data(1))
-    recordingmenu.add_separator()
-    recordingmenu.add_command(label='Stop', command=disconnect)
-    menu.add_cascade(label='Recording', menu=recordingmenu)
+    window.recordingmenu.add_separator()
+    window.recordingmenu.add_command(label='Stop', command=disconnect)
+    window.menu.add_cascade(label='Recording', menu=window.recordingmenu)
     #create About menu
-    aboutmenu = Menu(menu)
-    aboutmenu.add_command(label='About LocoBox', command=about)
-    menu.add_cascade(label='Help', menu=aboutmenu)
-    root.config(menu=menu)
+    window.aboutmenu = Menu(menu)
+    window.aboutmenu.add_command(label='About LocoBox', command=about)
+    window.menu.add_cascade(label='Help', menu=window.aboutmenu)
+    window.root.config(menu=menu)
 
     
     window.add_primary_frames()
@@ -3909,21 +3909,8 @@ if __name__ == '__main__':
 
     if use10boxes:
         
-        ParentFrame6 = ttk.Frame(window.tab_control)
-        ParentFrame7 = ttk.Frame(window.tab_control)
-        ParentFrame8 = ttk.Frame(window.tab_control)
-        ParentFrame9 = ttk.Frame(window.tab_control)
-        ParentFrame10 = ttk.Frame(window.tab_control)
-        window.tab_control.add(ParentFrame6, text='Box6')
-        window.tab_control.add(ParentFrame7, text='Box7')
-        window.tab_control.add(ParentFrame8, text='Box8')
-        window.tab_control.add(ParentFrame9, text='Box9')
-        window.tab_control.add(ParentFrame10, text='Box10')
-        tab6 = create_tab(ParentFrame6)
-        tab7 = create_tab(ParentFrame7)
-        tab8 = create_tab(ParentFrame8)
-        tab9 = create_tab(ParentFrame9)
-        tab10 = create_tab(ParentFrame10)
+        window.add_secondary_frames()
+    
 
 
     
