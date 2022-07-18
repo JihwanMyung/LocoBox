@@ -3648,7 +3648,10 @@ def getAllBoxSchedule():
 
 
 def clickUse10Boxes(): 
-    use10boxes = True    
+    if use10boxes:
+        use10boxes = False
+    else:
+        use10boxes = True    
     status.pack(side='bottom', fill='x')
     status.set('MODE: Using 10 boxes.')
     window.update_idletasks()
@@ -3790,6 +3793,9 @@ if __name__ == '__main__':
     ParentFrame5 = ttk.Frame(tab_control)
     ParentFrame11 = ttk.Frame(tab_control)
 
+    window.update_idletasks()
+
+
     if use10boxes:
         ParentFrame5 = ttk.Frame(tab_control)
         ParentFrame6 = ttk.Frame(tab_control)
@@ -3797,6 +3803,7 @@ if __name__ == '__main__':
         ParentFrame8 = ttk.Frame(tab_control)
         ParentFrame9 = ttk.Frame(tab_control)
         ParentFrame10 = ttk.Frame(tab_control)
+
 
 
     tab_control.add(ParentFrame1, text='Box1')
