@@ -8,7 +8,12 @@ The following Arduino software is used: Arduino 1.8.7
 
 The following Python versions are used: Python 3.7.0, Pyserial 3.4
 
-The LcomotorBox (LocoBox) GUI interface has been optimized for Windows, macOS, and Linux (tested on Ubuntu).
+The LocomotorBox (LocoBox) GUI interface has been optimized for Windows, macOS, and Linux (tested on Ubuntu).
+
+### Current GUI
+
+![image](https://user-images.githubusercontent.com/7980453/179441301-88334b75-9c94-4ac8-8e3a-2b289612ceca.png)
+
 
 ### Installation
 
