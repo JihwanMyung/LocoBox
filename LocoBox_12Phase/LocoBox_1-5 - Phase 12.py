@@ -185,24 +185,33 @@ class GUI:
 
     
 
+    def add_primary_frames(self): #1 to 5
+        self.ParentFrame1 = ttk.Frame(window.tab_control)
+        self.ParentFrame2 = ttk.Frame(window.tab_control)
+        self.ParentFrame3 = ttk.Frame(window.tab_control)
+        self.ParentFrame4 = ttk.Frame(window.tab_control)
+        self.ParentFrame5 = ttk.Frame(window.tab_control)
+
+
+    def add_secondary_frames(self):
+        self.ParentFrame6 = ttk.Frame(window.tab_control)
+        self.ParentFrame7 = ttk.Frame(window.tab_control)
+        self.ParentFrame8 = ttk.Frame(window.tab_control)
+        self.ParentFrame9 = ttk.Frame(window.tab_control)
+        self.ParentFrame10 = ttk.Frame(window.tab_control)
+
+    def del_secondary_frames(self):
+        self.ParentFrame6.destroy() 
+        self.ParentFrame7.destroy() 
+        self.ParentFrame8.destroy() 
+        self.ParentFrame9.destroy() 
+        self.ParentFrame10.destroy() 
+
+    
+
 
 root = Tk()
 window = GUI(root)
-# root.mainloop()
-
-#GUI
-#Initialize the windows size and name
-# window = Tk()
-# window.title('LocoBox (1-5_box)')
-# if sys.platform.startswith('win'):
-#     window.geometry('770x420')
-# elif sys.platform.startswith('darwin'):
-#     window.geometry('1000x440')
-# elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-#     window.geometry('1100x620')
-# else:
-#     window.geometry('1000x440')
-# status = StatusBar(window)
 
 # ###Define functions
 def destruct(): # Quit the program
@@ -244,8 +253,8 @@ def get_data(istate=0): # Start recording
             print(string2)
             if i==0:
                 print('Synching time...')
-                status.pack(side='bottom', fill='x')
-                status.set('Synching time...')
+                window.status.pack(side='bottom', fill='x')
+                window.status.set('Synching time...')
                 t= datetime.datetime.now()
                 t = t + datetime.timedelta(minutes=1)
                 serial_obj.write(str.encode(t.strftime('%Y-%m-%d %H:%M:%S')))
@@ -258,8 +267,8 @@ def get_data(istate=0): # Start recording
                 serial_obj.write(str.encode(dark1_1+light1_1+dark2_1+light2_1+dark3_1+light3_1+dark4_1+light4_1+
                                             dark5_1+light5_1))
                 
-                status.pack(side='bottom', fill='x')
-                status.set('Phase 1 schedules sent.')                              
+                window.status.pack(side='bottom', fill='x')
+                window.status.set('Phase 1 schedules sent.')                              
             if i==3:
                 serial_obj.write(str.encode(hourOn1_2+minOn1_2+hourOff1_2+minOff1_2+hourOn2_2+minOn2_2+hourOff2_2+minOff2_2+
                                             hourOn3_2+minOn3_2+hourOff3_2+minOff3_2+hourOn4_2+minOn4_2+hourOff4_2+minOff4_2+
@@ -312,8 +321,8 @@ def get_data(istate=0): # Start recording
                                             hourFrom2_4+minuteFrom2_4+hourFrom3_4+minuteFrom3_4+
                                             hourFrom4_4+minuteFrom4_4+hourFrom5_4+minuteFrom5_4)) 
                 
-                status.pack(side='bottom', fill='x')
-                status.set('Phase 4 schedules sent.')
+                window.status.pack(side='bottom', fill='x')
+                window.status.set('Phase 4 schedules sent.')
             if i==12:
                 serial_obj.write(str.encode(hourOn1_5+minOn1_5+hourOff1_5+minOff1_5+hourOn2_5+minOn2_5+hourOff2_5+minOff2_5+
                                             hourOn3_5+minOn3_5+hourOff3_5+minOff3_5+hourOn4_5+minOn4_5+hourOff4_5+minOff4_5+
@@ -366,8 +375,8 @@ def get_data(istate=0): # Start recording
                                             date5_7+month5_7+year5_7+hourFrom1_7+minuteFrom1_7+
                                             hourFrom2_7+minuteFrom2_7+hourFrom3_7+minuteFrom3_7+
                                             hourFrom4_7+minuteFrom4_7+hourFrom5_7+minuteFrom5_7))
-                status.pack(side='bottom', fill='x')
-                status.set('Phase 7 schedules sent.')
+                window.status.pack(side='bottom', fill='x')
+                window.status.set('Phase 7 schedules sent.')
             #Phase 8
             if i==21:
                 serial_obj.write(str.encode(hourOn1_8+minOn1_8+hourOff1_8+minOff1_8+hourOn2_8+minOn2_8+hourOff2_8+minOff2_8+
@@ -385,8 +394,8 @@ def get_data(istate=0): # Start recording
                                             hourFrom2_8+minuteFrom2_8+hourFrom3_8+minuteFrom3_8+
                                             hourFrom4_8+minuteFrom4_8+hourFrom5_8+minuteFrom5_8))
 
-                status.pack(side='bottom', fill='x')
-                status.set('Phase 8 schedules sent.')
+                window.status.pack(side='bottom', fill='x')
+                window.status.set('Phase 8 schedules sent.')
             #Phase 9
             if i==24:
                 serial_obj.write(str.encode(hourOn1_9+minOn1_9+hourOff1_9+minOff1_9+hourOn2_9+minOn2_9+hourOff2_9+minOff2_9+
@@ -404,8 +413,8 @@ def get_data(istate=0): # Start recording
                                             hourFrom2_9+minuteFrom2_9+hourFrom3_9+minuteFrom3_9+
                                             hourFrom4_9+minuteFrom4_9+hourFrom5_9+minuteFrom5_9))
 
-                status.pack(side='bottom', fill='x')
-                status.set('Phase 9 schedules sent.')
+                window.status.pack(side='bottom', fill='x')
+                window.status.set('Phase 9 schedules sent.')
             #Phase 10
             if i==27:
                 serial_obj.write(str.encode(hourOn1_10+minOn1_10+hourOff1_10+minOff1_10+hourOn2_10+minOn2_10+hourOff2_10+minOff2_10+
@@ -423,8 +432,8 @@ def get_data(istate=0): # Start recording
                                             hourFrom2_10+minuteFrom2_10+hourFrom3_10+minuteFrom3_10+
                                             hourFrom4_10+minuteFrom4_10+hourFrom5_10+minuteFrom5_10))
 
-                status.pack(side='bottom', fill='x')
-                status.set('Phase 10 schedules sent.')
+                window.status.pack(side='bottom', fill='x')
+                window.status.set('Phase 10 schedules sent.')
             #Phase 11
             if i==30:
                 serial_obj.write(str.encode(hourOn1_11+minOn1_11+hourOff1_11+minOff1_11+hourOn2_11+minOn2_11+hourOff2_11+minOff2_11+
@@ -442,8 +451,8 @@ def get_data(istate=0): # Start recording
                                             hourFrom2_11+minuteFrom2_11+hourFrom3_11+minuteFrom3_11+
                                             hourFrom4_11+minuteFrom4_11+hourFrom5_11+minuteFrom5_11))
 
-                status.pack(side='bottom', fill='x')
-                status.set('Phase 11 schedules sent.')
+                window.status.pack(side='bottom', fill='x')
+                window.status.set('Phase 11 schedules sent.')
 
             #Phase 12
             if i==33:
@@ -462,9 +471,9 @@ def get_data(istate=0): # Start recording
                                             hourFrom2_12+minuteFrom2_12+hourFrom3_12+minuteFrom3_12+
                                             hourFrom4_12+minuteFrom4_12+hourFrom5_12+minuteFrom5_12))
 
-                status.pack(side='bottom', fill='x')
-                status.set('Phase 11 schedules sent.')
-                status.set('All schedules transferred. Recording began.') 
+                window.status.pack(side='bottom', fill='x')
+                window.status.set('Phase 11 schedules sent.')
+                window.status.set('All schedules transferred. Recording began.') 
                 box1rec_text.set('Recording on-going.')
                 box2rec_text.set('Recording on-going.')
                 box3rec_text.set('Recording on-going.')
@@ -495,8 +504,8 @@ def get_data(istate=0): # Start recording
                 counti = counti+1
     except:
         print('Stopped recording and disconnected from the boxes.')
-        status.pack(side='bottom', fill='x')
-        status.set('Stopped recording and disconnected from the boxes.') 
+        window.status.pack(side='bottom', fill='x')
+        window.status.set('Stopped recording and disconnected from the boxes.') 
         box1rec_text.set('Recording stopped.')
         box2rec_text.set('Recording stopped.')
         box3rec_text.set('Recording stopped.')
@@ -516,8 +525,8 @@ def writeToJSONFile(filename, data):
         json.dump(data, fp)
 
 def save_conf(): # Save schedule configuration
-    status.pack(side='bottom', fill='x')
-    status.set('Saving the schedule configuration...')
+    window.status.pack(side='bottom', fill='x')
+    window.status.set('Saving the schedule configuration...')
     config={}
     config['hourOn1_1'] = hourOn1_1
     config['minOn1_1'] = minOn1_1
@@ -727,22 +736,22 @@ def save_conf(): # Save schedule configuration
     
     configfilename = configfilename_entry.get()
     writeToJSONFile(configfilename, config)
-    status.pack(side='bottom', fill='x')
-    status.set('Schedule configuration saved.')
+    window.status.pack(side='bottom', fill='x')
+    window.status.set('Schedule configuration saved.')
 
 
 def read_data(): # Read data from file for plotting
     global file_plot
-    status.pack(side='bottom', fill='x')
-    status.set('Reading the data...')
+    window.status.pack(side='bottom', fill='x')
+    window.status.set('Reading the data...')
     file_plot = askopenfilename(filetypes=(("Text files", "*.txt"),
                                       ("All files", "*.*")))
-    status.pack(side='bottom', fill='x')
-    status.set('Schedule configuration saved.')
+    window.status.pack(side='bottom', fill='x')
+    window.status.set('Schedule configuration saved.')
 
 def read_conf(): # Read schedule configuration
-    status.pack(side='bottom', fill='x')
-    status.set('Reading the schedule configuration...')
+    window.status.pack(side='bottom', fill='x')
+    window.status.set('Reading the schedule configuration...')
     configfilename = filedialog.askopenfilename()
     with open(configfilename) as data_file:
         config = json.load(data_file)
@@ -995,8 +1004,8 @@ def read_conf(): # Read schedule configuration
     show_conf()
     window.update_idletasks()
 
-    status.pack(side='bottom', fill='x')
-    status.set('The schedule configuration is loaded.')
+    window.status.pack(side='bottom', fill='x')
+    window.status.set('The schedule configuration is loaded.')
     box1sched_text.set('Box1 schedule loaded.')
     box2sched_text.set('Box2 schedule loaded.')
     box3sched_text.set('Box3 schedule loaded.')
@@ -2389,8 +2398,8 @@ def connect():  # Start to connect and call get_data - Link to Start in Recordin
     try:
         serial_obj = create_serial_obj(port, baud, timeout=timeout)
     except NameError:
-        status.pack(side='bottom', fill='x')
-        status.set('Missing baud rate and port number.')
+        window.status.pack(side='bottom', fill='x')
+        window.status.set('Missing baud rate and port number.')
         return
     t1 = threading.Thread(target=lambda:get_data(0))
     t1.daemon = True
@@ -2402,16 +2411,16 @@ def connect():  # Start to connect and call get_data - Link to Start in Recordin
     t1.start()
 
 def disconnect():  # close the serial_obj thread
-    status.pack(side='bottom', fill='x')
-    status.set('Attempting to close serial port...')
+    window.status.pack(side='bottom', fill='x')
+    window.status.set('Attempting to close serial port...')
     global dead
     global serial_obj
     dead = True
     serial_obj.close()
     print(threading.active_count())
     print(threading.enumerate())
-    status.pack(side='bottom', fill='x')
-    status.set('Stopped recording and disconnected from the boxes.')
+    window.status.pack(side='bottom', fill='x')
+    window.status.set('Stopped recording and disconnected from the boxes.')
     box1rec_text.set('Recording stopped.')
     box2rec_text.set('Recording stopped.')
     box3rec_text.set('Recording stopped.')
@@ -2685,8 +2694,8 @@ def getBox1Schedule():
         dark1_12='0'
         light1_12='1'
 
-    status.pack(side='bottom', fill='x')
-    status.set('Box1 schedule is set.')
+    window.status.pack(side='bottom', fill='x')
+    window.status.set('Box1 schedule is set.')
     box1sched_text.set('Box1 schedule set.')
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
@@ -3698,33 +3707,25 @@ def clickUse10Boxes():
     
     if use10boxes:
         use10boxes = False
-        ParentFrame6.destroy()
-        ParentFrame7.destroy()
-        ParentFrame8.destroy()
-        ParentFrame9.destroy()
-        ParentFrame10.destroy()
+        window.del_secondary_frames()
 
     else:
         use10boxes = True 
-        ParentFrame6 = ttk.Frame(window.tab_control)
-        ParentFrame7 = ttk.Frame(window.tab_control)
-        ParentFrame8 = ttk.Frame(window.tab_control)
-        ParentFrame9 = ttk.Frame(window.tab_control)
-        ParentFrame10 = ttk.Frame(window.tab_control)
-        window.tab_control.add(ParentFrame6, text='Box6')
-        window.tab_control.add(ParentFrame7, text='Box7')
-        window.tab_control.add(ParentFrame8, text='Box8')
-        window.tab_control.add(ParentFrame9, text='Box9')
-        window.tab_control.add(ParentFrame10, text='Box10')
-        tab6 = create_tab(ParentFrame6)
-        tab7 = create_tab(ParentFrame7)
-        tab8 = create_tab(ParentFrame8)
-        tab9 = create_tab(ParentFrame9)
-        tab10 = create_tab(ParentFrame10)   
+        window.add_secondary_frames()
+        window.tab_control.add(window.ParentFrame6, text='Box6')
+        window.tab_control.add(window.ParentFrame7, text='Box7')
+        window.tab_control.add(window.ParentFrame8, text='Box8')
+        window.tab_control.add(window.ParentFrame9, text='Box9')
+        window.tab_control.add(window.ParentFrame10, text='Box10')
+        tab6 = create_tab(window.ParentFrame6)
+        tab7 = create_tab(window.ParentFrame7)
+        tab8 = create_tab(window.ParentFrame8)
+        tab9 = create_tab(window.ParentFrame9)
+        tab10 = create_tab(window.ParentFrame10)   
         
     print(use10boxes)
-    status.pack(side='bottom', fill='x')
-    status.set('MODE: Using 10 boxes.')
+    window.status.pack(side='bottom', fill='x')
+    window.status.set('MODE: Using 10 boxes.')
     
     
     window.update_idletasks()
