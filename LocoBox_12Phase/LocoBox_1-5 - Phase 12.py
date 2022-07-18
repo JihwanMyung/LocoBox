@@ -2384,6 +2384,9 @@ def disconnect():  # close the serial_obj thread
 
 def OnButtonClick(button_id):
     global setBox1, setBox2, setBox3, setBox4, setBox5
+    if use10boxes:
+        global setBox6, setBox7, setBox8, setBox9, setBox10
+
     if button_id == 1:
         getBox1Schedule()
         setBox1=1
@@ -3629,12 +3632,25 @@ def getAllBoxSchedule():
     getBox3Schedule()
     getBox4Schedule()
     getBox5Schedule()
+    if use10boxes:
+        getBox6Schedule()
+        getBox7Schedule()
+        getBox8Schedule()
+        getBox9Schedule()
+        getBox10Schedule()
     status.pack(side='bottom', fill='x')
     status.set('Schedules for all boxes are set.')
     show_conf()
     btnSave['state']='normal'
     btnRun['state']='normal'
     recordingmenu.entryconfig('Start new', state='normal')
+    window.update_idletasks()
+
+
+def clickUse10Boxes(): 
+    use10boxes = True    
+    status.pack(side='bottom', fill='x')
+    status.set('MODE: Using 10 boxes.')
     window.update_idletasks()
 
 
@@ -3748,7 +3764,7 @@ if __name__ == '__main__':
     menu.add_cascade(label='File', menu=filemenu)
     #create setting menu
     settingmenu = Menu(menu)
-    settingmenu.add_command(label='10 boxes mode', command=getAllBoxSchedule)
+    settingmenu.add_command(label='10 boxes mode', command=clickUse10Boxes)
     settingmenu.add_command(label='Set all boxes', command=getAllBoxSchedule)
     settingmenu.add_command(label='Show schedule', command=show_conf)
     menu.add_cascade(label='Setting', menu=settingmenu)
