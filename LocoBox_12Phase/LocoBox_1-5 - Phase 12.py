@@ -368,8 +368,8 @@ def get_data(istate=0): # Start recording
                                             hourFrom2_5+minuteFrom2_5+hourFrom3_5+minuteFrom3_5+
                                             hourFrom4_5+minuteFrom4_5+hourFrom5_5+minuteFrom5_5))
                
-                status.pack(side='bottom', fill='x')
-                status.set('Phase 5 schedules sent.')
+                window.status.pack(side='bottom', fill='x')
+                window.status.set('Phase 5 schedules sent.')
             #Phase 6
             if i==15:
                 serial_obj.write(str.encode(hourOn1_6+minOn1_6+hourOff1_6+minOff1_6+hourOn2_6+minOn2_6+hourOff2_6+minOff2_6+
@@ -386,8 +386,8 @@ def get_data(istate=0): # Start recording
                                             date5_6+month5_6+year5_6+hourFrom1_6+minuteFrom1_6+
                                             hourFrom2_6+minuteFrom2_6+hourFrom3_6+minuteFrom3_6+
                                             hourFrom4_6+minuteFrom4_6+hourFrom5_6+minuteFrom5_6))
-                status.pack(side='bottom', fill='x')
-                status.set('Phase 6 schedules sent.')
+                window.status.pack(side='bottom', fill='x')
+                window.status.set('Phase 6 schedules sent.')
             #Phase 7
             if i==18:
                 serial_obj.write(str.encode(hourOn1_7+minOn1_7+hourOff1_7+minOff1_7+hourOn2_7+minOn2_7+hourOff2_7+minOff2_7+
