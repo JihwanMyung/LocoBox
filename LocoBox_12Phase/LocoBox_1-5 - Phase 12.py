@@ -18,7 +18,7 @@ import serial.tools.list_ports # For identifying Arduino port
 import os
 
 
-os.system("sudo chmod 666 /dev/ttyS0")
+#os.system("sudo chmod 666 /dev/ttyS0")
 
 
 # Global variables 1_1 = Box_Phases
@@ -149,28 +149,69 @@ class StatusBar(Frame): # scan open serial ports
         self.label.update_idletasks()
 
 
+class GUI:
+
+    def __init__(self, root):
+        self.root = root # root is a passed Tk object
+        self.title = root.title('LocoBox (1-5_box)')
+        
+        self.menu = Menu(root)
+        self.filemenu = Menu(self.menu)
+        self.settingmenu = Menu(self.menu)
+        self.recordingmenu = Menu(self.menu)
+        self.aboutmenu = Menu(self.menu)
+        self.tab_control = ttk.Notebook(root)
+
+        if sys.platform.startswith('win'):
+            root.geometry('770x420')
+        elif sys.platform.startswith('darwin'):
+            root.geometry('1000x440')
+        elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
+            root.geometry('1100x620')
+        else:
+            root.geometry('1000x440')
+        
+        self.status = StatusBar(self.root)
+
+
+    def removethis(self):
+        self.frame.destroy()
+
+    def quit(self):
+        self.root.quit()
+
+    def update_idletasks(self):
+        self.root.update_idletasks()
+
+    
+
+
+root = Tk()
+window = GUI(root)
+# root.mainloop()
+
 #GUI
 #Initialize the windows size and name
-window = Tk()
-window.title('LocoBox (1-5_box)')
-if sys.platform.startswith('win'):
-    window.geometry('770x420')
-elif sys.platform.startswith('darwin'):
-    window.geometry('1000x440')
-elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-    window.geometry('1100x620')
-else:
-    window.geometry('1000x440')
-status = StatusBar(window)
+# window = Tk()
+# window.title('LocoBox (1-5_box)')
+# if sys.platform.startswith('win'):
+#     window.geometry('770x420')
+# elif sys.platform.startswith('darwin'):
+#     window.geometry('1000x440')
+# elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
+#     window.geometry('1100x620')
+# else:
+#     window.geometry('1000x440')
+# status = StatusBar(window)
 
-###Define functions
+# ###Define functions
 def destruct(): # Quit the program
     print('LocoBox ended.')
-    window.quit()
+    root.quit()
 
 def get_data(istate=0): # Start recording
-    status.pack(side='bottom', fill='x')
-    status.set('Starting the recording...')
+    window.status.pack(side='bottom', fill='x')
+    window.status.set('Starting the recording...')
     box1rec_text.set('Preparing for recording.')
     box2rec_text.set('Preparing for recording.')
     box3rec_text.set('Preparing for recording.')
@@ -3657,12 +3698,35 @@ def clickUse10Boxes():
     
     if use10boxes:
         use10boxes = False
+        ParentFrame6.destroy()
+        ParentFrame7.destroy()
+        ParentFrame8.destroy()
+        ParentFrame9.destroy()
+        ParentFrame10.destroy()
+
     else:
-        use10boxes = True    
+        use10boxes = True 
+        ParentFrame6 = ttk.Frame(window.tab_control)
+        ParentFrame7 = ttk.Frame(window.tab_control)
+        ParentFrame8 = ttk.Frame(window.tab_control)
+        ParentFrame9 = ttk.Frame(window.tab_control)
+        ParentFrame10 = ttk.Frame(window.tab_control)
+        window.tab_control.add(ParentFrame6, text='Box6')
+        window.tab_control.add(ParentFrame7, text='Box7')
+        window.tab_control.add(ParentFrame8, text='Box8')
+        window.tab_control.add(ParentFrame9, text='Box9')
+        window.tab_control.add(ParentFrame10, text='Box10')
+        tab6 = create_tab(ParentFrame6)
+        tab7 = create_tab(ParentFrame7)
+        tab8 = create_tab(ParentFrame8)
+        tab9 = create_tab(ParentFrame9)
+        tab10 = create_tab(ParentFrame10)   
         
     print(use10boxes)
     status.pack(side='bottom', fill='x')
     status.set('MODE: Using 10 boxes.')
+    
+    
     window.update_idletasks()
 
 
@@ -3687,7 +3751,7 @@ def create_tab(parentframe):
 if __name__ == '__main__':
     #### All of the components and their positions in the GUI ####
     # You can change the design from here #       
-    menu = Menu(window) #define menu
+    menu = window.menu #define menu
    
 
     # Define Var to keep track of the schedule
@@ -3795,45 +3859,23 @@ if __name__ == '__main__':
     aboutmenu = Menu(menu)
     aboutmenu.add_command(label='About LocoBox', command=about)
     menu.add_cascade(label='Help', menu=aboutmenu)
-    window.config(menu=menu)
+    root.config(menu=menu)
 
-    tab_control = ttk.Notebook(window)
-    ParentFrame1 = ttk.Frame(tab_control)
-    ParentFrame2 = ttk.Frame(tab_control)
-    ParentFrame3 = ttk.Frame(tab_control)
-    ParentFrame4 = ttk.Frame(tab_control)
-    ParentFrame5 = ttk.Frame(tab_control)
-    ParentFrame11 = ttk.Frame(tab_control)
-
-    
+    #tab_control = ttk.Notebook(window)
+    ParentFrame1 = ttk.Frame(window.tab_control)
+    ParentFrame2 = ttk.Frame(window.tab_control)
+    ParentFrame3 = ttk.Frame(window.tab_control)
+    ParentFrame4 = ttk.Frame(window.tab_control)
+    ParentFrame5 = ttk.Frame(window.tab_control)
+    ParentFrame11 = ttk.Frame(window.tab_control)  
 
 
-    if use10boxes:
-        ParentFrame5 = ttk.Frame(tab_control)
-        ParentFrame6 = ttk.Frame(tab_control)
-        ParentFrame7 = ttk.Frame(tab_control)
-        ParentFrame8 = ttk.Frame(tab_control)
-        ParentFrame9 = ttk.Frame(tab_control)
-        ParentFrame10 = ttk.Frame(tab_control)
-
-    window.update_idletasks()
-
-    tab_control.add(ParentFrame1, text='Box1')
-    tab_control.add(ParentFrame2, text='Box2')
-    tab_control.add(ParentFrame3, text='Box3')
-    tab_control.add(ParentFrame4, text='Box4')
-    tab_control.add(ParentFrame5, text='Box5')
-    tab_control.add(ParentFrame11, text='Schedules')
-
-    if use10boxes:
-        tab_control.add(ParentFrame6, text='Box6')
-        tab_control.add(ParentFrame7, text='Box7')
-        tab_control.add(ParentFrame8, text='Box8')
-        tab_control.add(ParentFrame9, text='Box9')
-        tab_control.add(ParentFrame10, text='Box10')
-
-   
-
+    window.tab_control.add(ParentFrame1, text='Box1')
+    window.tab_control.add(ParentFrame2, text='Box2')
+    window.tab_control.add(ParentFrame3, text='Box3')
+    window.tab_control.add(ParentFrame4, text='Box4')
+    window.tab_control.add(ParentFrame5, text='Box5')
+    window.tab_control.add(ParentFrame11, text='Schedules')        
     
     tab1 = create_tab(ParentFrame1)
     tab2 = create_tab(ParentFrame2)
@@ -3843,6 +3885,17 @@ if __name__ == '__main__':
     tab11 = create_tab(ParentFrame11)
 
     if use10boxes:
+        
+        ParentFrame6 = ttk.Frame(window.tab_control)
+        ParentFrame7 = ttk.Frame(window.tab_control)
+        ParentFrame8 = ttk.Frame(window.tab_control)
+        ParentFrame9 = ttk.Frame(window.tab_control)
+        ParentFrame10 = ttk.Frame(window.tab_control)
+        window.tab_control.add(ParentFrame6, text='Box6')
+        window.tab_control.add(ParentFrame7, text='Box7')
+        window.tab_control.add(ParentFrame8, text='Box8')
+        window.tab_control.add(ParentFrame9, text='Box9')
+        window.tab_control.add(ParentFrame10, text='Box10')
         tab6 = create_tab(ParentFrame6)
         tab7 = create_tab(ParentFrame7)
         tab8 = create_tab(ParentFrame8)
@@ -3861,8 +3914,8 @@ if __name__ == '__main__':
         openPorts.append(p.device)
     if len(openPorts) == 0:
         openPorts=[openPorts]
-    status.pack(side='bottom', fill='x')
-    status.set('Available ports: '+', '.join(map(str,openPorts)))
+    window.status.pack(side='bottom', fill='x')
+    window.status.set('Available ports: '+', '.join(map(str,openPorts)))
 
     #Entry for Port, Baud, timeout, filename to save
     Label(text = 'Port').place(x = 40, y = 270)
@@ -3893,12 +3946,14 @@ if __name__ == '__main__':
     
     btnSave = Button(text=' Save ', command=save_conf, state='disabled')
     btnRun = Button(text= ' Recording Start ', command=connect, state='disabled')
+    btn10 = Button(text= ' Use 10 boxes ', command=clickUse10Boxes, state='active')
   
     # if box settings of all 5 boxes are done, activate save and run buttons
     if use10boxes:
         if setBox1+setBox2+setBox3+setBox4+setBox5+ setBox6+setBox7+setBox8+setBox9+setBox10 == 10:
             btnSave['state']='normal'
             btnRun['state']='normal'
+            btn10['state']='disabled'
             recordingmenu.entryconfig('Start new', state='normal')
             show_conf()
             window.update_idletasks()
@@ -3908,6 +3963,7 @@ if __name__ == '__main__':
         if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
             btnSave['state']='normal'
             btnRun['state']='normal'
+            btn10['state']='normal'
             recordingmenu.entryconfig('Start new', state='normal')
             show_conf()
             window.update_idletasks()
@@ -3918,15 +3974,19 @@ if __name__ == '__main__':
     if sys.platform.startswith('win'):
         btnSave.place(x=570, y=350)
         btnRun.place(x=610, y=350)
+        btn10.place(x=640, y=350)
     elif sys.platform.startswith('darwin'):
         btnSave.place(x=685, y=350)
         btnRun.place(x=745, y=350)
+        btn10.place(x=640, y=350)
     elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
         btnSave.place(x=650, y=350)
         btnRun.place(x=720, y=350)
+        btn10.place(x=870, y=350)
     else:
         btnSave.place(x=635, y=350)
         btnRun.place(x=695, y=350)
+        btn10.place(x=870, y=350)
 
     row_adj = 3  # useful when a new row is added above
 
@@ -8377,7 +8437,7 @@ if __name__ == '__main__':
     box5rec_stat.grid(column=0, row= row_adj+rowStatusRecording+1, columnspan='27', sticky='we')
     window.update_idletasks()
     
-    tab_control.pack(expand=1, fill='both')
+    window.tab_control.pack(expand=1, fill='both')
 
     ### Main loop
-    window.mainloop()
+    window.root.mainloop()
