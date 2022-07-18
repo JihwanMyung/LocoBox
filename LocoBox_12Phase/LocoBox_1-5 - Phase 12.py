@@ -3629,6 +3629,25 @@ def getAllBoxSchedule():
     recordingmenu.entryconfig('Start new', state='normal')
     window.update_idletasks()
 
+
+def create_tab(i, parentframe):
+    canvas = Canvas(parentframe, width=850, height=200)
+    scroll = Scrollbar(parentframe, orient=VERTICAL, command=canvas.yview)
+    canvas.grid(row=0, column=0)
+    scroll.grid(row=0, column=1, sticky='ns')
+    canvas.config(yscrollcommand=scroll.set)
+    tab = Frame(canvas, width=200, height=300)
+    tab.bind(
+    "<Configure>",
+    lambda e: canvas.configure(
+        scrollregion=canvas.bbox("all")
+        )
+    )
+    canvas.create_window(400, 175, window=tab)
+    return tab
+
+
+
 if __name__ == '__main__':
     #### All of the components and their positions in the GUI ####
     # You can change the design from here #       
@@ -3746,6 +3765,16 @@ if __name__ == '__main__':
     ParentFrame4 = ttk.Frame(tab_control)
     ParentFrame5 = ttk.Frame(tab_control)
     ParentFrame11 = ttk.Frame(tab_control)
+
+    if use10boxes:
+        ParentFrame5 = ttk.Frame(tab_control)
+        ParentFrame6 = ttk.Frame(tab_control)
+        ParentFrame7 = ttk.Frame(tab_control)
+        ParentFrame8 = ttk.Frame(tab_control)
+        ParentFrame9 = ttk.Frame(tab_control)
+        ParentFrame10 = ttk.Frame(tab_control)
+
+
     tab_control.add(ParentFrame1, text='Box1')
     tab_control.add(ParentFrame2, text='Box2')
     tab_control.add(ParentFrame3, text='Box3')
@@ -3753,24 +3782,32 @@ if __name__ == '__main__':
     tab_control.add(ParentFrame5, text='Box5')
     tab_control.add(ParentFrame11, text='Schedules')
 
+    if use10boxes:
+        tab_control.add(ParentFrame6, text='Box6')
+        tab_control.add(ParentFrame7, text='Box7')
+        tab_control.add(ParentFrame8, text='Box8')
+        tab_control.add(ParentFrame9, text='Box9')
+        tab_control.add(ParentFrame10, text='Box10')
+
     #tab1
 
-    canvas1 = Canvas(ParentFrame1, width=850, height=200) #, highlightbackground="red", highlightthickness=2
-    scroll1 = Scrollbar(ParentFrame1, orient=VERTICAL, command=canvas1.yview)
+    # canvas1 = Canvas(ParentFrame1, width=850, height=200) #, highlightbackground="red", highlightthickness=2
+    # scroll1 = Scrollbar(ParentFrame1, orient=VERTICAL, command=canvas1.yview)
     
     
-    canvas1.grid(row=0, column=0)
-    scroll1.grid(row=0, column=1, sticky='ns')
+    # canvas1.grid(row=0, column=0)
+    # scroll1.grid(row=0, column=1, sticky='ns')
     
-    canvas1.config(yscrollcommand=scroll1.set)
-    tab1 = Frame(canvas1, width=200, height=300)#, highlightbackground="black", highlightthickness=1
-    tab1.bind(
-    "<Configure>",
-    lambda e: canvas1.configure(
-        scrollregion=canvas1.bbox("all")
-        )
-    )
-    canvas1.create_window(400, 175, window=tab1)
+    # canvas1.config(yscrollcommand=scroll1.set)
+    # tab1 = Frame(canvas1, width=200, height=300)#, highlightbackground="black", highlightthickness=1
+    # tab1.bind(
+    # "<Configure>",
+    # lambda e: canvas1.configure(
+    #     scrollregion=canvas1.bbox("all")
+    #     )
+    # )
+    # canvas1.create_window(400, 175, window=tab1)
+    tab1 = create_tab(1, ParentFrame1)
 
 #tab2
     canvas2 = Canvas(ParentFrame2, width=850, height=200)
@@ -3835,6 +3872,7 @@ if __name__ == '__main__':
     )
     canvas5.create_window(400, 175, window=tab5)
     
+    #CANVAS 11 for schedules
     canvas11 = Canvas(ParentFrame11, width=850, height=200) #, highlightbackground="red", highlightthickness=2
     scroll11 = Scrollbar(ParentFrame11, orient=HORIZONTAL, command=canvas11.xview, width=20)
     canvas11.grid(row=0, column=0)
