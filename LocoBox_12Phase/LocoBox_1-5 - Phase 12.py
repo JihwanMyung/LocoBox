@@ -15,6 +15,10 @@ except ImportError:
     fileDialog = tk.filedialog
 import threading # To run Arduino loop and tkinter loop alongside
 import serial.tools.list_ports # For identifying Arduino port
+import os
+
+
+os.system("sudo chmod 666 /dev/ttyS0")
 
 
 # Global variables 1_1 = Box_Phases
@@ -94,6 +98,7 @@ global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date
 global setBox1, setBox2, setBox3, setBox4, setBox5
 global setBox6, setBox7, setBox8, setBox9, setBox10
 
+global use10boxes
 use10boxes = False
 
 
@@ -3679,6 +3684,7 @@ if __name__ == '__main__':
     #### All of the components and their positions in the GUI ####
     # You can change the design from here #       
     menu = Menu(window) #define menu
+   
 
     # Define Var to keep track of the schedule
                                     #1 for LD
@@ -3757,6 +3763,8 @@ if __name__ == '__main__':
     var3_12 = IntVar(value=1)
     var4_12 = IntVar(value=1)
     var5_12 = IntVar(value=1)
+
+    use10boxes = False
     
     #Create file menu
     filemenu = Menu(menu)
