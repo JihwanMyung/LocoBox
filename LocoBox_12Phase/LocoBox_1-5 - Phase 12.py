@@ -2371,6 +2371,14 @@ def disconnect():  # close the serial_obj thread
     box3rec_text.set('Recording stopped.')
     box4rec_text.set('Recording stopped.')
     box5rec_text.set('Recording stopped.')
+    if use10boxes:
+        
+        box6rec_text.set('Recording stopped.')
+        box7rec_text.set('Recording stopped.')
+        box8rec_text.set('Recording stopped.')
+        box9rec_text.set('Recording stopped.')
+        box10rec_text.set('Recording stopped.')
+
     
     window.update_idletasks()
 
@@ -3852,12 +3860,24 @@ if __name__ == '__main__':
     btnRun = Button(text= ' Recording Start ', command=connect, state='disabled')
   
     # if box settings of all 5 boxes are done, activate save and run buttons
-    if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
-        btnSave['state']='normal'
-        btnRun['state']='normal'
-        recordingmenu.entryconfig('Start new', state='normal')
-        show_conf()
-        window.update_idletasks()
+    if use10boxes:
+        if setBox1+setBox2+setBox3+setBox4+setBox5+ setBox6+setBox7+setBox8+setBox9+setBox10 == 10:
+            btnSave['state']='normal'
+            btnRun['state']='normal'
+            recordingmenu.entryconfig('Start new', state='normal')
+            show_conf()
+            window.update_idletasks()
+
+
+    else:
+        if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
+            btnSave['state']='normal'
+            btnRun['state']='normal'
+            recordingmenu.entryconfig('Start new', state='normal')
+            show_conf()
+            window.update_idletasks()
+    
+
 
     # button positions change depending on OS
     if sys.platform.startswith('win'):
@@ -3927,6 +3947,11 @@ if __name__ == '__main__':
     label1_m2_1.grid(column=23, row=1+row_adj, pady=5, sticky='w')
     rad1_B_1.grid(column=24, row=1+row_adj, padx=15, pady=5)
     rad1_C_1.grid(column=25, row=1+row_adj, pady=5)
+
+
+
+
+
         # phase 2
     phaseLabel1_2 = Label(tab1, text='Phase 2')
     fromLabel1_2 = Label(tab1, text='From:')
@@ -4823,6 +4848,9 @@ if __name__ == '__main__':
     label2_m2_1.grid(column=23,row=1+row_adj, pady=5, sticky='w')
     rad2_B_1.grid(column=24, row=1+row_adj, padx=15, pady=5)
     rad2_C_1.grid(column=25, row=1+row_adj, pady=5)
+
+
+
         # phase 2
     phaseLabel2_2 = Label(tab2, text='Phase 2')
     fromLabel2_2 = Label(tab2, text='From:')
