@@ -216,6 +216,7 @@ unsigned long interval1 = 1000UL;
 unsigned long interval2 = 90UL;
 unsigned long invalue = 0UL;
 unsigned long maxValue = 16000000UL;
+int previoussecs;
 
 // Define a function to convert string to integer
 int getInt(String text)
@@ -226,7 +227,7 @@ int getInt(String text)
   return x;
 }
 
-void rtc_delay(unsigned long interval)
+void millis_delay(unsigned long interval)
 {
   unsigned long currentMillis = millis();
 
@@ -241,7 +242,7 @@ void rtc_delay(unsigned long interval)
 }
 
 
-void rtc_delay2()
+void count_delay2()
 {
   if(invalue++ >= maxValue)
   {
@@ -254,6 +255,17 @@ void rtc_delay2()
   }
 }
 
+void rtc_delay()
+{
+  unsigned long currents = clock.second;
+
+  if(currents - previoussecs> 0)
+  {
+  
+  previousMillis = currents;
+  }
+}
+
 //////////////////////////////////////////////////////////////////////////////////////// Set up run
 void setup()
 {
@@ -263,8 +275,8 @@ void setup()
      pinMode(DIn[i], INPUT);    // PIR
      pinMode(DOut[i], OUTPUT);  // LED
   }
-  rtc_delay(interval1);
-  //delay(1000); // recommended delay before start-up (1-sec)// use RTC
+  //rtc_delay(interval1);
+  delay(1000); // recommended delay before start-up (1-sec)// use RTC
 }
 
 //////////////////////////////////////////////////////////////////////////////////////// Main loop
@@ -2542,7 +2554,7 @@ void loop()
 //    timeExpansion();
     Serial.println(" ");
     //delay(1000);
-    rtc_delay(interval1);
+    rtc_delay3();
     
   }
   
@@ -2581,8 +2593,9 @@ void printMeasurement()
 //            }
 //      }
     
-    rtc_delay(90UL);
-    //rtc_delay(interval2); // sampling 655 times per minute
+    //rtc_delay(90UL);
+    delay(90);// sampling 655 times per minute
+    
   }
  
 
