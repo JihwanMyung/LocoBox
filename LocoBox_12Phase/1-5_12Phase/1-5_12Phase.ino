@@ -228,7 +228,13 @@ void setup()
      pinMode(DIn[i], INPUT);    // PIR
      pinMode(DOut[i], OUTPUT);  // LED
   }
-  delay(1000); // recommended delay before start-up (1-sec)
+  uint8_t last_sec = 0;
+  if (rtc.getSecond() != last_sec)
+  {
+    last_sec = clock.getSecond();
+    
+  }
+  //delay(1000); // recommended delay before start-up (1-sec) use RTC
 }
 
 //////////////////////////////////////////////////////////////////////////////////////// Main loop
