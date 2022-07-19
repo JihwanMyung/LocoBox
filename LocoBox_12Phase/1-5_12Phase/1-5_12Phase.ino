@@ -213,7 +213,7 @@ int InitialFlag = 0;
 //interval
 unsigned long previousMillis = 0UL;
 unsigned long interval1 = 1000UL;
-unsigned long interval2 = 90UL;
+unsigned long interval90 = 90UL;
 unsigned long invalue = 0UL;
 unsigned long maxValue = 16000000UL;
 int previoussecs;
@@ -275,8 +275,7 @@ void setup()
      pinMode(DIn[i], INPUT);    // PIR
      pinMode(DOut[i], OUTPUT);  // LED
   }
-  //rtc_delay(interval1);
-  delay(1000); // recommended delay before start-up (1-sec)// use RTC
+  millis_delay(interval1);// recommended delay before start-up (1-sec)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////// Main loop
@@ -1453,7 +1452,7 @@ void loop()
   {
     while ((clock.second==0) == false) //clock.second == 0
     {
-      // delay(1);
+      
       clock.getTime();
     }
 
@@ -2553,8 +2552,8 @@ void loop()
     printMeasurement();
 //    timeExpansion();
     Serial.println(" ");
-    //delay(1000);
-    rtc_delay3();
+    
+    rtc_delay();
     
   }
   
@@ -2593,7 +2592,7 @@ void printMeasurement()
 //            }
 //      }
     
-    //rtc_delay(90UL);
+    //millis_delay(90);
     delay(90);// sampling 655 times per minute
     
   }
