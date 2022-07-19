@@ -17,7 +17,7 @@ The LocomotorBox (LocoBox) GUI interface has been optimized for Windows, macOS, 
 
 ### Installation
 
-Download Arduino .ino file and Python3 .py file. Upload .ino to Arduino microcontroller using Arduino software.
+Download Arduino .ino file and Python3 .py file. Upload .ino to Arduino microcontroller using Arduino software. Install Grove - DS1307 RTC library (https://wiki.seeedstudio.com/Grove-RTC/).
 Run Python GUI interface by double-clicking the .py file or on command-line using python3.
 
 ## Deployment
