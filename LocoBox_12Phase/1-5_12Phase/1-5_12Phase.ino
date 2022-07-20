@@ -1,3 +1,8 @@
+#include <Adafruit_I2CDevice.h>
+#include <Adafruit_BusIO_Register.h>
+#include <Adafruit_SPIDevice.h>
+#include <Adafruit_I2CRegister.h>
+
 /*
  * 1-LED, 1-PIR box driver (1 arduino driving 10 box)
  * 
@@ -19,7 +24,7 @@
 // #include <DS3231.h>
 
 //#include <DS1307.h>
-RTClib rtc; //define a object of RTClib class, DS3231
+RTC_DS3231 rtc; //define a object of RTClib class, DS3231
 //using https://learn.adafruit.com/adafruit-ds3231-precision-rtc-breakout/arduino-usage
 
 
@@ -258,7 +263,8 @@ void count_delay2()
 
 void rtc_delay()
 {
-  unsigned long currents = rtc.second();
+  DateTime now = rtc.now();
+  unsigned long currents = now.second();
 
   if(currents - previoussecs> 0)
   {
@@ -274,17 +280,32 @@ void setup()
   Wire.begin();
   // start the connexion to the RTC
 
-  if (! rtc.begin()) {
-    Serial.println("Couldn't find RTC");
-    while (1); // can't go further
-  }
+  
 
   // rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
   for (int i=0; i<5; i++){
      pinMode(DIn[i], INPUT);    // PIR
      pinMode(DOut[i], OUTPUT);  // LED
   }
-  millis_delay(interval1);// recommended delay before start-up (1-sec)
+
+  if (! rtc.begin()) {
+    Serial.println("Couldn't find RTC");
+    Serial.flush();
+    while (1) {
+      millis_delay(interval1);// recommended delay before start-up (1-sec)
+    }
+  }
+
+  if (rtc.lostPower()) {
+    Serial.println("RTC lost power, let's set the time!");
+    // When time needs to be set on a new device, or after a power loss, the
+    // following line sets the RTC to the date & time this sketch was compiled
+    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+    // This line sets the RTC with an explicit date & time, for example to set
+    // January 21, 2014 at 3am you would call:
+    // rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
+  }
+  
 }
 
 //////////////////////////////////////////////////////////////////////////////////////// Main loop
@@ -298,11 +319,13 @@ void loop()
     dateIn = Serial.readString();
     // Wire.write(0x0E); // select register
     // Wire.write(0b00011100); // write register bitmap, bit 7 is /EOSC
-    clock.stopClock();
-    clock.fillByYMD(getInt(dateIn.substring(0, 4)), getInt(dateIn.substring(5, 7)), getInt(dateIn.substring(8, 10)));
-    clock.fillByHMS(getInt(dateIn.substring(11, 13)), getInt(dateIn.substring(14, 16)), getInt(dateIn.substring(17, 19)));
-    clock.setTime();
-    clock.startClock();
+    // rtc.adjust(DateTime(2017, 7, 16, 16, 35, 20));
+    //clock.stopClock();
+    //clock.fillByYMD(getInt(dateIn.substring(0, 4)), getInt(dateIn.substring(5, 7)), getInt(dateIn.substring(8, 10)));
+    //clock.fillByHMS(getInt(dateIn.substring(11, 13)), getInt(dateIn.substring(14, 16)), getInt(dateIn.substring(17, 19)));
+    rtc.adjust(DateTime(getInt(dateIn.substring(0, 4)), getInt(dateIn.substring(5, 7)), getInt(dateIn.substring(8, 10)), getInt(dateIn.substring(11, 13), getInt(dateIn.substring(14, 16), getInt(dateIn.substring(17, 19)));
+    //clock.setTime();
+    //clock.startClock();
     
     Serial.println(dateIn);
 
@@ -2694,6 +2717,7 @@ void printMeasurement()
 // Define a function to print time
 void printTime()
 {
+  DateTime now = rtc.now()
   if (now.hour() < 10)
   {
     Serial.print("0");
