@@ -329,7 +329,7 @@ void loop()
     int month = getInt(dateIn.substring(5, 7));
     int day = getInt(dateIn.substring(8, 10));
     int hour = getInt(dateIn.substring(11, 13));
-    int minutes = getInt(dateIn.substring(5,7));
+    int minutes = getInt(dateIn.substring(14, 16));
     int seconds = getInt(dateIn.substring(17, 19));
     rtc.adjust(DateTime(year, month, day, hour, minutes, seconds));
     
