@@ -11,6 +11,9 @@
  * 5 Oct 2018 complete the code
  * 3 Oct 2018 (major revision)
  * 
+ * If the access to the port is denied, modify the access using:
+ * sudo chmod a+rw /dev/ttyACM0
+ * 
  */
 
 #include <Wire.h>

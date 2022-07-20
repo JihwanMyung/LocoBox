@@ -3,11 +3,10 @@ import time     # Required for using delay functions
 import datetime # For date-time setting and timedelta calculations
 import platform
 import glob
-import sys
 import tkinter as tk
-from tkinter import Tk, Frame, Canvas, Scrollbar, sys, Label, SUNKEN, W, X, Menu, IntVar, VERTICAL, HORIZONTAL, Spinbox, Entry, ttk, messagebox, Button, StringVar, LEFT, RIGHT, Radiobutton
-#from tkinter import * #import INIT set of tkinter library for GUI
-
+from tkinter import * #import INIT set of tkinter library for GUI
+from tkinter import ttk
+from tkinter import messagebox
 from tkinter.filedialog import askopenfilename
 import json
 try:
@@ -16,10 +15,6 @@ except ImportError:
     fileDialog = tk.filedialog
 import threading # To run Arduino loop and tkinter loop alongside
 import serial.tools.list_ports # For identifying Arduino port
-import os
-
-
-#os.system("sudo chmod 666 /dev/ttyACM0")
 
 
 # Global variables 1_1 = Box_Phases
@@ -97,12 +92,6 @@ global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date
 
 
 global setBox1, setBox2, setBox3, setBox4, setBox5
-global setBox6, setBox7, setBox8, setBox9, setBox10
-
-global use10boxes
-use10boxes = False
-
-
 
 # Preset values
 setBox1=0
@@ -110,11 +99,6 @@ setBox2=0
 setBox3=0
 setBox4=0
 setBox5=0
-setBox6=0
-setBox7=0
-setBox8=0
-setBox9=0
-setBox10=0
 
 # Version information
 def about():
@@ -127,7 +111,6 @@ def about():
                                 'Laboratory of Braintime\n\n'+
                                 'https://github.com/braintimelab/LocomotorBox')
 
-#SERIAL
 # Define and create serial object function
 def create_serial_obj(portPath, baud_rate, timeout):
     '''
@@ -149,149 +132,38 @@ class StatusBar(Frame): # scan open serial ports
         self.label.config(text='')
         self.label.update_idletasks()
 
+#Initialize the windows size and name
+window = Tk()
+window.title('LocoBox (1-5_box)')
+if sys.platform.startswith('win'):
+    window.geometry('770x420')
+elif sys.platform.startswith('darwin'):
+    window.geometry('1000x440')
+elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
+    window.geometry('1100x420')
+else:
+    window.geometry('1000x440')
+status = StatusBar(window)
 
-class GUI:
-
-    def __init__(self, root):
-        self.root = root # root is a passed Tk object
-        self.title = root.title('LocoBox (1-5_box)')
-        
-        self.menu = Menu(root)
-        self.filemenu = Menu(self.menu)
-        self.settingmenu = Menu(self.menu)
-        self.recordingmenu = Menu(self.menu)
-        self.aboutmenu = Menu(self.menu)
-        self.tab_control = ttk.Notebook(root)
-        
-
-        if sys.platform.startswith('win'):
-            root.geometry('770x420')
-        elif sys.platform.startswith('darwin'):
-            root.geometry('1000x440')
-        elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-            root.geometry('1100x620')
-        else:
-            root.geometry('1000x440')
-        
-        self.status = StatusBar(self.root)
-        self.btnSave = Button(text=' Save ', command=save_conf, state='disabled')
-        self.btnRun = Button(text= ' Recording Start ', command=connect, state='disabled')
-        self.btn10 = Button(text= ' Use 10 boxes ', command=clickUse10Boxes, state='active')
-
-        
-        
-
-
-    def removethis(self):
-        self.frame.destroy()
-
-    def quit(self):
-        self.root.quit()
-
-    def update_idletasks(self):
-        self.root.update_idletasks()
-
-    
-
-    def add_primary_frames(self): #1 to 5
-        self.ParentFrame1 = ttk.Frame(self.tab_control)
-        self.ParentFrame2 = ttk.Frame(self.tab_control)
-        self.ParentFrame3 = ttk.Frame(self.tab_control)
-        self.ParentFrame4 = ttk.Frame(self.tab_control)
-        self.ParentFrame5 = ttk.Frame(self.tab_control)
-        self.ParentFrame11 = ttk.Frame(self.tab_control)
-
-        self.tab_control.add(self.ParentFrame1, text='Box1')
-        self.tab_control.add(self.ParentFrame2, text='Box2')
-        self.tab_control.add(self.ParentFrame3, text='Box3')
-        self.tab_control.add(self.ParentFrame4, text='Box4')
-        self.tab_control.add(self.ParentFrame5, text='Box5')
-        self.tab_control.add(self.ParentFrame11, text='Schedules')        
-        
-        self.tab1 = create_tab(self.ParentFrame1)
-        self.tab2 = create_tab(self.ParentFrame2)
-        self.tab3 = create_tab(self.ParentFrame3)
-        self.tab4 = create_tab(self.ParentFrame4)
-        self.tab5 = create_tab(self.ParentFrame5)
-        self.tab11 = create_tab(self.ParentFrame11)
-
-
-    def add_secondary_frames(self):
-        self.ParentFrame6 = ttk.Frame(self.tab_control)
-        self.ParentFrame7 = ttk.Frame(self.tab_control)
-        self.ParentFrame8 = ttk.Frame(self.tab_control)
-        self.ParentFrame9 = ttk.Frame(self.tab_control)
-        self.ParentFrame10 = ttk.Frame(self.tab_control)
-        
-        self.tab_control.add(self.ParentFrame6, text='Box6')
-        self.tab_control.add(self.ParentFrame7, text='Box7')
-        self.tab_control.add(self.ParentFrame8, text='Box8')
-        self.tab_control.add(self.ParentFrame9, text='Box9')
-        self.tab_control.add(self.ParentFrame10, text='Box10')
-        self.tab6 = create_tab(self.ParentFrame6)
-        self.tab7 = create_tab(self.ParentFrame7)
-        self.tab8 = create_tab(self.ParentFrame8)
-        self.tab9 = create_tab(self.ParentFrame9)
-        self.tab10 = create_tab(self.ParentFrame10)
-
-    def del_secondary_frames(self):
-        self.ParentFrame6.destroy() 
-        self.ParentFrame7.destroy() 
-        self.ParentFrame8.destroy() 
-        self.ParentFrame9.destroy() 
-        self.ParentFrame10.destroy() 
-
-    def set_ports_baud_timeout_filename(self):
-        self.port_entry = Spinbox(values=openPorts, width=25)
-        self.port_entry.delete(0,'end')
-        self.port_entry.insert(0,openPorts[0]) #first port is the default 
-        self.port_entry.place(x = 80, y = 270)
-        self.baud_entry = Spinbox(values=(300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, 115200), width=7)
-        self.baud_entry.delete(0,'end')
-        self.baud_entry.insert(0,'9600')
-        self.baud_entry.place(x = 440, y = 270)
-        self.timeout_entry = Entry(width = 4)
-        self.timeout_entry.place(x=635,y=270)
-        self.timeout_entry.insert(0,'10')
-        self.filename_entry = Entry(width = 25)
-        self.filename_entry.place(x=80, y=310)
-        date_string = time.strftime('%Y%m%d') # predefine a default filename with ISO date    
-        self.filename_entry.insert(0,'BOX1-5-'+date_string+'.txt')
-        self.configfilename_entry = Entry(width = 25)
-        self.configfilename_entry.place(x=440, y=310)
-        self.configfilename_entry.insert(0,'BOX1-5-sched-'+date_string+'.json')
-
-    
-
-
-root = Tk()
-window = GUI(root)
-
-# ###Define functions
+###Define functions
 def destruct(): # Quit the program
     print('LocoBox ended.')
-    root.quit()
+    window.quit()
 
 def get_data(istate=0): # Start recording
-    window.status.pack(side='bottom', fill='x')
-    window.status.set('Starting the recording...')
+    status.pack(side='bottom', fill='x')
+    status.set('Starting the recording...')
     box1rec_text.set('Preparing for recording.')
     box2rec_text.set('Preparing for recording.')
     box3rec_text.set('Preparing for recording.')
     box4rec_text.set('Preparing for recording.')
     box5rec_text.set('Preparing for recording.')
-    if use10boxes:
-        box6rec_text.set('Preparing for recording.')
-        box7rec_text.set('Preparing for recording.')
-        box8rec_text.set('Preparing for recording.')
-        box9rec_text.set('Preparing for recording.')
-        box10rec_text.set('Preparing for recording.')
     window.update_idletasks()
     i=istate
     counti=0
     #init csv file and write the COM port name
-    headers = window.port_entry.get()
-    filename= window.filename_entry.get()
+    headers = port_entry.get()
+    filename= filename_entry.get()
     with open(filename,'w', encoding='utf-8') as w:
                 w.write(headers+'\n')
     w.close()
@@ -307,8 +179,8 @@ def get_data(istate=0): # Start recording
             print(string2)
             if i==0:
                 print('Synching time...')
-                window.status.pack(side='bottom', fill='x')
-                window.status.set('Synching time...')
+                status.pack(side='bottom', fill='x')
+                status.set('Synching time...')
                 t= datetime.datetime.now()
                 t = t + datetime.timedelta(minutes=1)
                 serial_obj.write(str.encode(t.strftime('%Y-%m-%d %H:%M:%S')))
@@ -321,8 +193,8 @@ def get_data(istate=0): # Start recording
                 serial_obj.write(str.encode(dark1_1+light1_1+dark2_1+light2_1+dark3_1+light3_1+dark4_1+light4_1+
                                             dark5_1+light5_1))
                 
-                window.status.pack(side='bottom', fill='x')
-                window.status.set('Phase 1 schedules sent.')                              
+                status.pack(side='bottom', fill='x')
+                status.set('Phase 1 schedules sent.')                              
             if i==3:
                 serial_obj.write(str.encode(hourOn1_2+minOn1_2+hourOff1_2+minOff1_2+hourOn2_2+minOn2_2+hourOff2_2+minOff2_2+
                                             hourOn3_2+minOn3_2+hourOff3_2+minOff3_2+hourOn4_2+minOn4_2+hourOff4_2+minOff4_2+
@@ -339,8 +211,8 @@ def get_data(istate=0): # Start recording
                                             hourFrom2_2+minuteFrom2_2+hourFrom3_2+minuteFrom3_2+
                                             hourFrom4_2+minuteFrom4_2+hourFrom5_2+minuteFrom5_2))
                
-                window.status.pack(side='bottom', fill='x')
-                window.status.set('Phase 2 schedules sent.')    
+                status.pack(side='bottom', fill='x')
+                status.set('Phase 2 schedules sent.')    
             if i==6:
                 serial_obj.write(str.encode(hourOn1_3+minOn1_3+hourOff1_3+minOff1_3+hourOn2_3+minOn2_3+hourOff2_3+minOff2_3+
                                             hourOn3_3+minOn3_3+hourOff3_3+minOff3_3+hourOn4_3+minOn4_3+hourOff4_3+minOff4_3+
@@ -357,8 +229,8 @@ def get_data(istate=0): # Start recording
                                             hourFrom2_3+minuteFrom2_3+hourFrom3_3+minuteFrom3_3+
                                             hourFrom4_3+minuteFrom4_3+hourFrom5_3+minuteFrom5_3))
                 
-                window.status.pack(side='bottom', fill='x')
-                window.status.set('Phase 3 schedules sent.')
+                status.pack(side='bottom', fill='x')
+                status.set('Phase 3 schedules sent.')
             if i==9:
                 serial_obj.write(str.encode(hourOn1_4+minOn1_4+hourOff1_4+minOff1_4+hourOn2_4+minOn2_4+hourOff2_4+minOff2_4+
                                             hourOn3_4+minOn3_4+hourOff3_4+minOff3_4+hourOn4_4+minOn4_4+hourOff4_4+minOff4_4+
@@ -375,8 +247,8 @@ def get_data(istate=0): # Start recording
                                             hourFrom2_4+minuteFrom2_4+hourFrom3_4+minuteFrom3_4+
                                             hourFrom4_4+minuteFrom4_4+hourFrom5_4+minuteFrom5_4)) 
                 
-                window.status.pack(side='bottom', fill='x')
-                window.status.set('Phase 4 schedules sent.')
+                status.pack(side='bottom', fill='x')
+                status.set('Phase 4 schedules sent.')
             if i==12:
                 serial_obj.write(str.encode(hourOn1_5+minOn1_5+hourOff1_5+minOff1_5+hourOn2_5+minOn2_5+hourOff2_5+minOff2_5+
                                             hourOn3_5+minOn3_5+hourOff3_5+minOff3_5+hourOn4_5+minOn4_5+hourOff4_5+minOff4_5+
@@ -393,8 +265,8 @@ def get_data(istate=0): # Start recording
                                             hourFrom2_5+minuteFrom2_5+hourFrom3_5+minuteFrom3_5+
                                             hourFrom4_5+minuteFrom4_5+hourFrom5_5+minuteFrom5_5))
                
-                window.status.pack(side='bottom', fill='x')
-                window.status.set('Phase 5 schedules sent.')
+                status.pack(side='bottom', fill='x')
+                status.set('Phase 5 schedules sent.')
             #Phase 6
             if i==15:
                 serial_obj.write(str.encode(hourOn1_6+minOn1_6+hourOff1_6+minOff1_6+hourOn2_6+minOn2_6+hourOff2_6+minOff2_6+
@@ -411,8 +283,8 @@ def get_data(istate=0): # Start recording
                                             date5_6+month5_6+year5_6+hourFrom1_6+minuteFrom1_6+
                                             hourFrom2_6+minuteFrom2_6+hourFrom3_6+minuteFrom3_6+
                                             hourFrom4_6+minuteFrom4_6+hourFrom5_6+minuteFrom5_6))
-                window.status.pack(side='bottom', fill='x')
-                window.status.set('Phase 6 schedules sent.')
+                status.pack(side='bottom', fill='x')
+                status.set('Phase 6 schedules sent.')
             #Phase 7
             if i==18:
                 serial_obj.write(str.encode(hourOn1_7+minOn1_7+hourOff1_7+minOff1_7+hourOn2_7+minOn2_7+hourOff2_7+minOff2_7+
@@ -429,8 +301,8 @@ def get_data(istate=0): # Start recording
                                             date5_7+month5_7+year5_7+hourFrom1_7+minuteFrom1_7+
                                             hourFrom2_7+minuteFrom2_7+hourFrom3_7+minuteFrom3_7+
                                             hourFrom4_7+minuteFrom4_7+hourFrom5_7+minuteFrom5_7))
-                window.status.pack(side='bottom', fill='x')
-                window.status.set('Phase 7 schedules sent.')
+                status.pack(side='bottom', fill='x')
+                status.set('Phase 7 schedules sent.')
             #Phase 8
             if i==21:
                 serial_obj.write(str.encode(hourOn1_8+minOn1_8+hourOff1_8+minOff1_8+hourOn2_8+minOn2_8+hourOff2_8+minOff2_8+
@@ -448,8 +320,8 @@ def get_data(istate=0): # Start recording
                                             hourFrom2_8+minuteFrom2_8+hourFrom3_8+minuteFrom3_8+
                                             hourFrom4_8+minuteFrom4_8+hourFrom5_8+minuteFrom5_8))
 
-                window.status.pack(side='bottom', fill='x')
-                window.status.set('Phase 8 schedules sent.')
+                status.pack(side='bottom', fill='x')
+                status.set('Phase 8 schedules sent.')
             #Phase 9
             if i==24:
                 serial_obj.write(str.encode(hourOn1_9+minOn1_9+hourOff1_9+minOff1_9+hourOn2_9+minOn2_9+hourOff2_9+minOff2_9+
@@ -467,8 +339,8 @@ def get_data(istate=0): # Start recording
                                             hourFrom2_9+minuteFrom2_9+hourFrom3_9+minuteFrom3_9+
                                             hourFrom4_9+minuteFrom4_9+hourFrom5_9+minuteFrom5_9))
 
-                window.status.pack(side='bottom', fill='x')
-                window.status.set('Phase 9 schedules sent.')
+                status.pack(side='bottom', fill='x')
+                status.set('Phase 9 schedules sent.')
             #Phase 10
             if i==27:
                 serial_obj.write(str.encode(hourOn1_10+minOn1_10+hourOff1_10+minOff1_10+hourOn2_10+minOn2_10+hourOff2_10+minOff2_10+
@@ -486,8 +358,8 @@ def get_data(istate=0): # Start recording
                                             hourFrom2_10+minuteFrom2_10+hourFrom3_10+minuteFrom3_10+
                                             hourFrom4_10+minuteFrom4_10+hourFrom5_10+minuteFrom5_10))
 
-                window.status.pack(side='bottom', fill='x')
-                window.status.set('Phase 10 schedules sent.')
+                status.pack(side='bottom', fill='x')
+                status.set('Phase 10 schedules sent.')
             #Phase 11
             if i==30:
                 serial_obj.write(str.encode(hourOn1_11+minOn1_11+hourOff1_11+minOff1_11+hourOn2_11+minOn2_11+hourOff2_11+minOff2_11+
@@ -505,8 +377,8 @@ def get_data(istate=0): # Start recording
                                             hourFrom2_11+minuteFrom2_11+hourFrom3_11+minuteFrom3_11+
                                             hourFrom4_11+minuteFrom4_11+hourFrom5_11+minuteFrom5_11))
 
-                window.status.pack(side='bottom', fill='x')
-                window.status.set('Phase 11 schedules sent.')
+                status.pack(side='bottom', fill='x')
+                status.set('Phase 11 schedules sent.')
 
             #Phase 12
             if i==33:
@@ -525,20 +397,14 @@ def get_data(istate=0): # Start recording
                                             hourFrom2_12+minuteFrom2_12+hourFrom3_12+minuteFrom3_12+
                                             hourFrom4_12+minuteFrom4_12+hourFrom5_12+minuteFrom5_12))
 
-                window.status.pack(side='bottom', fill='x')
-                window.status.set('Phase 11 schedules sent.')
-                window.status.set('All schedules transferred. Recording began.') 
+                status.pack(side='bottom', fill='x')
+                status.set('Phase 11 schedules sent.')
+                status.set('All schedules transferred. Recording began.') 
                 box1rec_text.set('Recording on-going.')
                 box2rec_text.set('Recording on-going.')
                 box3rec_text.set('Recording on-going.')
                 box4rec_text.set('Recording on-going.')
                 box5rec_text.set('Recording on-going.')
-                if use10boxes:
-                    box6rec_text.set('Recording on-going.')
-                    box7rec_text.set('Recording on-going.')
-                    box8rec_text.set('Recording on-going.')
-                    box9rec_text.set('Recording on-going.')
-                    box10rec_text.set('Recording on-going.')
                 window.update_idletasks()
             i=i+1
             
@@ -558,19 +424,13 @@ def get_data(istate=0): # Start recording
                 counti = counti+1
     except:
         print('Stopped recording and disconnected from the boxes.')
-        window.status.pack(side='bottom', fill='x')
-        window.status.set('Stopped recording and disconnected from the boxes.') 
+        status.pack(side='bottom', fill='x')
+        status.set('Stopped recording and disconnected from the boxes.') 
         box1rec_text.set('Recording stopped.')
         box2rec_text.set('Recording stopped.')
         box3rec_text.set('Recording stopped.')
         box4rec_text.set('Recording stopped.')
         box5rec_text.set('Recording stopped.')
-        if use10boxes:
-            box6rec_text.set('Recording stopped.')
-            box7rec_text.set('Recording stopped.')
-            box8rec_text.set('Recording stopped.')
-            box9rec_text.set('Recording stopped.')
-            box10rec_text.set('Recording stopped.')
         window.update_idletasks()
 
 def writeToJSONFile(filename, data):
@@ -579,8 +439,8 @@ def writeToJSONFile(filename, data):
         json.dump(data, fp)
 
 def save_conf(): # Save schedule configuration
-    window.status.pack(side='bottom', fill='x')
-    window.status.set('Saving the schedule configuration...')
+    status.pack(side='bottom', fill='x')
+    status.set('Saving the schedule configuration...')
     config={}
     config['hourOn1_1'] = hourOn1_1
     config['minOn1_1'] = minOn1_1
@@ -790,22 +650,23 @@ def save_conf(): # Save schedule configuration
     
     configfilename = configfilename_entry.get()
     writeToJSONFile(configfilename, config)
-    window.status.pack(side='bottom', fill='x')
-    window.status.set('Schedule configuration saved.')
+    status.pack(side='bottom', fill='x')
+    status.set('Schedule configuration saved.')
+
 
 
 def read_data(): # Read data from file for plotting
     global file_plot
-    window.status.pack(side='bottom', fill='x')
-    window.status.set('Reading the data...')
+    status.pack(side='bottom', fill='x')
+    status.set('Reading the data...')
     file_plot = askopenfilename(filetypes=(("Text files", "*.txt"),
                                       ("All files", "*.*")))
-    window.status.pack(side='bottom', fill='x')
-    window.status.set('Schedule configuration saved.')
+    status.pack(side='bottom', fill='x')
+    status.set('Schedule configuration saved.')
 
 def read_conf(): # Read schedule configuration
-    window.status.pack(side='bottom', fill='x')
-    window.status.set('Reading the schedule configuration...')
+    status.pack(side='bottom', fill='x')
+    status.set('Reading the schedule configuration...')
     configfilename = filedialog.askopenfilename()
     with open(configfilename) as data_file:
         config = json.load(data_file)
@@ -1054,24 +915,17 @@ def read_conf(): # Read schedule configuration
     minuteFrom5_4 = config['minuteFrom5_4'] 
      
     btnRun['state']='normal'
-    window.recordingmenu.entryconfig('Start new', state='normal')
+    recordingmenu.entryconfig('Start new', state='normal')
     show_conf()
     window.update_idletasks()
 
-    window.status.pack(side='bottom', fill='x')
-    window.status.set('The schedule configuration is loaded.')
+    status.pack(side='bottom', fill='x')
+    status.set('The schedule configuration is loaded.')
     box1sched_text.set('Box1 schedule loaded.')
     box2sched_text.set('Box2 schedule loaded.')
     box3sched_text.set('Box3 schedule loaded.')
     box4sched_text.set('Box4 schedule loaded.')
     box5sched_text.set('Box5 schedule loaded.')
-    if  use10boxes:
-        box6sched_text.set('Box6 schedule loaded.')
-        box7sched_text.set('Box7 schedule loaded.')
-        box8sched_text.set('Box8 schedule loaded.')
-        box9sched_text.set('Box9 schedule loaded.')
-        box10sched_text.set('Box10 schedule loaded.')
-
     
     window.update_idletasks()
 
@@ -2441,6 +2295,9 @@ def show_conf(): # Show schedule configuration
         window.update_idletasks()
         box5pha12text.set(year5_12+'/'+month5_12+'/'+date5_12+' '+hourFrom5_12+':'+minuteFrom5_12+' | '+'LL')
         window.update_idletasks()  
+     
+
+    
 
 def connect():  # Start to connect and call get_data - Link to Start in Recording menu
     port = port_entry.get()
@@ -2452,8 +2309,8 @@ def connect():  # Start to connect and call get_data - Link to Start in Recordin
     try:
         serial_obj = create_serial_obj(port, baud, timeout=timeout)
     except NameError:
-        window.status.pack(side='bottom', fill='x')
-        window.status.set('Missing baud rate and port number.')
+        status.pack(side='bottom', fill='x')
+        status.set('Missing baud rate and port number.')
         return
     t1 = threading.Thread(target=lambda:get_data(0))
     t1.daemon = True
@@ -2465,37 +2322,26 @@ def connect():  # Start to connect and call get_data - Link to Start in Recordin
     t1.start()
 
 def disconnect():  # close the serial_obj thread
-    window.status.pack(side='bottom', fill='x')
-    window.status.set('Attempting to close serial port...')
+    status.pack(side='bottom', fill='x')
+    status.set('Attempting to close serial port...')
     global dead
     global serial_obj
     dead = True
     serial_obj.close()
     print(threading.active_count())
     print(threading.enumerate())
-    window.status.pack(side='bottom', fill='x')
-    window.status.set('Stopped recording and disconnected from the boxes.')
+    status.pack(side='bottom', fill='x')
+    status.set('Stopped recording and disconnected from the boxes.')
     box1rec_text.set('Recording stopped.')
     box2rec_text.set('Recording stopped.')
     box3rec_text.set('Recording stopped.')
     box4rec_text.set('Recording stopped.')
     box5rec_text.set('Recording stopped.')
-    if use10boxes:
-        
-        box6rec_text.set('Recording stopped.')
-        box7rec_text.set('Recording stopped.')
-        box8rec_text.set('Recording stopped.')
-        box9rec_text.set('Recording stopped.')
-        box10rec_text.set('Recording stopped.')
-
     
     window.update_idletasks()
 
 def OnButtonClick(button_id):
     global setBox1, setBox2, setBox3, setBox4, setBox5
-    if use10boxes:
-        global setBox6, setBox7, setBox8, setBox9, setBox10
-
     if button_id == 1:
         getBox1Schedule()
         setBox1=1
@@ -2748,13 +2594,13 @@ def getBox1Schedule():
         dark1_12='0'
         light1_12='1'
 
-    window.status.pack(side='bottom', fill='x')
-    window.status.set('Box1 schedule is set.')
+    status.pack(side='bottom', fill='x')
+    status.set('Box1 schedule is set.')
     box1sched_text.set('Box1 schedule set.')
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
-        window.btnSave['state']='normal'
-        window.btnRun['state']='normal'  
-        window.recordingmenu.entryconfig('Start new', state='normal')
+        btnSave['state']='normal'
+        btnRun['state']='normal'  
+        recordingmenu.entryconfig('Start new', state='normal')
         show_conf()
     window.update_idletasks()
 
@@ -2992,13 +2838,13 @@ def getBox2Schedule():
         dark2_12='0'
         light2_12='1'
     
-    window.status.pack(side='bottom', fill='x')
-    window.status.set('Box2 schedule is set.')
+    status.pack(side='bottom', fill='x')
+    status.set('Box2 schedule is set.')
     box2sched_text.set('Box2 schedule set.')
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
         btnRun['state']='normal'
-        window.recordingmenu.entryconfig('Start new', state='normal')
+        recordingmenu.entryconfig('Start new', state='normal')
         show_conf()
     window.update_idletasks()
 
@@ -3236,13 +3082,13 @@ def getBox3Schedule():
         dark3_12='0'
         light3_12='1'
 
-    window.status.pack(side='bottom', fill='x')
-    window.status.set('Box3 schedule is set.')
+    status.pack(side='bottom', fill='x')
+    status.set('Box3 schedule is set.')
     box3sched_text.set('Box3 schedule set.')
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
         btnRun['state']='normal'
-        window.recordingmenu.entryconfig('Start new', state='normal')
+        recordingmenu.entryconfig('Start new', state='normal')
         show_conf()
     window.update_idletasks()
 
@@ -3480,13 +3326,13 @@ def getBox4Schedule():
         dark4_12='0'
         light4_12='1'
 
-    window.status.pack(side='bottom', fill='x')
-    window.status.set('Box4 schedule is set.')
+    status.pack(side='bottom', fill='x')
+    status.set('Box4 schedule is set.')
     box4sched_text.set('Box4 schedule set.')
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
         btnRun['state']='normal'
-        window.recordingmenu.entryconfig('Start new', state='normal')
+        recordingmenu.entryconfig('Start new', state='normal')
         show_conf()
     window.update_idletasks()
 
@@ -3724,13 +3570,13 @@ def getBox5Schedule():
         dark5_12='0'
         light5_12='1'
 
-    window.status.pack(side='bottom', fill='x')
-    window.status.set('Box5 schedule is set.')
+    status.pack(side='bottom', fill='x')
+    status.set('Box5 schedule is set.')
     box5sched_text.set('Box5 schedule set.')
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
         btnRun['state']='normal'
-        window.recordingmenu.entryconfig('Start new', state='normal')
+        recordingmenu.entryconfig('Start new', state='normal')
         show_conf()
     window.update_idletasks()
 
@@ -3741,75 +3587,18 @@ def getAllBoxSchedule():
     getBox3Schedule()
     getBox4Schedule()
     getBox5Schedule()
-    if use10boxes:
-        getBox6Schedule()
-        getBox7Schedule()
-        getBox8Schedule()
-        getBox9Schedule()
-        getBox10Schedule()
-    window.status.pack(side='bottom', fill='x')
-    window.status.set('Schedules for all boxes are set.')
+    status.pack(side='bottom', fill='x')
+    status.set('Schedules for all boxes are set.')
     show_conf()
     btnSave['state']='normal'
     btnRun['state']='normal'
     recordingmenu.entryconfig('Start new', state='normal')
     window.update_idletasks()
 
-
-def clickUse10Boxes(): 
-    global use10boxes
-    
-    if use10boxes:
-        use10boxes = False
-        window.del_secondary_frames()
-        window.title = root.title('LocoBox (1-5_box)')
-
-    else:
-        use10boxes = True 
-        window.add_secondary_frames()
-        window.tab_control.add(window.ParentFrame6, text='Box6')
-        window.tab_control.add(window.ParentFrame7, text='Box7')
-        window.tab_control.add(window.ParentFrame8, text='Box8')
-        window.tab_control.add(window.ParentFrame9, text='Box9')
-        window.tab_control.add(window.ParentFrame10, text='Box10')
-        tab6 = create_tab(window.ParentFrame6)
-        tab7 = create_tab(window.ParentFrame7)
-        tab8 = create_tab(window.ParentFrame8)
-        tab9 = create_tab(window.ParentFrame9)
-        tab10 = create_tab(window.ParentFrame10)   
-        window.title = root.title('LocoBox (1-10_boxes)')
-        
-    print(use10boxes)
-    window.status.pack(side='bottom', fill='x')
-    window.status.set('MODE: Using 10 boxes.')
-    
-    
-    window.update_idletasks()
-
-
-def create_tab(parentframe):
-    canvas = Canvas(parentframe, width=850, height=200)
-    scroll = Scrollbar(parentframe, orient=VERTICAL, command=canvas.yview)
-    canvas.grid(row=0, column=0)
-    scroll.grid(row=0, column=1, sticky='ns')
-    canvas.config(yscrollcommand=scroll.set)
-    tab = Frame(canvas, width=200, height=300)
-    tab.bind(
-    "<Configure>",
-    lambda e: canvas.configure(
-        scrollregion=canvas.bbox("all")
-        )
-    )
-    canvas.create_window(400, 175, window=tab)
-    return tab
-
-
-
 if __name__ == '__main__':
     #### All of the components and their positions in the GUI ####
     # You can change the design from here #       
-    menu = window.menu #define menu
-   
+    menu = Menu(window) #define menu
 
     # Define Var to keep track of the schedule
                                     #1 for LD
@@ -3888,56 +3677,125 @@ if __name__ == '__main__':
     var3_12 = IntVar(value=1)
     var4_12 = IntVar(value=1)
     var5_12 = IntVar(value=1)
-
-    
     
     #Create file menu
-    
-    window.filemenu.add_command(label='Load schedules', command=read_conf)
-    window.filemenu.add_command(label='Save schedules', command=save_conf)
-    window.filemenu.add_separator()
-    window.filemenu.add_command(label='Quit', command=destruct)
-    window.menu.add_cascade(label='File', menu=window.filemenu)
+    filemenu = Menu(menu)
+    filemenu.add_command(label='Load schedules', command=read_conf)
+    filemenu.add_command(label='Save schedules', command=save_conf)
+    filemenu.add_separator()
+    filemenu.add_command(label='Quit', command=destruct)
+    menu.add_cascade(label='File', menu=filemenu)
     #create setting menu
-    
-    window.settingmenu.add_command(label='10 boxes mode', command=clickUse10Boxes)
-    window.settingmenu.add_command(label='Set all boxes', command=getAllBoxSchedule)
-    window.settingmenu.add_command(label='Show schedule', command=show_conf)
-    window.menu.add_cascade(label='Setting', menu=window.settingmenu)
+    settingmenu = Menu(menu)
+    settingmenu.add_command(label='Set all boxes', command=getAllBoxSchedule)
+    settingmenu.add_command(label='Show schedule', command=show_conf)
+    menu.add_cascade(label='Setting', menu=settingmenu)
     #create recording menu
-    
-    window.recordingmenu.add_command(label='Start new', command=connect)
-    window.recordingmenu.entryconfig('Start new', state='disabled')
+    recordingmenu = Menu(menu)
+    recordingmenu.add_command(label='Start new', command=connect)
+    recordingmenu.entryconfig('Start new', state='disabled')
     #recordingmenu.add_command(label='Start revised', command=lambda:get_data(1))
-    window.recordingmenu.add_separator()
-    window.recordingmenu.add_command(label='Stop', command=disconnect)
-    window.menu.add_cascade(label='Recording', menu=window.recordingmenu)
+    recordingmenu.add_separator()
+    recordingmenu.add_command(label='Stop', command=disconnect)
+    menu.add_cascade(label='Recording', menu=recordingmenu)
     #create About menu
+    aboutmenu = Menu(menu)
+    aboutmenu.add_command(label='About LocoBox', command=about)
+    menu.add_cascade(label='Help', menu=aboutmenu)
+    window.config(menu=menu)
+
+    tab_control = ttk.Notebook(window)
+    ParentFrame1 = ttk.Frame(tab_control)
+    ParentFrame2 = ttk.Frame(tab_control)
+    ParentFrame3 = ttk.Frame(tab_control)
+    ParentFrame4 = ttk.Frame(tab_control)
+    ParentFrame5 = ttk.Frame(tab_control)
+    ParentFrame11 = ttk.Frame(tab_control)
+    tab_control.add(ParentFrame1, text='Box1')
+    tab_control.add(ParentFrame2, text='Box2')
+    tab_control.add(ParentFrame3, text='Box3')
+    tab_control.add(ParentFrame4, text='Box4')
+    tab_control.add(ParentFrame5, text='Box5')
+    tab_control.add(ParentFrame11, text='Schedules')
+    #tab11
+
+    canvas1 = Canvas(ParentFrame1, width=750, height=200) #, highlightbackground="red", highlightthickness=2
+    scroll1 = Scrollbar(ParentFrame1, orient=VERTICAL, command=canvas1.yview)
+    canvas1.grid(row=0, column=0)
+    scroll1.grid(row=0, column=1, sticky='ns')
+    tab1 = Frame(canvas1, width=200, height=300)#, highlightbackground="black", highlightthickness=1
+    tab1.bind(
+    "<Configure>",
+    lambda e: canvas1.configure(
+        scrollregion=canvas1.bbox("all")
+        )
+    )
+    canvas1.create_window(400, 175, window=tab1)
+
+    canvas2 = Canvas(ParentFrame2, width=750, height=200)
+    scroll2 = Scrollbar(ParentFrame2, orient=VERTICAL, command=canvas2.yview)
+    canvas2.grid(row=0, column=0)
+    scroll2.grid(row=0, column=1, sticky='ns')
+    tab2 = Frame(canvas2, width=200, height=300)
+    tab2.bind(
+    "<Configure>",
+    lambda e: canvas2.configure(
+        scrollregion=canvas2.bbox("all")
+        )
+    )
+    canvas2.create_window(400, 175, window=tab2)
     
-    window.aboutmenu.add_command(label='About LocoBox', command=about)
-    window.menu.add_cascade(label='Help', menu=window.aboutmenu)
-    window.root.config(menu=menu)
+    canvas3 = Canvas(ParentFrame3, width=750, height=200)
+    scroll3 = Scrollbar(ParentFrame3, orient=VERTICAL, command=canvas3.yview)
+    canvas3.grid(row=0, column=0)
+    scroll3.grid(row=0, column=1, sticky='ns')
+    tab3 = Frame(canvas3, width=200, height=300)
+    tab3.bind(
+    "<Configure>",
+    lambda e: canvas3.configure(
+        scrollregion=canvas3.bbox("all")
+        )
+    )
+    canvas3.create_window(400, 175, window=tab3)   
 
+    canvas4 = Canvas(ParentFrame4, width=750, height=200)
+    scroll4 = Scrollbar(ParentFrame4, orient=VERTICAL, command=canvas4.yview)
+    canvas4.grid(row=0, column=0)
+    scroll4.grid(row=0, column=1, sticky='ns')
+    tab4 = Frame(canvas4, width=200, height=300)
+    tab4.bind(
+    "<Configure>",
+    lambda e: canvas4.configure(
+        scrollregion=canvas4.bbox("all")
+        )
+    )
+    canvas4.create_window(400, 175, window=tab4)
+
+    canvas5 = Canvas(ParentFrame5, width=750, height=200)
+    scroll5 = Scrollbar(ParentFrame5, orient=VERTICAL, command=canvas5.yview)
+    canvas5.grid(row=0, column=0)
+    scroll5.grid(row=0, column=1, sticky='ns')
+    tab5 = Frame(canvas5, width=200, height=300)
+    tab5.bind(
+    "<Configure>",
+    lambda e: canvas5.configure(
+        scrollregion=canvas5.bbox("all")
+        )
+    )
+    canvas5.create_window(400, 175, window=tab5)
     
-    window.add_primary_frames()
-
-    tab1 = window.tab1
-    tab2 = window.tab2
-    tab3 = window.tab3
-    tab4 = window.tab4
-    tab5 = window.tab5
-    tab11 = window.tab11
-
-
-
-    
-
-    if use10boxes:
-        
-        window.add_secondary_frames()
-    
-
-
+    canvas11 = Canvas(ParentFrame11, width=750, height=200) #, highlightbackground="red", highlightthickness=2
+    scroll1 = Scrollbar(ParentFrame11, orient=HORIZONTAL, command=canvas11.xview, width=20)
+    canvas11.grid(row=0, column=0)
+    scroll1.grid(row=1, column=0, sticky='nsew')
+    tab11 = Frame(canvas11, width=200, height=300)#, highlightbackground="black", highlightthickness=1
+    tab11.bind(
+    "<Configure>",
+    lambda e: canvas11.configure(
+        scrollregion=canvas11.bbox("all")
+        )
+    )
+    canvas11.create_window(400, 175, window=tab11)
     
    
 
@@ -3949,8 +3807,8 @@ if __name__ == '__main__':
         openPorts.append(p.device)
     if len(openPorts) == 0:
         openPorts=[openPorts]
-    window.status.pack(side='bottom', fill='x')
-    window.status.set('Available ports: '+', '.join(map(str,openPorts)))
+    status.pack(side='bottom', fill='x')
+    status.set('Available ports: '+', '.join(map(str,openPorts)))
 
     #Entry for Port, Baud, timeout, filename to save
     Label(text = 'Port').place(x = 40, y = 270)
@@ -3959,108 +3817,88 @@ if __name__ == '__main__':
     Label(text= 'File').place(x=40, y=310)
     Label(text= 'Schedule').place(x=363, y=310)
 
-    window.set_ports_baud_timeout_filename()
+    port_entry = Spinbox(values=openPorts, width=25)
+    port_entry.delete(0,'end')
+    port_entry.insert(0,openPorts[0]) #first port is the default 
+    port_entry.place(x = 80, y = 270)
+    baud_entry = Spinbox(values=(300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, 115200), width=7)
+    baud_entry.delete(0,'end')
+    baud_entry.insert(0,'9600')
+    baud_entry.place(x = 440, y = 270)
+    timeout_entry = Entry(width = 4)
+    timeout_entry.place(x=635,y=270)
+    timeout_entry.insert(0,'10')
+    filename_entry = Entry(width = 25)
+    filename_entry.place(x=80, y=310)
+    date_string = time.strftime('%Y%m%d') # predefine a default filename with ISO date    
+    filename_entry.insert(0,'BOX1-5-'+date_string+'.txt')
+    configfilename_entry = Entry(width = 25)
+    configfilename_entry.place(x=440, y=310)
+    configfilename_entry.insert(0,'BOX1-5-sched-'+date_string+'.json')
 
-    # port_entry = Spinbox(values=openPorts, width=25)
-    # port_entry.delete(0,'end')
-    # port_entry.insert(0,openPorts[0]) #first port is the default 
-    # port_entry.place(x = 80, y = 270)
-    # baud_entry = Spinbox(values=(300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, 115200), width=7)
-    # baud_entry.delete(0,'end')
-    # baud_entry.insert(0,'9600')
-    # baud_entry.place(x = 440, y = 270)
-    # timeout_entry = Entry(width = 4)
-    # timeout_entry.place(x=635,y=270)
-    # timeout_entry.insert(0,'10')
-    # filename_entry = Entry(width = 25)
-    # filename_entry.place(x=80, y=310)
-    # date_string = time.strftime('%Y%m%d') # predefine a default filename with ISO date    
-    # filename_entry.insert(0,'BOX1-5-'+date_string+'.txt')
-    # configfilename_entry = Entry(width = 25)
-    # configfilename_entry.place(x=440, y=310)
-    # configfilename_entry.insert(0,'BOX1-5-sched-'+date_string+'.json')
-
-    
-    
+    btnSave = Button(text=' Save ', command=save_conf, state='disabled')
+    btnRun = Button(text= ' Recording Start ', command=connect, state='disabled')
   
     # if box settings of all 5 boxes are done, activate save and run buttons
-    if use10boxes:
-        if setBox1+setBox2+setBox3+setBox4+setBox5+ setBox6+setBox7+setBox8+setBox9+setBox10 == 10:
-            btnSave['state']='normal'
-            btnRun['state']='normal'
-            btn10['state']='disabled'
-            window.recordingmenu.entryconfig('Start new', state='normal')
-            show_conf()
-            window.update_idletasks()
-
-
-    else:
-        if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
-            btnSave['state']='normal'
-            btnRun['state']='normal'
-            btn10['state']='normal'
-            window.recordingmenu.entryconfig('Start new', state='normal')
-            show_conf()
-            window.update_idletasks()
-    
-
+    if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
+        btnSave['state']='normal'
+        btnRun['state']='normal'
+        recordingmenu.entryconfig('Start new', state='normal')
+        show_conf()
+        window.update_idletasks()
 
     # button positions change depending on OS
     if sys.platform.startswith('win'):
         btnSave.place(x=570, y=350)
         btnRun.place(x=610, y=350)
-        btn10.place(x=640, y=350)
     elif sys.platform.startswith('darwin'):
         btnSave.place(x=685, y=350)
         btnRun.place(x=745, y=350)
-        btn10.place(x=640, y=350)
     elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
         btnSave.place(x=650, y=350)
         btnRun.place(x=720, y=350)
-        btn10.place(x=870, y=350)
     else:
         btnSave.place(x=635, y=350)
         btnRun.place(x=695, y=350)
-        btn10.place(x=870, y=350)
 
     row_adj = 3  # useful when a new row is added above
 
     # Box1
-    btn1 = Button(window.tab1, text='  Set  ', command=lambda: OnButtonClick(1))
-    btnAll1 = Button(window.tab1, text='Set All', command=getAllBoxSchedule)
-    tab1_title = Label(window.tab1, text= 'LED schedule', anchor='center')
+    btn1 = Button(tab1, text='  Set  ', command=lambda: OnButtonClick(1))
+    btnAll1 = Button(tab1, text='Set All', command=getAllBoxSchedule)
+    tab1_title = Label(tab1, text= 'LED schedule', anchor='center')
     tab1_title.grid(column=0, row= -1+row_adj, columnspan='27', sticky='we')
     #capSep1 = ttk.Separator(tab1, orient=HORIZONTAL)
     #capSep1.grid(column=0, row = row_adj+5, columnspan='27', sticky='we')
     box1sched_text=StringVar()
     box1sched_text.set('Schedule not set.')
-    box1sched_stat=Label(window.tab1, textvariable=box1sched_text, anchor=W, justify=LEFT)
+    box1sched_stat=Label(tab1, textvariable=box1sched_text, anchor=W, justify=LEFT)
         # phase 1
-    phaseLabel1_1 = Label(window.tab1, text='Phase 1')
+    phaseLabel1_1 = Label(tab1, text='Phase 1')
     dateLabel = time.strftime('%H:%M   %Y/%m/%d') # reads time for Phase 1 start-time
-    fromLabel1_1 = Label(window.tab1, text='From:')
-    date_label1 = Label(window.tab1, text=dateLabel+' (HH:MN YYYY/MO/DD)')
-    rad1_A_1 = Radiobutton(window.tab1, text='LD', variable=var1_1, value=1)
-    lbl1_A_1 = Label(window.tab1, text= 'On:')
-    spin1_A_1 = Spinbox(window.tab1, from_=00, to=24, width=3, format='%02.0f')
-    spin1_B_1 = Spinbox(window.tab1, from_=00, to=59, width=3, format='%02.0f')
+    fromLabel1_1 = Label(tab1, text='From:')
+    date_label1 = Label(tab1, text=dateLabel+' (HH:MN YYYY/MO/DD)')
+    rad1_A_1 = Radiobutton(tab1, text='LD', variable=var1_1, value=1)
+    lbl1_A_1 = Label(tab1, text= 'On:')
+    spin1_A_1 = Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f')
+    spin1_B_1 = Spinbox(tab1, from_=00, to=59, width=3, format='%02.0f')
     spin1_A_1.delete(0,'end')
     spin1_A_1.insert(0,'07')
     spin1_B_1.delete(0,'end')
     spin1_B_1.insert(0,'00')
-    label1_h1_1 = Label(window.tab1, text=':')
-    label1_m1_1 = Label(window.tab1, text='')
-    lbl1_B_1 = Label(window.tab1, text= 'Off:')
-    spin1_C_1 = Spinbox(window.tab1, from_=00, to=24, width=3, format='%02.0f')
-    spin1_D_1 = Spinbox(window.tab1, from_=00, to=59, width=3, format='%02.0f')
+    label1_h1_1 = Label(tab1, text=':')
+    label1_m1_1 = Label(tab1, text='')
+    lbl1_B_1 = Label(tab1, text= 'Off:')
+    spin1_C_1 = Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f')
+    spin1_D_1 = Spinbox(tab1, from_=00, to=59, width=3, format='%02.0f')
     spin1_C_1.delete(0,'end')
     spin1_C_1.insert(0,'19')
     spin1_D_1.delete(0,'end')
     spin1_D_1.insert(0,'00')
-    label1_h2_1 = Label(window.tab1, text=':')
-    label1_m2_1 = Label(window.tab1, text='')
-    rad1_B_1 = Radiobutton(window.tab1, text='DD', variable=var1_1, value=2)
-    rad1_C_1 = Radiobutton(window.tab1, text='LL', variable=var1_1, value=3)
+    label1_h2_1 = Label(tab1, text=':')
+    label1_m2_1 = Label(tab1, text='')
+    rad1_B_1 = Radiobutton(tab1, text='DD', variable=var1_1, value=2)
+    rad1_C_1 = Radiobutton(tab1, text='LL', variable=var1_1, value=3)
     phaseLabel1_1.grid(column=0, row=1+row_adj, padx=15, pady=5)
     fromLabel1_1.grid(column=1,row=1+row_adj)
     date_label1.grid(column=2, row=1+row_adj, columnspan='10', sticky='w')
@@ -4077,11 +3915,6 @@ if __name__ == '__main__':
     label1_m2_1.grid(column=23, row=1+row_adj, pady=5, sticky='w')
     rad1_B_1.grid(column=24, row=1+row_adj, padx=15, pady=5)
     rad1_C_1.grid(column=25, row=1+row_adj, pady=5)
-
-
-
-
-
         # phase 2
     phaseLabel1_2 = Label(tab1, text='Phase 2')
     fromLabel1_2 = Label(tab1, text='From:')
@@ -4978,9 +4811,6 @@ if __name__ == '__main__':
     label2_m2_1.grid(column=23,row=1+row_adj, pady=5, sticky='w')
     rad2_B_1.grid(column=24, row=1+row_adj, padx=15, pady=5)
     rad2_C_1.grid(column=25, row=1+row_adj, pady=5)
-
-
-
         # phase 2
     phaseLabel2_2 = Label(tab2, text='Phase 2')
     fromLabel2_2 = Label(tab2, text='From:')
@@ -8472,7 +8302,7 @@ if __name__ == '__main__':
     box5rec_stat.grid(column=0, row= row_adj+rowStatusRecording+1, columnspan='27', sticky='we')
     window.update_idletasks()
     
-    window.tab_control.pack(expand=1, fill='both')
+    tab_control.pack(expand=1, fill='both')
 
     ### Main loop
-    window.root.mainloop()
+    window.mainloop()

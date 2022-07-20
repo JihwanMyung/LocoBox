@@ -10,6 +10,7 @@ The following Python versions are used: Python 3.7.0, Pyserial 3.4
 
 The LocomotorBox (LocoBox) GUI interface has been optimized for Windows, macOS, and Linux (tested on Ubuntu).
 
+
 ### Current GUI
 
 ![image](https://user-images.githubusercontent.com/7980453/179441301-88334b75-9c94-4ac8-8e3a-2b289612ceca.png)
@@ -18,6 +19,7 @@ The LocomotorBox (LocoBox) GUI interface has been optimized for Windows, macOS, 
 ### Installation
 
 Download Arduino .ino file and Python3 .py file. Upload .ino to Arduino microcontroller using Arduino software. Install Grove - DS1307 RTC library (https://wiki.seeedstudio.com/Grove-RTC/).
+
 Run Python GUI interface by double-clicking the .py file or on command-line using python3.
 
 ## Deployment

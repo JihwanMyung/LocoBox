@@ -208,7 +208,15 @@ int LightFlag[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 int TimeSet = 0;
 int LightSet[47] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; // add/subtract(4) for phase checkpoints
 int InitialFlag = 0;
- 
+
+
+//interval
+unsigned long previousMillis = 0UL;
+unsigned long interval1 = 1000UL;
+unsigned long interval90 = 90UL;
+unsigned long invalue = 0UL;
+unsigned long maxValue = 16000000UL;
+int previoussecs;
 
 // Define a function to convert string to integer
 int getInt(String text)
@@ -217,6 +225,45 @@ int getInt(String text)
   text.toCharArray(temp, 5);
   int x = atoi(temp);
   return x;
+}
+
+void millis_delay(unsigned long interval)
+{
+  unsigned long currentMillis = millis();
+
+  if(currentMillis - previousMillis > interval)
+  {
+  /* The Arduino executes this code once every second
+  *  (interval = 1000 (ms) = 1 second).
+  */
+  // Don't forget to update the previousMillis value
+  previousMillis = currentMillis;
+  }
+}
+
+
+void count_delay2()
+{
+  if(invalue++ >= maxValue)
+  {
+  /* The Arduino executes this code approx. once every second
+  *  (assuming clock speed = 16MHz)
+  */
+
+  // Don't forget to reset the counter
+  invalue = 0UL;
+  }
+}
+
+void rtc_delay()
+{
+  unsigned long currents = clock.second;
+
+  if(currents - previoussecs> 0)
+  {
+  
+  previousMillis = currents;
+  }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////// Set up run
@@ -228,7 +275,7 @@ void setup()
      pinMode(DIn[i], INPUT);    // PIR
      pinMode(DOut[i], OUTPUT);  // LED
   }
-  delay(1000); // recommended delay before start-up (1-sec)
+  millis_delay(interval1);// recommended delay before start-up (1-sec)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////// Main loop
@@ -1405,7 +1452,7 @@ void loop()
   {
     while ((clock.second==0) == false) //clock.second == 0
     {
-      // delay(1);
+      
       clock.getTime();
     }
 
@@ -2505,7 +2552,8 @@ void loop()
     printMeasurement();
 //    timeExpansion();
     Serial.println(" ");
-    delay(1000);
+    
+    rtc_delay();
     
   }
   
@@ -2543,8 +2591,10 @@ void printMeasurement()
 //              Acate[j] += 0;
 //            }
 //      }
-      
-    delay(90); // sampling 655 times per minute
+    
+    //millis_delay(90);
+    delay(90);// sampling 655 times per minute
+    
   }
  
 
