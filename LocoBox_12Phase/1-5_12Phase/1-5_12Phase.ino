@@ -1500,68 +1500,68 @@ void loop()
 
 //     End phase 1 when
      for (int i=0; i<5; i++){
-       if (phase1[i] == 0 && now.day() == date2[i] &&  now.month()== month2[i] && now.year() + 2000 == year2[i] && now.hour() * 60 + now.minute() >= HourFrom2[i] * 60 + MinuteFrom2[i]){
+       if (phase1[i] == 0 && now.day() == date2[i] &&  now.month()== month2[i] && now.year()  == year2[i] && now.hour() * 60 + now.minute() >= HourFrom2[i] * 60 + MinuteFrom2[i]){
           phase1[i] = 1; //maybe I'll have to change the +2000
        }
      }
     
      //End phase 2 when
      for (int i=0; i<5; i++){
-       if (phase1[i] == 1 && now.day() == date3[i] && now.month() == month3[i] && now.year() + 2000 == year3[i] && now.hour() * 60 + now.minute() >= HourFrom3[i] * 60 + MinuteFrom3[i]){
+       if (phase1[i] == 1 && now.day() == date3[i] && now.month() == month3[i] && now.year()  == year3[i] && now.hour() * 60 + now.minute() >= HourFrom3[i] * 60 + MinuteFrom3[i]){
           phase2[i] = 1;
        }
      }
     //End phase 3 when
     for (int i=0; i<5; i++){
-      if (phase1[i] == 1 && phase2[i] == 1 && now.day() == date4[i] && now.month() == month4[i] && now.year() + 2000 == year4[i] && now.hour() * 60 + now.minute() >= HourFrom4[i] * 60 + MinuteFrom4[i]){
+      if (phase1[i] == 1 && phase2[i] == 1 && now.day() == date4[i] && now.month() == month4[i] && now.year()  == year4[i] && now.hour() * 60 + now.minute() >= HourFrom4[i] * 60 + MinuteFrom4[i]){
          phase3[i] = 1;
       }
     }
     //End phase 4 when
     for (int i=0; i<5; i++){
-      if (phase1[i] == 1 && phase2[i] && phase3[i] == 1 && now.day() == date5[i] && now.month() == month5[i] && now.year() + 2000 == year5[i] && now.hour() * 60 + now.minute() >= HourFrom5[i] * 60 + MinuteFrom5[i]){
+      if (phase1[i] == 1 && phase2[i] && phase3[i] == 1 && now.day() == date5[i] && now.month() == month5[i] && now.year()  == year5[i] && now.hour() * 60 + now.minute() >= HourFrom5[i] * 60 + MinuteFrom5[i]){
          phase4[i] = 1;
       }
     }
     //End phase 5 when
     for (int i=0; i<5; i++){
-      if (phase1[i] == 1 && phase2[i] && phase3[i] == 1 && phase4[i] == 1 && now.day() == date6[i] && now.month() == month6[i] && now.year() + 2000 == year6[i] && now.hour() * 60 + now.minute() >= HourFrom6[i] * 60 + MinuteFrom6[i]){
+      if (phase1[i] == 1 && phase2[i] && phase3[i] == 1 && phase4[i] == 1 && now.day() == date6[i] && now.month() == month6[i] && now.year()  == year6[i] && now.hour() * 60 + now.minute() >= HourFrom6[i] * 60 + MinuteFrom6[i]){
          phase5[i] = 1;
       }
     }
     //End phase 6 when
     for (int i=0; i<5; i++){
-      if (phase1[i] == 1 && phase3[i] && phase4[i] == 1 && phase5[i] == 1 && now.day() == date7[i] && now.month() == month7[i] && now.year() + 2000 == year7[i] && now.hour() * 60 + now.minute() >= HourFrom7[i] * 60 + MinuteFrom7[i]){
+      if (phase1[i] == 1 && phase3[i] && phase4[i] == 1 && phase5[i] == 1 && now.day() == date7[i] && now.month() == month7[i] && now.year()  == year7[i] && now.hour() * 60 + now.minute() >= HourFrom7[i] * 60 + MinuteFrom7[i]){
          phase6[i] = 1;
       }
     }
     //End phase 7 when
     for (int i=0; i<5; i++){
-      if (phase1[i] == 1 && phase4[i] && phase5[i] == 1 && phase6[i] == 1 && now.day() == date8[i] && now.month() == month8[i] && now.year() + 2000 == year8[i] && now.hour() * 60 + now.minute() >= HourFrom8[i] * 60 + MinuteFrom8[i]){
+      if (phase1[i] == 1 && phase4[i] && phase5[i] == 1 && phase6[i] == 1 && now.day() == date8[i] && now.month() == month8[i] && now.year()  == year8[i] && now.hour() * 60 + now.minute() >= HourFrom8[i] * 60 + MinuteFrom8[i]){
          phase7[i] = 1;
       }
     }
     //End phase 8 when
     for (int i=0; i<5; i++){
-      if (phase1[i] == 1 && phase5[i] && phase6[i] == 1 && phase7[i] == 1 && now.day() == date9[i] && now.month() == month9[i] && now.year() + 2000 == year9[i] && now.hour() * 60 + now.minute() >= HourFrom9[i] * 60 + MinuteFrom9[i]){
+      if (phase1[i] == 1 && phase5[i] && phase6[i] == 1 && phase7[i] == 1 && now.day() == date9[i] && now.month() == month9[i] && now.year()  == year9[i] && now.hour() * 60 + now.minute() >= HourFrom9[i] * 60 + MinuteFrom9[i]){
          phase8[i] = 1;
       }
     }
     //End phase 9 when
     for (int i=0; i<5; i++){
-      if (phase1[i] == 1 && phase6[i] && phase7[i] == 1 && phase8[i] == 1 && now.day() == date10[i] && now.month() == month10[i] && now.year() + 2000 == year10[i] && now.hour() * 60 + now.minute() >= HourFrom10[i] * 60 + MinuteFrom10[i]){
+      if (phase1[i] == 1 && phase6[i] && phase7[i] == 1 && phase8[i] == 1 && now.day() == date10[i] && now.month() == month10[i] && now.year()  == year10[i] && now.hour() * 60 + now.minute() >= HourFrom10[i] * 60 + MinuteFrom10[i]){
          phase9[i] = 1;
       }
     }
     //End phase 10 when
     for (int i=0; i<5; i++){
-      if (phase1[i] == 1 && phase7[i] && phase8[i] == 1 && phase9[i] == 1 && now.day() == date11[i] && now.month() == month11[i] && now.year() + 2000 == year11[i] && now.hour() * 60 + now.minute() >= HourFrom11[i] * 60 + MinuteFrom11[i]){
+      if (phase1[i] == 1 && phase7[i] && phase8[i] == 1 && phase9[i] == 1 && now.day() == date11[i] && now.month() == month11[i] && now.year()  == year11[i] && now.hour() * 60 + now.minute() >= HourFrom11[i] * 60 + MinuteFrom11[i]){
          phase10[i] = 1;
       }
     }
     //End phase 11 when
     for (int i=0; i<5; i++){
-      if (phase1[i] == 1 && phase8[i] && phase9[i] == 1 && phase10[i] == 1 && now.day() == date12[i] && now.month() == month12[i] && now.year() + 2000 == year12[i] && now.hour() * 60 + now.minute() >= HourFrom12[i] * 60 + MinuteFrom12[i]){
+      if (phase1[i] == 1 && phase8[i] && phase9[i] == 1 && phase10[i] == 1 && now.day() == date12[i] && now.month() == month12[i] && now.year()  == year12[i] && now.hour() * 60 + now.minute() >= HourFrom12[i] * 60 + MinuteFrom12[i]){
          phase11[i] = 1;
       }
     }
@@ -2756,6 +2756,6 @@ void printTime()
   }
   Serial.print(now.day(), DEC);
   Serial.print("/");
-  Serial.print(now.year() + 2000, DEC);
+  Serial.print(now.year() , DEC);
 }
  
