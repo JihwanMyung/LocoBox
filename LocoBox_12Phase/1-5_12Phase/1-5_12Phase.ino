@@ -313,7 +313,11 @@ void loop()
 {
 
 
-  DateTime now = rtc.now();
+  DateTime now = rtc.now(); // reads the time every second
+  //Serial.println("Now");
+  //String str = String(now.year(), DEC) + '/' + String(now.month(), DEC) + '/' + String(now.day(), DEC) + " " + String(now.hour(), DEC) + ':' + String(now.minute(), DEC) + ':' + String(now.second(), DEC);
+  //Serial.println(str);
+
   if (Serial.available() == 19 && TimeSet == 0)
   {
     dateIn = Serial.readString();
@@ -1489,7 +1493,7 @@ void loop()
     InitialFlag = 1;  
   }
   // Only start recording when the now.second()=0, otherwise stay in the (delay 1 sec) loop
-  now = rtc.now();
+  //now = rtc.now();
   if (InitialFlag == 1)
   {
     while ((now.second()==0) == false) //now.second() == 0
