@@ -321,9 +321,17 @@ void loop()
     // Wire.write(0b00011100); // write register bitmap, bit 7 is /EOSC
     // rtc.adjust(DateTime(2017, 7, 16, 16, 35, 20));
     //clock.stopClock();
+    int year = getInt(dateIn.substring(0, 4));
+    int month = getInt(dateIn.substring(5, 7));
+    int day = getInt(dateIn.substring(8, 10));
+    int hour = getInt(dateIn.substring(11, 13));
+    int minutes = getInt(dateIn.substring(5,7));
+    int seconds = getInt(dateIn.substring(17, 19));
+    rtc.adjust(DateTime(year, month, day, hour, minutes, seconds));
+    
     //clock.fillByYMD(getInt(dateIn.substring(0, 4)), getInt(dateIn.substring(5, 7)), getInt(dateIn.substring(8, 10)));
     //clock.fillByHMS(getInt(dateIn.substring(11, 13)), getInt(dateIn.substring(14, 16)), getInt(dateIn.substring(17, 19)));
-    rtc.adjust(DateTime(getInt(dateIn.substring(0, 4)), getInt(dateIn.substring(5, 7)), getInt(dateIn.substring(8, 10)), getInt(dateIn.substring(11, 13), getInt(dateIn.substring(14, 16), getInt(dateIn.substring(17, 19)));
+    //rtc.adjust(DateTime(getInt(dateIn.substring(0, 4)), getInt(dateIn.substring(5, 7)), getInt(dateIn.substring(8, 10)), getInt(dateIn.substring(11, 13), getInt(dateIn.substring(14, 16), getInt(dateIn.substring(17, 19)));
     //clock.setTime();
     //clock.startClock();
     
@@ -2717,7 +2725,7 @@ void printMeasurement()
 // Define a function to print time
 void printTime()
 {
-  DateTime now = rtc.now()
+  DateTime now = rtc.now();
   if (now.hour() < 10)
   {
     Serial.print("0");
