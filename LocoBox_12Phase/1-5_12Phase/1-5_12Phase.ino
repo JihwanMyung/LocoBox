@@ -14,14 +14,15 @@
  * 
  */
 
+#include <RTClib.h>
 #include <Wire.h>
 // #include <DS3231.h>
 
-#include <DS1307.h>
-DS1307 clock; //define a object of DS1307 class
+//#include <DS1307.h>
+RTClib rtc; //define a object of RTClib class, DS3231
+//using https://learn.adafruit.com/adafruit-ds3231-precision-rtc-breakout/arduino-usage
 
-// #include "RTClib.h"
-// RTC_1307 clock;
+
 
 String dateIn;
 String lightIn1;
@@ -257,7 +258,7 @@ void count_delay2()
 
 void rtc_delay()
 {
-  unsigned long currents = clock.second;
+  unsigned long currents = rtc.second();
 
   if(currents - previoussecs> 0)
   {
@@ -271,6 +272,14 @@ void setup()
 {
   Serial.begin(9600);
   Wire.begin();
+  // start the connexion to the RTC
+
+  if (! rtc.begin()) {
+    Serial.println("Couldn't find RTC");
+    while (1); // can't go further
+  }
+
+  // rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
   for (int i=0; i<5; i++){
      pinMode(DIn[i], INPUT);    // PIR
      pinMode(DOut[i], OUTPUT);  // LED
@@ -282,6 +291,8 @@ void setup()
 void loop()
 {
 
+
+  DateTime now = rtc.now();
   if (Serial.available() == 19 && TimeSet == 0)
   {
     dateIn = Serial.readString();
@@ -1446,80 +1457,80 @@ void loop()
     Serial.println("HH:MM:SS MO/DY/YEAR LED01 PIR01 LED02 PIR02 LED03 PIR03 LED04 PIR04 LED05 PIR05");
     InitialFlag = 1;  
   }
-  // Only start recording when the Clock.second=0, otherwise stay in the (delay 1 sec) loop
-  clock.getTime();
+  // Only start recording when the now.second()=0, otherwise stay in the (delay 1 sec) loop
+  now = rtc.now();
   if (InitialFlag == 1)
   {
-    while ((clock.second==0) == false) //clock.second == 0
+    while ((now.second()==0) == false) //now.second() == 0
     {
       
-      clock.getTime();
+      now = rtc.now();
     }
 
 //     End phase 1 when
      for (int i=0; i<5; i++){
-       if (phase1[i] == 0 && clock.dayOfMonth == date2[i] &&  clock.month== month2[i] && clock.year + 2000 == year2[i] && clock.hour * 60 + clock.minute >= HourFrom2[i] * 60 + MinuteFrom2[i]){
-          phase1[i] = 1;
+       if (phase1[i] == 0 && now.day() == date2[i] &&  now.month()== month2[i] && now.year() + 2000 == year2[i] && now.hour() * 60 + now.minute() >= HourFrom2[i] * 60 + MinuteFrom2[i]){
+          phase1[i] = 1; //maybe I'll have to change the +2000
        }
      }
     
      //End phase 2 when
      for (int i=0; i<5; i++){
-       if (phase1[i] == 1 && clock.dayOfMonth == date3[i] && clock.month == month3[i] && clock.year + 2000 == year3[i] && clock.hour * 60 + clock.minute >= HourFrom3[i] * 60 + MinuteFrom3[i]){
+       if (phase1[i] == 1 && now.day() == date3[i] && now.month() == month3[i] && now.year() + 2000 == year3[i] && now.hour() * 60 + now.minute() >= HourFrom3[i] * 60 + MinuteFrom3[i]){
           phase2[i] = 1;
        }
      }
     //End phase 3 when
     for (int i=0; i<5; i++){
-      if (phase1[i] == 1 && phase2[i] == 1 && clock.dayOfMonth == date4[i] && clock.month == month4[i] && clock.year + 2000 == year4[i] && clock.hour * 60 + clock.minute >= HourFrom4[i] * 60 + MinuteFrom4[i]){
+      if (phase1[i] == 1 && phase2[i] == 1 && now.day() == date4[i] && now.month() == month4[i] && now.year() + 2000 == year4[i] && now.hour() * 60 + now.minute() >= HourFrom4[i] * 60 + MinuteFrom4[i]){
          phase3[i] = 1;
       }
     }
     //End phase 4 when
     for (int i=0; i<5; i++){
-      if (phase1[i] == 1 && phase2[i] && phase3[i] == 1 && clock.dayOfMonth == date5[i] && clock.month == month5[i] && clock.year + 2000 == year5[i] && clock.hour * 60 + clock.minute >= HourFrom5[i] * 60 + MinuteFrom5[i]){
+      if (phase1[i] == 1 && phase2[i] && phase3[i] == 1 && now.day() == date5[i] && now.month() == month5[i] && now.year() + 2000 == year5[i] && now.hour() * 60 + now.minute() >= HourFrom5[i] * 60 + MinuteFrom5[i]){
          phase4[i] = 1;
       }
     }
     //End phase 5 when
     for (int i=0; i<5; i++){
-      if (phase1[i] == 1 && phase2[i] && phase3[i] == 1 && phase4[i] == 1 && clock.dayOfMonth == date6[i] && clock.month == month6[i] && clock.year + 2000 == year6[i] && clock.hour * 60 + clock.minute >= HourFrom6[i] * 60 + MinuteFrom6[i]){
+      if (phase1[i] == 1 && phase2[i] && phase3[i] == 1 && phase4[i] == 1 && now.day() == date6[i] && now.month() == month6[i] && now.year() + 2000 == year6[i] && now.hour() * 60 + now.minute() >= HourFrom6[i] * 60 + MinuteFrom6[i]){
          phase5[i] = 1;
       }
     }
     //End phase 6 when
     for (int i=0; i<5; i++){
-      if (phase1[i] == 1 && phase3[i] && phase4[i] == 1 && phase5[i] == 1 && clock.dayOfMonth == date7[i] && clock.month == month7[i] && clock.year + 2000 == year7[i] && clock.hour * 60 + clock.minute >= HourFrom7[i] * 60 + MinuteFrom7[i]){
+      if (phase1[i] == 1 && phase3[i] && phase4[i] == 1 && phase5[i] == 1 && now.day() == date7[i] && now.month() == month7[i] && now.year() + 2000 == year7[i] && now.hour() * 60 + now.minute() >= HourFrom7[i] * 60 + MinuteFrom7[i]){
          phase6[i] = 1;
       }
     }
     //End phase 7 when
     for (int i=0; i<5; i++){
-      if (phase1[i] == 1 && phase4[i] && phase5[i] == 1 && phase6[i] == 1 && clock.dayOfMonth == date8[i] && clock.month == month8[i] && clock.year + 2000 == year8[i] && clock.hour * 60 + clock.minute >= HourFrom8[i] * 60 + MinuteFrom8[i]){
+      if (phase1[i] == 1 && phase4[i] && phase5[i] == 1 && phase6[i] == 1 && now.day() == date8[i] && now.month() == month8[i] && now.year() + 2000 == year8[i] && now.hour() * 60 + now.minute() >= HourFrom8[i] * 60 + MinuteFrom8[i]){
          phase7[i] = 1;
       }
     }
     //End phase 8 when
     for (int i=0; i<5; i++){
-      if (phase1[i] == 1 && phase5[i] && phase6[i] == 1 && phase7[i] == 1 && clock.dayOfMonth == date9[i] && clock.month == month9[i] && clock.year + 2000 == year9[i] && clock.hour * 60 + clock.minute >= HourFrom9[i] * 60 + MinuteFrom9[i]){
+      if (phase1[i] == 1 && phase5[i] && phase6[i] == 1 && phase7[i] == 1 && now.day() == date9[i] && now.month() == month9[i] && now.year() + 2000 == year9[i] && now.hour() * 60 + now.minute() >= HourFrom9[i] * 60 + MinuteFrom9[i]){
          phase8[i] = 1;
       }
     }
     //End phase 9 when
     for (int i=0; i<5; i++){
-      if (phase1[i] == 1 && phase6[i] && phase7[i] == 1 && phase8[i] == 1 && clock.dayOfMonth == date10[i] && clock.month == month10[i] && clock.year + 2000 == year10[i] && clock.hour * 60 + clock.minute >= HourFrom10[i] * 60 + MinuteFrom10[i]){
+      if (phase1[i] == 1 && phase6[i] && phase7[i] == 1 && phase8[i] == 1 && now.day() == date10[i] && now.month() == month10[i] && now.year() + 2000 == year10[i] && now.hour() * 60 + now.minute() >= HourFrom10[i] * 60 + MinuteFrom10[i]){
          phase9[i] = 1;
       }
     }
     //End phase 10 when
     for (int i=0; i<5; i++){
-      if (phase1[i] == 1 && phase7[i] && phase8[i] == 1 && phase9[i] == 1 && clock.dayOfMonth == date11[i] && clock.month == month11[i] && clock.year + 2000 == year11[i] && clock.hour * 60 + clock.minute >= HourFrom11[i] * 60 + MinuteFrom11[i]){
+      if (phase1[i] == 1 && phase7[i] && phase8[i] == 1 && phase9[i] == 1 && now.day() == date11[i] && now.month() == month11[i] && now.year() + 2000 == year11[i] && now.hour() * 60 + now.minute() >= HourFrom11[i] * 60 + MinuteFrom11[i]){
          phase10[i] = 1;
       }
     }
     //End phase 11 when
     for (int i=0; i<5; i++){
-      if (phase1[i] == 1 && phase8[i] && phase9[i] == 1 && phase10[i] == 1 && clock.dayOfMonth == date12[i] && clock.month == month12[i] && clock.year + 2000 == year12[i] && clock.hour * 60 + clock.minute >= HourFrom12[i] * 60 + MinuteFrom12[i]){
+      if (phase1[i] == 1 && phase8[i] && phase9[i] == 1 && phase10[i] == 1 && now.day() == date12[i] && now.month() == month12[i] && now.year() + 2000 == year12[i] && now.hour() * 60 + now.minute() >= HourFrom12[i] * 60 + MinuteFrom12[i]){
          phase11[i] = 1;
       }
     }
@@ -1530,7 +1541,7 @@ void loop()
       { //Serial.print("Phase1 HourOn1: "); Serial.print(HourOn1[0]); Serial.print(" "); Serial.print(MinuteOn1[0]); Serial.print("-Phase1HourOff");Serial.print(HourOff1[0]);Serial.print(" ");Serial.print(MinuteOff1[0]);
         if (HourOn1[i]*60 + MinuteOn1[i] < HourOff1[i]*60 + MinuteOff1[i]) //0-24 condition Turn On
         { 
-          if ( HourOn1[i] * 60 + MinuteOn1[i] <=  clock.hour * 60 + clock.minute && clock.hour * 60 + clock.minute < HourOff1[i] * 60 + MinuteOff1[i])
+          if ( HourOn1[i] * 60 + MinuteOn1[i] <=  now.hour() * 60 + now.minute() && now.hour() * 60 + now.minute() < HourOff1[i] * 60 + MinuteOff1[i])
           {
             if (light1[i] == 0 && dark1[i] == 0)
             {
@@ -1569,7 +1580,7 @@ void loop()
         }
         else if (HourOn1[i]*60 + MinuteOn1[i] > HourOff1[i]*60 + MinuteOff1[i]) //19-07 condition Turn On 
         {
-          if ( HourOn1[i] * 60 + MinuteOn1[i] <=  clock.hour * 60 + clock.minute || clock.hour * 60 + clock.minute < HourOff1[i] * 60 + MinuteOff1[i])
+          if ( HourOn1[i] * 60 + MinuteOn1[i] <=  now.hour() * 60 + now.minute() || now.hour() * 60 + now.minute() < HourOff1[i] * 60 + MinuteOff1[i])
           {
             if (light1[i] == 0 && dark1[i] == 0)
             {
@@ -1616,7 +1627,7 @@ void loop()
       {
         if (HourOn2[i]*60 + MinuteOn2[i] < HourOff2[i]*60 + MinuteOff2[i]) //am to pm condition Turn On
         { 
-          if ( HourOn2[i] * 60 + MinuteOn2[i] <=  clock.hour * 60 + clock.minute && clock.hour * 60 + clock.minute < HourOff2[i] * 60 + MinuteOff2[i])
+          if ( HourOn2[i] * 60 + MinuteOn2[i] <=  now.hour() * 60 + now.minute() && now.hour() * 60 + now.minute() < HourOff2[i] * 60 + MinuteOff2[i])
           {
             if (light2[i] == 0 && dark2[i] == 0)
             {
@@ -1655,7 +1666,7 @@ void loop()
         }
         else if (HourOn2[i]*60 + MinuteOn2[i] > HourOff2[i]*60 + MinuteOff2[i]) //pm to am condition Turn On 
         {
-          if ( HourOn2[i] * 60 + MinuteOn2[i] <=  clock.hour * 60 + clock.minute || clock.hour* 60 + clock.minute < HourOff2[i] * 60 + MinuteOff2[i])
+          if ( HourOn2[i] * 60 + MinuteOn2[i] <=  now.hour() * 60 + now.minute() || now.hour()* 60 + now.minute() < HourOff2[i] * 60 + MinuteOff2[i])
           {
             if (light2[i] == 0 && dark2[i] == 0)
             {
@@ -1701,7 +1712,7 @@ void loop()
       {
         if (HourOn3[i]*60 + MinuteOn3[i] < HourOff3[i]*60 + MinuteOff3[i]) //am to pm condition Turn On
         { 
-          if ( HourOn3[i] * 60 + MinuteOn3[i] <=  clock.hour * 60 + clock.minute && clock.hour * 60 + clock.minute < HourOff3[i] * 60 + MinuteOff3[i])
+          if ( HourOn3[i] * 60 + MinuteOn3[i] <=  now.hour() * 60 + now.minute() && now.hour() * 60 + now.minute() < HourOff3[i] * 60 + MinuteOff3[i])
           {
             if (light3[i] == 0 && dark3[i] == 0)
           {
@@ -1740,7 +1751,7 @@ void loop()
         }
         else if (HourOn3[i]*60 + MinuteOn3[i] > HourOff3[i]*60 + MinuteOff3[i]) //19-07 condition Turn On 
         {
-          if ( HourOn3[i] * 60 + MinuteOn3[i] <=  clock.hour * 60 + clock.minute || clock.hour * 60 + clock.minute < HourOff3[i] * 60 + MinuteOff3[i])
+          if ( HourOn3[i] * 60 + MinuteOn3[i] <=  now.hour() * 60 + now.minute() || now.hour() * 60 + now.minute() < HourOff3[i] * 60 + MinuteOff3[i])
           {
             if (light3[i] == 0 && dark3[i] == 0)
             {
@@ -1786,7 +1797,7 @@ void loop()
       {
         if (HourOn4[i]*60 + MinuteOn4[i] < HourOff4[i]*60 + MinuteOff4[i]) //am to pm condition Turn On
         { 
-          if ( HourOn4[i] * 60 + MinuteOn4[i] <=  clock.hour * 60 + clock.minute && clock.hour * 60 + clock.minute < HourOff4[i] * 60 + MinuteOff4[i])
+          if ( HourOn4[i] * 60 + MinuteOn4[i] <=  now.hour() * 60 + now.minute() && now.hour() * 60 + now.minute() < HourOff4[i] * 60 + MinuteOff4[i])
           {
             if (light4[i] == 0 && dark4[i] == 0)
           {
@@ -1825,7 +1836,7 @@ void loop()
         }
         else if (HourOn4[i]*60 + MinuteOn4[i] > HourOff4[i]*60 + MinuteOff4[i]) //pm to am condition Turn On 
         {
-          if ( HourOn4[i] * 60 + MinuteOn4[i] <=  clock.hour * 60 + clock.minute || clock.hour * 60 + clock.minute < HourOff4[i] * 60 + MinuteOff4[i])
+          if ( HourOn4[i] * 60 + MinuteOn4[i] <=  now.hour() * 60 + now.minute() || now.hour() * 60 + now.minute() < HourOff4[i] * 60 + MinuteOff4[i])
           {
             if (light4[i] == 0 && dark4[i] == 0)
             {
@@ -1871,7 +1882,7 @@ void loop()
       {
         if (HourOn5[i]*60 + MinuteOn5[i] < HourOff5[i]*60 + MinuteOff5[i]) //am to pm condition Turn On
         { 
-          if ( HourOn5[i] * 60 + MinuteOn5[i] <=  clock.hour * 60 + clock.minute && clock.hour * 60 + clock.minute < HourOff5[i] * 60 + MinuteOff5[i])
+          if ( HourOn5[i] * 60 + MinuteOn5[i] <=  now.hour() * 60 + now.minute() && now.hour() * 60 + now.minute() < HourOff5[i] * 60 + MinuteOff5[i])
           {
             if (light5[i] == 0 && dark5[i] == 0)
           {
@@ -1910,7 +1921,7 @@ void loop()
         }
         else if (HourOn5[i]*60 + MinuteOn5[i] > HourOff5[i]*60 + MinuteOff5[i]) //pm to am condition Turn On 
         {
-          if ( HourOn5[i] * 60 + MinuteOn5[i] <=  clock.hour * 60 + clock.minute || clock.hour * 60 + clock.minute < HourOff5[i] * 60 + MinuteOff5[i])
+          if ( HourOn5[i] * 60 + MinuteOn5[i] <=  now.hour() * 60 + now.minute() || now.hour() * 60 + now.minute() < HourOff5[i] * 60 + MinuteOff5[i])
           {
             if (light5[i] == 0 && dark5[i] == 0)
             {
@@ -1956,7 +1967,7 @@ void loop()
       {
         if (HourOn6[i]*60 + MinuteOn6[i] < HourOff6[i]*60 + MinuteOff6[i]) //am to pm condition Turn On
         { 
-          if ( HourOn6[i] * 60 + MinuteOn6[i] <=  clock.hour * 60 + clock.minute && clock.hour * 60 + clock.minute < HourOff6[i] * 60 + MinuteOff6[i])
+          if ( HourOn6[i] * 60 + MinuteOn6[i] <=  now.hour() * 60 + now.minute() && now.hour() * 60 + now.minute() < HourOff6[i] * 60 + MinuteOff6[i])
           {
             if (light6[i] == 0 && dark6[i] == 0)
           {
@@ -1995,7 +2006,7 @@ void loop()
         }
         else if (HourOn6[i]*60 + MinuteOn6[i] > HourOff6[i]*60 + MinuteOff6[i]) //pm to am condition Turn On 
         {
-          if ( HourOn6[i] * 60 + MinuteOn6[i] <=  clock.hour * 60 + clock.minute || clock.hour * 60 + clock.minute < HourOff6[i] * 60 + MinuteOff6[i])
+          if ( HourOn6[i] * 60 + MinuteOn6[i] <=  now.hour() * 60 + now.minute() || now.hour() * 60 + now.minute() < HourOff6[i] * 60 + MinuteOff6[i])
           {
             if (light6[i] == 0 && dark6[i] == 0)
             {
@@ -2041,7 +2052,7 @@ void loop()
       {
         if (HourOn7[i]*60 + MinuteOn7[i] < HourOff7[i]*60 + MinuteOff7[i]) //am to pm condition Turn On
         { 
-          if ( HourOn7[i] * 60 + MinuteOn7[i] <=  clock.hour * 60 + clock.minute && clock.hour * 60 + clock.minute < HourOff7[i] * 60 + MinuteOff7[i])
+          if ( HourOn7[i] * 60 + MinuteOn7[i] <=  now.hour() * 60 + now.minute() && now.hour() * 60 + now.minute() < HourOff7[i] * 60 + MinuteOff7[i])
           {
             if (light7[i] == 0 && dark7[i] == 0)
           {
@@ -2080,7 +2091,7 @@ void loop()
         }
         else if (HourOn7[i]*60 + MinuteOn7[i] > HourOff7[i]*60 + MinuteOff7[i]) //pm to am condition Turn On 
         {
-          if ( HourOn7[i] * 60 + MinuteOn7[i] <=  clock.hour * 60 + clock.minute || clock.hour * 60 + clock.minute < HourOff7[i] * 60 + MinuteOff7[i])
+          if ( HourOn7[i] * 60 + MinuteOn7[i] <=  now.hour() * 60 + now.minute() || now.hour() * 60 + now.minute() < HourOff7[i] * 60 + MinuteOff7[i])
           {
             if (light7[i] == 0 && dark7[i] == 0)
             {
@@ -2126,7 +2137,7 @@ void loop()
       {
         if (HourOn8[i]*60 + MinuteOn8[i] < HourOff8[i]*60 + MinuteOff8[i]) //am to pm condition Turn On
         { 
-          if ( HourOn8[i] * 60 + MinuteOn8[i] <=  clock.hour * 60 + clock.minute && clock.hour * 60 + clock.minute < HourOff8[i] * 60 + MinuteOff8[i])
+          if ( HourOn8[i] * 60 + MinuteOn8[i] <=  now.hour() * 60 + now.minute() && now.hour() * 60 + now.minute() < HourOff8[i] * 60 + MinuteOff8[i])
           {
             if (light8[i] == 0 && dark8[i] == 0)
           {
@@ -2165,7 +2176,7 @@ void loop()
         }
         else if (HourOn8[i]*60 + MinuteOn8[i] > HourOff8[i]*60 + MinuteOff8[i]) //pm to am condition Turn On 
         {
-          if ( HourOn8[i] * 60 + MinuteOn8[i] <=  clock.hour * 60 + clock.minute || clock.hour * 60 + clock.minute < HourOff8[i] * 60 + MinuteOff8[i])
+          if ( HourOn8[i] * 60 + MinuteOn8[i] <=  now.hour() * 60 + now.minute() || now.hour() * 60 + now.minute() < HourOff8[i] * 60 + MinuteOff8[i])
           {
             if (light8[i] == 0 && dark8[i] == 0)
             {
@@ -2211,7 +2222,7 @@ void loop()
       {
         if (HourOn9[i]*60 + MinuteOn9[i] < HourOff9[i]*60 + MinuteOff9[i]) //am to pm condition Turn On
         { 
-          if ( HourOn9[i] * 60 + MinuteOn9[i] <=  clock.hour * 60 + clock.minute && clock.hour * 60 + clock.minute < HourOff9[i] * 60 + MinuteOff9[i])
+          if ( HourOn9[i] * 60 + MinuteOn9[i] <=  now.hour() * 60 + now.minute() && now.hour() * 60 + now.minute() < HourOff9[i] * 60 + MinuteOff9[i])
           {
             if (light9[i] == 0 && dark9[i] == 0)
           {
@@ -2250,7 +2261,7 @@ void loop()
         }
         else if (HourOn9[i]*60 + MinuteOn9[i] > HourOff9[i]*60 + MinuteOff9[i]) //pm to am condition Turn On 
         {
-          if ( HourOn9[i] * 60 + MinuteOn9[i] <=  clock.hour * 60 + clock.minute || clock.hour * 60 + clock.minute < HourOff9[i] * 60 + MinuteOff9[i])
+          if ( HourOn9[i] * 60 + MinuteOn9[i] <=  now.hour() * 60 + now.minute() || now.hour() * 60 + now.minute() < HourOff9[i] * 60 + MinuteOff9[i])
           {
             if (light9[i] == 0 && dark9[i] == 0)
             {
@@ -2296,7 +2307,7 @@ void loop()
       {
         if (HourOn10[i]*60 + MinuteOn10[i] < HourOff10[i]*60 + MinuteOff10[i]) //am to pm condition Turn On
         { 
-          if ( HourOn10[i] * 60 + MinuteOn10[i] <=  clock.hour * 60 + clock.minute && clock.hour * 60 + clock.minute < HourOff10[i] * 60 + MinuteOff10[i])
+          if ( HourOn10[i] * 60 + MinuteOn10[i] <=  now.hour() * 60 + now.minute() && now.hour() * 60 + now.minute() < HourOff10[i] * 60 + MinuteOff10[i])
           {
             if (light10[i] == 0 && dark10[i] == 0)
           {
@@ -2335,7 +2346,7 @@ void loop()
         }
         else if (HourOn10[i]*60 + MinuteOn10[i] > HourOff10[i]*60 + MinuteOff10[i]) //pm to am condition Turn On 
         {
-          if ( HourOn10[i] * 60 + MinuteOn10[i] <=  clock.hour * 60 + clock.minute || clock.hour * 60 + clock.minute < HourOff10[i] * 60 + MinuteOff10[i])
+          if ( HourOn10[i] * 60 + MinuteOn10[i] <=  now.hour() * 60 + now.minute() || now.hour() * 60 + now.minute() < HourOff10[i] * 60 + MinuteOff10[i])
           {
             if (light10[i] == 0 && dark10[i] == 0)
             {
@@ -2381,7 +2392,7 @@ void loop()
       {
         if (HourOn11[i]*60 + MinuteOn11[i] < HourOff11[i]*60 + MinuteOff11[i]) //am to pm condition Turn On
         { 
-          if ( HourOn11[i] * 60 + MinuteOn11[i] <=  clock.hour * 60 + clock.minute && clock.hour * 60 + clock.minute < HourOff11[i] * 60 + MinuteOff11[i])
+          if ( HourOn11[i] * 60 + MinuteOn11[i] <=  now.hour() * 60 + now.minute() && now.hour() * 60 + now.minute() < HourOff11[i] * 60 + MinuteOff11[i])
           {
             if (light11[i] == 0 && dark11[i] == 0)
           {
@@ -2420,7 +2431,7 @@ void loop()
         }
         else if (HourOn11[i]*60 + MinuteOn11[i] > HourOff11[i]*60 + MinuteOff11[i]) //pm to am condition Turn On 
         {
-          if ( HourOn11[i] * 60 + MinuteOn11[i] <=  clock.hour * 60 + clock.minute || clock.hour * 60 + clock.minute < HourOff11[i] * 60 + MinuteOff11[i])
+          if ( HourOn11[i] * 60 + MinuteOn11[i] <=  now.hour() * 60 + now.minute() || now.hour() * 60 + now.minute() < HourOff11[i] * 60 + MinuteOff11[i])
           {
             if (light11[i] == 0 && dark11[i] == 0)
             {
@@ -2466,7 +2477,7 @@ void loop()
       {
         if (HourOn12[i]*60 + MinuteOn12[i] < HourOff12[i]*60 + MinuteOff12[i]) //am to pm condition Turn On
         { 
-          if ( HourOn12[i] * 60 + MinuteOn12[i] <=  clock.hour * 60 + clock.minute && clock.hour * 60 + clock.minute < HourOff12[i] * 60 + MinuteOff12[i])
+          if ( HourOn12[i] * 60 + MinuteOn12[i] <=  now.hour() * 60 + now.minute() && now.hour() * 60 + now.minute() < HourOff12[i] * 60 + MinuteOff12[i])
           {
             if (light12[i] == 0 && dark12[i] == 0)
           {
@@ -2505,7 +2516,7 @@ void loop()
         }
         else if (HourOn12[i]*60 + MinuteOn12[i] > HourOff12[i]*60 + MinuteOff12[i]) //pm to am condition Turn On 
         {
-          if ( HourOn12[i] * 60 + MinuteOn12[i] <=  clock.hour * 60 + clock.minute || clock.hour * 60 + clock.minute < HourOff12[i] * 60 + MinuteOff12[i])
+          if ( HourOn12[i] * 60 + MinuteOn12[i] <=  now.hour() * 60 + now.minute() || now.hour() * 60 + now.minute() < HourOff12[i] * 60 + MinuteOff12[i])
           {
             if (light12[i] == 0 && dark12[i] == 0)
             {
@@ -2683,36 +2694,36 @@ void printMeasurement()
 // Define a function to print time
 void printTime()
 {
-  if (clock.hour < 10)
+  if (now.hour() < 10)
   {
     Serial.print("0");
   }
-  Serial.print(clock.hour, DEC);
+  Serial.print(now.hour(), DEC);
   Serial.print(":");
-  if (clock.minute < 10)
+  if (now.minute() < 10)
   {
     Serial.print("0");
   }
-  Serial.print(clock.minute, DEC);
+  Serial.print(now.minute(), DEC);
   Serial.print(":");
-  if (clock.second < 10)
+  if (now.second() < 10)
   {
     Serial.print("0");
   }
-  Serial.print(clock.second, DEC);
+  Serial.print(now.second(), DEC);
   Serial.print(" ");
-  if (clock.month < 10)
+  if (now.month() < 10)
   {
     Serial.print("0");
   }
-  Serial.print(clock.month, DEC);
+  Serial.print(now.month(), DEC);
   Serial.print("/");
-  if (clock.dayOfMonth < 10)
+  if (now.day() < 10)
   {
     Serial.print("0");
   }
-  Serial.print(clock.dayOfMonth, DEC);
+  Serial.print(now.day(), DEC);
   Serial.print("/");
-  Serial.print(clock.year + 2000, DEC);
+  Serial.print(now.year() + 2000, DEC);
 }
  
