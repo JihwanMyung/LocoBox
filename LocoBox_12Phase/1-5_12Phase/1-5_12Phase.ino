@@ -333,11 +333,7 @@ void loop()
     int seconds = getInt(dateIn.substring(17, 19));
     rtc.adjust(DateTime(year, month, day, hour, minutes, seconds));
     
-    //clock.fillByYMD(getInt(dateIn.substring(0, 4)), getInt(dateIn.substring(5, 7)), getInt(dateIn.substring(8, 10)));
-    //clock.fillByHMS(getInt(dateIn.substring(11, 13)), getInt(dateIn.substring(14, 16)), getInt(dateIn.substring(17, 19)));
-    //rtc.adjust(DateTime(getInt(dateIn.substring(0, 4)), getInt(dateIn.substring(5, 7)), getInt(dateIn.substring(8, 10)), getInt(dateIn.substring(11, 13), getInt(dateIn.substring(14, 16), getInt(dateIn.substring(17, 19)));
-    //clock.setTime();
-    //clock.startClock();
+    
     
     Serial.println(dateIn);
 
@@ -1505,7 +1501,7 @@ void loop()
 //     End phase 1 when
      for (int i=0; i<5; i++){
        if (phase1[i] == 0 && now.day() == date2[i] &&  now.month()== month2[i] && now.year()  == year2[i] && now.hour() * 60 + now.minute() >= HourFrom2[i] * 60 + MinuteFrom2[i]){
-          phase1[i] = 1; //maybe I'll have to change the +2000
+          phase1[i] = 1; 
        }
      }
     
