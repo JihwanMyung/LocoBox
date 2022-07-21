@@ -31,9 +31,4 @@ This software system requires Arduino Mega 2560 for controlling 10 boxes and a d
 * Firdani Rianda - extension to 12 phases
 * Zow Ormazabal - stabilization and GUI improvement
 
-## Acknowledgments
-
-Yufen (Janice) Huang helped with improving box design. Amalia Ridla Rahim, Vuong Truong, and Ying-Ling Shen helped with soldering electrical components. Niall Duncan and Tzu-Yu Hsu contributed financially to support initial purchase of boxes and prototyping materials.
-This work was supported by Taiwan Ministry of Science and Technology (MOST) grants (107-2311-B-038-001-MY2, 107-2410-H-038-004-MY2).
-
 See braintimelab for the release version.
