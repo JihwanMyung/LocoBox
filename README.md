@@ -1,6 +1,6 @@
 # LocoBox
 
-LocoBox is a set of Arduino software and GUI interface for running 10 Locomotor-Boxes with pre-set schedules.
+LocoBox is a set of Arduino software and GUI interface for running either 5 or 10 LocoBoxes with pre-set schedules.
 
 ### Prerequisites & Dependencies
 
