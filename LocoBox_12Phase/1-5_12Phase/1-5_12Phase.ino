@@ -2619,7 +2619,7 @@ void printMeasurement()
   }
 
   // sensor value sampling for 1-min
-  for (int i = 0; i < 655; i++)
+  for (int i = 0; i < 299; i++)
   {
       for (int j = 0; j < 5; j++){
          PIR[j] = PIR[j] + digitalRead(DIn[j]);
@@ -2635,7 +2635,8 @@ void printMeasurement()
 //      }
     
     //millis_delay(90);
-    delay(90);// sampling 655 times per minute
+    delay(200);// sampling 299 times per minute
+    
     
   }
  
