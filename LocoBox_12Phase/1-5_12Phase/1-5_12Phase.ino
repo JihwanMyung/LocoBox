@@ -2619,7 +2619,7 @@ void printMeasurement()
   }
 
   // sensor value sampling for 1-min
-  for (int i = 0; i < 299; i++)
+  for (int i = 0; i < 299; ++i)
   {
       for (int j = 0; j < 5; j++){
          PIR[j] = PIR[j] + digitalRead(DIn[j]);
