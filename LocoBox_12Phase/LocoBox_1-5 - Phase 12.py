@@ -4,7 +4,7 @@ import datetime # For date-time setting and timedelta calculations
 import platform
 import glob
 import tkinter as tk
-from tkinter import Tk, Frame, Canvas, Scrollbar, sys, Label, SUNKEN, W, X, Menu, IntVar, VERTICAL, HORIZONTAL, Spinbox, Entry, ttk, messagebox, Button, StringVar, LEFT, RIGHT, Radiobutton
+from tkinter import Tk, Frame, Canvas, Scrollbar, sys, Label, SUNKEN, BOTH, W, X, Y, Menu, IntVar, VERTICAL, HORIZONTAL, BOTTOM, Spinbox, Entry, ttk, messagebox, Button, StringVar, LEFT, RIGHT, Radiobutton
 #from tkinter import * #import INIT set of tkinter library for GUI
 
 from tkinter.filedialog import askopenfilename
@@ -3705,7 +3705,8 @@ if __name__ == '__main__':
     window.config(menu=menu)
 
     tab_control = ttk.Notebook(window)
-    ParentFrame1 = ttk.Frame(tab_control)
+    
+    ParentFrame1 = ttk.Frame(tab_control,width=850, height=300)
     ParentFrame2 = ttk.Frame(tab_control)
     ParentFrame3 = ttk.Frame(tab_control)
     ParentFrame4 = ttk.Frame(tab_control)
@@ -3717,17 +3718,22 @@ if __name__ == '__main__':
     tab_control.add(ParentFrame4, text='Box4')
     tab_control.add(ParentFrame5, text='Box5')
     tab_control.add(ParentFrame11, text='Schedules')
+    
 
     #tab1
 
-    canvas1 = Canvas(ParentFrame1, width=850, height=300) #, highlightbackground="red", highlightthickness=2
+    canvas1 = Canvas(ParentFrame1, width=850, height=300, scrollregion=(0,0,850,200)) #, highlightbackground="red", highlightthickness=2
     scroll1 = Scrollbar(ParentFrame1, orient=VERTICAL, command=canvas1.yview)
     scrollx1 = Scrollbar(ParentFrame1, orient=HORIZONTAL, command=canvas1.xview)
-    scrollx1.grid(row=1, column=1, sticky='ew')
+    #scrollx1.grid(row=1, column=1, sticky='ew')
     
-    canvas1.grid(row=0, column=0)
-    scroll1.grid(row=0, column=1, sticky='ns')
+    #canvas1.grid(row=0, column=0)
+    #scroll1.grid(row=0, column=1, sticky='ns')
+    scrollx1.pack(expand=1, fill=X, side=BOTTOM)
+    scroll1.pack(side = RIGHT, fill = Y, expand=1)
+    canvas1.pack(side=LEFT,expand=True,fill=BOTH)
     canvas1.config(yscrollcommand=scroll1.set, xscrollcommand=scrollx1.set)
+    
     tab1 = Frame(canvas1, width=200, height=300)#, highlightbackground="black", highlightthickness=1
     tab1.bind(
     "<Configure>",
@@ -3739,10 +3745,16 @@ if __name__ == '__main__':
 
 #tab2
     canvas2 = Canvas(ParentFrame2, width=850, height=300)
+    #canvas2.grid(row=0, column=0)
     scroll2 = Scrollbar(ParentFrame2, orient=VERTICAL, command=canvas2.yview)
-    canvas2.grid(row=0, column=0)
-    scroll2.grid(row=0, column=1, sticky='ns')
-    canvas2.config(yscrollcommand=scroll2.set)
+    
+    #scroll2.grid(row=0, column=1, sticky='ns')
+    scrollx2 = Scrollbar(ParentFrame2, orient=HORIZONTAL, command=canvas2.xview)
+    #scrollx2.grid(row=1, column=1, sticky='ew')
+    canvas2.config(yscrollcommand=scroll2.set, xscrollcommand=scrollx2.set)
+    scrollx2.pack(expand=1, fill=X, side=BOTTOM)
+    scroll2.pack(side = RIGHT, fill = Y, expand=1)
+    canvas2.pack(side=LEFT,expand=True,fill=BOTH)
     tab2 = Frame(canvas2, width=200, height=300)
     tab2.bind(
     "<Configure>",
@@ -3756,9 +3768,14 @@ if __name__ == '__main__':
 #tab3
     canvas3 = Canvas(ParentFrame3, width=850, height=300)
     scroll3 = Scrollbar(ParentFrame3, orient=VERTICAL, command=canvas3.yview)
-    canvas3.grid(row=0, column=0)
-    scroll3.grid(row=0, column=1, sticky='ns')
-    canvas3.config(yscrollcommand=scroll3.set)
+    #canvas3.grid(row=0, column=0)
+    #scroll3.grid(row=0, column=1, sticky='ns')
+    scrollx3 = Scrollbar(ParentFrame3, orient=HORIZONTAL, command=canvas3.xview)
+    scrollx3.pack(expand=1, fill=X, side=BOTTOM)
+    scroll3.pack(side = RIGHT, fill = Y, expand=1)
+    canvas3.pack(side=LEFT,expand=True,fill=BOTH)
+    #scrollx3.grid(row=1, column=1, sticky='ew')
+    canvas3.config(yscrollcommand=scroll3.set, xscrollcommand=scrollx3.set)
     tab3 = Frame(canvas3, width=200, height=300)
     tab3.bind(
     "<Configure>",
@@ -3772,9 +3789,14 @@ if __name__ == '__main__':
 #tab 4 
     canvas4 = Canvas(ParentFrame4, width=850, height=300)
     scroll4 = Scrollbar(ParentFrame4, orient=VERTICAL, command=canvas4.yview)
-    canvas4.grid(row=0, column=0)
-    scroll4.grid(row=0, column=1, sticky='ns')
-    canvas4.config(yscrollcommand=scroll4.set)
+    #canvas4.grid(row=0, column=0)
+    #scroll4.grid(row=0, column=1, sticky='ns')
+    scrollx4 = Scrollbar(ParentFrame4, orient=HORIZONTAL, command=canvas4.xview)
+    scrollx4.grid(row=1, column=1, sticky='ew')
+    canvas4.config(yscrollcommand=scroll4.set, xscrollcommand=scrollx4.set)
+    scrollx4.pack(expand=1, fill=X, side=BOTTOM)
+    scroll4.pack(side = RIGHT, fill = Y, expand=1)
+    canvas4.pack(side=LEFT,expand=True,fill=BOTH)
     tab4 = Frame(canvas4, width=200, height=300)
     tab4.bind(
     "<Configure>",
@@ -3788,9 +3810,14 @@ if __name__ == '__main__':
 #tab 5
     canvas5 = Canvas(ParentFrame5, width=850, height=300)
     scroll5 = Scrollbar(ParentFrame5, orient=VERTICAL, command=canvas5.yview)
-    canvas5.grid(row=0, column=0)
-    scroll5.grid(row=0, column=1, sticky='ns')
-    canvas5.config(yscrollcommand=scroll5.set)
+    #canvas5.grid(row=0, column=0)
+    #scroll5.grid(row=0, column=1, sticky='ns')
+    scrollx5 = Scrollbar(ParentFrame5, orient=HORIZONTAL, command=canvas5.xview)
+    #scrollx5.grid(row=1, column=1, sticky='ew')
+    scrollx5.pack(expand=1, fill=X, side=BOTTOM)
+    scroll5.pack(side = RIGHT, fill = Y, expand=1)
+    canvas5.pack(side=LEFT,expand=True,fill=BOTH)
+    canvas5.config(yscrollcommand=scroll5.set, xscrollcommand=scrollx5.set)
     tab5 = Frame(canvas5, width=200, height=300)
     tab5.bind(
     "<Configure>",
@@ -3802,9 +3829,13 @@ if __name__ == '__main__':
     
     canvas11 = Canvas(ParentFrame11, width=850, height=300) #, highlightbackground="red", highlightthickness=2
     scroll11 = Scrollbar(ParentFrame11, orient=HORIZONTAL, command=canvas11.xview, width=20)
-    canvas11.grid(row=0, column=0)
-    scroll11.grid(row=1, column=0, sticky='nsew')
-    canvas11.config(yscrollcommand=scroll11.set)
+    #canvas11.grid(row=0, column=0)
+    #scroll11.grid(row=1, column=0, sticky='nsew')
+    
+    scroll11.pack(side = BOTTOM, fill = X, expand=1)
+    canvas11.pack(side=LEFT,expand=True,fill=BOTH)
+    
+    canvas11.config(yscrollcommand=scroll11.set )
     tab11 = Frame(canvas11, width=200, height=300)#, highlightbackground="black", highlightthickness=1
     tab11.bind(
     "<Configure>",
