@@ -3873,7 +3873,7 @@ if __name__ == '__main__':
     port_entry = Spinbox(values=openPorts, width=25)
     port_entry.delete(0,'end')
     port_entry.insert(0,openPorts[0]) #first port is the default 
-    port_entry.place(x = 80, y = ylowerbuttons)
+    port_entry.place(x = 80, y = yupperbtns)
     baud_entry = Spinbox(values=(300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, 115200), width=7)
     baud_entry.delete(0,'end')
     baud_entry.insert(0,'9600')
@@ -3883,7 +3883,7 @@ if __name__ == '__main__':
     timeout_entry.place(x=635,y=yupperbtns)
     timeout_entry.insert(0,'10')
     filename_entry = Entry(width = 25)
-    filename_entry.place(x=80, y=yupperbtns)
+    filename_entry.place(x=80, y=ylowerbuttons)
     date_string = time.strftime('%Y%m%d') # predefine a default filename with ISO date    
     filename_entry.insert(0,'BOX1-5-'+date_string+'.txt')
     configfilename_entry = Entry(width = 25)
