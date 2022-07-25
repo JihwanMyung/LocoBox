@@ -16,6 +16,8 @@ except ImportError:
 import threading # To run Arduino loop and tkinter loop alongside
 import serial.tools.list_ports # For identifying Arduino port
 
+#sudo chmod 666 /dev/ttyACM0
+
 
 # Global variables 1_1 = Box_Phases
 global hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, dark1_1, light1_1
@@ -140,7 +142,7 @@ if sys.platform.startswith('win'):
 elif sys.platform.startswith('darwin'):
     window.geometry('1000x440')
 elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-    window.geometry('1100x620')
+    window.geometry('1100x520')
 else:
     window.geometry('1000x440')
 status = StatusBar(window)
@@ -3706,7 +3708,8 @@ if __name__ == '__main__':
 
     tab_control = ttk.Notebook(window)
     
-    ParentFrame1 = ttk.Frame(tab_control,width=850, height=300)
+    ParentFrame1 = ttk.Frame(tab_control,width=850, height=200, relief=tk.FLAT)
+    ParentFrame1.pack()
     ParentFrame2 = ttk.Frame(tab_control)
     ParentFrame3 = ttk.Frame(tab_control)
     ParentFrame4 = ttk.Frame(tab_control)
@@ -3722,16 +3725,15 @@ if __name__ == '__main__':
 
     #tab1
 
-    canvas1 = Canvas(ParentFrame1, width=850, height=300, scrollregion=(0,0,850,200)) #, highlightbackground="red", highlightthickness=2
+    canvas1 = Canvas(ParentFrame1, width=850, height=300, scrollregion=(0,0,850,300)) #, highlightbackground="red", highlightthickness=2
     scroll1 = Scrollbar(ParentFrame1, orient=VERTICAL, command=canvas1.yview)
     scrollx1 = Scrollbar(ParentFrame1, orient=HORIZONTAL, command=canvas1.xview)
-    #scrollx1.grid(row=1, column=1, sticky='ew')
-    
-    #canvas1.grid(row=0, column=0)
-    #scroll1.grid(row=0, column=1, sticky='ns')
-    scrollx1.pack(expand=1, fill=X, side=BOTTOM)
-    scroll1.pack(side = RIGHT, fill = Y, expand=1)
-    canvas1.pack(side=LEFT,expand=True,fill=BOTH)
+    scrollx1.grid(row=1, column=0, sticky=tk.EW)    
+    canvas1.grid(row=0, column=0)
+    scroll1.grid(row=0, column=1, sticky='ns')
+    # scrollx1.pack(expand=1, fill=X, side=BOTTOM)window
+    # scroll1.pack(side = RIGHT, fill = Y, expand=1)
+    # canvas1.pack(side=LEFT,expand=True,fill=BOTH)
     canvas1.config(yscrollcommand=scroll1.set, xscrollcommand=scrollx1.set)
     
     tab1 = Frame(canvas1, width=200, height=300)#, highlightbackground="black", highlightthickness=1
@@ -3858,30 +3860,34 @@ if __name__ == '__main__':
     status.pack(side='bottom', fill='x')
     status.set('Available ports: '+', '.join(map(str,openPorts)))
 
+    yupperbtns = 370
+    ylowerbuttons = 410
+
     #Entry for Port, Baud, timeout, filename to save
-    Label(text = 'Port').place(x = 40, y = 370)
-    Label(text =  'Baud rate').place(x = 363, y = 370)
-    Label(text = 'Time out').place(x= 565, y=370)
-    Label(text= 'File').place(x=40, y=410)
-    Label(text= 'Schedule').place(x=363, y=410)
+    Label(text = 'Port').place(x = 40, y = yupperbtns)
+    Label(text =  'Baud rate').place(x = 363, y = yupperbtns)
+    Label(text = 'Time out').place(x= 565, y=yupperbtns)
+    Label(text= 'File').place(x=40, y=ylowerbuttons)
+    Label(text= 'Schedule').place(x=363, y=ylowerbuttons)
 
     port_entry = Spinbox(values=openPorts, width=25)
     port_entry.delete(0,'end')
     port_entry.insert(0,openPorts[0]) #first port is the default 
-    port_entry.place(x = 80, y = 370)
+    port_entry.place(x = 80, y = ylowerbuttons)
     baud_entry = Spinbox(values=(300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, 115200), width=7)
     baud_entry.delete(0,'end')
     baud_entry.insert(0,'9600')
-    baud_entry.place(x = 440, y = 370)
+    
+    baud_entry.place(x = 440, y = yupperbtns)
     timeout_entry = Entry(width = 4)
-    timeout_entry.place(x=635,y=370)
+    timeout_entry.place(x=635,y=yupperbtns)
     timeout_entry.insert(0,'10')
     filename_entry = Entry(width = 25)
-    filename_entry.place(x=80, y=410)
+    filename_entry.place(x=80, y=yupperbtns)
     date_string = time.strftime('%Y%m%d') # predefine a default filename with ISO date    
     filename_entry.insert(0,'BOX1-5-'+date_string+'.txt')
     configfilename_entry = Entry(width = 25)
-    configfilename_entry.place(x=440, y=410)
+    configfilename_entry.place(x=440, y=ylowerbuttons)
     configfilename_entry.insert(0,'BOX1-5-sched-'+date_string+'.json')
 
     btnSave = Button(text=' Save ', command=save_conf, state='disabled')
@@ -3903,11 +3909,11 @@ if __name__ == '__main__':
         btnSave.place(x=685, y=450)
         btnRun.place(x=745, y=450)
     elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-        btnSave.place(x=650, y=450)
-        btnRun.place(x=720, y=450)
+        btnSave.place(x=650, y=550)
+        btnRun.place(x=720, y=550)
     else:
-        btnSave.place(x=635, y=450)
-        btnRun.place(x=695, y=450)
+        btnSave.place(x=635, y=550)
+        btnRun.place(x=695, y=550)
 
     row_adj = 3  # useful when a new row is added above
 
