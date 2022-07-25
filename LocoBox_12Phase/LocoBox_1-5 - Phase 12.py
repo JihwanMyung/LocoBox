@@ -142,7 +142,7 @@ if sys.platform.startswith('win'):
 elif sys.platform.startswith('darwin'):
     window.geometry('1000x440')
 elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-    window.geometry('1100x520')
+    window.geometry('900x520')
 else:
     window.geometry('1000x440')
 status = StatusBar(window)
@@ -3909,11 +3909,11 @@ if __name__ == '__main__':
         btnSave.place(x=685, y=450)
         btnRun.place(x=745, y=450)
     elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-        btnSave.place(x=650, y=550)
-        btnRun.place(x=720, y=550)
+        btnSave.place(x=650, y=450)
+        btnRun.place(x=720, y=450)
     else:
-        btnSave.place(x=635, y=550)
-        btnRun.place(x=695, y=550)
+        btnSave.place(x=635, y=450)
+        btnRun.place(x=695, y=450)
 
     row_adj = 3  # useful when a new row is added above
 
