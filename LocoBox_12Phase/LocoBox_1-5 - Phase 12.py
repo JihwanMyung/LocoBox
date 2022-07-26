@@ -1479,7 +1479,6 @@ def read_conf(): # Read schedule configuration
     
     dark1_5 = config['dark1_5'] 
     light1_5 = config['light1_5'] 
-    print('read_conf' +str(light1_5))
     dark2_5 = config['dark2_5'] 
     light2_5 = config['light2_5'] 
     dark3_5 = config['dark3_5'] 
@@ -2026,6 +2025,8 @@ def show_conf(): # Show schedule configuration
     global hourOn3_12, minOn3_12, hourOff3_12, minOff3_12, dark3_12, light3_12, date3_12, month3_12, year3_12, hourFrom3_12, minuteFrom3_12
     global hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12
     global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12
+
+    print("Hon1_1" + str(hourOn1_1))
 
     col11_1 = Label(tab11, text='Phase 1')
     col11_2 = Label(tab11, text='Phase 2')
@@ -2673,10 +2674,10 @@ def show_conf(): # Show schedule configuration
         box5pha4text.set(year5_4+'/'+month5_4+'/'+date5_4+' '+hourFrom5_4+':'+minuteFrom5_4+' | '+'LL')
         window.update_idletasks()
 
-    print('show_conf54 ' + str(light5_4))
+    
 
     # 5 Phase
-    print('show_conf 15' + str(light1_5))
+    
     if light1_5=='0' and dark1_5=='0':
         box1pha5text.set('                                ')
         window.update_idletasks()
@@ -4918,11 +4919,13 @@ if __name__ == '__main__':
 
     btnSave = Button(text=' Save ', command=save_conf, state='disabled')
     btnRun = Button(text= ' Recording Start ', command=connect, state='disabled')
+    btnAll = Button(text='Set All', command=getAllBoxSchedule)
   
     # if box settings of all 5 boxes are done, activate save and run buttons
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
         btnRun['state']='normal'
+        
         recordingmenu.entryconfig('Start new', state='normal')
         show_conf()
         window.update_idletasks()
@@ -4931,21 +4934,25 @@ if __name__ == '__main__':
     if sys.platform.startswith('win'):
         btnSave.place(x=570, y=450)
         btnRun.place(x=610, y=450)
+        btnAll.place(x=570, y=480)
     elif sys.platform.startswith('darwin'):
         btnSave.place(x=685, y=450)
         btnRun.place(x=745, y=450)
+        btnAll.place(x=685, y=480)
     elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
         btnSave.place(x=650, y=450)
         btnRun.place(x=720, y=450)
+        btnAll.place(x=650, y=480)
     else:
         btnSave.place(x=635, y=450)
         btnRun.place(x=695, y=450)
+        btnAll.place(x=635, y=480)
 
     row_adj = 3  # useful when a new row is added above
 
     # Box1
     btn1 = Button(tab1, text='  Set  ', command=lambda: OnButtonClick(1))
-    btnAll1 = Button(tab1, text='Set All', command=getAllBoxSchedule)
+    
     tab1_title = Label(tab1, text= 'LED schedule', anchor='center')
     tab1_title.grid(column=0, row= -1+row_adj, columnspan='27', sticky='we')
     #capSep1 = ttk.Separator(tab1, orient=HORIZONTAL)
@@ -5825,7 +5832,7 @@ if __name__ == '__main__':
     rowsButton = 13
     
     btn1.grid(column=0, row=rowsButton+row_adj, padx=25, pady=5, columnspan='2', sticky='w')
-    btnAll1.grid(column=1, row=rowsButton+row_adj, pady=5, columnspan='1', sticky='w')
+    
     box1sched_stat.grid(column=3, row=rowsButton+row_adj, columnspan='8', sticky='w')
     window.update_idletasks()
 
@@ -5841,7 +5848,7 @@ if __name__ == '__main__':
 
     # Box2
     btn2 = Button(tab2, text='  Set  ', command=lambda: OnButtonClick(2))
-    btnAll2 = Button(tab2, text='Set All', command=getAllBoxSchedule)
+   
     tab2_title = Label(tab2, text= 'LED schedule', anchor='center')
     tab2_title.grid(column=0, row= -1+row_adj, columnspan='27', sticky='we')
     # capSep2 = ttk.Separator(tab2, orient=HORIZONTAL)
@@ -6707,7 +6714,7 @@ if __name__ == '__main__':
     rad2_C_12.grid(column=25, row=rowPhase12+row_adj, pady=5)
 
     btn2.grid(column=0, row=rowsButton+row_adj, padx=25, pady=5, columnspan='2', sticky='w')
-    btnAll2.grid(column=1, row=rowsButton+row_adj, pady=5, columnspan='1', sticky='w')
+   
     box2sched_stat.grid(column=3, row=rowsButton+row_adj, columnspan='8', sticky='w')
     window.update_idletasks()
 
@@ -6722,7 +6729,7 @@ if __name__ == '__main__':
 
     # Box3
     btn3 = Button(tab3, text='  Set  ', command=lambda: OnButtonClick(3))
-    btnAll3 = Button(tab3, text='Set All', command=getAllBoxSchedule)
+    
     tab3_title = Label(tab3, text= 'LED schedule', anchor='center')
     tab3_title.grid(column=0, row= -1+row_adj, columnspan='27', sticky='we')
     # capSep3 = ttk.Separator(tab3, orient=HORIZONTAL)
@@ -7591,7 +7598,7 @@ if __name__ == '__main__':
     rad3_C_12.grid(column=25, row=rowPhase12+row_adj, pady=5)
     
     btn3.grid(column=0, row=rowsButton+row_adj, padx=25, pady=5, columnspan='2', sticky='w')
-    btnAll3.grid(column=1, row=rowsButton+row_adj, pady=5, columnspan='1', sticky='w')
+   
     box3sched_stat.grid(column=3, row=rowsButton+row_adj, columnspan='8', sticky='w')
     window.update_idletasks()
 
@@ -7605,7 +7612,7 @@ if __name__ == '__main__':
     
     # Box4
     btn4 = Button(tab4, text='  Set  ', command=lambda: OnButtonClick(4))
-    btnAll4 = Button(tab4, text='Set All', command=getAllBoxSchedule)
+    
     tab4_title = Label(tab4, text= 'LED schedule', anchor='center')
     tab4_title.grid(column=0, row= -1+row_adj, columnspan='27', sticky='we')
     # capSep4 = ttk.Separator(tab4, orient=HORIZONTAL)
@@ -8481,7 +8488,7 @@ if __name__ == '__main__':
     rad4_C_12.grid(column=25, row=rowPhase12+row_adj, pady=5)
 
     btn4.grid(column=0, row=rowsButton+row_adj, padx=25, pady=5, columnspan='2', sticky='w')
-    btnAll4.grid(column=1, row=rowsButton+row_adj, pady=5, columnspan='1', sticky='w')
+    
     box4sched_stat.grid(column=3, row=rowsButton+row_adj, columnspan='8', sticky='w')
     window.update_idletasks()
     tab4_title2 = Label(tab1, text= 'Recording status', anchor='center')
@@ -8494,7 +8501,7 @@ if __name__ == '__main__':
 
     # Box5
     btn5 = Button(tab5, text='  Set  ', command=lambda: OnButtonClick(5))
-    btnAll5 = Button(tab5, text='Set All', command=getAllBoxSchedule)
+    
     tab5_title = Label(tab5, text= 'LED schedule', anchor='center')
     tab5_title.grid(column=0, row= -1+row_adj, columnspan='27', sticky='we')
     # capSep5 = ttk.Separator(tab5, orient=HORIZONTAL)
@@ -9371,7 +9378,7 @@ if __name__ == '__main__':
 
 
     btn5.grid(column=0, row=rowsButton+row_adj, padx=25, pady=5, columnspan='2', sticky='w')
-    btnAll5.grid(column=1, row=rowsButton+row_adj, pady=5, columnspan='1', sticky='w')
+    
     box5sched_stat.grid(column=3, row=rowsButton+row_adj, columnspan='8', sticky='w')
     window.update_idletasks()
     tab5_title2 = Label(tab1, text= 'Recording status', anchor='center')
