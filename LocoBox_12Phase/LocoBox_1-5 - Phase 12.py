@@ -4919,7 +4919,9 @@ if __name__ == '__main__':
 
     btnSave = Button(text=' Save ', command=save_conf, state='disabled')
     btnRun = Button(text= ' Recording Start ', command=connect, state='disabled')
+    btnSet1 = Button(text=' Set one box ', command=lambda: OnButtonClick(int(tab_control.index('current'))+1))
     btnAll = Button(text='Set All', command=getAllBoxSchedule)
+    
   
     # if box settings of all 5 boxes are done, activate save and run buttons
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
@@ -4935,23 +4937,26 @@ if __name__ == '__main__':
         btnSave.place(x=570, y=450)
         btnRun.place(x=610, y=450)
         btnAll.place(x=570, y=480)
+        btnSet1.place(x=610, y=480)
     elif sys.platform.startswith('darwin'):
         btnSave.place(x=685, y=450)
         btnRun.place(x=745, y=450)
         btnAll.place(x=685, y=480)
+        btnSet1.place(x=745, y=480)
     elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
         btnSave.place(x=650, y=450)
         btnRun.place(x=720, y=450)
         btnAll.place(x=650, y=480)
+        btnSet1.place(x=720, y=480)
     else:
         btnSave.place(x=635, y=450)
         btnRun.place(x=695, y=450)
         btnAll.place(x=635, y=480)
+        btnSet1.place(x=695, y=480)
 
     row_adj = 3  # useful when a new row is added above
 
     # Box1
-    btn1 = Button(tab1, text='  Set  ', command=lambda: OnButtonClick(1))
     
     tab1_title = Label(tab1, text= 'LED schedule', anchor='center')
     tab1_title.grid(column=0, row= -1+row_adj, columnspan='27', sticky='we')
@@ -4970,7 +4975,7 @@ if __name__ == '__main__':
     spin1_A_1 = Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f')
     spin1_B_1 = Spinbox(tab1, from_=00, to=59, width=3, format='%02.0f')
     spin1_A_1.delete(0,'end')
-    spin1_A_1.insert(0,'07')
+    spin1_A_1.insert(0,'07
     spin1_B_1.delete(0,'end')
     spin1_B_1.insert(0,'00')
     label1_h1_1 = Label(tab1, text=':')
@@ -5831,7 +5836,7 @@ if __name__ == '__main__':
 
     rowsButton = 13
     
-    btn1.grid(column=0, row=rowsButton+row_adj, padx=25, pady=5, columnspan='2', sticky='w')
+    
     
     box1sched_stat.grid(column=3, row=rowsButton+row_adj, columnspan='8', sticky='w')
     window.update_idletasks()
@@ -5847,7 +5852,7 @@ if __name__ == '__main__':
     window.update_idletasks()
 
     # Box2
-    btn2 = Button(tab2, text='  Set  ', command=lambda: OnButtonClick(2))
+    
    
     tab2_title = Label(tab2, text= 'LED schedule', anchor='center')
     tab2_title.grid(column=0, row= -1+row_adj, columnspan='27', sticky='we')
@@ -6713,7 +6718,7 @@ if __name__ == '__main__':
     rad2_B_12.grid(column=24, row=rowPhase12+row_adj, padx=15, pady=5)
     rad2_C_12.grid(column=25, row=rowPhase12+row_adj, pady=5)
 
-    btn2.grid(column=0, row=rowsButton+row_adj, padx=25, pady=5, columnspan='2', sticky='w')
+    
    
     box2sched_stat.grid(column=3, row=rowsButton+row_adj, columnspan='8', sticky='w')
     window.update_idletasks()
@@ -6728,7 +6733,7 @@ if __name__ == '__main__':
     window.update_idletasks()
 
     # Box3
-    btn3 = Button(tab3, text='  Set  ', command=lambda: OnButtonClick(3))
+   
     
     tab3_title = Label(tab3, text= 'LED schedule', anchor='center')
     tab3_title.grid(column=0, row= -1+row_adj, columnspan='27', sticky='we')
@@ -7597,7 +7602,7 @@ if __name__ == '__main__':
     rad3_B_12.grid(column=24, row=rowPhase12+row_adj, padx=15, pady=5)
     rad3_C_12.grid(column=25, row=rowPhase12+row_adj, pady=5)
     
-    btn3.grid(column=0, row=rowsButton+row_adj, padx=25, pady=5, columnspan='2', sticky='w')
+    
    
     box3sched_stat.grid(column=3, row=rowsButton+row_adj, columnspan='8', sticky='w')
     window.update_idletasks()
@@ -7611,7 +7616,7 @@ if __name__ == '__main__':
     window.update_idletasks()
     
     # Box4
-    btn4 = Button(tab4, text='  Set  ', command=lambda: OnButtonClick(4))
+    
     
     tab4_title = Label(tab4, text= 'LED schedule', anchor='center')
     tab4_title.grid(column=0, row= -1+row_adj, columnspan='27', sticky='we')
@@ -8487,7 +8492,7 @@ if __name__ == '__main__':
     rad4_B_12.grid(column=24, row=rowPhase12+row_adj, padx=15, pady=5)
     rad4_C_12.grid(column=25, row=rowPhase12+row_adj, pady=5)
 
-    btn4.grid(column=0, row=rowsButton+row_adj, padx=25, pady=5, columnspan='2', sticky='w')
+    
     
     box4sched_stat.grid(column=3, row=rowsButton+row_adj, columnspan='8', sticky='w')
     window.update_idletasks()
@@ -8500,7 +8505,7 @@ if __name__ == '__main__':
     window.update_idletasks()
 
     # Box5
-    btn5 = Button(tab5, text='  Set  ', command=lambda: OnButtonClick(5))
+    
     
     tab5_title = Label(tab5, text= 'LED schedule', anchor='center')
     tab5_title.grid(column=0, row= -1+row_adj, columnspan='27', sticky='we')
@@ -9377,7 +9382,7 @@ if __name__ == '__main__':
     rad5_C_12.grid(column=25, row=rowPhase12+row_adj, pady=5)
 
 
-    btn5.grid(column=0, row=rowsButton+row_adj, padx=25, pady=5, columnspan='2', sticky='w')
+   
     
     box5sched_stat.grid(column=3, row=rowsButton+row_adj, columnspan='8', sticky='w')
     window.update_idletasks()
