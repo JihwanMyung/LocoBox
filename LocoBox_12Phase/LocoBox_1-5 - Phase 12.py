@@ -15,7 +15,7 @@ except ImportError:
     fileDialog = tk.filedialog
 import threading # To run Arduino loop and tkinter loop alongside
 import serial.tools.list_ports # For identifying Arduino port
-from varname import nameof
+
 
 
 #sudo chmod 666 /dev/ttyACM0
