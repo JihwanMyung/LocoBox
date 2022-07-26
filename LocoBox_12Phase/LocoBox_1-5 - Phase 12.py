@@ -15,6 +15,8 @@ except ImportError:
     fileDialog = tk.filedialog
 import threading # To run Arduino loop and tkinter loop alongside
 import serial.tools.list_ports # For identifying Arduino port
+from varname import varname
+
 
 #sudo chmod 666 /dev/ttyACM0
 
@@ -1248,6 +1250,10 @@ def read_conf(): # Read schedule configuration
     global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12
     
     hourOn1_1 = config['hourOn1_1'] 
+
+    
+    spin1_A_1.delete(0,'end')
+    spin1_A_1.insert(0,hourOn1_1)
     minOn1_1 = config['minOn1_1'] 
     hourOff1_1 = config['hourOff1_1']
     minOff1_1 = config['minOff1_1'] 
@@ -2026,7 +2032,7 @@ def show_conf(): # Show schedule configuration
     global hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12
     global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12
 
-    print("Hon1_1" + str(hourOn1_1))
+    #print("hourOn1_1" + str(hourOn1_1))
 
     col11_1 = Label(tab11, text='Phase 1')
     col11_2 = Label(tab11, text='Phase 2')
@@ -4919,7 +4925,7 @@ if __name__ == '__main__':
 
     btnSave = Button(text=' Save ', command=save_conf, state='disabled')
     btnRun = Button(text= ' Recording Start ', command=connect, state='disabled')
-    btnSet1 = Button(text=' Set one box ', command=lambda: OnButtonClick(int(tab_control.index('current'))+1))
+    btnSet1 = Button(text=' Set current box ', command=lambda: OnButtonClick(int(tab_control.index('current'))+1))
     btnAll = Button(text='Set All', command=getAllBoxSchedule)
     
   
@@ -4930,6 +4936,13 @@ if __name__ == '__main__':
         
         recordingmenu.entryconfig('Start new', state='normal')
         show_conf()
+        window.update_idletasks()
+
+    if "Schedules" in tab_control.select():
+        btnSet1['state']='disabled'
+        window.update_idletasks()
+    else:
+        btnSet1['state']='normal'
         window.update_idletasks()
 
     # button positions change depending on OS
@@ -4975,7 +4988,7 @@ if __name__ == '__main__':
     spin1_A_1 = Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f')
     spin1_B_1 = Spinbox(tab1, from_=00, to=59, width=3, format='%02.0f')
     spin1_A_1.delete(0,'end')
-    spin1_A_1.insert(0,'07
+    spin1_A_1.insert(0,'07')
     spin1_B_1.delete(0,'end')
     spin1_B_1.insert(0,'00')
     label1_h1_1 = Label(tab1, text=':')
