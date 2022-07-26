@@ -28,7 +28,7 @@ This software system requires Arduino Mega 2560 for controlling 10 boxes and a d
 
 * Jihwan Myung - initial work and further development
 * Vuong Truong - further development on Python GUI interface
-* Firdani Rianda - extension to 12 phases
+* Firdani Rianda Putra - reduction to 5-box and extension to 12 phases
 * Zow Ormazabal - stabilization and GUI improvement
 
 See braintimelab for the release version.
