@@ -140,9 +140,9 @@ class StatusBar(Frame): # scan open serial ports
 window = Tk()
 window.title('LocoBox (1-5_box)')
 if sys.platform.startswith('win'):
-    window.geometry('770x420')
+    window.geometry('870x620')
 elif sys.platform.startswith('darwin'):
-    window.geometry('1000x440')
+    window.geometry('1200x640')
 elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
     window.geometry('900x520')
 else:
