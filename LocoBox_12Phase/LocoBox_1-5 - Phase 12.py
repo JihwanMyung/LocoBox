@@ -592,6 +592,7 @@ def save_conf(): # Save schedule configuration
     config['hourFrom5_3'] = hourFrom5_3
     config['minuteFrom5_3'] = minuteFrom5_3
     
+    #phase 4
     config['hourOn1_4'] = hourOn1_4
     config['minOn1_4'] = minOn1_4
     config['hourOff1_4'] = hourOff1_4
@@ -649,6 +650,65 @@ def save_conf(): # Save schedule configuration
     config['minuteFrom4_4'] = minuteFrom4_4
     config['hourFrom5_4'] = hourFrom5_4
     config['minuteFrom5_4'] = minuteFrom5_4
+
+    #phase5
+    config['hourOn1_5'] = hourOn1_5
+    config['minOn1_5'] = minOn1_5
+    config['hourOff1_5'] = hourOff1_5
+    config['minOff1_5'] = minOff1_5
+    config['hourOn2_5'] = hourOn2_5
+    config['minOn2_5'] = minOn2_5
+    config['hourOff2_5'] = hourOff2_5
+    config['minOff2_5'] = minOff2_5
+    config['hourOn3_5'] = hourOn3_5
+    config['minOn3_5'] = minOn3_5
+    config['hourOff3_5'] = hourOff3_5
+    config['minOff3_5'] = minOff3_5
+    config['hourOn4_5'] = hourOn4_5
+    config['minOn4_5'] = minOn4_5
+    config['hourOff4_5'] = hourOff4_5
+    config['minOff4_5'] = minOff4_5
+    config['hourOn5_5'] = hourOn5_5
+    config['minOn5_5'] = minOn5_5
+    config['hourOff5_5'] = hourOff5_5
+    config['minOff5_5'] = minOff5_5
+    
+    config['dark1_5'] = dark1_5
+    config['light1_5'] = light1_5
+    config['dark2_5'] = dark2_5
+    config['light2_5'] = light2_5
+    config['dark3_5'] = dark3_5
+    config['light3_5'] = light3_5
+    config['dark4_5'] = dark4_5
+    config['light4_5'] = light4_5
+    config['dark5_5'] = dark5_5
+    config['light5_5'] = light5_5
+    
+    config['date1_5'] = date1_5
+    config['month1_5'] = month1_5
+    config['year1_5'] = year1_5
+    config['date2_5'] = date2_5
+    config['month2_5'] = month2_5
+    config['year2_5'] = year2_5
+    config['date3_5'] = date3_5
+    config['month3_5'] = month3_5
+    config['year3_5'] = year3_5
+    config['date4_5'] = date4_5
+    config['month4_5'] = month4_5
+    config['year4_5'] = year4_5
+    config['date5_5'] = date5_5
+    config['month5_5'] = month5_5
+    config['year5_5'] = year5_5
+    config['hourFrom1_5'] = hourFrom1_5
+    config['minuteFrom1_5'] = minuteFrom1_5
+    config['hourFrom2_5'] = hourFrom2_5
+    config['minuteFrom2_5'] = minuteFrom2_5
+    config['hourFrom3_5'] = hourFrom3_5
+    config['minuteFrom3_5'] = minuteFrom3_5
+    config['hourFrom4_5'] = hourFrom4_5
+    config['minuteFrom4_5'] = minuteFrom4_5
+    config['hourFrom5_5'] = hourFrom5_5
+    config['minuteFrom5_5'] = minuteFrom5_5
     
     configfilename = configfilename_entry.get()
     writeToJSONFile(configfilename, config)
@@ -672,6 +732,7 @@ def read_conf(): # Read schedule configuration
     configfilename = filedialog.askopenfilename()
     with open(configfilename) as data_file:
         config = json.load(data_file)
+        #print(config)
 
     global hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, hourOn2_1, minOn2_1, hourOff2_1, minOff2_1 
     global hourOn3_1, minOn3_1, hourOff3_1, minOff3_1, hourOn4_1, minOn4_1, hourOff4_1, minOff4_1 
@@ -709,6 +770,62 @@ def read_conf(): # Read schedule configuration
     
     global hourFrom1_4, minuteFrom1_4, hourFrom2_4, minuteFrom2_4, hourFrom3_4, minuteFrom3_4, hourFrom4_4, minuteFrom4_4 
     global hourFrom5_4, minuteFrom5_4
+
+    #Phase 5
+    global hourOn1_5, minOn1_5, hourOff1_5, minOff1_5, hourOn2_5, minOn2_5, hourOff2_5, minOff2_5
+    global hourOn3_5, minOn3_5, hourOff3_5, minOff3_5, hourOn4_5, minOn4_5, hourOff4_5, minOff4_5 
+    global hourOn5_5, minOn5_5, hourOff5_5, minOff5_5 
+    
+    global dark1_5, light1_5, dark2_5, light2_5, dark3_5, light3_5, dark4_5, light4_5, dark5_5, light5_5
+     
+    global date1_5, month1_5, year1_5, date2_5, month2_5, year2_5, date3_5, month3_5, year3_5, date4_5, month4_5, year4_5 
+    global date5_5, month5_5, year5_5
+    
+    global hourFrom1_5, minuteFrom1_5, hourFrom2_5, minuteFrom2_5, hourFrom3_5, minuteFrom3_5, hourFrom4_5, minuteFrom4_5 
+    global hourFrom5_5, minuteFrom5_5
+
+
+    global hourOn1_6, minOn1_6, hourOff1_6, minOff1_6, dark1_6, light1_6, date1_6, month1_6, year1_6, hourFrom1_6, minuteFrom1_6
+    global hourOn2_6, minOn2_6, hourOff2_6, minOff2_6, dark2_6, light2_6, date2_6, month2_6, year2_6, hourFrom2_6, minuteFrom2_6
+    global hourOn3_6, minOn3_6, hourOff3_6, minOff3_6, dark3_6, light3_6, date3_6, month3_6, year3_6, hourFrom3_6, minuteFrom3_6
+    global hourOn4_6, minOn4_6, hourOff4_6, minOff4_6, dark4_6, light4_6, date4_6, month4_6, year4_6, hourFrom4_6, minuteFrom4_6
+    global hourOn5_6, minOn5_6, hourOff5_6, minOff5_6, dark5_6, light5_6, date5_6, month5_6, year5_6, hourFrom5_6, minuteFrom5_6
+
+    global hourOn1_7, minOn1_7, hourOff1_7, minOff1_7, dark1_7, light1_7, date1_7, month1_7, year1_7, hourFrom1_7, minuteFrom1_7
+    global hourOn2_7, minOn2_7, hourOff2_7, minOff2_7, dark2_7, light2_7, date2_7, month2_7, year2_7, hourFrom2_7, minuteFrom2_7
+    global hourOn3_7, minOn3_7, hourOff3_7, minOff3_7, dark3_7, light3_7, date3_7, month3_7, year3_7, hourFrom3_7, minuteFrom3_7
+    global hourOn4_7, minOn4_7, hourOff4_7, minOff4_7, dark4_7, light4_7, date4_7, month4_7, year4_7, hourFrom4_7, minuteFrom4_7
+    global hourOn5_7, minOn5_7, hourOff5_7, minOff5_7, dark5_7, light5_7, date5_7, month5_7, year5_7, hourFrom5_7, minuteFrom5_7
+
+    global hourOn1_8, minOn1_8, hourOff1_8, minOff1_8, dark1_8, light1_8, date1_8, month1_8, year1_8, hourFrom1_8, minuteFrom1_8
+    global hourOn2_8, minOn2_8, hourOff2_8, minOff2_8, dark2_8, light2_8, date2_8, month2_8, year2_8, hourFrom2_8, minuteFrom2_8
+    global hourOn3_8, minOn3_8, hourOff3_8, minOff3_8, dark3_8, light3_8, date3_8, month3_8, year3_8, hourFrom3_8, minuteFrom3_8
+    global hourOn4_8, minOn4_8, hourOff4_8, minOff4_8, dark4_8, light4_8, date4_8, month4_8, year4_8, hourFrom4_8, minuteFrom4_8
+    global hourOn5_8, minOn5_8, hourOff5_8, minOff5_8, dark5_8, light5_8, date5_8, month5_8, year5_8, hourFrom5_8, minuteFrom5_8
+
+    global hourOn1_9, minOn1_9, hourOff1_9, minOff1_9, dark1_9, light1_9, date1_9, month1_9, year1_9, hourFrom1_9, minuteFrom1_9
+    global hourOn2_9, minOn2_9, hourOff2_9, minOff2_9, dark2_9, light2_9, date2_9, month2_9, year2_9, hourFrom2_9, minuteFrom2_9
+    global hourOn3_9, minOn3_9, hourOff3_9, minOff3_9, dark3_9, light3_9, date3_9, month3_9, year3_9, hourFrom3_9, minuteFrom3_9
+    global hourOn4_9, minOn4_9, hourOff4_9, minOff4_9, dark4_9, light4_9, date4_9, month4_9, year4_9, hourFrom4_9, minuteFrom4_9
+    global hourOn5_9, minOn5_9, hourOff5_9, minOff5_9, dark5_9, light5_9, date5_9, month5_9, year5_9, hourFrom5_9, minuteFrom5_9
+
+    global hourOn1_10, minOn1_10, hourOff1_10, minOff1_10, dark1_10, light1_10, date1_10, month1_10, year1_10, hourFrom1_10, minuteFrom1_10
+    global hourOn2_10, minOn2_10, hourOff2_10, minOff2_10, dark2_10, light2_10, date2_10, month2_10, year2_10, hourFrom2_10, minuteFrom2_10
+    global hourOn3_10, minOn3_10, hourOff3_10, minOff3_10, dark3_10, light3_10, date3_10, month3_10, year3_10, hourFrom3_10, minuteFrom3_10
+    global hourOn4_10, minOn4_10, hourOff4_10, minOff4_10, dark4_10, light4_10, date4_10, month4_10, year4_10, hourFrom4_10, minuteFrom4_10
+    global hourOn5_10, minOn5_10, hourOff5_10, minOff5_10, dark5_10, light5_10, date5_10, month5_10, year5_10, hourFrom5_10, minuteFrom5_10
+
+    global hourOn1_11, minOn1_11, hourOff1_11, minOff1_11, dark1_11, light1_11, date1_11, month1_11, year1_11, hourFrom1_11, minuteFrom1_11
+    global hourOn2_11, minOn2_11, hourOff2_11, minOff2_11, dark2_11, light2_11, date2_11, month2_11, year2_11, hourFrom2_11, minuteFrom2_11
+    global hourOn3_11, minOn3_11, hourOff3_11, minOff3_11, dark3_11, light3_11, date3_11, month3_11, year3_11, hourFrom3_11, minuteFrom3_11
+    global hourOn4_11, minOn4_11, hourOff4_11, minOff4_11, dark4_11, light4_11, date4_11, month4_11, year4_11, hourFrom4_11, minuteFrom4_11
+    global hourOn5_11, minOn5_11, hourOff5_11, minOff5_11, dark5_11, light5_11, date5_11, month5_11, year5_11, hourFrom5_11, minuteFrom5_11
+
+    global hourOn1_12, minOn1_12, hourOff1_12, minOff1_12, dark1_12, light1_12, date1_12, month1_12, year1_12, hourFrom1_12, minuteFrom1_12
+    global hourOn2_12, minOn2_12, hourOff2_12, minOff2_12, dark2_12, light2_12, date2_12, month2_12, year2_12, hourFrom2_12, minuteFrom2_12
+    global hourOn3_12, minOn3_12, hourOff3_12, minOff3_12, dark3_12, light3_12, date3_12, month3_12, year3_12, hourFrom3_12, minuteFrom3_12
+    global hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12
+    global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12
     
     hourOn1_1 = config['hourOn1_1'] 
     minOn1_1 = config['minOn1_1'] 
@@ -915,6 +1032,135 @@ def read_conf(): # Read schedule configuration
     minuteFrom4_4 = config['minuteFrom4_4'] 
     hourFrom5_4 = config['hourFrom5_4'] 
     minuteFrom5_4 = config['minuteFrom5_4'] 
+
+
+    #phase5
+
+    hourOn1_5 =config['hourOn1_5']  
+    minOn1_5 = config['minOn1_5'] 
+    hourOff1_5 = config['hourOff1_5'] 
+    minOff1_5 =config['minOff1_5']  
+    hourOn2_5 = config['hourOn2_5']  
+    minOn2_5 = config['minOn2_5'] 
+    hourOff2_5 = config['hourOff2_5']
+    minOff2_5 = config['minOff2_5']  
+    hourOn3_5 = config['hourOn3_5']  
+    minOn3_5 = config['minOn3_5'] 
+    hourOff3_5 =config['hourOff3_5']
+    minOff3_5 = config['minOff3_5'] 
+    hourOn4_5 =config['hourOn4_5']  
+    minOn4_5 = config['minOn4_5']
+    hourOff4_5 = config['hourOff4_5']
+    minOff4_5 = config['minOff4_5']  
+    hourOn5_5 = config['hourOn5_5']  
+    minOn5_5 = config['minOn5_5']
+    hourOff5_5 =config['hourOff5_5']
+    minOff5_5 =config['minOff5_5']  
+    
+    dark1_5 = config['dark1_5'] 
+    light1_5 = config['light1_5'] 
+    print('read_conf' +str(light1_5))
+    dark2_5 = config['dark2_5'] 
+    light2_5 = config['light2_5'] 
+    dark3_5 = config['dark3_5'] 
+    light3_5 = config['light3_5'] 
+    dark4_5 = config['dark4_5'] 
+    light4_5 = config['light4_5'] 
+    dark5_5 = config['dark5_5'] 
+    light5_5 = config['light5_5'] 
+    
+    date1_5 = config['date1_5'] 
+    month1_5 = config['month1_5']
+    year1_5 = config['year1_5'] 
+    date2_5 = config['date2_5'] 
+    month2_5 = config['month2_5']
+    year2_5 = config['year2_5'] 
+    date3_5 = config['date3_5'] 
+    month3_5 = config['month3_5']
+    year3_5 = config['year3_5'] 
+    date4_5 = config['date4_5'] 
+    month4_5 = config['month4_5']
+    year4_5 = config['year4_5'] 
+    date5_5 = config['date5_5'] 
+    month5_5 = config['month5_5']
+    year5_5 = config['year5_5'] 
+    hourFrom1_5 = config['hourFrom1_5'] 
+    minuteFrom1_5 = config['minuteFrom1_5'] 
+    hourFrom2_5 = config['hourFrom2_5'] 
+    minuteFrom2_5 =config['minuteFrom2_5'] 
+    hourFrom3_5 =config['hourFrom3_5'] 
+    minuteFrom3_5 =config['minuteFrom3_5'] 
+    hourFrom4_5 =config['hourFrom4_5'] 
+    minuteFrom4_5 = config['minuteFrom4_5'] 
+    hourFrom5_5 = config['hourFrom5_5'] 
+    minuteFrom5_5 = config['minuteFrom5_5'] 
+
+
+    #phase 6
+
+    hourOn1_6 =config['hourOn1_6']  
+    minOn1_6 = config['minOn1_6'] 
+    hourOff1_6 = config['hourOff1_6'] 
+    minOff1_6 =config['minOff1_6']  
+    hourOn2_6 = config['hourOn2_6']  
+    minOn2_6 = config['minOn2_6'] 
+    hourOff2_6 = config['hourOff2_6']
+    minOff2_6 = config['minOff2_6']  
+    hourOn3_6 = config['hourOn3_6']  
+    minOn3_6 = config['minOn3_6'] 
+    hourOff3_6 =config['hourOff3_6']
+    minOff3_6 = config['minOff3_6'] 
+    hourOn4_6 =config['hourOn4_6']  
+    minOn4_6 = config['minOn4_6']
+    hourOff4_6 = config['hourOff4_6']
+    minOff4_6 = config['minOff4_6']  
+    hourOn5_6 = config['hourOn5_6']  
+    minOn5_6 = config['minOn5_6']
+    hourOff5_6 =config['hourOff5_6']
+    minOff5_6 =config['minOff5_6']  
+    
+    dark1_6 = config['dark1_6'] 
+    light1_6 = config['light1_6'] 
+    dark2_6 = config['dark2_6'] 
+    light2_6 = config['light2_6'] 
+    dark3_6 = config['dark3_6'] 
+    light3_6 = config['light3_6'] 
+    dark4_6 = config['dark4_6'] 
+    light4_6 = config['light4_6'] 
+    dark5_6 = config['dark5_6'] 
+    light5_6 = config['light5_6'] 
+    
+    date1_6 = config['date1_6'] 
+    month1_6 = config['month1_6']
+    year1_6 = config['year1_6'] 
+    date2_6 = config['date2_6'] 
+    month2_6 = config['month2_6']
+    year2_6 = config['year2_6'] 
+    date3_6 = config['date3_6'] 
+    month3_6 = config['month3_6']
+    year3_6 = config['year3_6'] 
+    date4_6 = config['date4_6'] 
+    month4_6 = config['month4_6']
+    year4_6 = config['year4_6'] 
+    date5_6 = config['date5_6'] 
+    month5_6 = config['month5_6']
+    year5_6 = config['year5_6'] 
+    hourFrom1_6 = config['hourFrom1_6'] 
+    minuteFrom1_6 = config['minuteFrom1_6'] 
+    hourFrom2_6 = config['hourFrom2_6'] 
+    minuteFrom2_6 =config['minuteFrom2_6'] 
+    hourFrom3_6 =config['hourFrom3_6'] 
+    minuteFrom3_6 =config['minuteFrom3_6'] 
+    hourFrom4_6 =config['hourFrom4_6'] 
+    minuteFrom4_6 = config['minuteFrom4_6'] 
+    hourFrom5_6 = config['hourFrom5_6'] 
+    minuteFrom5_6 = config['minuteFrom5_6'] 
+
+    
+
+
+
+
      
     btnRun['state']='normal'
     recordingmenu.entryconfig('Start new', state='normal')
@@ -1650,7 +1896,10 @@ def show_conf(): # Show schedule configuration
         box5pha4text.set(year5_4+'/'+month5_4+'/'+date5_4+' '+hourFrom5_4+':'+minuteFrom5_4+' | '+'LL')
         window.update_idletasks()
 
+    print('show_conf54 ' + str(light5_4))
+
     # 5 Phase
+    print('show_conf 15' + str(light1_5))
     if light1_5=='0' and dark1_5=='0':
         box1pha5text.set('                                ')
         window.update_idletasks()
