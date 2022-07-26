@@ -1939,6 +1939,8 @@ def read_conf(): # Read schedule configuration
     minuteFrom5_12 = config['minuteFrom5_12'] 
 
     #Load variables into the GUI fields
+#BOX1
+
 
     spin1_A_1.delete(0,'end')
     spin1_A_1.insert(0,hourOn1_1)
@@ -2202,7 +2204,1066 @@ def read_conf(): # Read schedule configuration
     spin1_D_12.insert(0,minOff1_12)
 
 
-     
+    #BOX2
+
+    spin2_A_1.delete(0,'end')
+    spin2_A_1.insert(0,hourOn2_1)
+
+    spin2_B_1.delete(0,'end')
+    spin2_B_1.insert(0,minOn2_1)
+
+    spin2_C_1.delete(0,'end')
+    spin2_C_1.insert(0,hourOff2_1)
+
+    spin2_D_1.delete(0,'end')
+    spin2_D_1.insert(0,minOff2_1)
+
+    spin2_E_2.delete(0,'end')
+    spin2_E_2.insert(0,hourFrom2_2)
+
+    spin2_F_2.delete(0,'end')
+    spin2_F_2.insert(0,minuteFrom2_2)
+
+    date2_2_entry.delete(0,'end')
+    today=datetime.date.today() # today
+    day_phase2 = today + datetime.timedelta(days=7) # calculate dates for 7 days after recording initiation
+    date2_2_entry.insert(0,'{:02d}'.format(day_phase2.day))
+    month2_2_entry.delete(0,'end')
+    month2_2_entry.insert(0,'{:02d}'.format(day_phase2.month))
+    year2_2_entry.delete(0,'end')
+    year2_2_entry.insert(0,day_phase2.year) # ISO format is YYYY/MM/DD
+
+    spin2_A_2.delete(0,'end')
+    spin2_A_2.insert(0,hourOn2_2)
+    spin2_B_2.delete(0,'end')
+    spin2_B_2.insert(0,minOn2_2)
+    spin2_C_2.delete(0,'end')
+    spin2_C_2.insert(0,hourOff2_2)
+    spin2_D_2.delete(0,'end')
+    spin2_D_2.insert(0,minOff2_2)
+
+    spin2_E_3.delete(0,'end')
+    spin2_E_3.insert(0,hourFrom2_3)
+    spin2_F_3.delete(0,'end')
+    spin2_F_3.insert(0,minuteFrom2_3)
+    day_phase3 = day_phase2 + datetime.timedelta(days=7) # calculate dates for 14 days after recording initiation
+    date2_3_entry.delete(0,'end')
+    date2_3_entry.insert(0,'{:02d}'.format(day_phase3.day))
+    month2_3_entry.delete(0,'end')
+    month2_3_entry.insert(0,'{:02d}'.format(day_phase3.month))
+    year2_3_entry.delete(0,'end')
+    year2_3_entry.insert(0,day_phase3.year)
+
+    spin2_A_3.delete(0,'end')
+    spin2_A_3.insert(0,hourOn2_3)
+    spin2_B_3.delete(0,'end')
+    spin2_B_3.insert(0,minOn2_3)
+    spin2_C_3.delete(0,'end')
+    spin2_C_3.insert(0,hourOff2_3)
+    spin2_D_3.delete(0,'end')
+    spin2_D_3.insert(0,minOff2_3)
+
+
+    #phase4
+
+    spin2_E_4.delete(0,'end')
+    spin2_E_4.insert(0,hourFrom2_4)
+    spin2_F_4.delete(0,'end')
+    spin2_F_4.insert(0,minuteFrom2_4)
+    date2_4_entry.delete(0,'end')
+    day_phase4 = day_phase3 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date2_4_entry.delete(0,'end')
+    date2_4_entry.insert(0,'{:02d}'.format(day_phase4.day))
+    month2_4_entry.delete(0,'end')
+    month2_4_entry.insert(0,'{:02d}'.format(day_phase4.month))
+    year2_4_entry.delete(0,'end')
+    year2_4_entry.insert(0,day_phase4.year)
+    spin2_A_4.delete(0,'end')
+    spin2_A_4.insert(0,hourOn2_4)
+    spin2_B_4.delete(0,'end')
+    spin2_B_4.insert(0,hourOn2_4)
+    spin2_C_4.delete(0,'end')
+    spin2_C_4.insert(0,hourOff2_4)
+    spin2_D_4.delete(0,'end')
+    spin2_D_4.insert(0,minOff2_4)
+
+
+    #phase5
+    spin2_E_5.delete(0,'end')
+    spin2_E_5.insert(0,hourFrom2_5)
+    spin2_F_5.delete(0,'end')
+    spin2_F_5.insert(0,minuteFrom2_5)
+    date2_5_entry.delete(0,'end')
+
+    day_phase5 = day_phase4 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date2_5_entry.delete(0,'end')
+    date2_5_entry.insert(0,'{:02d}'.format(day_phase5.day))
+    month2_5_entry.delete(0,'end')
+    month2_5_entry.insert(0,'{:02d}'.format(day_phase5.month))
+    year2_5_entry.delete(0,'end')
+    year2_5_entry.insert(0,day_phase5.year)
+
+    spin2_A_5.delete(0,'end')
+    spin2_A_5.insert(0,hourOn2_5)
+    spin2_B_5.delete(0,'end')
+    spin2_B_5.insert(0,hourOn2_5)
+    spin2_C_5.delete(0,'end')
+    spin2_C_5.insert(0,hourOff2_5)
+    spin2_D_5.delete(0,'end')
+    spin2_D_5.insert(0,minOff2_5)
+
+    #phase6
+    spin2_E_6.delete(0,'end')
+    spin2_E_6.insert(0,hourFrom2_6)
+    spin2_F_6.delete(0,'end')
+    spin2_F_6.insert(0,minuteFrom2_6)
+    date2_6_entry.delete(0,'end')
+
+    day_phase6 = day_phase5 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date2_6_entry.delete(0,'end')
+    date2_6_entry.insert(0,'{:02d}'.format(day_phase6.day))
+    month2_6_entry.delete(0,'end')
+    month2_6_entry.insert(0,'{:02d}'.format(day_phase6.month))
+    year2_6_entry.delete(0,'end')
+    year2_6_entry.insert(0,day_phase6.year)
+    spin2_A_6.delete(0,'end')
+    spin2_A_6.insert(0,hourOn2_6)
+    spin2_B_6.delete(0,'end')
+    spin2_B_6.insert(0,hourOn2_6)
+    spin2_C_6.delete(0,'end')
+    spin2_C_6.insert(0,hourOff2_6)
+    spin2_D_6.delete(0,'end')
+    spin2_D_6.insert(0,minOff2_6)
+
+    #phase 7
+    spin2_E_7.delete(0,'end')
+    spin2_E_7.insert(0,hourFrom2_7)
+    spin2_F_7.delete(0,'end')
+    spin2_F_7.insert(0,minuteFrom2_7)
+    date2_7_entry.delete(0,'end')
+    day_phase7 = day_phase6 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date2_7_entry.delete(0,'end')
+    date2_7_entry.insert(0,'{:02d}'.format(day_phase7.day))
+    month2_7_entry.delete(0,'end')
+    month2_7_entry.insert(0,'{:02d}'.format(day_phase7.month))
+    year2_7_entry.delete(0,'end')
+    year2_7_entry.insert(0,day_phase7.year)
+    spin2_A_7.delete(0,'end')
+    spin2_A_7.insert(0,hourOn2_7)
+    spin2_B_7.delete(0,'end')
+    spin2_B_7.insert(0,hourOn2_7)
+    spin2_C_7.delete(0,'end')
+    spin2_C_7.insert(0,hourOff2_7)
+    spin2_D_7.delete(0,'end')
+    spin2_D_7.insert(0,minOff2_7)
+
+    #phase8
+    spin2_E_8.delete(0,'end')
+    spin2_E_8.insert(0,hourFrom2_8)
+    spin2_F_8.delete(0,'end')
+    spin2_F_8.insert(0,minuteFrom2_8)
+    date2_8_entry.delete(0,'end')
+    day_phase8 = day_phase7 + datetime.timedelta(days=7)
+    date2_8_entry.insert(0,'{:02d}'.format(day_phase8.day))
+    month2_8_entry.delete(0,'end')
+    month2_8_entry.insert(0,'{:02d}'.format(day_phase8.month))
+    year2_8_entry.delete(0,'end')
+    year2_8_entry.insert(0,day_phase8.year)
+    spin2_A_8.delete(0,'end')
+    spin2_A_8.insert(0,hourOn2_8)
+    spin2_B_8.delete(0,'end')
+    spin2_B_8.insert(0,hourOn2_8)
+    spin2_C_8.delete(0,'end')
+    spin2_C_8.insert(0,hourOff2_8)
+    spin2_D_8.delete(0,'end')
+    spin2_D_8.insert(0,minOff2_8)
+
+    #phase9
+
+    spin2_E_9.delete(0,'end')
+    spin2_E_9.insert(0,hourFrom2_9)
+    spin2_F_9.delete(0,'end')
+    spin2_F_9.insert(0,minuteFrom2_9)
+    date2_9_entry.delete(0,'end')
+    day_phase9 = day_phase8 + datetime.timedelta(days=7)
+    date2_9_entry.insert(0,'{:02d}'.format(day_phase9.day))
+    month2_9_entry.delete(0,'end')
+    month2_9_entry.insert(0,'{:02d}'.format(day_phase9.month))
+    year2_9_entry.delete(0,'end')
+    year2_9_entry.insert(0,day_phase9.year)
+    spin2_A_9.delete(0,'end')
+    spin2_A_9.insert(0,hourOn2_9)
+    spin2_B_9.delete(0,'end')
+    spin2_B_9.insert(0,hourOn2_9)
+    spin2_C_9.delete(0,'end')
+    spin2_C_9.insert(0,hourOff2_9)
+    spin2_D_9.delete(0,'end')
+    spin2_D_9.insert(0,minOff2_9)
+
+
+    #phase10
+
+    spin2_E_10.delete(0,'end')
+    spin2_E_10.insert(0,hourFrom2_10)
+    spin2_F_10.delete(0,'end')
+    spin2_F_10.insert(0,minuteFrom2_10)
+    date2_10_entry.delete(0,'end')
+    day_phase10 = day_phase9 + datetime.timedelta(days=7)
+    date2_10_entry.insert(0,'{:02d}'.format(day_phase10.day))
+    month2_10_entry.delete(0,'end')
+    month2_10_entry.insert(0,'{:02d}'.format(day_phase10.month))
+    year2_10_entry.delete(0,'end')
+    year2_10_entry.insert(0,day_phase10.year)
+    spin2_A_10.delete(0,'end')
+    spin2_A_10.insert(0,hourOn2_10)
+    spin2_B_10.delete(0,'end')
+    spin2_B_10.insert(0,hourOn2_10)
+    spin2_C_10.delete(0,'end')
+    spin2_C_10.insert(0,hourOff2_10)
+    spin2_D_10.delete(0,'end')
+    spin2_D_10.insert(0,minOff2_10)
+
+    #phase11
+
+    spin2_E_11.delete(0,'end')
+    spin2_E_11.insert(0,hourFrom2_11)
+    spin2_F_11.delete(0,'end')
+    spin2_F_11.insert(0,minuteFrom2_11)
+    date2_12_entry.delete(0,'end')
+    day_phase11 = day_phase10 + datetime.timedelta(days=7)
+    date2_12_entry.insert(0,'{:02d}'.format(day_phase10.day))
+    month2_12_entry.delete(0,'end')
+    month2_12_entry.insert(0,'{:02d}'.format(day_phase10.month))
+    year2_12_entry.delete(0,'end')
+    year2_12_entry.insert(0,day_phase10.year)
+    spin2_A_11.delete(0,'end')
+    spin2_A_11.insert(0,hourOn2_11)
+    spin2_B_11.delete(0,'end')
+    spin2_B_11.insert(0,hourOn2_11)
+    spin2_C_11.delete(0,'end')
+    spin2_C_11.insert(0,hourOff2_11)
+    spin2_D_11.delete(0,'end')
+    spin2_D_11.insert(0,minOff2_11)
+
+    #phase12
+
+    spin2_E_12.delete(0,'end')
+    spin2_E_12.insert(0,hourFrom2_12)
+    spin2_F_12.delete(0,'end')
+    spin2_F_12.insert(0,minuteFrom2_12)
+    date2_12_entry.delete(0,'end')
+    day_phase12 = day_phase11 + datetime.timedelta(days=7)
+    date2_12_entry.insert(0,'{:02d}'.format(day_phase11.day))
+    month2_12_entry.delete(0,'end')
+    month2_12_entry.insert(0,'{:02d}'.format(day_phase11.month))
+    year2_12_entry.delete(0,'end')
+    year2_12_entry.insert(0,day_phase11.year)
+    spin2_A_12.delete(0,'end')
+    spin2_A_12.insert(0,hourOn2_12)
+    spin2_B_12.delete(0,'end')
+    spin2_B_12.insert(0,hourOn2_12)
+    spin2_C_12.delete(0,'end')
+    spin2_C_12.insert(0,hourOff2_12)
+    spin2_D_12.delete(0,'end')
+    spin2_D_12.insert(0,minOff2_12)
+
+
+
+    #BOX 3
+
+    spin3_A_1.delete(0,'end')
+    spin3_A_1.insert(0,hourOn3_1)
+
+    spin3_B_1.delete(0,'end')
+    spin3_B_1.insert(0,minOn3_1)
+
+    spin3_C_1.delete(0,'end')
+    spin3_C_1.insert(0,hourOff3_1)
+
+    spin3_D_1.delete(0,'end')
+    spin3_D_1.insert(0,minOff3_1)
+
+    spin3_E_2.delete(0,'end')
+    spin3_E_2.insert(0,hourFrom3_2)
+
+    spin3_F_2.delete(0,'end')
+    spin3_F_2.insert(0,minuteFrom3_2)
+
+    date3_2_entry.delete(0,'end')
+    today=datetime.date.today() # today
+    day_phase2 = today + datetime.timedelta(days=7) # calculate dates for 7 days after recording initiation
+    date3_2_entry.insert(0,'{:02d}'.format(day_phase2.day))
+    month3_2_entry.delete(0,'end')
+    month3_2_entry.insert(0,'{:02d}'.format(day_phase2.month))
+    year3_2_entry.delete(0,'end')
+    year3_2_entry.insert(0,day_phase2.year) # ISO format is YYYY/MM/DD
+
+    spin3_A_2.delete(0,'end')
+    spin3_A_2.insert(0,hourOn3_2)
+    spin3_B_2.delete(0,'end')
+    spin3_B_2.insert(0,minOn3_2)
+    spin3_C_2.delete(0,'end')
+    spin3_C_2.insert(0,hourOff3_2)
+    spin3_D_2.delete(0,'end')
+    spin3_D_2.insert(0,minOff3_2)
+
+    spin3_E_3.delete(0,'end')
+    spin3_E_3.insert(0,hourFrom3_3)
+    spin3_F_3.delete(0,'end')
+    spin3_F_3.insert(0,minuteFrom3_3)
+    day_phase3 = day_phase2 + datetime.timedelta(days=7) # calculate dates for 14 days after recording initiation
+    date3_3_entry.delete(0,'end')
+    date3_3_entry.insert(0,'{:02d}'.format(day_phase3.day))
+    month3_3_entry.delete(0,'end')
+    month3_3_entry.insert(0,'{:02d}'.format(day_phase3.month))
+    year3_3_entry.delete(0,'end')
+    year3_3_entry.insert(0,day_phase3.year)
+
+    spin3_A_3.delete(0,'end')
+    spin3_A_3.insert(0,hourOn3_3)
+    spin3_B_3.delete(0,'end')
+    spin3_B_3.insert(0,minOn3_3)
+    spin3_C_3.delete(0,'end')
+    spin3_C_3.insert(0,hourOff3_3)
+    spin3_D_3.delete(0,'end')
+    spin3_D_3.insert(0,minOff3_3)
+
+
+    #phase4
+
+    spin3_E_4.delete(0,'end')
+    spin3_E_4.insert(0,hourFrom3_4)
+    spin3_F_4.delete(0,'end')
+    spin3_F_4.insert(0,minuteFrom3_4)
+    date3_4_entry.delete(0,'end')
+    day_phase4 = day_phase3 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date3_4_entry.delete(0,'end')
+    date3_4_entry.insert(0,'{:02d}'.format(day_phase4.day))
+    month3_4_entry.delete(0,'end')
+    month3_4_entry.insert(0,'{:02d}'.format(day_phase4.month))
+    year3_4_entry.delete(0,'end')
+    year3_4_entry.insert(0,day_phase4.year)
+    spin3_A_4.delete(0,'end')
+    spin3_A_4.insert(0,hourOn3_4)
+    spin3_B_4.delete(0,'end')
+    spin3_B_4.insert(0,hourOn3_4)
+    spin3_C_4.delete(0,'end')
+    spin3_C_4.insert(0,hourOff3_4)
+    spin3_D_4.delete(0,'end')
+    spin3_D_4.insert(0,minOff3_4)
+
+
+    #phase5
+    spin3_E_5.delete(0,'end')
+    spin3_E_5.insert(0,hourFrom3_5)
+    spin3_F_5.delete(0,'end')
+    spin3_F_5.insert(0,minuteFrom3_5)
+    date3_5_entry.delete(0,'end')
+
+    day_phase5 = day_phase4 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date3_5_entry.delete(0,'end')
+    date3_5_entry.insert(0,'{:02d}'.format(day_phase5.day))
+    month3_5_entry.delete(0,'end')
+    month3_5_entry.insert(0,'{:02d}'.format(day_phase5.month))
+    year3_5_entry.delete(0,'end')
+    year3_5_entry.insert(0,day_phase5.year)
+
+    spin3_A_5.delete(0,'end')
+    spin3_A_5.insert(0,hourOn3_5)
+    spin3_B_5.delete(0,'end')
+    spin3_B_5.insert(0,hourOn3_5)
+    spin3_C_5.delete(0,'end')
+    spin3_C_5.insert(0,hourOff3_5)
+    spin3_D_5.delete(0,'end')
+    spin3_D_5.insert(0,minOff3_5)
+
+    #phase6
+    spin3_E_6.delete(0,'end')
+    spin3_E_6.insert(0,hourFrom3_6)
+    spin3_F_6.delete(0,'end')
+    spin3_F_6.insert(0,minuteFrom3_6)
+    date3_6_entry.delete(0,'end')
+
+    day_phase6 = day_phase5 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date3_6_entry.delete(0,'end')
+    date3_6_entry.insert(0,'{:02d}'.format(day_phase6.day))
+    month3_6_entry.delete(0,'end')
+    month3_6_entry.insert(0,'{:02d}'.format(day_phase6.month))
+    year3_6_entry.delete(0,'end')
+    year3_6_entry.insert(0,day_phase6.year)
+    spin3_A_6.delete(0,'end')
+    spin3_A_6.insert(0,hourOn3_6)
+    spin3_B_6.delete(0,'end')
+    spin3_B_6.insert(0,hourOn3_6)
+    spin3_C_6.delete(0,'end')
+    spin3_C_6.insert(0,hourOff3_6)
+    spin3_D_6.delete(0,'end')
+    spin3_D_6.insert(0,minOff3_6)
+
+    #phase 7
+    spin3_E_7.delete(0,'end')
+    spin3_E_7.insert(0,hourFrom3_7)
+    spin3_F_7.delete(0,'end')
+    spin3_F_7.insert(0,minuteFrom3_7)
+    date3_7_entry.delete(0,'end')
+    day_phase7 = day_phase6 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date3_7_entry.delete(0,'end')
+    date3_7_entry.insert(0,'{:02d}'.format(day_phase7.day))
+    month3_7_entry.delete(0,'end')
+    month3_7_entry.insert(0,'{:02d}'.format(day_phase7.month))
+    year3_7_entry.delete(0,'end')
+    year3_7_entry.insert(0,day_phase7.year)
+    spin3_A_7.delete(0,'end')
+    spin3_A_7.insert(0,hourOn3_7)
+    spin3_B_7.delete(0,'end')
+    spin3_B_7.insert(0,hourOn3_7)
+    spin3_C_7.delete(0,'end')
+    spin3_C_7.insert(0,hourOff3_7)
+    spin3_D_7.delete(0,'end')
+    spin3_D_7.insert(0,minOff3_7)
+
+    #phase8
+    spin3_E_8.delete(0,'end')
+    spin3_E_8.insert(0,hourFrom3_8)
+    spin3_F_8.delete(0,'end')
+    spin3_F_8.insert(0,minuteFrom3_8)
+    date3_8_entry.delete(0,'end')
+    day_phase8 = day_phase7 + datetime.timedelta(days=7)
+    date3_8_entry.insert(0,'{:02d}'.format(day_phase8.day))
+    month3_8_entry.delete(0,'end')
+    month3_8_entry.insert(0,'{:02d}'.format(day_phase8.month))
+    year3_8_entry.delete(0,'end')
+    year3_8_entry.insert(0,day_phase8.year)
+    spin3_A_8.delete(0,'end')
+    spin3_A_8.insert(0,hourOn3_8)
+    spin3_B_8.delete(0,'end')
+    spin3_B_8.insert(0,hourOn3_8)
+    spin3_C_8.delete(0,'end')
+    spin3_C_8.insert(0,hourOff3_8)
+    spin3_D_8.delete(0,'end')
+    spin3_D_8.insert(0,minOff3_8)
+
+    #phase9
+
+    spin3_E_9.delete(0,'end')
+    spin3_E_9.insert(0,hourFrom3_9)
+    spin3_F_9.delete(0,'end')
+    spin3_F_9.insert(0,minuteFrom3_9)
+    date3_9_entry.delete(0,'end')
+    day_phase9 = day_phase8 + datetime.timedelta(days=7)
+    date3_9_entry.insert(0,'{:02d}'.format(day_phase9.day))
+    month3_9_entry.delete(0,'end')
+    month3_9_entry.insert(0,'{:02d}'.format(day_phase9.month))
+    year3_9_entry.delete(0,'end')
+    year3_9_entry.insert(0,day_phase9.year)
+    spin3_A_9.delete(0,'end')
+    spin3_A_9.insert(0,hourOn3_9)
+    spin3_B_9.delete(0,'end')
+    spin3_B_9.insert(0,hourOn3_9)
+    spin3_C_9.delete(0,'end')
+    spin3_C_9.insert(0,hourOff3_9)
+    spin3_D_9.delete(0,'end')
+    spin3_D_9.insert(0,minOff3_9)
+
+
+    #phase10
+
+    spin3_E_10.delete(0,'end')
+    spin3_E_10.insert(0,hourFrom3_10)
+    spin3_F_10.delete(0,'end')
+    spin3_F_10.insert(0,minuteFrom3_10)
+    date3_10_entry.delete(0,'end')
+    day_phase10 = day_phase9 + datetime.timedelta(days=7)
+    date3_10_entry.insert(0,'{:02d}'.format(day_phase10.day))
+    month3_10_entry.delete(0,'end')
+    month3_10_entry.insert(0,'{:02d}'.format(day_phase10.month))
+    year3_10_entry.delete(0,'end')
+    year3_10_entry.insert(0,day_phase10.year)
+    spin3_A_10.delete(0,'end')
+    spin3_A_10.insert(0,hourOn3_10)
+    spin3_B_10.delete(0,'end')
+    spin3_B_10.insert(0,hourOn3_10)
+    spin3_C_10.delete(0,'end')
+    spin3_C_10.insert(0,hourOff3_10)
+    spin3_D_10.delete(0,'end')
+    spin3_D_10.insert(0,minOff3_10)
+
+    #phase11
+
+    spin3_E_11.delete(0,'end')
+    spin3_E_11.insert(0,hourFrom3_11)
+    spin3_F_11.delete(0,'end')
+    spin3_F_11.insert(0,minuteFrom3_11)
+    date3_11_entry.delete(0,'end')
+    day_phase11 = day_phase10 + datetime.timedelta(days=7)
+    date3_11_entry.insert(0,'{:02d}'.format(day_phase10.day))
+    month3_11_entry.delete(0,'end')
+    month3_11_entry.insert(0,'{:02d}'.format(day_phase10.month))
+    year3_11_entry.delete(0,'end')
+    year3_11_entry.insert(0,day_phase10.year)
+    spin3_A_11.delete(0,'end')
+    spin3_A_11.insert(0,hourOn3_11)
+    spin3_B_11.delete(0,'end')
+    spin3_B_11.insert(0,hourOn3_11)
+    spin3_C_11.delete(0,'end')
+    spin3_C_11.insert(0,hourOff3_11)
+    spin3_D_11.delete(0,'end')
+    spin3_D_11.insert(0,minOff3_11)
+
+    #phase12
+
+    spin3_E_12.delete(0,'end')
+    spin3_E_12.insert(0,hourFrom3_12)
+    spin3_F_12.delete(0,'end')
+    spin3_F_12.insert(0,minuteFrom3_12)
+    date3_12_entry.delete(0,'end')
+    day_phase12 = day_phase11 + datetime.timedelta(days=7)
+    date3_12_entry.insert(0,'{:02d}'.format(day_phase11.day))
+    month3_12_entry.delete(0,'end')
+    month3_12_entry.insert(0,'{:02d}'.format(day_phase11.month))
+    year3_12_entry.delete(0,'end')
+    year3_12_entry.insert(0,day_phase11.year)
+    spin3_A_12.delete(0,'end')
+    spin3_A_12.insert(0,hourOn3_12)
+    spin3_B_12.delete(0,'end')
+    spin3_B_12.insert(0,hourOn3_12)
+    spin3_C_12.delete(0,'end')
+    spin3_C_12.insert(0,hourOff3_12)
+    spin3_D_12.delete(0,'end')
+    spin3_D_12.insert(0,minOff3_12)
+
+
+    #BOX 4
+    spin4_A_1.delete(0,'end')
+    spin4_A_1.insert(0,hourOn4_1)
+
+    spin4_B_1.delete(0,'end')
+    spin4_B_1.insert(0,minOn4_1)
+
+    spin4_C_1.delete(0,'end')
+    spin4_C_1.insert(0,hourOff4_1)
+
+    spin4_D_1.delete(0,'end')
+    spin4_D_1.insert(0,minOff4_1)
+
+    spin4_E_2.delete(0,'end')
+    spin4_E_2.insert(0,hourFrom4_2)
+
+    spin4_F_2.delete(0,'end')
+    spin4_F_2.insert(0,minuteFrom4_2)
+
+    date4_2_entry.delete(0,'end')
+    today=datetime.date.today() # today
+    day_phase2 = today + datetime.timedelta(days=7) # calculate dates for 7 days after recording initiation
+    date4_2_entry.insert(0,'{:02d}'.format(day_phase2.day))
+    month4_2_entry.delete(0,'end')
+    month4_2_entry.insert(0,'{:02d}'.format(day_phase2.month))
+    year4_2_entry.delete(0,'end')
+    year4_2_entry.insert(0,day_phase2.year) # ISO format is YYYY/MM/DD
+
+    spin4_A_2.delete(0,'end')
+    spin4_A_2.insert(0,hourOn4_2)
+    spin4_B_2.delete(0,'end')
+    spin4_B_2.insert(0,minOn4_2)
+    spin4_C_2.delete(0,'end')
+    spin4_C_2.insert(0,hourOff4_2)
+    spin4_D_2.delete(0,'end')
+    spin4_D_2.insert(0,minOff4_2)
+
+    spin4_E_3.delete(0,'end')
+    spin4_E_3.insert(0,hourFrom4_3)
+    spin4_F_3.delete(0,'end')
+    spin4_F_3.insert(0,minuteFrom4_3)
+    day_phase3 = day_phase2 + datetime.timedelta(days=7) # calculate dates for 14 days after recording initiation
+    date4_3_entry.delete(0,'end')
+    date4_3_entry.insert(0,'{:02d}'.format(day_phase3.day))
+    month4_3_entry.delete(0,'end')
+    month4_3_entry.insert(0,'{:02d}'.format(day_phase3.month))
+    year4_3_entry.delete(0,'end')
+    year4_3_entry.insert(0,day_phase3.year)
+
+    spin4_A_3.delete(0,'end')
+    spin4_A_3.insert(0,hourOn4_3)
+    spin4_B_3.delete(0,'end')
+    spin4_B_3.insert(0,minOn4_3)
+    spin4_C_3.delete(0,'end')
+    spin4_C_3.insert(0,hourOff4_3)
+    spin4_D_3.delete(0,'end')
+    spin4_D_3.insert(0,minOff4_3)
+
+
+    #phase4
+
+    spin4_E_4.delete(0,'end')
+    spin4_E_4.insert(0,hourFrom4_4)
+    spin4_F_4.delete(0,'end')
+    spin4_F_4.insert(0,minuteFrom4_4)
+    date4_4_entry.delete(0,'end')
+    day_phase4 = day_phase3 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date4_4_entry.delete(0,'end')
+    date4_4_entry.insert(0,'{:02d}'.format(day_phase4.day))
+    month4_4_entry.delete(0,'end')
+    month4_4_entry.insert(0,'{:02d}'.format(day_phase4.month))
+    year4_4_entry.delete(0,'end')
+    year4_4_entry.insert(0,day_phase4.year)
+    spin4_A_4.delete(0,'end')
+    spin4_A_4.insert(0,hourOn4_4)
+    spin4_B_4.delete(0,'end')
+    spin4_B_4.insert(0,hourOn4_4)
+    spin4_C_4.delete(0,'end')
+    spin4_C_4.insert(0,hourOff4_4)
+    spin4_D_4.delete(0,'end')
+    spin4_D_4.insert(0,minOff4_4)
+
+
+    #phase5
+    spin4_E_5.delete(0,'end')
+    spin4_E_5.insert(0,hourFrom4_5)
+    spin4_F_5.delete(0,'end')
+    spin4_F_5.insert(0,minuteFrom4_5)
+    date4_5_entry.delete(0,'end')
+
+    day_phase5 = day_phase4 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date4_5_entry.delete(0,'end')
+    date4_5_entry.insert(0,'{:02d}'.format(day_phase5.day))
+    month4_5_entry.delete(0,'end')
+    month4_5_entry.insert(0,'{:02d}'.format(day_phase5.month))
+    year4_5_entry.delete(0,'end')
+    year4_5_entry.insert(0,day_phase5.year)
+
+    spin4_A_5.delete(0,'end')
+    spin4_A_5.insert(0,hourOn4_5)
+    spin4_B_5.delete(0,'end')
+    spin4_B_5.insert(0,hourOn4_5)
+    spin4_C_5.delete(0,'end')
+    spin4_C_5.insert(0,hourOff4_5)
+    spin4_D_5.delete(0,'end')
+    spin4_D_5.insert(0,minOff4_5)
+
+    #phase6
+    spin4_E_6.delete(0,'end')
+    spin4_E_6.insert(0,hourFrom4_6)
+    spin4_F_6.delete(0,'end')
+    spin4_F_6.insert(0,minuteFrom4_6)
+    date4_6_entry.delete(0,'end')
+
+    day_phase6 = day_phase5 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date4_6_entry.delete(0,'end')
+    date4_6_entry.insert(0,'{:02d}'.format(day_phase6.day))
+    month4_6_entry.delete(0,'end')
+    month4_6_entry.insert(0,'{:02d}'.format(day_phase6.month))
+    year4_6_entry.delete(0,'end')
+    year4_6_entry.insert(0,day_phase6.year)
+    spin4_A_6.delete(0,'end')
+    spin4_A_6.insert(0,hourOn4_6)
+    spin4_B_6.delete(0,'end')
+    spin4_B_6.insert(0,hourOn4_6)
+    spin4_C_6.delete(0,'end')
+    spin4_C_6.insert(0,hourOff4_6)
+    spin4_D_6.delete(0,'end')
+    spin4_D_6.insert(0,minOff4_6)
+
+    #phase 7
+    spin4_E_7.delete(0,'end')
+    spin4_E_7.insert(0,hourFrom4_7)
+    spin4_F_7.delete(0,'end')
+    spin4_F_7.insert(0,minuteFrom4_7)
+    date4_7_entry.delete(0,'end')
+    day_phase7 = day_phase6 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date4_7_entry.delete(0,'end')
+    date4_7_entry.insert(0,'{:02d}'.format(day_phase7.day))
+    month4_7_entry.delete(0,'end')
+    month4_7_entry.insert(0,'{:02d}'.format(day_phase7.month))
+    year4_7_entry.delete(0,'end')
+    year4_7_entry.insert(0,day_phase7.year)
+    spin4_A_7.delete(0,'end')
+    spin4_A_7.insert(0,hourOn4_7)
+    spin4_B_7.delete(0,'end')
+    spin4_B_7.insert(0,hourOn4_7)
+    spin4_C_7.delete(0,'end')
+    spin4_C_7.insert(0,hourOff4_7)
+    spin4_D_7.delete(0,'end')
+    spin4_D_7.insert(0,minOff4_7)
+
+    #phase8
+    spin4_E_8.delete(0,'end')
+    spin4_E_8.insert(0,hourFrom4_8)
+    spin4_F_8.delete(0,'end')
+    spin4_F_8.insert(0,minuteFrom4_8)
+    date4_8_entry.delete(0,'end')
+    day_phase8 = day_phase7 + datetime.timedelta(days=7)
+    date4_8_entry.insert(0,'{:02d}'.format(day_phase8.day))
+    month4_8_entry.delete(0,'end')
+    month4_8_entry.insert(0,'{:02d}'.format(day_phase8.month))
+    year4_8_entry.delete(0,'end')
+    year4_8_entry.insert(0,day_phase8.year)
+    spin4_A_8.delete(0,'end')
+    spin4_A_8.insert(0,hourOn4_8)
+    spin4_B_8.delete(0,'end')
+    spin4_B_8.insert(0,hourOn4_8)
+    spin4_C_8.delete(0,'end')
+    spin4_C_8.insert(0,hourOff4_8)
+    spin4_D_8.delete(0,'end')
+    spin4_D_8.insert(0,minOff4_8)
+
+    #phase9
+
+    spin4_E_9.delete(0,'end')
+    spin4_E_9.insert(0,hourFrom4_9)
+    spin4_F_9.delete(0,'end')
+    spin4_F_9.insert(0,minuteFrom4_9)
+    date4_9_entry.delete(0,'end')
+    day_phase9 = day_phase8 + datetime.timedelta(days=7)
+    date4_9_entry.insert(0,'{:02d}'.format(day_phase9.day))
+    month4_9_entry.delete(0,'end')
+    month4_9_entry.insert(0,'{:02d}'.format(day_phase9.month))
+    year4_9_entry.delete(0,'end')
+    year4_9_entry.insert(0,day_phase9.year)
+    spin4_A_9.delete(0,'end')
+    spin4_A_9.insert(0,hourOn4_9)
+    spin4_B_9.delete(0,'end')
+    spin4_B_9.insert(0,hourOn4_9)
+    spin4_C_9.delete(0,'end')
+    spin4_C_9.insert(0,hourOff4_9)
+    spin4_D_9.delete(0,'end')
+    spin4_D_9.insert(0,minOff4_9)
+
+
+    #phase10
+
+    spin4_E_10.delete(0,'end')
+    spin4_E_10.insert(0,hourFrom4_10)
+    spin4_F_10.delete(0,'end')
+    spin4_F_10.insert(0,minuteFrom4_10)
+    date4_10_entry.delete(0,'end')
+    day_phase10 = day_phase9 + datetime.timedelta(days=7)
+    date4_10_entry.insert(0,'{:02d}'.format(day_phase10.day))
+    month4_10_entry.delete(0,'end')
+    month4_10_entry.insert(0,'{:02d}'.format(day_phase10.month))
+    year4_10_entry.delete(0,'end')
+    year4_10_entry.insert(0,day_phase10.year)
+    spin4_A_10.delete(0,'end')
+    spin4_A_10.insert(0,hourOn4_10)
+    spin4_B_10.delete(0,'end')
+    spin4_B_10.insert(0,hourOn4_10)
+    spin4_C_10.delete(0,'end')
+    spin4_C_10.insert(0,hourOff4_10)
+    spin4_D_10.delete(0,'end')
+    spin4_D_10.insert(0,minOff4_10)
+
+    #phase11
+
+    spin4_E_11.delete(0,'end')
+    spin4_E_11.insert(0,hourFrom4_11)
+    spin4_F_11.delete(0,'end')
+    spin4_F_11.insert(0,minuteFrom4_11)
+    date4_11_entry.delete(0,'end')
+    day_phase11 = day_phase10 + datetime.timedelta(days=7)
+    date4_11_entry.insert(0,'{:02d}'.format(day_phase10.day))
+    month4_11_entry.delete(0,'end')
+    month4_11_entry.insert(0,'{:02d}'.format(day_phase10.month))
+    year4_11_entry.delete(0,'end')
+    year4_11_entry.insert(0,day_phase10.year)
+    spin4_A_11.delete(0,'end')
+    spin4_A_11.insert(0,hourOn4_11)
+    spin4_B_11.delete(0,'end')
+    spin4_B_11.insert(0,hourOn4_11)
+    spin4_C_11.delete(0,'end')
+    spin4_C_11.insert(0,hourOff4_11)
+    spin4_D_11.delete(0,'end')
+    spin4_D_11.insert(0,minOff4_11)
+
+    #phase12
+
+    spin4_E_12.delete(0,'end')
+    spin4_E_12.insert(0,hourFrom4_12)
+    spin4_F_12.delete(0,'end')
+    spin4_F_12.insert(0,minuteFrom4_12)
+    date4_12_entry.delete(0,'end')
+    day_phase12 = day_phase11 + datetime.timedelta(days=7)
+    date4_12_entry.insert(0,'{:02d}'.format(day_phase11.day))
+    month4_12_entry.delete(0,'end')
+    month4_12_entry.insert(0,'{:02d}'.format(day_phase11.month))
+    year4_12_entry.delete(0,'end')
+    year4_12_entry.insert(0,day_phase11.year)
+    spin4_A_12.delete(0,'end')
+    spin4_A_12.insert(0,hourOn4_12)
+    spin4_B_12.delete(0,'end')
+    spin4_B_12.insert(0,hourOn4_12)
+    spin4_C_12.delete(0,'end')
+    spin4_C_12.insert(0,hourOff4_12)
+    spin4_D_12.delete(0,'end')
+    spin4_D_12.insert(0,minOff4_12)
+
+
+    #BOX5
+
+    spin5_A_1.delete(0,'end')
+    spin5_A_1.insert(0,hourOn5_1)
+
+    spin5_B_1.delete(0,'end')
+    spin5_B_1.insert(0,minOn5_1)
+
+    spin5_C_1.delete(0,'end')
+    spin5_C_1.insert(0,hourOff5_1)
+
+    spin5_D_1.delete(0,'end')
+    spin5_D_1.insert(0,minOff5_1)
+
+    spin5_E_2.delete(0,'end')
+    spin5_E_2.insert(0,hourFrom5_2)
+
+    spin5_F_2.delete(0,'end')
+    spin5_F_2.insert(0,minuteFrom5_2)
+
+    date5_2_entry.delete(0,'end')
+    today=datetime.date.today() # today
+    day_phase2 = today + datetime.timedelta(days=7) # calculate dates for 7 days after recording initiation
+    date5_2_entry.insert(0,'{:02d}'.format(day_phase2.day))
+    month5_2_entry.delete(0,'end')
+    month5_2_entry.insert(0,'{:02d}'.format(day_phase2.month))
+    year5_2_entry.delete(0,'end')
+    year5_2_entry.insert(0,day_phase2.year) # ISO format is YYYY/MM/DD
+
+    spin5_A_2.delete(0,'end')
+    spin5_A_2.insert(0,hourOn5_2)
+    spin5_B_2.delete(0,'end')
+    spin5_B_2.insert(0,minOn5_2)
+    spin5_C_2.delete(0,'end')
+    spin5_C_2.insert(0,hourOff5_2)
+    spin5_D_2.delete(0,'end')
+    spin5_D_2.insert(0,minOff5_2)
+
+    spin5_E_3.delete(0,'end')
+    spin5_E_3.insert(0,hourFrom5_3)
+    spin5_F_3.delete(0,'end')
+    spin5_F_3.insert(0,minuteFrom5_3)
+    day_phase3 = day_phase2 + datetime.timedelta(days=7) # calculate dates for 14 days after recording initiation
+    date5_3_entry.delete(0,'end')
+    date5_3_entry.insert(0,'{:02d}'.format(day_phase3.day))
+    month5_3_entry.delete(0,'end')
+    month5_3_entry.insert(0,'{:02d}'.format(day_phase3.month))
+    year5_3_entry.delete(0,'end')
+    year5_3_entry.insert(0,day_phase3.year)
+
+    spin5_A_3.delete(0,'end')
+    spin5_A_3.insert(0,hourOn5_3)
+    spin5_B_3.delete(0,'end')
+    spin5_B_3.insert(0,minOn5_3)
+    spin5_C_3.delete(0,'end')
+    spin5_C_3.insert(0,hourOff5_3)
+    spin5_D_3.delete(0,'end')
+    spin5_D_3.insert(0,minOff5_3)
+
+
+    #phase4
+
+    spin5_E_4.delete(0,'end')
+    spin5_E_4.insert(0,hourFrom5_4)
+    spin5_F_4.delete(0,'end')
+    spin5_F_4.insert(0,minuteFrom5_4)
+    date5_4_entry.delete(0,'end')
+    day_phase4 = day_phase3 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date5_4_entry.delete(0,'end')
+    date5_4_entry.insert(0,'{:02d}'.format(day_phase4.day))
+    month5_4_entry.delete(0,'end')
+    month5_4_entry.insert(0,'{:02d}'.format(day_phase4.month))
+    year5_4_entry.delete(0,'end')
+    year5_4_entry.insert(0,day_phase4.year)
+    spin5_A_4.delete(0,'end')
+    spin5_A_4.insert(0,hourOn5_4)
+    spin5_B_4.delete(0,'end')
+    spin5_B_4.insert(0,hourOn5_4)
+    spin5_C_4.delete(0,'end')
+    spin5_C_4.insert(0,hourOff5_4)
+    spin5_D_4.delete(0,'end')
+    spin5_D_4.insert(0,minOff5_4)
+
+
+    #phase5
+    spin5_E_5.delete(0,'end')
+    spin5_E_5.insert(0,hourFrom5_5)
+    spin5_F_5.delete(0,'end')
+    spin5_F_5.insert(0,minuteFrom5_5)
+    date5_5_entry.delete(0,'end')
+
+    day_phase5 = day_phase4 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date5_5_entry.delete(0,'end')
+    date5_5_entry.insert(0,'{:02d}'.format(day_phase5.day))
+    month5_5_entry.delete(0,'end')
+    month5_5_entry.insert(0,'{:02d}'.format(day_phase5.month))
+    year5_5_entry.delete(0,'end')
+    year5_5_entry.insert(0,day_phase5.year)
+
+    spin5_A_5.delete(0,'end')
+    spin5_A_5.insert(0,hourOn5_5)
+    spin5_B_5.delete(0,'end')
+    spin5_B_5.insert(0,hourOn5_5)
+    spin5_C_5.delete(0,'end')
+    spin5_C_5.insert(0,hourOff5_5)
+    spin5_D_5.delete(0,'end')
+    spin5_D_5.insert(0,minOff5_5)
+
+    #phase6
+    spin5_E_6.delete(0,'end')
+    spin5_E_6.insert(0,hourFrom5_6)
+    spin5_F_6.delete(0,'end')
+    spin5_F_6.insert(0,minuteFrom5_6)
+    date5_6_entry.delete(0,'end')
+
+    day_phase6 = day_phase5 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date5_6_entry.delete(0,'end')
+    date5_6_entry.insert(0,'{:02d}'.format(day_phase6.day))
+    month5_6_entry.delete(0,'end')
+    month5_6_entry.insert(0,'{:02d}'.format(day_phase6.month))
+    year5_6_entry.delete(0,'end')
+    year5_6_entry.insert(0,day_phase6.year)
+    spin5_A_6.delete(0,'end')
+    spin5_A_6.insert(0,hourOn5_6)
+    spin5_B_6.delete(0,'end')
+    spin5_B_6.insert(0,hourOn5_6)
+    spin5_C_6.delete(0,'end')
+    spin5_C_6.insert(0,hourOff5_6)
+    spin5_D_6.delete(0,'end')
+    spin5_D_6.insert(0,minOff5_6)
+
+    #phase 7
+    spin5_E_7.delete(0,'end')
+    spin5_E_7.insert(0,hourFrom5_7)
+    spin5_F_7.delete(0,'end')
+    spin5_F_7.insert(0,minuteFrom5_7)
+    date5_7_entry.delete(0,'end')
+    day_phase7 = day_phase6 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date5_7_entry.delete(0,'end')
+    date5_7_entry.insert(0,'{:02d}'.format(day_phase7.day))
+    month5_7_entry.delete(0,'end')
+    month5_7_entry.insert(0,'{:02d}'.format(day_phase7.month))
+    year5_7_entry.delete(0,'end')
+    year5_7_entry.insert(0,day_phase7.year)
+    spin5_A_7.delete(0,'end')
+    spin5_A_7.insert(0,hourOn5_7)
+    spin5_B_7.delete(0,'end')
+    spin5_B_7.insert(0,hourOn5_7)
+    spin5_C_7.delete(0,'end')
+    spin5_C_7.insert(0,hourOff5_7)
+    spin5_D_7.delete(0,'end')
+    spin5_D_7.insert(0,minOff5_7)
+
+    #phase8
+    spin5_E_8.delete(0,'end')
+    spin5_E_8.insert(0,hourFrom5_8)
+    spin5_F_8.delete(0,'end')
+    spin5_F_8.insert(0,minuteFrom5_8)
+    date5_8_entry.delete(0,'end')
+    day_phase8 = day_phase7 + datetime.timedelta(days=7)
+    date5_8_entry.insert(0,'{:02d}'.format(day_phase8.day))
+    month5_8_entry.delete(0,'end')
+    month5_8_entry.insert(0,'{:02d}'.format(day_phase8.month))
+    year5_8_entry.delete(0,'end')
+    year5_8_entry.insert(0,day_phase8.year)
+    spin5_A_8.delete(0,'end')
+    spin5_A_8.insert(0,hourOn5_8)
+    spin5_B_8.delete(0,'end')
+    spin5_B_8.insert(0,hourOn5_8)
+    spin5_C_8.delete(0,'end')
+    spin5_C_8.insert(0,hourOff5_8)
+    spin5_D_8.delete(0,'end')
+    spin5_D_8.insert(0,minOff5_8)
+
+    #phase9
+
+    spin5_E_9.delete(0,'end')
+    spin5_E_9.insert(0,hourFrom5_9)
+    spin5_F_9.delete(0,'end')
+    spin5_F_9.insert(0,minuteFrom5_9)
+    date5_9_entry.delete(0,'end')
+    day_phase9 = day_phase8 + datetime.timedelta(days=7)
+    date5_9_entry.insert(0,'{:02d}'.format(day_phase9.day))
+    month5_9_entry.delete(0,'end')
+    month5_9_entry.insert(0,'{:02d}'.format(day_phase9.month))
+    year5_9_entry.delete(0,'end')
+    year5_9_entry.insert(0,day_phase9.year)
+    spin5_A_9.delete(0,'end')
+    spin5_A_9.insert(0,hourOn5_9)
+    spin5_B_9.delete(0,'end')
+    spin5_B_9.insert(0,hourOn5_9)
+    spin5_C_9.delete(0,'end')
+    spin5_C_9.insert(0,hourOff5_9)
+    spin5_D_9.delete(0,'end')
+    spin5_D_9.insert(0,minOff5_9)
+
+
+    #phase10
+
+    spin5_E_10.delete(0,'end')
+    spin5_E_10.insert(0,hourFrom5_10)
+    spin5_F_10.delete(0,'end')
+    spin5_F_10.insert(0,minuteFrom5_10)
+    date5_10_entry.delete(0,'end')
+    day_phase10 = day_phase9 + datetime.timedelta(days=7)
+    date5_10_entry.insert(0,'{:02d}'.format(day_phase10.day))
+    month5_10_entry.delete(0,'end')
+    month5_10_entry.insert(0,'{:02d}'.format(day_phase10.month))
+    year5_10_entry.delete(0,'end')
+    year5_10_entry.insert(0,day_phase10.year)
+    spin5_A_10.delete(0,'end')
+    spin5_A_10.insert(0,hourOn5_10)
+    spin5_B_10.delete(0,'end')
+    spin5_B_10.insert(0,hourOn5_10)
+    spin5_C_10.delete(0,'end')
+    spin5_C_10.insert(0,hourOff5_10)
+    spin5_D_10.delete(0,'end')
+    spin5_D_10.insert(0,minOff5_10)
+
+    #phase11
+
+    spin5_E_11.delete(0,'end')
+    spin5_E_11.insert(0,hourFrom5_11)
+    spin5_F_11.delete(0,'end')
+    spin5_F_11.insert(0,minuteFrom5_11)
+    date5_11_entry.delete(0,'end')
+    day_phase11 = day_phase10 + datetime.timedelta(days=7)
+    date5_11_entry.insert(0,'{:02d}'.format(day_phase10.day))
+    month5_11_entry.delete(0,'end')
+    month5_11_entry.insert(0,'{:02d}'.format(day_phase10.month))
+    year5_11_entry.delete(0,'end')
+    year5_11_entry.insert(0,day_phase10.year)
+    spin5_A_11.delete(0,'end')
+    spin5_A_11.insert(0,hourOn5_11)
+    spin5_B_11.delete(0,'end')
+    spin5_B_11.insert(0,hourOn5_11)
+    spin5_C_11.delete(0,'end')
+    spin5_C_11.insert(0,hourOff5_11)
+    spin5_D_11.delete(0,'end')
+    spin5_D_11.insert(0,minOff5_11)
+
+    #phase12
+
+    spin5_E_12.delete(0,'end')
+    spin5_E_12.insert(0,hourFrom5_12)
+    spin5_F_12.delete(0,'end')
+    spin5_F_12.insert(0,minuteFrom5_12)
+    date5_12_entry.delete(0,'end')
+    day_phase12 = day_phase11 + datetime.timedelta(days=7)
+    date5_12_entry.insert(0,'{:02d}'.format(day_phase11.day))
+    month5_12_entry.delete(0,'end')
+    month5_12_entry.insert(0,'{:02d}'.format(day_phase11.month))
+    year5_12_entry.delete(0,'end')
+    year5_12_entry.insert(0,day_phase11.year)
+    spin5_A_12.delete(0,'end')
+    spin5_A_12.insert(0,hourOn5_12)
+    spin5_B_12.delete(0,'end')
+    spin5_B_12.insert(0,hourOn5_12)
+    spin5_C_12.delete(0,'end')
+    spin5_C_12.insert(0,hourOff5_12)
+    spin5_D_12.delete(0,'end')
+    spin5_D_12.insert(0,minOff5_12)
+
+
+
+
+
+
     btnRun['state']='normal'
     recordingmenu.entryconfig('Start new', state='normal')
     show_conf()
