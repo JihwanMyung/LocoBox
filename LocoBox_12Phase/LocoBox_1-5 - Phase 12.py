@@ -15,6 +15,7 @@ except ImportError:
     fileDialog = tk.filedialog
 import threading # To run Arduino loop and tkinter loop alongside
 import serial.tools.list_ports # For identifying Arduino port
+from BoxSchedule import BoxSchedule, PhaseSchedule, getDarkLightValue
 
 
 
@@ -100,48 +101,7 @@ global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date
 global setBox1, setBox2, setBox3, setBox4, setBox5
 
 
-class PhaseSchedule:
-    def __init__(self, hourOn, minOn, hourOff, minOff, dark, light, date, month, year, hourFrom, minuteFrom):
-        self.hourOn = hourOn
-        self.minOn = minOn
-        self.hourOff =  hourOff
-        self.minOff = minOff
-        self.dark = dark
-        self.light = light
-        self.date = date
-        self.month = month
-        self.year = year 
-        self.hourFrom = hourFrom
-        self.minuteFrom = minuteFrom 
 
-def getDarkLightValue(var):
-    if var.get()==1:
-        dark='0'
-        light='0'
-    if var.get()==2:
-        dark='1'
-        light='0'
-    if var.get()==3:
-        dark='0'
-        light='1'
-    return dark, light
-
-
-class BoxSchedule:
-    def __init__(self):
-        self.pschedules = []
-
-
-    def addPhase1(self,hourOn, minOn, hourOff, minOff, var):
-        dark, light = getDarkLightValue(var)
-        newSchedule = PhaseSchedule(hourOn, minOn, hourOff, minOff, dark, light)
-        self.pschedules.append(newSchedule)
-        
-
-    def addPhase(self,hourOn, minOn, hourOff, minOff, var, date, month, year, hourFrom, minuteFrom ):
-        dark, light = getDarkLightValue(var)
-        newSchedule = PhaseSchedule(hourOn, minOn, hourOff, minOff, dark, light, date, month, year, hourFrom, minuteFrom)
-        self.pschedules.append(newSchedule)
 
 global savedBoxSchedule
 
@@ -6009,26 +5969,11 @@ def copyBoxSchedule(tab_index):
     current_frame = tab_index
     temp_savedBoxSchedule = BoxSchedule()
     #PhaseSchedule(hourOn, minOn, hourOff, minOff, dark, light, date, month, year, hourFrom, minuteFrom #add 12 phases
-    temp_savedBoxSchedule.addPhase1(spin1_A_1.get(),spin1_A_1.get(),spin1_C_1.get(),spin1_D_1.get(), var1_1.get()) #Phase 1 has less vars
-    temp_savedBoxSchedule.addPhase(spin1_A_2.get(),spin1_A_2.get(),spin1_C_2.get(),spin1_D_2.get(), date1_2_entry.get(), month1_2_entry.get(),year1_2_entry.get(),spin1_E_2.get(), spin1_F_2.get())
-    
+    temp_savedBoxSchedule.addPhase1(spin1_A_1.get(),spin1_A_1.get(),spin1_C_1.get(),spin1_D_1.get(), var1_1) #Phase 1 has less vars
+    temp_savedBoxSchedule.addPhase(hourOn = spin1_A_2.get(), minOn= spin1_A_2.get(), hourOff = spin1_C_2.get(), minOff = spin1_D_2.get(), var=var1_2, date = date1_2_entry.get(), month =  month1_2_entry.get(),year =year1_2_entry.get(), hourFrom= spin1_E_2.get(),  minuteFrom = spin1_F_2.get())
+    temp_savedBoxSchedule.printPhase(1)
 
-    global setBox1
-    setBox1=1
-    global hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, dark1_1, light1_1
-    hourOn1_1=spin1_A_1.get()
-    minOn1_1=spin1_B_1.get()
-    hourOff1_1=spin1_C_1.get()
-    minOff1_1=spin1_D_1.get()                            
-    if var1_1.get()==1:
-        dark1_1='0'
-        light1_1='0'
-    if var1_1.get()==2:
-        dark1_1='1'
-        light1_1='0'
-    if var1_1.get()==3:
-        dark1_1='0'
-        light1_1='1'
+    
     global date1_2, month1_2, year1_2, hourFrom1_2, minuteFrom1_2, hourOn1_2, minOn1_2, hourOff1_2, minOff1_2, dark1_2, light1_2
     date1_2 = date1_2_entry.get()
     month1_2 = month1_2_entry.get()
