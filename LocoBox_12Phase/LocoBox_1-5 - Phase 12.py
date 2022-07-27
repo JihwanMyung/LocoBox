@@ -114,13 +114,32 @@ class PhaseSchedule:
         self.hourFrom = hourFrom
         self.minuteFrom = minuteFrom 
 
+def getDarkLightValue(var):
+    if var.get()==1:
+        dark='0'
+        light='0'
+    if var.get()==2:
+        dark='1'
+        light='0'
+    if var.get()==3:
+        dark='0'
+        light='1'
+    return dark, light
+
 
 class BoxSchedule:
     def __init__(self):
         self.pschedules = []
+
+
+    def addPhase1(self,hourOn, minOn, hourOff, minOff, var):
+        dark, light = getDarkLightValue(var)
+        newSchedule = PhaseSchedule(hourOn, minOn, hourOff, minOff, dark, light)
+        self.pschedules.append(newSchedule)
         
 
-    def addPhase(self,hourOn, minOn, hourOff, minOff, dark, light, date, month, year, hourFrom, minuteFrom ):
+    def addPhase(self,hourOn, minOn, hourOff, minOff, var, date, month, year, hourFrom, minuteFrom ):
+        dark, light = getDarkLightValue(var)
         newSchedule = PhaseSchedule(hourOn, minOn, hourOff, minOff, dark, light, date, month, year, hourFrom, minuteFrom)
         self.pschedules.append(newSchedule)
 
@@ -5982,6 +6001,55 @@ def getAllBoxSchedule():
     recordingmenu.entryconfig('Start new', state='normal')
     window.update_idletasks()
 
+
+
+
+
+def copyBoxSchedule(tab_index):
+    current_frame = tab_index
+    temp_savedBoxSchedule = BoxSchedule()
+    #PhaseSchedule(hourOn, minOn, hourOff, minOff, dark, light, date, month, year, hourFrom, minuteFrom #add 12 phases
+    temp_savedBoxSchedule.addPhase1(spin1_A_1.get(),spin1_A_1.get(),spin1_C_1.get(),spin1_D_1.get(), var1_1.get()) #Phase 1 has less vars
+    temp_savedBoxSchedule.addPhase(spin1_A_2.get(),spin1_A_2.get(),spin1_C_2.get(),spin1_D_2.get(), date1_2_entry.get(), month1_2_entry.get(),year1_2_entry.get(),spin1_E_2.get(), spin1_F_2.get())
+    
+
+    global setBox1
+    setBox1=1
+    global hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, dark1_1, light1_1
+    hourOn1_1=spin1_A_1.get()
+    minOn1_1=spin1_B_1.get()
+    hourOff1_1=spin1_C_1.get()
+    minOff1_1=spin1_D_1.get()                            
+    if var1_1.get()==1:
+        dark1_1='0'
+        light1_1='0'
+    if var1_1.get()==2:
+        dark1_1='1'
+        light1_1='0'
+    if var1_1.get()==3:
+        dark1_1='0'
+        light1_1='1'
+    global date1_2, month1_2, year1_2, hourFrom1_2, minuteFrom1_2, hourOn1_2, minOn1_2, hourOff1_2, minOff1_2, dark1_2, light1_2
+    date1_2 = date1_2_entry.get()
+    month1_2 = month1_2_entry.get()
+    year1_2 = year1_2_entry.get()
+    hourFrom1_2= spin1_E_2.get()
+    minuteFrom1_2= spin1_F_2.get()
+    hourOn1_2=spin1_A_2.get()
+    minOn1_2=spin1_B_2.get()
+    hourOff1_2=spin1_C_2.get()
+    minOff1_2=spin1_D_2.get()                            
+    if var1_2.get()==1:
+        dark1_2='0'
+        light1_2='0'
+    if var1_2.get()==2:
+        dark1_2='1'
+        light1_2='0'
+    if var1_2.get()==3:
+        dark1_2='0'
+        light1_2='1'
+
+
 if __name__ == '__main__':
     #### All of the components and their positions in the GUI ####
     # You can change the design from here #       
@@ -6277,6 +6345,7 @@ if __name__ == '__main__':
     btnRun = Button(text= ' Recording Start ', command=connect, state='disabled')
     btnSet1 = Button(text=' Set current box ', command=lambda: OnButtonClick(int(tab_control.index('current'))+1))
     btnAll = Button(text='Set All', command=getAllBoxSchedule)
+    btnCopyCurrent = Button(text=' Copy current box schedule ', command= lambda: copyBoxSchedule(int(tab_control.index('current'))+1))
     
   
     # if box settings of all 5 boxes are done, activate save and run buttons
@@ -6311,6 +6380,7 @@ if __name__ == '__main__':
         btnRun.place(x=720, y=450)
         btnAll.place(x=650, y=475)
         btnSet1.place(x=720, y=475)
+        btnCopyCurrent.place(x=430, y=475)
     else:
         btnSave.place(x=635, y=450)
         btnRun.place(x=695, y=450)
