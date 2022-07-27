@@ -6185,12 +6185,10 @@ if __name__ == '__main__':
     canvas11 = Canvas(ParentFrame11, width=850, height=300) #, highlightbackground="red", highlightthickness=2
     scroll11 = Scrollbar(ParentFrame11, orient=HORIZONTAL, command=canvas11.xview, width=20)
     canvas11.grid(row=0, column=0)
-    scroll11.grid(row=1, column=0, sticky='nsew')
+    scroll11.grid(row=1, column=0, sticky='ew')
     
-    #scroll11.pack(side = BOTTOM, fill = X, expand=1)
-    #canvas11.pack(side=LEFT,expand=True,fill=BOTH)
-    
-    canvas11.config(yscrollcommand=scroll11.set )
+   
+    canvas11.config(xscrollcommand=scroll11.set )
     tab11 = Frame(canvas11, width=200, height=300)#, highlightbackground="black", highlightthickness=1
     tab11.bind(
     "<Configure>",
