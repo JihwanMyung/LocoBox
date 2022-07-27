@@ -13,7 +13,7 @@ The LocomotorBox (LocoBox) GUI interface has been optimized for Windows, macOS, 
 
 ### Current GUI
 
-![image](https://user-images.githubusercontent.com/7980453/180698333-065a17ca-df0b-4cf6-92d9-6b670a8ae19c.png)
+![image](https://user-images.githubusercontent.com/7980453/181136739-331d78f7-568d-4071-aa3e-d0987bb250a9.png)
 
 
 
