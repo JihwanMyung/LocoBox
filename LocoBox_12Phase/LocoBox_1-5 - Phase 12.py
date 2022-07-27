@@ -95,7 +95,39 @@ global hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date
 global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12
 
 
+
+
 global setBox1, setBox2, setBox3, setBox4, setBox5
+
+
+class PhaseSchedule:
+    def __init__(self, hourOn, minOn, hourOff, minOff, dark, light, date, month, year, hourFrom, minuteFrom):
+        self.hourOn = hourOn
+        self.minOn = minOn
+        self.hourOff =  hourOff
+        self.minOff = minOff
+        self.dark = dark
+        self.light = light
+        self.date = date
+        self.month = month
+        self.year = year 
+        self.hourFrom = hourFrom
+        self.minuteFrom = minuteFrom 
+
+
+class BoxSchedule:
+    def __init__(self):
+        self.pschedules = []
+        
+
+    def addPhase(self,hourOn, minOn, hourOff, minOff, dark, light, date, month, year, hourFrom, minuteFrom ):
+        newSchedule = PhaseSchedule(hourOn, minOn, hourOff, minOff, dark, light, date, month, year, hourFrom, minuteFrom)
+        self.pschedules.append(newSchedule)
+
+global savedBoxSchedule
+
+savedBoxSchedule = BoxSchedule()
+
 
 # Preset values
 setBox1=0
