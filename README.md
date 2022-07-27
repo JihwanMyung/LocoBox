@@ -14,10 +14,18 @@ RTC library:
 
 The LocomotorBox (LocoBox) GUI interface has been optimized for Windows, macOS, and Linux (tested on Ubuntu).
 
+
+### Current GUI
+
+![image](https://user-images.githubusercontent.com/7980453/180698333-065a17ca-df0b-4cf6-92d9-6b670a8ae19c.png)
+
+
+
 ### Installation
 
 Download Arduino .ino file and Python3 .py file. 
 Upload .ino to Arduino microcontroller using Arduino software. Be sure to install the appropriate RTC library.
+
 Run Python GUI interface by double-clicking the .py file or on command-line using python3.
 
 ## Deployment
