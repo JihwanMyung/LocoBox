@@ -5971,28 +5971,23 @@ def copyBoxSchedule(tab_index):
     #PhaseSchedule(hourOn, minOn, hourOff, minOff, dark, light, date, month, year, hourFrom, minuteFrom #add 12 phases
     temp_savedBoxSchedule.addPhase1(spin1_A_1.get(),spin1_A_1.get(),spin1_C_1.get(),spin1_D_1.get(), var1_1) #Phase 1 has less vars
     temp_savedBoxSchedule.addPhase(hourOn = spin1_A_2.get(), minOn= spin1_A_2.get(), hourOff = spin1_C_2.get(), minOff = spin1_D_2.get(), var=var1_2, date = date1_2_entry.get(), month =  month1_2_entry.get(),year =year1_2_entry.get(), hourFrom= spin1_E_2.get(),  minuteFrom = spin1_F_2.get())
-    temp_savedBoxSchedule.printPhase(1)
+    temp_savedBoxSchedule.addPhase(hourOn = spin1_A_3.get(), minOn= spin1_A_3.get(), hourOff = spin1_C_3.get(), minOff = spin1_D_3.get(), var=var1_3, date = date1_3_entry.get(), month =  month1_3_entry.get(),year =year1_3_entry.get(), hourFrom= spin1_E_3.get(),  minuteFrom = spin1_F_3.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin1_A_4.get(), minOn= spin1_A_4.get(), hourOff = spin1_C_4.get(), minOff = spin1_D_4.get(), var=var1_4, date = date1_4_entry.get(), month =  month1_4_entry.get(),year =year1_4_entry.get(), hourFrom= spin1_E_4.get(),  minuteFrom = spin1_F_4.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin1_A_5.get(), minOn= spin1_A_5.get(), hourOff = spin1_C_5.get(), minOff = spin1_D_5.get(), var=var1_5, date = date1_5_entry.get(), month =  month1_5_entry.get(),year =year1_5_entry.get(), hourFrom= spin1_E_5.get(),  minuteFrom = spin1_F_5.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin1_A_6.get(), minOn= spin1_A_6.get(), hourOff = spin1_C_6.get(), minOff = spin1_D_6.get(), var=var1_6, date = date1_6_entry.get(), month =  month1_6_entry.get(),year =year1_6_entry.get(), hourFrom= spin1_E_6.get(),  minuteFrom = spin1_F_6.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin1_A_7.get(), minOn= spin1_A_7.get(), hourOff = spin1_C_7.get(), minOff = spin1_D_7.get(), var=var1_7, date = date1_7_entry.get(), month =  month1_7_entry.get(),year =year1_7_entry.get(), hourFrom= spin1_E_7.get(),  minuteFrom = spin1_F_7.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin1_A_8.get(), minOn= spin1_A_8.get(), hourOff = spin1_C_8.get(), minOff = spin1_D_8.get(), var=var1_8, date = date1_8_entry.get(), month =  month1_8_entry.get(),year =year1_8_entry.get(), hourFrom= spin1_E_8.get(),  minuteFrom = spin1_F_8.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin1_A_9.get(), minOn= spin1_A_9.get(), hourOff = spin1_C_9.get(), minOff = spin1_D_9.get(), var=var1_9, date = date1_9_entry.get(), month =  month1_9_entry.get(),year =year1_9_entry.get(), hourFrom= spin1_E_9.get(),  minuteFrom = spin1_F_9.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin1_A_10.get(), minOn= spin1_A_10.get(), hourOff = spin1_C_10.get(), minOff = spin1_D_10.get(), var=var1_10, date = date1_10_entry.get(), month =  month1_10_entry.get(),year =year1_10_entry.get(), hourFrom= spin1_E_10.get(),  minuteFrom = spin1_F_10.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin1_A_11.get(), minOn= spin1_A_11.get(), hourOff = spin1_C_11.get(), minOff = spin1_D_11.get(), var=var1_11, date = date1_11_entry.get(), month =  month1_11_entry.get(),year =year1_11_entry.get(), hourFrom= spin1_E_11.get(),  minuteFrom = spin1_F_11.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin1_A_12.get(), minOn= spin1_A_12.get(), hourOff = spin1_C_12.get(), minOff = spin1_D_12.get(), var=var1_12, date = date1_12_entry.get(), month =  month1_12_entry.get(),year =year1_12_entry.get(), hourFrom= spin1_E_12.get(),  minuteFrom = spin1_F_12.get())
+    
+    
+    
+    temp_savedBoxSchedule.printPhase(current_frame)
 
     
-    global date1_2, month1_2, year1_2, hourFrom1_2, minuteFrom1_2, hourOn1_2, minOn1_2, hourOff1_2, minOff1_2, dark1_2, light1_2
-    date1_2 = date1_2_entry.get()
-    month1_2 = month1_2_entry.get()
-    year1_2 = year1_2_entry.get()
-    hourFrom1_2= spin1_E_2.get()
-    minuteFrom1_2= spin1_F_2.get()
-    hourOn1_2=spin1_A_2.get()
-    minOn1_2=spin1_B_2.get()
-    hourOff1_2=spin1_C_2.get()
-    minOff1_2=spin1_D_2.get()                            
-    if var1_2.get()==1:
-        dark1_2='0'
-        light1_2='0'
-    if var1_2.get()==2:
-        dark1_2='1'
-        light1_2='0'
-    if var1_2.get()==3:
-        dark1_2='0'
-        light1_2='1'
+    
 
 
 if __name__ == '__main__':
