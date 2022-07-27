@@ -5967,7 +5967,24 @@ def getAllBoxSchedule():
 
 def copyBoxSchedule(tab_index):
     current_frame = tab_index
+    
+    if current_frame == 1:
+        temp_savedBoxSchedule = copyBox1()
+    elif current_frame == 2:
+        temp_savedBoxSchedule = copyBox2()
+    elif current_frame == 3:
+        temp_savedBoxSchedule = copyBox3()
+    elif current_frame == 4:
+        temp_savedBoxSchedule = copyBox4()
+    elif current_frame == 5:
+        temp_savedBoxSchedule = copyBox5()
+    print(current_frame)
+    temp_savedBoxSchedule.printPhase(1)
+
+
+def copyBox1():
     temp_savedBoxSchedule = BoxSchedule()
+    #fix minute columns
     #PhaseSchedule(hourOn, minOn, hourOff, minOff, dark, light, date, month, year, hourFrom, minuteFrom #add 12 phases
     temp_savedBoxSchedule.addPhase1(spin1_A_1.get(),spin1_A_1.get(),spin1_C_1.get(),spin1_D_1.get(), var1_1) #Phase 1 has less vars
     temp_savedBoxSchedule.addPhase(hourOn = spin1_A_2.get(), minOn= spin1_A_2.get(), hourOff = spin1_C_2.get(), minOff = spin1_D_2.get(), var=var1_2, date = date1_2_entry.get(), month =  month1_2_entry.get(),year =year1_2_entry.get(), hourFrom= spin1_E_2.get(),  minuteFrom = spin1_F_2.get())
@@ -5981,12 +5998,79 @@ def copyBoxSchedule(tab_index):
     temp_savedBoxSchedule.addPhase(hourOn = spin1_A_10.get(), minOn= spin1_A_10.get(), hourOff = spin1_C_10.get(), minOff = spin1_D_10.get(), var=var1_10, date = date1_10_entry.get(), month =  month1_10_entry.get(),year =year1_10_entry.get(), hourFrom= spin1_E_10.get(),  minuteFrom = spin1_F_10.get())
     temp_savedBoxSchedule.addPhase(hourOn = spin1_A_11.get(), minOn= spin1_A_11.get(), hourOff = spin1_C_11.get(), minOff = spin1_D_11.get(), var=var1_11, date = date1_11_entry.get(), month =  month1_11_entry.get(),year =year1_11_entry.get(), hourFrom= spin1_E_11.get(),  minuteFrom = spin1_F_11.get())
     temp_savedBoxSchedule.addPhase(hourOn = spin1_A_12.get(), minOn= spin1_A_12.get(), hourOff = spin1_C_12.get(), minOff = spin1_D_12.get(), var=var1_12, date = date1_12_entry.get(), month =  month1_12_entry.get(),year =year1_12_entry.get(), hourFrom= spin1_E_12.get(),  minuteFrom = spin1_F_12.get())
-    
-    
-    
-    temp_savedBoxSchedule.printPhase(current_frame)
+    return temp_savedBoxSchedule
 
+
+def copyBox2():
+    temp_savedBoxSchedule = BoxSchedule()
+    #PhaseSchedule(hourOn, minOn, hourOff, minOff, dark, light, date, month, year, hourFrom, minuteFrom #add 12 phases
+    temp_savedBoxSchedule.addPhase1(spin2_A_1.get(),spin2_A_1.get(),spin2_C_1.get(),spin2_D_1.get(), var2_1) #Phase 1 has less vars
+    temp_savedBoxSchedule.addPhase(hourOn = spin2_A_2.get(), minOn= spin2_A_2.get(), hourOff = spin2_C_2.get(), minOff = spin2_D_2.get(), var=var2_2, date = date2_2_entry.get(), month =  month2_2_entry.get(),year =year2_2_entry.get(), hourFrom= spin2_E_2.get(),  minuteFrom = spin2_F_2.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin2_A_3.get(), minOn= spin2_A_3.get(), hourOff = spin2_C_3.get(), minOff = spin2_D_3.get(), var=var2_3, date = date2_3_entry.get(), month =  month2_3_entry.get(),year =year2_3_entry.get(), hourFrom= spin2_E_3.get(),  minuteFrom = spin2_F_3.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin2_A_4.get(), minOn= spin2_A_4.get(), hourOff = spin2_C_4.get(), minOff = spin2_D_4.get(), var=var2_4, date = date2_4_entry.get(), month =  month2_4_entry.get(),year =year2_4_entry.get(), hourFrom= spin2_E_4.get(),  minuteFrom = spin2_F_4.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin2_A_5.get(), minOn= spin2_A_5.get(), hourOff = spin2_C_5.get(), minOff = spin2_D_5.get(), var=var2_5, date = date2_5_entry.get(), month =  month2_5_entry.get(),year =year2_5_entry.get(), hourFrom= spin2_E_5.get(),  minuteFrom = spin2_F_5.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin2_A_6.get(), minOn= spin2_A_6.get(), hourOff = spin2_C_6.get(), minOff = spin2_D_6.get(), var=var2_6, date = date2_6_entry.get(), month =  month2_6_entry.get(),year =year2_6_entry.get(), hourFrom= spin2_E_6.get(),  minuteFrom = spin2_F_6.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin2_A_7.get(), minOn= spin2_A_7.get(), hourOff = spin2_C_7.get(), minOff = spin2_D_7.get(), var=var2_7, date = date2_7_entry.get(), month =  month2_7_entry.get(),year =year2_7_entry.get(), hourFrom= spin2_E_7.get(),  minuteFrom = spin2_F_7.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin2_A_8.get(), minOn= spin2_A_8.get(), hourOff = spin2_C_8.get(), minOff = spin2_D_8.get(), var=var2_8, date = date2_8_entry.get(), month =  month2_8_entry.get(),year =year2_8_entry.get(), hourFrom= spin2_E_8.get(),  minuteFrom = spin2_F_8.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin2_A_9.get(), minOn= spin2_A_9.get(), hourOff = spin2_C_9.get(), minOff = spin2_D_9.get(), var=var2_9, date = date2_9_entry.get(), month =  month2_9_entry.get(),year =year2_9_entry.get(), hourFrom= spin2_E_9.get(),  minuteFrom = spin2_F_9.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin2_A_10.get(), minOn= spin2_A_10.get(), hourOff = spin2_C_10.get(), minOff = spin2_D_10.get(), var=var2_10, date = date2_10_entry.get(), month =  month2_10_entry.get(),year =year2_10_entry.get(), hourFrom= spin2_E_10.get(),  minuteFrom = spin2_F_10.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin2_A_11.get(), minOn= spin2_A_11.get(), hourOff = spin2_C_11.get(), minOff = spin2_D_11.get(), var=var2_11, date = date2_11_entry.get(), month =  month2_11_entry.get(),year =year2_11_entry.get(), hourFrom= spin2_E_11.get(),  minuteFrom = spin2_F_11.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin2_A_12.get(), minOn= spin2_A_12.get(), hourOff = spin2_C_12.get(), minOff = spin2_D_12.get(), var=var2_12, date = date2_12_entry.get(), month =  month2_12_entry.get(),year =year2_12_entry.get(), hourFrom= spin2_E_12.get(),  minuteFrom = spin2_F_12.get())
+    return temp_savedBoxSchedule
+
+
+def copyBox3():
+    temp_savedBoxSchedule = BoxSchedule()
+    #PhaseSchedule(hourOn, minOn, hourOff, minOff, dark, light, date, month, year, hourFrom, minuteFrom #add 12 phases
+    temp_savedBoxSchedule.addPhase1(spin3_A_1.get(),spin3_A_1.get(),spin3_C_1.get(),spin3_D_1.get(), var3_1) #Phase 1 has less vars
+    temp_savedBoxSchedule.addPhase(hourOn = spin3_A_2.get(), minOn= spin3_A_2.get(), hourOff = spin3_C_2.get(), minOff = spin3_D_2.get(), var=var3_2, date = date3_2_entry.get(), month =  month3_2_entry.get(),year =year3_2_entry.get(), hourFrom= spin3_E_2.get(),  minuteFrom = spin3_F_2.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin3_A_3.get(), minOn= spin3_A_3.get(), hourOff = spin3_C_3.get(), minOff = spin3_D_3.get(), var=var3_3, date = date3_3_entry.get(), month =  month3_3_entry.get(),year =year3_3_entry.get(), hourFrom= spin3_E_3.get(),  minuteFrom = spin3_F_3.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin3_A_4.get(), minOn= spin3_A_4.get(), hourOff = spin3_C_4.get(), minOff = spin3_D_4.get(), var=var3_4, date = date3_4_entry.get(), month =  month3_4_entry.get(),year =year3_4_entry.get(), hourFrom= spin3_E_4.get(),  minuteFrom = spin3_F_4.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin3_A_5.get(), minOn= spin3_A_5.get(), hourOff = spin3_C_5.get(), minOff = spin3_D_5.get(), var=var3_5, date = date3_5_entry.get(), month =  month3_5_entry.get(),year =year3_5_entry.get(), hourFrom= spin3_E_5.get(),  minuteFrom = spin3_F_5.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin3_A_6.get(), minOn= spin3_A_6.get(), hourOff = spin3_C_6.get(), minOff = spin3_D_6.get(), var=var3_6, date = date3_6_entry.get(), month =  month3_6_entry.get(),year =year3_6_entry.get(), hourFrom= spin3_E_6.get(),  minuteFrom = spin3_F_6.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin3_A_7.get(), minOn= spin3_A_7.get(), hourOff = spin3_C_7.get(), minOff = spin3_D_7.get(), var=var3_7, date = date3_7_entry.get(), month =  month3_7_entry.get(),year =year3_7_entry.get(), hourFrom= spin3_E_7.get(),  minuteFrom = spin3_F_7.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin3_A_8.get(), minOn= spin3_A_8.get(), hourOff = spin3_C_8.get(), minOff = spin3_D_8.get(), var=var3_8, date = date3_8_entry.get(), month =  month3_8_entry.get(),year =year3_8_entry.get(), hourFrom= spin3_E_8.get(),  minuteFrom = spin3_F_8.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin3_A_9.get(), minOn= spin3_A_9.get(), hourOff = spin3_C_9.get(), minOff = spin3_D_9.get(), var=var3_9, date = date3_9_entry.get(), month =  month3_9_entry.get(),year =year3_9_entry.get(), hourFrom= spin3_E_9.get(),  minuteFrom = spin3_F_9.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin3_A_10.get(), minOn= spin3_A_10.get(), hourOff = spin3_C_10.get(), minOff = spin3_D_10.get(), var=var3_10, date = date3_10_entry.get(), month =  month3_10_entry.get(),year =year3_10_entry.get(), hourFrom= spin3_E_10.get(),  minuteFrom = spin3_F_10.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin3_A_11.get(), minOn= spin3_A_11.get(), hourOff = spin3_C_11.get(), minOff = spin3_D_11.get(), var=var3_11, date = date3_11_entry.get(), month =  month3_11_entry.get(),year =year3_11_entry.get(), hourFrom= spin3_E_11.get(),  minuteFrom = spin3_F_11.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin3_A_12.get(), minOn= spin3_A_12.get(), hourOff = spin3_C_12.get(), minOff = spin3_D_12.get(), var=var3_12, date = date3_12_entry.get(), month =  month3_12_entry.get(),year =year3_12_entry.get(), hourFrom= spin3_E_12.get(),  minuteFrom = spin3_F_12.get())
+    return temp_savedBoxSchedule
     
+
+def copyBox4():
+    temp_savedBoxSchedule = BoxSchedule()
+    #PhaseSchedule(hourOn, minOn, hourOff, minOff, dark, light, date, month, year, hourFrom, minuteFrom #add 12 phases
+    temp_savedBoxSchedule.addPhase1(spin4_A_1.get(),spin4_A_1.get(),spin4_C_1.get(),spin4_D_1.get(), var4_1) #Phase 1 has less vars
+    temp_savedBoxSchedule.addPhase(hourOn = spin4_A_2.get(), minOn= spin4_A_2.get(), hourOff = spin4_C_2.get(), minOff = spin4_D_2.get(), var=var4_2, date = date4_2_entry.get(), month =  month4_2_entry.get(),year =year4_2_entry.get(), hourFrom= spin4_E_2.get(),  minuteFrom = spin4_F_2.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin4_A_3.get(), minOn= spin4_A_3.get(), hourOff = spin4_C_3.get(), minOff = spin4_D_3.get(), var=var4_3, date = date4_3_entry.get(), month =  month4_3_entry.get(),year =year4_3_entry.get(), hourFrom= spin4_E_3.get(),  minuteFrom = spin4_F_3.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin4_A_4.get(), minOn= spin4_A_4.get(), hourOff = spin4_C_4.get(), minOff = spin4_D_4.get(), var=var4_4, date = date4_4_entry.get(), month =  month4_4_entry.get(),year =year4_4_entry.get(), hourFrom= spin4_E_4.get(),  minuteFrom = spin4_F_4.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin4_A_5.get(), minOn= spin4_A_5.get(), hourOff = spin4_C_5.get(), minOff = spin4_D_5.get(), var=var4_5, date = date4_5_entry.get(), month =  month4_5_entry.get(),year =year4_5_entry.get(), hourFrom= spin4_E_5.get(),  minuteFrom = spin4_F_5.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin4_A_6.get(), minOn= spin4_A_6.get(), hourOff = spin4_C_6.get(), minOff = spin4_D_6.get(), var=var4_6, date = date4_6_entry.get(), month =  month4_6_entry.get(),year =year4_6_entry.get(), hourFrom= spin4_E_6.get(),  minuteFrom = spin4_F_6.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin4_A_7.get(), minOn= spin4_A_7.get(), hourOff = spin4_C_7.get(), minOff = spin4_D_7.get(), var=var4_7, date = date4_7_entry.get(), month =  month4_7_entry.get(),year =year4_7_entry.get(), hourFrom= spin4_E_7.get(),  minuteFrom = spin4_F_7.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin4_A_8.get(), minOn= spin4_A_8.get(), hourOff = spin4_C_8.get(), minOff = spin4_D_8.get(), var=var4_8, date = date4_8_entry.get(), month =  month4_8_entry.get(),year =year4_8_entry.get(), hourFrom= spin4_E_8.get(),  minuteFrom = spin4_F_8.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin4_A_9.get(), minOn= spin4_A_9.get(), hourOff = spin4_C_9.get(), minOff = spin4_D_9.get(), var=var4_9, date = date4_9_entry.get(), month =  month4_9_entry.get(),year =year4_9_entry.get(), hourFrom= spin4_E_9.get(),  minuteFrom = spin4_F_9.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin4_A_10.get(), minOn= spin4_A_10.get(), hourOff = spin4_C_10.get(), minOff = spin4_D_10.get(), var=var4_10, date = date4_10_entry.get(), month =  month4_10_entry.get(),year =year4_10_entry.get(), hourFrom= spin4_E_10.get(),  minuteFrom = spin4_F_10.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin4_A_11.get(), minOn= spin4_A_11.get(), hourOff = spin4_C_11.get(), minOff = spin4_D_11.get(), var=var4_11, date = date4_11_entry.get(), month =  month4_11_entry.get(),year =year4_11_entry.get(), hourFrom= spin4_E_11.get(),  minuteFrom = spin4_F_11.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin4_A_12.get(), minOn= spin4_A_12.get(), hourOff = spin4_C_12.get(), minOff = spin4_D_12.get(), var=var4_12, date = date4_12_entry.get(), month =  month4_12_entry.get(),year =year4_12_entry.get(), hourFrom= spin4_E_12.get(),  minuteFrom = spin4_F_12.get())
+    return temp_savedBoxSchedule
+
+
+def copyBox5():
+    temp_savedBoxSchedule = BoxSchedule()
+    #PhaseSchedule(hourOn, minOn, hourOff, minOff, dark, light, date, month, year, hourFrom, minuteFrom #add 12 phases
+    temp_savedBoxSchedule.addPhase1(spin5_A_1.get(),spin5_A_1.get(),spin5_C_1.get(),spin5_D_1.get(), var5_1) #Phase 1 has less vars
+    temp_savedBoxSchedule.addPhase(hourOn = spin5_A_2.get(), minOn= spin5_A_2.get(), hourOff = spin5_C_2.get(), minOff = spin5_D_2.get(), var=var5_2, date = date5_2_entry.get(), month =  month5_2_entry.get(),year =year5_2_entry.get(), hourFrom= spin5_E_2.get(),  minuteFrom = spin5_F_2.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin5_A_3.get(), minOn= spin5_A_3.get(), hourOff = spin5_C_3.get(), minOff = spin5_D_3.get(), var=var5_3, date = date5_3_entry.get(), month =  month5_3_entry.get(),year =year5_3_entry.get(), hourFrom= spin5_E_3.get(),  minuteFrom = spin5_F_3.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin5_A_4.get(), minOn= spin5_A_4.get(), hourOff = spin5_C_4.get(), minOff = spin5_D_4.get(), var=var5_4, date = date5_4_entry.get(), month =  month5_4_entry.get(),year =year5_4_entry.get(), hourFrom= spin5_E_4.get(),  minuteFrom = spin5_F_4.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin5_A_5.get(), minOn= spin5_A_5.get(), hourOff = spin5_C_5.get(), minOff = spin5_D_5.get(), var=var5_5, date = date5_5_entry.get(), month =  month5_5_entry.get(),year =year5_5_entry.get(), hourFrom= spin5_E_5.get(),  minuteFrom = spin5_F_5.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin5_A_6.get(), minOn= spin5_A_6.get(), hourOff = spin5_C_6.get(), minOff = spin5_D_6.get(), var=var5_6, date = date5_6_entry.get(), month =  month5_6_entry.get(),year =year5_6_entry.get(), hourFrom= spin5_E_6.get(),  minuteFrom = spin5_F_6.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin5_A_7.get(), minOn= spin5_A_7.get(), hourOff = spin5_C_7.get(), minOff = spin5_D_7.get(), var=var5_7, date = date5_7_entry.get(), month =  month5_7_entry.get(),year =year5_7_entry.get(), hourFrom= spin5_E_7.get(),  minuteFrom = spin5_F_7.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin5_A_8.get(), minOn= spin5_A_8.get(), hourOff = spin5_C_8.get(), minOff = spin5_D_8.get(), var=var5_8, date = date5_8_entry.get(), month =  month5_8_entry.get(),year =year5_8_entry.get(), hourFrom= spin5_E_8.get(),  minuteFrom = spin5_F_8.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin5_A_9.get(), minOn= spin5_A_9.get(), hourOff = spin5_C_9.get(), minOff = spin5_D_9.get(), var=var5_9, date = date5_9_entry.get(), month =  month5_9_entry.get(),year =year5_9_entry.get(), hourFrom= spin5_E_9.get(),  minuteFrom = spin5_F_9.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin5_A_10.get(), minOn= spin5_A_10.get(), hourOff = spin5_C_10.get(), minOff = spin5_D_10.get(), var=var5_10, date = date5_10_entry.get(), month =  month5_10_entry.get(),year =year5_10_entry.get(), hourFrom= spin5_E_10.get(),  minuteFrom = spin5_F_10.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin5_A_11.get(), minOn= spin5_A_11.get(), hourOff = spin5_C_11.get(), minOff = spin5_D_11.get(), var=var5_11, date = date5_11_entry.get(), month =  month5_11_entry.get(),year =year5_11_entry.get(), hourFrom= spin5_E_11.get(),  minuteFrom = spin5_F_11.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin5_A_12.get(), minOn= spin5_A_12.get(), hourOff = spin5_C_12.get(), minOff = spin5_D_12.get(), var=var5_12, date = date5_12_entry.get(), month =  month5_12_entry.get(),year =year5_12_entry.get(), hourFrom= spin5_E_12.get(),  minuteFrom = spin5_F_12.get())
+    return temp_savedBoxSchedule
     
 
 
