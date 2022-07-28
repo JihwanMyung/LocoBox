@@ -86,6 +86,9 @@ class BoxSchedule:
         self.phase_sched = []
 
 
+    
+
+
     def addPhase1(self,hourOn, minOn, hourOff, minOff, var):
         dark, light = getDarkLightValue(var)
         newSchedule = PhaseSchedule(hourOn, minOn, hourOff, minOff, dark, light)
@@ -103,9 +106,9 @@ class BoxSchedule:
         requested_schedule = self.phase_sched[index]
         print(requested_schedule)
 
-    def pasteSchedule(self):
-        self.phase_sched[0].assignPhase1()
+    def pasteSchedule(self, box_index, global_mat):
+        self.phase_sched[0].assignPhase1(*global_mat[box_index, 0 ])
         
-        for phase in self.phase_sched[1:]:
-            phase.assignSchedule()
+        for phase, phase_ind in enumerate(self.phase_sched[1:], start=1):
+            phase.assignSchedule(*global_mat[box_index, phase_ind ])
 

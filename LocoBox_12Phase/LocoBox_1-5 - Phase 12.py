@@ -6113,6 +6113,7 @@ def getAllBoxSchedule():
 
     global_mat = np.asarray(global_mat)
     global_mat = global_mat.reshape((12,5,11))
+    global_mat = np.transpose(global_mat, (1,0, 2))
     print(global_mat[0])
 
 
