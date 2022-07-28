@@ -13,11 +13,11 @@ def getDarkLightValue(var):
     return dark, light
 
 def inverseDarkLightValue(dark, light):
-    if (not dark ) and (not light):
+    if (dark=='0' ) and (light=='0'):
         temp_var = 1
-    elif (dark) and (not light):
+    elif (dark=='1') and (light=='0'):
         temp_var = 2
-    elif (not dark) and light:
+    elif (dark=='0') and (light=='1'):
         temp_var = 3
 
     return temp_var
@@ -107,8 +107,19 @@ class BoxSchedule:
         print(requested_schedule)
 
     def pasteSchedule(self, box_index, global_mat):
-        self.phase_sched[0].assignPhase1(*global_mat[box_index, 0 ])
+        box_index = box_index -1
+        #print(global_mat)
         
-        for phase, phase_ind in enumerate(self.phase_sched[1:], start=1):
+        spin_A = global_mat[box_index, 0, 0 ]
+        spin_B =  global_mat[box_index, 0, 1 ]
+        spin_C = global_mat[box_index, 0, 2 ]
+        spin_D = global_mat[box_index, 0, 3 ]
+        var = global_mat[box_index,0, 4 ]
+
+        self.phase_sched[0].assignPhase1(spin_A,spin_B,spin_C ,spin_D,var)
+        
+        
+        for phase_ind, phase in enumerate(self.phase_sched[1:], start=1):
+            print(global_mat[box_index, phase_ind ])
             phase.assignSchedule(*global_mat[box_index, phase_ind ])
 

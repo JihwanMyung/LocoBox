@@ -16,7 +16,7 @@ except ImportError:
     fileDialog = tk.filedialog
 import threading # To run Arduino loop and tkinter loop alongside
 import serial.tools.list_ports # For identifying Arduino port
-from BoxSchedule import BoxSchedule, PhaseSchedule, getDarkLightValue
+from BoxSchedule import BoxSchedule, PhaseSchedule, getDarkLightValue, inverseDarkLightValue
 import numpy as np
 
 
@@ -97,7 +97,7 @@ global hourOn3_12, minOn3_12, hourOff3_12, minOff3_12, dark3_12, light3_12, date
 global hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12
 global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12
 
-global global_mat, input_mat
+global value_mat, input_mat
 
 
  
@@ -192,7 +192,7 @@ def get_data(istate=0): # Start recording
     w.close()
     global serial_obj
     global dead
-    global global_mat
+    global value_mat
     try:
         while True:
             string2 = serial_obj.readline().decode('utf-8')
@@ -467,6 +467,7 @@ def writeToJSONFile(filename, data):
         json.dump(data, fp)
 
 def save_conf(): # Save schedule configuration
+    global value_mat
     status.pack(side='bottom', fill='x')
     status.set('Saving the schedule configuration...')
     config={}
@@ -1962,7 +1963,7 @@ def read_conf(): # Read schedule configuration
     minuteFrom5_12 = config['minuteFrom5_12'] 
 
 
-    global_mat = np.array(hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, dark1_1, light1_1, 0,0,0, 0, 0,
+    value_mat = np.array(hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, dark1_1, light1_1, 0,0,0, 0, 0,
     hourOn2_1, minOn2_1, hourOff2_1, minOff2_1, dark2_1, light2_1, 0,0,0, 0, 0,
     hourOn3_1, minOn3_1, hourOff3_1, minOff3_1, dark3_1, light3_1,0,0,0, 0, 0,
     hourOn4_1, minOn4_1, hourOff4_1, minOff4_1, dark4_1, light4_1,0,0,0, 0, 0,
@@ -2024,8 +2025,9 @@ def read_conf(): # Read schedule configuration
     hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12)
 
 
-    global_mat = global_mat.reshape((12,5,11))
-    print(global_mat[0])
+    value_mat = value_mat.reshape((12,5,11))
+    value_mat = np.transpose(value_mat, (1,0, 2))
+    #print(value_mat[0])
 
     #Load variables into the GUI fields
 #BOX1
@@ -6018,15 +6020,8 @@ def getBox5Schedule():
     minOn5_12=spin5_B_12.get()
     hourOff5_12=spin5_C_12.get()
     minOff5_12=spin5_D_12.get()                            
-    if var5_12.get()==1:
-        dark5_12='0'
-        light5_12='0'
-    if var5_12.get()==2:
-        dark5_12='1'
-        light5_12='0'
-    if var5_12.get()==3:
-        dark5_12='0'
-        light5_12='1'
+   
+    dark5_12, light5_12 = getDarkLightValue(var5_12)
 
 
 
@@ -6050,7 +6045,7 @@ def getAllBoxSchedule():
     getBox4Schedule()
     getBox5Schedule()
 
-    global_mat = [hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, dark1_1, light1_1, 0,0,0, 0, 0,
+    value_mat = [hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, dark1_1, light1_1, 0,0,0, 0, 0,
     hourOn2_1, minOn2_1, hourOff2_1, minOff2_1, dark2_1, light2_1, 0,0,0, 0, 0,
     hourOn3_1, minOn3_1, hourOff3_1, minOff3_1, dark3_1, light3_1,0,0,0, 0, 0,
     hourOn4_1, minOn4_1, hourOff4_1, minOff4_1, dark4_1, light4_1,0,0,0, 0, 0,
@@ -6113,10 +6108,10 @@ def getAllBoxSchedule():
 
 
 
-    global_mat = np.asarray(global_mat)
-    global_mat = global_mat.reshape((12,5,11))
-    global_mat = np.transpose(global_mat, (1,0, 2))
-    print(global_mat[0])
+    value_mat = np.asarray(value_mat)
+    value_mat = value_mat.reshape((12,5,11))
+    value_mat = np.swapaxes(value_mat, (0,1))
+    
 
 
 
@@ -6154,6 +6149,8 @@ def copyBoxSchedule(tab_index):
 
 
 def copyScheduletoAll(tab_index):
+    global value_mat, input_mat
+
     current_frame = tab_index
     
     if current_frame == 1:
@@ -6170,6 +6167,10 @@ def copyScheduletoAll(tab_index):
         btnCopyCurrent['state'] = 'disabled'
     
     temp_savedBoxSchedule.printPhase(1)
+    temp_savedBoxSchedule.pasteSchedule(2, input_mat) #box_index_to be pasted, global_mat
+
+
+
 
 
 
@@ -6272,7 +6273,7 @@ if __name__ == '__main__':
     #### All of the components and their positions in the GUI ####
     # You can change the design from here #       
     menu = Menu(window) #define menu
-    global global_mat, input_mat
+    global value_mat, input_mat
 
     # Define Var to keep track of the schedule
                                     #1 for LD
@@ -6564,7 +6565,8 @@ if __name__ == '__main__':
     btnRun = Button(text= ' Recording Start ', command=connect, state='disabled')
     btnSet1 = Button(text=' Set current box ', command=lambda: OnButtonClick(int(tab_control.index('current'))+1))
     btnAll = Button(text='Set All', command=getAllBoxSchedule)
-    btnCopyCurrent = Button(text=' Copy current box schedule ', command= lambda: copyBoxSchedule(int(tab_control.index('current'))+1))
+    btnCopyCurrent = Button(text=' Copy current box sachedule ', command= lambda: copyBoxSchedule(int(tab_control.index('current'))+1))
+    btnCopyPasteAll = Button(text=' Copy & Paste to all ', command= lambda: copyScheduletoAll(int(tab_control.index('current'))+1))
     
   
     # if box settings of all 5 boxes are done, activate save and run buttons
@@ -6599,7 +6601,9 @@ if __name__ == '__main__':
         btnRun.place(x=720, y=450)
         btnAll.place(x=650, y=475)
         btnSet1.place(x=720, y=475)
+
         btnCopyCurrent.place(x=430, y=475)
+        btnCopyPasteAll.place(x=430, y=450)
     else:
         btnSave.place(x=635, y=450)
         btnRun.place(x=695, y=450)
@@ -11036,6 +11040,7 @@ if __name__ == '__main__':
     rad5_C_12.grid(column=25, row=rowPhase12+row_adj, pady=5)
 
     #hourOn1_2, minOn1_2, hourOff1_2, minOff1_2, dark1_2, light1_2, date1_2, month1_2, year1_2, hourFrom1_2, minuteFrom1_2,
+    
     input_mat = [spin1_A_2, spin1_B_2, spin1_C_2, spin1_D_2, var1_2, 0, 0,0, 0, 0,
     spin1_A_2, spin1_B_2, spin1_C_2, spin1_D_2, var1_2, date1_2_entry, month1_2_entry,year1_2_entry, spin1_E_2, spin1_F_2,
     spin1_A_3, spin1_B_3, spin1_C_3, spin1_D_3, var1_3, date1_3_entry, month1_3_entry,year1_3_entry, spin1_E_3, spin1_F_3,
@@ -11096,10 +11101,11 @@ if __name__ == '__main__':
     spin5_A_10, spin5_B_10, spin5_C_10, spin5_D_10, var1_10, date1_10_entry, month1_10_entry,year1_10_entry, spin5_E_10, spin5_F_10,
     spin5_A_11, spin5_B_11, spin5_C_11, spin5_D_11, var1_11, date1_11_entry, month1_11_entry,year1_11_entry, spin5_E_11, spin5_F_11,
     spin5_A_12, spin5_B_12, spin5_C_12, spin5_D_12, var1_12, date1_12_entry, month1_12_entry,year1_12_entry, spin5_E_12, spin5_F_12]
-
     input_mat = np.asarray(input_mat)
-    input_mat = input_mat.reshape((5,12, 10))
-    print(input_mat[0,0])
+
+    input_mat = input_mat.reshape(5,12,10)
+    print(input_mat[2,1])
+    #print([spin1_A_2, spin1_B_2, spin1_C_2, spin1_D_2, var1_2])
 
 
 
