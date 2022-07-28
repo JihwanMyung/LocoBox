@@ -97,7 +97,7 @@ global hourOn3_12, minOn3_12, hourOff3_12, minOff3_12, dark3_12, light3_12, date
 global hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12
 global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12
 
-global global_mat
+global global_mat, input_mat
 
 
  
@@ -2053,6 +2053,8 @@ def read_conf(): # Read schedule configuration
     month1_2_entry.insert(0,'{:02d}'.format(day_phase2.month))
     year1_2_entry.delete(0,'end')
     year1_2_entry.insert(0,day_phase2.year) # ISO format is YYYY/MM/DD
+
+    #hourOn1_2, minOn1_2, hourOff1_2, minOff1_2, date1_2, month1_2, year1_2, dark1_2, light1_2, hourFrom1_2, minuteFrom1_2
 
     spin1_A_2.delete(0,'end')
     spin1_A_2.insert(0,hourOn1_2)
@@ -6177,6 +6179,7 @@ def copyBox1():
     temp_savedBoxSchedule = BoxSchedule()
     #fix minute columns
     #PhaseSchedule(hourOn, minOn, hourOff, minOff, dark, light, date, month, year, hourFrom, minuteFrom #add 12 phases
+    # global array: hourOn1_2, minOn1_2, hourOff1_2, minOff1_2, dark1_2, light1_2, date1_2, month1_2, year1_2, hourFrom1_2, minuteFrom1_2,
     temp_savedBoxSchedule.addPhase1(spin1_A_1.get(),spin1_B_1.get(),spin1_C_1.get(),spin1_D_1.get(), var1_1) #Phase 1 has less vars
     temp_savedBoxSchedule.addPhase(hourOn = spin1_A_2.get(), minOn= spin1_B_2.get(), hourOff = spin1_C_2.get(), minOff = spin1_D_2.get(), var=var1_2, date = date1_2_entry.get(), month =  month1_2_entry.get(),year =year1_2_entry.get(), hourFrom= spin1_E_2.get(),  minuteFrom = spin1_F_2.get())
     temp_savedBoxSchedule.addPhase(hourOn = spin1_A_3.get(), minOn= spin1_B_3.get(), hourOff = spin1_C_3.get(), minOff = spin1_D_3.get(), var=var1_3, date = date1_3_entry.get(), month =  month1_3_entry.get(),year =year1_3_entry.get(), hourFrom= spin1_E_3.get(),  minuteFrom = spin1_F_3.get())
@@ -6269,6 +6272,7 @@ if __name__ == '__main__':
     #### All of the components and their positions in the GUI ####
     # You can change the design from here #       
     menu = Menu(window) #define menu
+    global global_mat, input_mat
 
     # Define Var to keep track of the schedule
                                     #1 for LD
@@ -11030,6 +11034,73 @@ if __name__ == '__main__':
     label5_m2_12.grid(column=23,row=rowPhase12+row_adj, pady=5)
     rad5_B_12.grid(column=24, row=rowPhase12+row_adj, padx=15, pady=5)
     rad5_C_12.grid(column=25, row=rowPhase12+row_adj, pady=5)
+
+    #hourOn1_2, minOn1_2, hourOff1_2, minOff1_2, dark1_2, light1_2, date1_2, month1_2, year1_2, hourFrom1_2, minuteFrom1_2,
+    input_mat = [spin1_A_2, spin1_B_2, spin1_C_2, spin1_D_2, var1_2, 0, 0,0, 0, 0,
+    spin1_A_2, spin1_B_2, spin1_C_2, spin1_D_2, var1_2, date1_2_entry, month1_2_entry,year1_2_entry, spin1_E_2, spin1_F_2,
+    spin1_A_3, spin1_B_3, spin1_C_3, spin1_D_3, var1_3, date1_3_entry, month1_3_entry,year1_3_entry, spin1_E_3, spin1_F_3,
+    spin1_A_4, spin1_B_4, spin1_C_4, spin1_D_4, var1_4, date1_4_entry, month1_4_entry,year1_4_entry, spin1_E_4, spin1_F_4,
+    spin1_A_5, spin1_B_5, spin1_C_5, spin1_D_5, var1_5, date1_5_entry, month1_5_entry,year1_5_entry, spin1_E_5, spin1_F_5,
+    spin1_A_6, spin1_B_6, spin1_C_6, spin1_D_6, var1_6, date1_6_entry, month1_6_entry,year1_6_entry, spin1_E_6, spin1_F_6,
+    spin1_A_7, spin1_B_7, spin1_C_7, spin1_D_7, var1_7, date1_7_entry, month1_7_entry,year1_7_entry, spin1_E_7, spin1_F_7,
+    spin1_A_8, spin1_B_8, spin1_C_8, spin1_D_8, var1_8, date1_8_entry, month1_8_entry,year1_8_entry, spin1_E_8, spin1_F_8,
+    spin1_A_9, spin1_B_9, spin1_C_9, spin1_D_9, var1_9, date1_9_entry, month1_9_entry,year1_9_entry, spin1_E_9, spin1_F_9,
+    spin1_A_10, spin1_B_10, spin1_C_10, spin1_D_10, var1_10, date1_10_entry, month1_10_entry,year1_10_entry, spin1_E_10, spin1_F_10,
+    spin1_A_11, spin1_B_11, spin1_C_11, spin1_D_11, var1_11, date1_11_entry, month1_11_entry,year1_11_entry, spin1_E_11, spin1_F_11,
+    spin1_A_12, spin1_B_12, spin1_C_12, spin1_D_12, var1_12, date1_12_entry, month1_12_entry,year1_12_entry, spin1_E_12, spin1_F_12,
+    spin2_A_2, spin2_B_2, spin2_C_2, spin2_D_2, var1_2, 0, 0,0, 0, 0,
+    spin2_A_2, spin2_B_2, spin2_C_2, spin2_D_2, var1_2, date1_2_entry, month1_2_entry,year1_2_entry, spin2_E_2, spin2_F_2,
+    spin2_A_3, spin2_B_3, spin2_C_3, spin2_D_3, var1_3, date1_3_entry, month1_3_entry,year1_3_entry, spin2_E_3, spin2_F_3,
+    spin2_A_4, spin2_B_4, spin2_C_4, spin2_D_4, var1_4, date1_4_entry, month1_4_entry,year1_4_entry, spin2_E_4, spin2_F_4,
+    spin2_A_5, spin2_B_5, spin2_C_5, spin2_D_5, var1_5, date1_5_entry, month1_5_entry,year1_5_entry, spin2_E_5, spin2_F_5,
+    spin2_A_6, spin2_B_6, spin2_C_6, spin2_D_6, var1_6, date1_6_entry, month1_6_entry,year1_6_entry, spin2_E_6, spin2_F_6,
+    spin2_A_7, spin2_B_7, spin2_C_7, spin2_D_7, var1_7, date1_7_entry, month1_7_entry,year1_7_entry, spin2_E_7, spin2_F_7,
+    spin2_A_8, spin2_B_8, spin2_C_8, spin2_D_8, var1_8, date1_8_entry, month1_8_entry,year1_8_entry, spin2_E_8, spin2_F_8,
+    spin2_A_9, spin2_B_9, spin2_C_9, spin2_D_9, var1_9, date1_9_entry, month1_9_entry,year1_9_entry, spin2_E_9, spin2_F_9,
+    spin2_A_10, spin2_B_10, spin2_C_10, spin2_D_10, var1_10, date1_10_entry, month1_10_entry,year1_10_entry, spin2_E_10, spin2_F_10,
+    spin2_A_11, spin2_B_11, spin2_C_11, spin2_D_11, var1_11, date1_11_entry, month1_11_entry,year1_11_entry, spin2_E_11, spin2_F_11,
+    spin2_A_12, spin2_B_12, spin2_C_12, spin2_D_12, var1_12, date1_12_entry, month1_12_entry,year1_12_entry, spin2_E_12, spin2_F_12,
+    spin3_A_2, spin3_B_2, spin3_C_2, spin3_D_2, var1_2, 0, 0,0, 0, 0,
+    spin3_A_2, spin3_B_2, spin3_C_2, spin3_D_2, var1_2, date1_2_entry, month1_2_entry,year1_2_entry, spin3_E_2, spin3_F_2,
+    spin3_A_3, spin3_B_3, spin3_C_3, spin3_D_3, var1_3, date1_3_entry, month1_3_entry,year1_3_entry, spin3_E_3, spin3_F_3,
+    spin3_A_4, spin3_B_4, spin3_C_4, spin3_D_4, var1_4, date1_4_entry, month1_4_entry,year1_4_entry, spin3_E_4, spin3_F_4,
+    spin3_A_5, spin3_B_5, spin3_C_5, spin3_D_5, var1_5, date1_5_entry, month1_5_entry,year1_5_entry, spin3_E_5, spin3_F_5,
+    spin3_A_6, spin3_B_6, spin3_C_6, spin3_D_6, var1_6, date1_6_entry, month1_6_entry,year1_6_entry, spin3_E_6, spin3_F_6,
+    spin3_A_7, spin3_B_7, spin3_C_7, spin3_D_7, var1_7, date1_7_entry, month1_7_entry,year1_7_entry, spin3_E_7, spin3_F_7,
+    spin3_A_8, spin3_B_8, spin3_C_8, spin3_D_8, var1_8, date1_8_entry, month1_8_entry,year1_8_entry, spin3_E_8, spin3_F_8,
+    spin3_A_9, spin3_B_9, spin3_C_9, spin3_D_9, var1_9, date1_9_entry, month1_9_entry,year1_9_entry, spin3_E_9, spin3_F_9,
+    spin3_A_10, spin3_B_10, spin3_C_10, spin3_D_10, var1_10, date1_10_entry, month1_10_entry,year1_10_entry, spin3_E_10, spin3_F_10,
+    spin3_A_11, spin3_B_11, spin3_C_11, spin3_D_11, var1_11, date1_11_entry, month1_11_entry,year1_11_entry, spin3_E_11, spin3_F_11,
+    spin3_A_12, spin3_B_12, spin3_C_12, spin3_D_12, var1_12, date1_12_entry, month1_12_entry,year1_12_entry, spin3_E_12, spin3_F_12,
+    spin4_A_2, spin4_B_2, spin4_C_2, spin4_D_2, var1_2, 0, 0,0, 0, 0,
+    spin4_A_2, spin4_B_2, spin4_C_2, spin4_D_2, var1_2, date1_2_entry, month1_2_entry,year1_2_entry, spin4_E_2, spin4_F_2,
+    spin4_A_3, spin4_B_3, spin4_C_3, spin4_D_3, var1_3, date1_3_entry, month1_3_entry,year1_3_entry, spin4_E_3, spin4_F_3,
+    spin4_A_4, spin4_B_4, spin4_C_4, spin4_D_4, var1_4, date1_4_entry, month1_4_entry,year1_4_entry, spin4_E_4, spin4_F_4,
+    spin4_A_5, spin4_B_5, spin4_C_5, spin4_D_5, var1_5, date1_5_entry, month1_5_entry,year1_5_entry, spin4_E_5, spin4_F_5,
+    spin4_A_6, spin4_B_6, spin4_C_6, spin4_D_6, var1_6, date1_6_entry, month1_6_entry,year1_6_entry, spin4_E_6, spin4_F_6,
+    spin4_A_7, spin4_B_7, spin4_C_7, spin4_D_7, var1_7, date1_7_entry, month1_7_entry,year1_7_entry, spin4_E_7, spin4_F_7,
+    spin4_A_8, spin4_B_8, spin4_C_8, spin4_D_8, var1_8, date1_8_entry, month1_8_entry,year1_8_entry, spin4_E_8, spin4_F_8,
+    spin4_A_9, spin4_B_9, spin4_C_9, spin4_D_9, var1_9, date1_9_entry, month1_9_entry,year1_9_entry, spin4_E_9, spin4_F_9,
+    spin4_A_10, spin4_B_10, spin4_C_10, spin4_D_10, var1_10, date1_10_entry, month1_10_entry,year1_10_entry, spin4_E_10, spin4_F_10,
+    spin4_A_11, spin4_B_11, spin4_C_11, spin4_D_11, var1_11, date1_11_entry, month1_11_entry,year1_11_entry, spin4_E_11, spin4_F_11,
+    spin4_A_12, spin4_B_12, spin4_C_12, spin4_D_12, var1_12, date1_12_entry, month1_12_entry,year1_12_entry, spin4_E_12, spin4_F_12,
+    spin5_A_2, spin5_B_2, spin5_C_2, spin5_D_2, var1_2, 0, 0,0, 0, 0,
+    spin5_A_2, spin5_B_2, spin5_C_2, spin5_D_2, var1_2, date1_2_entry, month1_2_entry,year1_2_entry, spin5_E_2, spin5_F_2,
+    spin5_A_3, spin5_B_3, spin5_C_3, spin5_D_3, var1_3, date1_3_entry, month1_3_entry,year1_3_entry, spin5_E_3, spin5_F_3,
+    spin5_A_4, spin5_B_4, spin5_C_4, spin5_D_4, var1_4, date1_4_entry, month1_4_entry,year1_4_entry, spin5_E_4, spin5_F_4,
+    spin5_A_5, spin5_B_5, spin5_C_5, spin5_D_5, var1_5, date1_5_entry, month1_5_entry,year1_5_entry, spin5_E_5, spin5_F_5,
+    spin5_A_6, spin5_B_6, spin5_C_6, spin5_D_6, var1_6, date1_6_entry, month1_6_entry,year1_6_entry, spin5_E_6, spin5_F_6,
+    spin5_A_7, spin5_B_7, spin5_C_7, spin5_D_7, var1_7, date1_7_entry, month1_7_entry,year1_7_entry, spin5_E_7, spin5_F_7,
+    spin5_A_8, spin5_B_8, spin5_C_8, spin5_D_8, var1_8, date1_8_entry, month1_8_entry,year1_8_entry, spin5_E_8, spin5_F_8,
+    spin5_A_9, spin5_B_9, spin5_C_9, spin5_D_9, var1_9, date1_9_entry, month1_9_entry,year1_9_entry, spin5_E_9, spin5_F_9,
+    spin5_A_10, spin5_B_10, spin5_C_10, spin5_D_10, var1_10, date1_10_entry, month1_10_entry,year1_10_entry, spin5_E_10, spin5_F_10,
+    spin5_A_11, spin5_B_11, spin5_C_11, spin5_D_11, var1_11, date1_11_entry, month1_11_entry,year1_11_entry, spin5_E_11, spin5_F_11,
+    spin5_A_12, spin5_B_12, spin5_C_12, spin5_D_12, var1_12, date1_12_entry, month1_12_entry,year1_12_entry, spin5_E_12, spin5_F_12]
+
+    input_mat = np.asarray(input_mat)
+    input_mat = input_mat.reshape((5,12, 10))
+    print(input_mat[0,0])
+
 
 
    
