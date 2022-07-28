@@ -5,7 +5,7 @@ import os
 
 
 
-#nltk.download('punkt')
+##nltk.download('punkt')
 #datetime.strptime(datetime_str, '%m/%d/%y %H:%M:%S')
 directory = 'Prev_locobox_data'
 
