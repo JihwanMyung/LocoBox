@@ -6532,41 +6532,43 @@ if __name__ == '__main__':
     status.set('Available ports: '+', '.join(map(str,openPorts)))
 
     yupperbtns = 370
-    ylowerbuttons = 410
+    ylowerbtns = 410
 
     #Entry for Port, Baud, timeout, filename to save
-    Label(text = 'Port').place(x = 40, y = yupperbtns)
-    Label(text =  'Baud rate').place(x = 363, y = yupperbtns)
-    Label(text = 'Time out').place(x= 565, y=yupperbtns)
-    Label(text= 'File').place(x=40, y=ylowerbuttons)
-    Label(text= 'Schedule').place(x=363, y=ylowerbuttons)
+    Label(text =  'Schedule').place(x = 363, y = yupperbtns - 30)
+    Label(text = 'Port').place(x = 40, y = ylowerbtns)
+    Label(text =  'Baud rate').place(x = 363, y = ylowerbtns)
+    Label(text = 'Time out').place(x= 575, y=ylowerbtns)
+
+    Label(text= 'Data').place(x=40, y=yupperbtns)
+    Label(text= 'Schedule file').place(x=363, y=yupperbtns)
 
     port_entry = Spinbox(values=openPorts, width=25)
     port_entry.delete(0,'end')
     port_entry.insert(0,openPorts[0]) #first port is the default 
-    port_entry.place(x = 80, y = yupperbtns)
+    port_entry.place(x = 80, y = ylowerbtns)
     baud_entry = Spinbox(values=(300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, 115200), width=7)
     baud_entry.delete(0,'end')
-    baud_entry.insert(0,'9600')
-    
-    baud_entry.place(x = 440, y = yupperbtns)
+    baud_entry.insert(0,'9600')    
+    baud_entry.place(x = 440, y = ylowerbtns)
     timeout_entry = Entry(width = 4)
-    timeout_entry.place(x=635,y=yupperbtns)
+    timeout_entry.place(x=635,y=ylowerbtns)
     timeout_entry.insert(0,'10')
+
     filename_entry = Entry(width = 25)
-    filename_entry.place(x=80, y=ylowerbuttons)
+    filename_entry.place(x=80, y=yupperbtns)
     date_string = time.strftime('%Y%m%d') # predefine a default filename with ISO date    
     filename_entry.insert(0,'BOX1-5-'+date_string+'.txt')
-    configfilename_entry = Entry(width = 25)
-    configfilename_entry.place(x=440, y=ylowerbuttons)
+    configfilename_entry = Entry(width = 30)
+    configfilename_entry.place(x=470, y=yupperbtns)
     configfilename_entry.insert(0,'BOX1-5-sched-'+date_string+'.json')
 
     btnSave = Button(text=' Save ', command=save_conf, state='disabled')
     btnRun = Button(text= ' Recording Start ', command=connect, state='disabled')
-    btnSet1 = Button(text=' Set current box ', command=lambda: OnButtonClick(int(tab_control.index('current'))+1))
-    btnAll = Button(text='Set All', command=getAllBoxSchedule)
-    btnCopyCurrent = Button(text=' Copy current box sachedule ', command= lambda: copyBoxSchedule(int(tab_control.index('current'))+1))
-    btnCopyPasteAll = Button(text=' Copy & Paste to all ', command= lambda: copyScheduletoAll(int(tab_control.index('current'))+1))
+    btnSetCurrent = Button(text=' Set current box ', command=lambda: OnButtonClick(int(tab_control.index('current'))+1))
+    btnSetAll = Button(text='Set All', command=getAllBoxSchedule)
+    #btnCopyCurrent = Button(text=' Copy current box sachedule ', command= lambda: copyBoxSchedule(int(tab_control.index('current'))+1))
+    btnReplicateToAll = Button(text=' Replicate to All ', command= lambda: copyScheduletoAll(int(tab_control.index('current'))+1))
     
   
     # if box settings of all 5 boxes are done, activate save and run buttons
@@ -6579,38 +6581,46 @@ if __name__ == '__main__':
         window.update_idletasks()
 
     if "Schedules" in tab_control.select():
-        btnSet1['state']='disabled'
+        btnSetCurrent['state']='disabled'
         window.update_idletasks()
     else:
-        btnSet1['state']='normal'
+        btnSetCurrent['state']='normal'
         window.update_idletasks()
 
     # button positions change depending on OS
+    
+    #yupperbtns = 370
+    #ylowerbtns = 410
+
+
     if sys.platform.startswith('win'):
         btnSave.place(x=570, y=450)
         btnRun.place(x=610, y=450)
-        btnAll.place(x=570, y=480)
-        btnSet1.place(x=610, y=480)
+        btnSetAll.place(x=570, y=480)
+        btnSetCurrent.place(x=610, y=480)
     elif sys.platform.startswith('darwin'):
         btnSave.place(x=685, y=450)
         btnRun.place(x=745, y=450)
-        btnAll.place(x=685, y=480)
-        btnSet1.place(x=745, y=480)
+        btnSetAll.place(x=685, y=480)
+        btnSetCurrent.place(x=745, y=480)
     elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-        btnSave.place(x=650, y=450)
-        btnRun.place(x=720, y=450)
-        btnAll.place(x=650, y=475)
-        btnSet1.place(x=720, y=475)
-
-        btnCopyCurrent.place(x=430, y=475)
-        btnCopyPasteAll.place(x=430, y=450)
+        btnSave.place(x=730, y=yupperbtns -5)
+        btnRun.place(x=40, y=450)
+        btnSetCurrent.place(x=430, y=340)       
+        btnReplicateToAll.place(x=577, y=340)
+        btnSetAll.place(x=730, y=340)
+        
     else:
         btnSave.place(x=635, y=450)
         btnRun.place(x=695, y=450)
-        btnAll.place(x=635, y=480)
-        btnSet1.place(x=695, y=480)
+        btnSetAll.place(x=635, y=480)
+        btnSetCurrent.place(x=695, y=480)
 
     row_adj = 3  # useful when a new row is added above
+
+    runSeparator = ttk.Separator(window, orient='horizontal').place(x=0, y=400, relwidth=1)#ttk.Separator(window, orient='horizontal') #.place(x = 363, y = ylowerbtns + 30)
+    #runSeparator.pack(fill='x')
+    
 
     # Box1
     
