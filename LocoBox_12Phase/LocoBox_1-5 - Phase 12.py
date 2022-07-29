@@ -18,6 +18,7 @@ import threading # To run Arduino loop and tkinter loop alongside
 import serial.tools.list_ports # For identifying Arduino port
 from BoxSchedule import BoxSchedule, PhaseSchedule, getDarkLightValue, inverseDarkLightValue
 import numpy as np
+from scipy import io
 
 
 
@@ -2036,9 +2037,10 @@ def read_conf(): # Read schedule configuration
     hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12)
 
  
-    value_mat = value_mat.reshape(5,12, -1)
+    value_mat = value_mat.reshape(5,12,-1)
+    
     #value_mat = np.transpose(value_mat, (1,0, 2))
-    #print(value_mat[0])
+    
 
     #Load variables into the GUI fields
 #BOX1
@@ -6121,6 +6123,8 @@ def getAllBoxSchedule():
 
     value_mat = np.asarray(value_mat)
     value_mat = value_mat.reshape(5,12,-1)
+    print(value_mat[0])
+    
    
     
 
@@ -6176,7 +6180,7 @@ def copyBox1():
     #PhaseSchedule(hourOn, minOn, hourOff, minOff, dark, light, date, month, year, hourFrom, minuteFrom #add 12 phases
     # global array: hourOn1_2, minOn1_2, hourOff1_2, minOff1_2, dark1_2, light1_2, date1_2, month1_2, year1_2, hourFrom1_2, minuteFrom1_2,
     temp_savedBoxSchedule.addPhase1(spin1_A_1.get(),spin1_B_1.get(),spin1_C_1.get(),spin1_D_1.get(), var1_1) #Phase 1 has less vars
-    print("Copied fields")
+    print("Copied fields Box1")
     print(spin1_A_1,spin1_B_1,spin1_C_1,spin1_D_1, var1_1)
     temp_savedBoxSchedule.addPhase(hourOn = spin1_A_2.get(), minOn= spin1_B_2.get(), hourOff = spin1_C_2.get(), minOff = spin1_D_2.get(), var=var1_2, date = date1_2_entry.get(), month =  month1_2_entry.get(),year =year1_2_entry.get(), hourFrom= spin1_E_2.get(),  minuteFrom = spin1_F_2.get())
     temp_savedBoxSchedule.addPhase(hourOn = spin1_A_3.get(), minOn= spin1_B_3.get(), hourOff = spin1_C_3.get(), minOff = spin1_D_3.get(), var=var1_3, date = date1_3_entry.get(), month =  month1_3_entry.get(),year =year1_3_entry.get(), hourFrom= spin1_E_3.get(),  minuteFrom = spin1_F_3.get())
@@ -6264,9 +6268,14 @@ def copyBox5():
     return temp_savedBoxSchedule
     
 
-def copyBoxn(n):
+def copyBoxn(n, input_mat):
     temp_savedBoxSchedule = BoxSchedule()
-    temp_savedBoxSchedule.addPhase1(spin5_A_1.get(),spin5_B_1.get(),spin5_C_1.get(),spin5_D_1.get(), var5_1)
+    
+    temp_savedBoxSchedule.addPhase1(input_mat[n, 0,0],input_mat[n, 0,1], input_mat[n, 0,2], input_mat[n, 0,3], input_mat[n, 0,4])
+    for phase_ind in range(1,12):
+        temp_savedBoxSchedule.addPhase(*input_mat[n, phase_ind])
+
+
 
 
 if __name__ == '__main__':

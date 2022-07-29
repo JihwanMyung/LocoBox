@@ -121,6 +121,17 @@ class BoxSchedule:
         #self.phase_sched[1].assignSchedule(*input_mat[box_index, 1 ])
         
         for phase_ind, phase in enumerate(self.phase_sched[1:], start=1):
+            spin_A = input_mat[box_index, phase_ind, 0 ] #box, phase, variable
+            spin_B =  input_mat[box_index, phase_ind, 1 ]
+            spin_C = input_mat[box_index, phase_ind, 2 ]
+            spin_D = input_mat[box_index, phase_ind, 3 ]
+            var = input_mat[box_index,phase_ind, 4 ]
+            spin_E = input_mat[box_index,phase_ind, 5 ]
+            spin_F  =input_mat[box_index,phase_ind, 6 ]
+            date_entry = input_mat[box_index,phase_ind, 7 ]
+            month_entry = input_mat[box_index,phase_ind, 8 ]
+            year_entry = input_mat[box_index,phase_ind, 9 ]
+
             
-            phase.assignSchedule(*input_mat[box_index, phase_ind ]) #assigns saved phase to corresponding spinboxes
+            phase.assignSchedule(spin_A, spin_B, spin_C, spin_D, var, spin_E, spin_F, date_entry, month_entry, year_entry) #assigns saved phase to corresponding spinboxes
 
