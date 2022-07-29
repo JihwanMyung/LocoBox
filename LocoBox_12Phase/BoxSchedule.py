@@ -83,10 +83,7 @@ class PhaseSchedule:
 
 class BoxSchedule:
     def __init__(self):
-        self.phase_sched = []
-
-
-    
+        self.phase_sched = []    
 
 
     def addPhase1(self,hourOn, minOn, hourOff, minOff, var):
@@ -106,20 +103,24 @@ class BoxSchedule:
         requested_schedule = self.phase_sched[index]
         print(requested_schedule)
 
-    def pasteSchedule(self, box_index, global_mat):
+    #self is the copied box schedule
+    def pasteSchedule(self, box_index, input_mat): #box to be pasted
         box_index = box_index -1
         #print(global_mat)
         
-        spin_A = global_mat[box_index, 0, 0 ]
-        spin_B =  global_mat[box_index, 0, 1 ]
-        spin_C = global_mat[box_index, 0, 2 ]
-        spin_D = global_mat[box_index, 0, 3 ]
-        var = global_mat[box_index,0, 4 ]
+        spin_A = input_mat[box_index, 0, 0 ] #box, phase, variable
+        spin_B =  input_mat[box_index, 0, 1 ]
+        spin_C = input_mat[box_index, 0, 2 ]
+        spin_D = input_mat[box_index, 0, 3 ]
+        var = input_mat[box_index,0, 4 ]
 
         self.phase_sched[0].assignPhase1(spin_A,spin_B,spin_C ,spin_D,var)
-        
+        print(spin_A,spin_B,spin_C ,spin_D,var)
+
+
+        #self.phase_sched[1].assignSchedule(*input_mat[box_index, 1 ])
         
         for phase_ind, phase in enumerate(self.phase_sched[1:], start=1):
-            print(global_mat[box_index, phase_ind ])
-            phase.assignSchedule(*global_mat[box_index, phase_ind ])
+            
+            phase.assignSchedule(*input_mat[box_index, phase_ind ]) #assigns saved phase to corresponding spinboxes
 
