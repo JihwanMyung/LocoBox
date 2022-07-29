@@ -6110,7 +6110,7 @@ def getAllBoxSchedule():
 
     value_mat = np.asarray(value_mat)
     value_mat = value_mat.reshape((12,5,11))
-    value_mat = np.swapaxes(value_mat, (0,1))
+    value_mat = np.swapaxes(value_mat, 0,1)
     
 
 
