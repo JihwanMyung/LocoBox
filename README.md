@@ -17,14 +17,14 @@ The LocomotorBox (LocoBox) GUI interface has been optimized for Windows, macOS, 
 
 ### Current GUI
 
-![image](https://user-images.githubusercontent.com/7980453/180698333-065a17ca-df0b-4cf6-92d9-6b670a8ae19c.png)
-
+![image](https://user-images.githubusercontent.com/7980453/181136739-331d78f7-568d-4071-aa3e-d0987bb250a9.png)
 
 
 ### Installation
 
 Download Arduino .ino file and Python3 .py file. 
 Upload .ino to Arduino microcontroller using Arduino software. Be sure to install the appropriate RTC library.
+(In the old version (pre-2022), Grove - DS1307 RTC library (https://wiki.seeedstudio.com/Grove-RTC/) was used.)
 
 Run Python GUI interface by double-clicking the .py file or on command-line using python3.
 
@@ -36,7 +36,7 @@ This software system requires Arduino Mega 2560 for controlling 10 boxes and a d
 
 * Jihwan Myung - initial work and further development
 * Vuong Truong - further development on Python GUI interface
-* Firdani Rianda - extension to 12 phases
+* Firdani Rianda Putra - reduction to 5-box and extension to 12 phases
 * Zow Ormazabal - stabilization and GUI improvement
 
 See braintimelab for the release version.
