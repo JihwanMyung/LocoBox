@@ -2037,7 +2037,7 @@ def read_conf(): # Read schedule configuration
     hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12)
 
  
-    value_mat = value_mat.reshape(5,12,-1)
+    value_mat = value_mat.reshape(5,12,11)
     
     #value_mat = np.transpose(value_mat, (1,0, 2))
     
@@ -6122,8 +6122,10 @@ def getAllBoxSchedule():
 
 
     value_mat = np.asarray(value_mat)
-    value_mat = value_mat.reshape(5,12,-1)
-    print(value_mat[0])
+
+    print(value_mat.shape)
+    value_mat = value_mat.reshape(5,12,11)
+    
     
    
     
@@ -6165,8 +6167,9 @@ def copyScheduletoAll(tab_index):
     
     print("Saved box schedule phase")
     temp_savedBoxSchedule.printPhase(1)
-    temp_savedBoxSchedule.pasteSchedule(2, input_mat) #box_index_to be pasted, global_mat
-
+    for ind in range(1,6):
+        temp_savedBoxSchedule.pasteSchedule(ind, input_mat) #box_index_to be pasted, global_mat
+   
 
 
 
@@ -11123,7 +11126,7 @@ if __name__ == '__main__':
     spin5_A_12, spin5_B_12, spin5_C_12, spin5_D_12, var1_12, date1_12_entry, month1_12_entry,year1_12_entry, spin5_E_12, spin5_F_12]
     input_mat = np.asarray(input_mat)
 
-    input_mat = input_mat.reshape(5,12,-1)
+    input_mat = input_mat.reshape(5,12,10)
     print("Input mat: (0,0)")
     print(input_mat[0,0])
     #print([spin1_A_2, spin1_B_2, spin1_C_2, spin1_D_2, var1_2])

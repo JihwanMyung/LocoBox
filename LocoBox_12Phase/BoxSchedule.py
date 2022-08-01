@@ -61,7 +61,7 @@ class PhaseSchedule:
 
 
 
-    def assignSchedule(self,spin_A,spin_B,spin_C ,spin_D, var, spin_E, spin_F, date_entry, month_entry, year_entry ):
+    def assignSchedule(self,spin_A,spin_B,spin_C ,spin_D, var, date_entry, month_entry, year_entry,spin_E, spin_F ):
         self.assignPhase1(spin_A,spin_B,spin_C ,spin_D, var)
         spin_E.delete(0,'end')
         spin_E.insert(0,self.hourFrom)
@@ -115,7 +115,7 @@ class BoxSchedule:
         var = input_mat[box_index,0, 4 ]
 
         self.phase_sched[0].assignPhase1(spin_A,spin_B,spin_C ,spin_D,var)
-        print(spin_A,spin_B,spin_C ,spin_D,var)
+        #print(spin_A,spin_B,spin_C ,spin_D,var)
 
 
         #self.phase_sched[1].assignSchedule(*input_mat[box_index, 1 ])
@@ -126,12 +126,16 @@ class BoxSchedule:
             spin_C = input_mat[box_index, phase_ind, 2 ]
             spin_D = input_mat[box_index, phase_ind, 3 ]
             var = input_mat[box_index,phase_ind, 4 ]
-            spin_E = input_mat[box_index,phase_ind, 5 ]
-            spin_F  =input_mat[box_index,phase_ind, 6 ]
-            date_entry = input_mat[box_index,phase_ind, 7 ]
-            month_entry = input_mat[box_index,phase_ind, 8 ]
-            year_entry = input_mat[box_index,phase_ind, 9 ]
+            date_entry = input_mat[box_index,phase_ind, 5 ]
+            month_entry = input_mat[box_index,phase_ind, 6 ]
+            year_entry = input_mat[box_index,phase_ind, 7 ]
+            spin_E = input_mat[box_index,phase_ind, 8 ]
+            spin_F  =input_mat[box_index,phase_ind, 9 ]
+
+            if phase_ind == 1:
+                print(spin_A,spin_B,spin_C ,spin_D,var, date_entry, month_entry, year_entry, spin_E, spin_F)
+
 
             
-            phase.assignSchedule(spin_A, spin_B, spin_C, spin_D, var, spin_E, spin_F, date_entry, month_entry, year_entry) #assigns saved phase to corresponding spinboxes
+            phase.assignSchedule(spin_A, spin_B, spin_C, spin_D, var,  date_entry, month_entry, year_entry, spin_E, spin_F) #assigns saved phase to corresponding spinboxes
 
