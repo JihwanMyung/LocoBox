@@ -21,7 +21,6 @@ The LocomotorBox (LocoBox) GUI interface has been optimized for Windows, macOS, 
 
 
 
-
 ### Installation
 
 Download Arduino .ino file and Python3 .py file. 
