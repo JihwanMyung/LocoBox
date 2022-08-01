@@ -6123,7 +6123,7 @@ def getAllBoxSchedule():
 
     value_mat = np.asarray(value_mat)
 
-    print(value_mat.shape)
+    
     value_mat = value_mat.reshape(5,12,11)
     
     
@@ -6165,9 +6165,7 @@ def copyScheduletoAll(tab_index):
     elif current_frame == 6:
         pass
     
-    #print("Saved box schedule for phase 1")
-    #temp_savedBoxSchedule.printPhase(1)
-    print(input_mat[0,:,:])
+    
     for ind in range(1,6):
         temp_savedBoxSchedule.pasteSchedule(ind, input_mat) #box_index_to be pasted, global_mat
    
@@ -6184,8 +6182,7 @@ def copyBox1():
     #PhaseSchedule(hourOn, minOn, hourOff, minOff, dark, light, date, month, year, hourFrom, minuteFrom #add 12 phases
     # global array: hourOn1_2, minOn1_2, hourOff1_2, minOff1_2, dark1_2, light1_2, date1_2, month1_2, year1_2, hourFrom1_2, minuteFrom1_2,
     temp_savedBoxSchedule.addPhase1(spin1_A_1.get(),spin1_B_1.get(),spin1_C_1.get(),spin1_D_1.get(), var1_1) #Phase 1 has less vars
-    print("Copied fields Box1")
-    print(spin1_A_1,spin1_B_1,spin1_C_1,spin1_D_1, var1_1)
+    
     temp_savedBoxSchedule.addPhase(hourOn = spin1_A_2.get(), minOn= spin1_B_2.get(), hourOff = spin1_C_2.get(), minOff = spin1_D_2.get(), var=var1_2, date = date1_2_entry.get(), month =  month1_2_entry.get(),year =year1_2_entry.get(), hourFrom= spin1_E_2.get(),  minuteFrom = spin1_F_2.get())
     temp_savedBoxSchedule.addPhase(hourOn = spin1_A_3.get(), minOn= spin1_B_3.get(), hourOff = spin1_C_3.get(), minOff = spin1_D_3.get(), var=var1_3, date = date1_3_entry.get(), month =  month1_3_entry.get(),year =year1_3_entry.get(), hourFrom= spin1_E_3.get(),  minuteFrom = spin1_F_3.get())
     temp_savedBoxSchedule.addPhase(hourOn = spin1_A_4.get(), minOn= spin1_B_4.get(), hourOff = spin1_C_4.get(), minOff = spin1_D_4.get(), var=var1_4, date = date1_4_entry.get(), month =  month1_4_entry.get(),year =year1_4_entry.get(), hourFrom= spin1_E_4.get(),  minuteFrom = spin1_F_4.get())
@@ -11101,7 +11098,7 @@ if __name__ == '__main__':
     spin3_A_10, spin3_B_10, spin3_C_10, spin3_D_10, var3_10, date3_10_entry, month3_10_entry,year3_10_entry, spin3_E_10, spin3_F_10,
     spin3_A_11, spin3_B_11, spin3_C_11, spin3_D_11, var3_11, date3_11_entry, month3_11_entry,year3_11_entry, spin3_E_11, spin3_F_11,
     spin3_A_12, spin3_B_12, spin3_C_12, spin3_D_12, var3_12, date3_12_entry, month3_12_entry,year3_12_entry, spin3_E_12, spin3_F_12,
-    spin4_A_1, spin4_B_1, spin4_C_1, spin4_D_2, var4_1, 0, 0,0, 0, 0,
+    spin4_A_1, spin4_B_1, spin4_C_1, spin4_D_1, var4_1, 0, 0,0, 0, 0,
     spin4_A_2, spin4_B_2, spin4_C_2, spin4_D_2, var4_2, date4_2_entry, month4_2_entry,year4_2_entry, spin4_E_2, spin4_F_2,
     spin4_A_3, spin4_B_3, spin4_C_3, spin4_D_3, var4_3, date4_3_entry, month4_3_entry,year4_3_entry, spin4_E_3, spin4_F_3,
     spin4_A_4, spin4_B_4, spin4_C_4, spin4_D_4, var4_4, date4_4_entry, month4_4_entry,year4_4_entry, spin4_E_4, spin4_F_4,
@@ -11128,9 +11125,7 @@ if __name__ == '__main__':
     input_mat = np.asarray(input_mat)
 
     input_mat = input_mat.reshape(5,12,10)
-    print("Input mat: (0,0)")
-    print(input_mat[0,0])
-    #print([spin1_A_2, spin1_B_2, spin1_C_2, spin1_D_2, var1_2])
+    
 
 
 

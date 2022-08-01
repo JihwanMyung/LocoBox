@@ -94,9 +94,7 @@ class BoxSchedule:
         dark, light = getDarkLightValue(var)
         newSchedule = PhaseSchedule(hourOn, minOn, hourOff, minOff, dark, light)
         self.phase_sched.append(newSchedule)
-        print("add phase 1")
-        print("Hour On:" +str(hourOn))
-        print("Saved phase 1 hour on:" + str(newSchedule.hourOn))
+        
 
     def addPhase(self,hourOn, minOn, hourOff, minOff, var, date, month, year, hourFrom, minuteFrom ):
         dark, light = getDarkLightValue(var)
@@ -130,10 +128,7 @@ class BoxSchedule:
             #     print(spin_A,spin_B,spin_C ,spin_D,var, date_entry, month_entry, year_entry, spin_E, spin_F)
             if phase_ind ==0:
                 phase.assignPhase1(spin_A,spin_B,spin_C ,spin_D,var)
-                #spin_A.delete(0,'end')
-                #spin_A.insert(0,11)
-                #print(input_mat[box_index, 0, : ])
-                #print(phase)
+                
 
             else:
                 phase.assignSchedule(spin_A, spin_B, spin_C, spin_D, var,  date_entry, month_entry, year_entry, spin_E, spin_F) #assigns saved phase to corresponding spinboxes
