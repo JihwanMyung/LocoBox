@@ -6514,7 +6514,7 @@ if __name__ == '__main__':
     canvas5.create_window(400, 175, window=tab5)
     
     canvas11 = Canvas(ParentFrame11, width=850, height=300) #, highlightbackground="red", highlightthickness=2
-    scroll11 = Scrollbar(ParentFrame11, orient=HORIZONTAL, command=canvas11.xview, width=20)
+    scroll11 = Scrollbar(ParentFrame11, orient=HORIZONTAL, command=canvas11.xview)
     canvas11.grid(row=0, column=0)
     scroll11.grid(row=1, column=0, sticky='ew')
     
