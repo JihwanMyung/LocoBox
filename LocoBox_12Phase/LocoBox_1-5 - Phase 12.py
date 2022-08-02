@@ -1276,7 +1276,7 @@ def read_conf(): # Read schedule configuration
     global hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12
     global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12
 
-    getAllBoxSchedule() #set default values using the ones displayed and then load the JSON valueson top
+    getAllBoxSchedule() #set default values using the ones displayed and then load the JSON values on top
     
     hourOn1_1 = config['hourOn1_1'] 
     minOn1_1 = config['minOn1_1'] 
@@ -1545,13 +1545,11 @@ def read_conf(): # Read schedule configuration
         hourFrom5_5 = config['hourFrom5_5'] 
         minuteFrom5_5 = config['minuteFrom5_5'] 
 
-    except KeyError:
-        
-        showinfo("Window", "The file has less than 12 phases.")
+    
 
 
     #phase 6
-    try:
+    
         hourOn1_6 =config['hourOn1_6']  
         minOn1_6 = config['minOn1_6'] 
         hourOff1_6 = config['hourOff1_6'] 
@@ -1634,12 +1632,9 @@ def read_conf(): # Read schedule configuration
         minuteFrom4_6 = config['minuteFrom4_6'] 
         hourFrom5_6 = config['hourFrom5_6'] 
         minuteFrom5_6 = config['minuteFrom5_6'] 
-    except KeyError:
-        
-        showinfo("Window", "The file has less than 12 phases.")
-
+    
 #Phase 7 
-    try:
+    
         hourOn1_7 =config['hourOn1_7']  
         minOn1_7 = config['minOn1_7'] 
         hourOff1_7 = config['hourOff1_7'] 
@@ -1697,12 +1692,10 @@ def read_conf(): # Read schedule configuration
         minuteFrom4_7 = config['minuteFrom4_7'] 
         hourFrom5_7 = config['hourFrom5_7'] 
         minuteFrom5_7 = config['minuteFrom5_7'] 
-    except KeyError:
-        
-        showinfo("Window", "The file has less than 12 phases.")
+    
 
     #Phase 8
-    try:
+    
 
         hourOn1_8 =config['hourOn1_8']  
         minOn1_8 = config['minOn1_8'] 
@@ -1762,13 +1755,11 @@ def read_conf(): # Read schedule configuration
         hourFrom5_8 = config['hourFrom5_8'] 
         minuteFrom5_8 = config['minuteFrom5_8'] 
 
-    except KeyError:
-        
-        showinfo("Window", "The file has less than 12 phases.")
+    
 
     #Phase 9
 
-    try:
+    
         hourOn1_9 =config['hourOn1_9']  
         minOn1_9 = config['minOn1_9'] 
         hourOff1_9 = config['hourOff1_9'] 
@@ -1828,13 +1819,11 @@ def read_conf(): # Read schedule configuration
         minuteFrom5_9 = config['minuteFrom5_9'] 
 
 
-    except KeyError:
-        
-        showinfo("Window", "The file has less than 12 phases.")
+     
 
     #Phase 10
 
-    try:
+    
         hourOn1_10 =config['hourOn1_10']  
         minOn1_10 = config['minOn1_10'] 
         hourOff1_10 = config['hourOff1_10'] 
@@ -1892,12 +1881,10 @@ def read_conf(): # Read schedule configuration
         minuteFrom4_10 = config['minuteFrom4_10'] 
         hourFrom5_10 = config['hourFrom5_10'] 
         minuteFrom5_10 = config['minuteFrom5_10'] 
-    except KeyError:
-        
-        showinfo("Window", "The file has less than 12 phases.")
+    
 
     #Phase 11
-    try:
+    
         hourOn1_11 =config['hourOn1_11']  
         minOn1_11 = config['minOn1_11'] 
         hourOff1_11 = config['hourOff1_11'] 
@@ -1955,12 +1942,10 @@ def read_conf(): # Read schedule configuration
         minuteFrom4_11 = config['minuteFrom4_11'] 
         hourFrom5_11 = config['hourFrom5_11'] 
         minuteFrom5_11 = config['minuteFrom5_11'] 
-    except KeyError:
-        
-        showinfo("Window", "The file has less than 12 phases.")
+    
 
     #Phase 12
-    try:
+    
         hourOn1_12 =config['hourOn1_12']  
         minOn1_12 = config['minOn1_12'] 
         hourOff1_12 = config['hourOff1_12'] 
