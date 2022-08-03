@@ -168,6 +168,26 @@ else:
     window.geometry('1000x440')
 status = StatusBar(window)
 
+
+def change_box_phase_text(value_mat, box_id, phase_id, box_text):
+    dark = value_mat[box_id, phase_id, 4]
+    light = value_mat[box_id, phase_id, 5]
+    if light=='0' and dark=='0':
+        box_text.set('                                ')
+        
+        box_text.set('From record onset'+' | '+hourOn1_1+':'+minOn1_1+' on>'+hourOff1_1+':'+minOff1_1+' off')
+        window.update_idletasks()
+    if light=='0' and dark=='1':
+        box_text.set('                                ')
+        
+        box_text.set('From record onset'+' | '+'DD')
+        window.update_idletasks()
+    if light=='1' and dark=='0':
+        box_text.set('                                ')
+       
+        box_text.set('From record onset'+' | '+'LL')
+        window.update_idletasks()
+
 ###Define functions
 def destruct(): # Quit the program
     print('LocoBox ended.')
@@ -3889,21 +3909,9 @@ def show_conf(): # Show schedule configuration
     window.update_idletasks()
 
     #1 Phase
-    if light1_1=='0' and dark1_1=='0':
-        box1pha1text.set('                                ')
-        window.update_idletasks()
-        box1pha1text.set('From record onset'+' | '+hourOn1_1+':'+minOn1_1+' on>'+hourOff1_1+':'+minOff1_1+' off')
-        window.update_idletasks()
-    if light1_1=='0' and dark1_1=='1':
-        box1pha1text.set('                                ')
-        window.update_idletasks()
-        box1pha1text.set('From record onset'+' | '+'DD')
-        window.update_idletasks()
-    if light1_1=='1' and dark1_1=='0':
-        box1pha1text.set('                                ')
-        window.update_idletasks()
-        box1pha1text.set('From record onset'+' | '+'LL')
-        window.update_idletasks()
+
+    change_box_phase_text(value_mat, 0, 0, box1pha1text)
+    
 
     if light2_1=='0' and dark2_1=='0':
         box2pha1text.set('                                ')
