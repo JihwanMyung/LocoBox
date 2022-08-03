@@ -99,19 +99,9 @@ global hourOn3_12, minOn3_12, hourOff3_12, minOff3_12, dark3_12, light3_12, date
 global hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12
 global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12
 
-global value_mat, input_mat
-
-
- 
+global value_mat, input_mat 
  
 global setBox1, setBox2, setBox3, setBox4, setBox5,setBox6, setBox7, setBox8, setBox9, setBox10
-
-
-
-
-
-
-
 
 global savedBoxSchedule, BoxSchedule1, BoxSchedule2, BoxSchedule3, BoxSchedule4, BoxSchedule5, BoxSchedule6, BoxSchedule7, BoxSchedule8, BoxSchedule9, BoxSchedule10
 
@@ -129,6 +119,9 @@ setBox7=0
 setBox8=0
 setBox9=0
 setBox10=0
+
+#value_mat = np.zeros((5,12,11),)
+#input_mat = np.zeros((5,12,10),)
 
 # Version information
 def about():
@@ -4992,20 +4985,30 @@ def OnButtonClick(button_id):
 def getBox1Schedule(): 
     box_id = 1
     global setBox1, input_mat, value_mat
+    
     setBox1=1 
     box_id = box_id -1
     for phase_ind in range(0,12): #maybe I will have to change it for accounting for the 1st line
-        value_mat[box_id, phase_ind, 0] = input_mat[box_id, phase_ind, 0 ] #box, phase, variable
-        value_mat[box_id, phase_ind, 1] = input_mat[box_id, phase_ind, 1 ]
-        value_mat[box_id, phase_ind, 2] = input_mat[box_id, phase_ind, 2 ]
-        value_mat[box_id, phase_ind, 3] = input_mat[box_id, phase_ind, 3 ]
+        value_mat[box_id, phase_ind, 0] = input_mat[box_id, phase_ind, 0 ].get() #box, phase, variable
+        value_mat[box_id, phase_ind, 1] = input_mat[box_id, phase_ind, 1 ].get()
+        value_mat[box_id, phase_ind, 2] = input_mat[box_id, phase_ind, 2 ].get()
+        value_mat[box_id, phase_ind, 3] = input_mat[box_id, phase_ind, 3 ].get()
         value_mat[box_id, phase_ind, 4] = getDarkLightValue(input_mat[box_id,phase_ind, 4 ])[0] #var dark, light
         value_mat[box_id, phase_ind, 5] = getDarkLightValue(input_mat[box_id,phase_ind, 4 ])[1] #light
-        value_mat[box_id, phase_ind, 6] = input_mat[box_id,phase_ind, 5 ]
-        value_mat[box_id, phase_ind, 7] = input_mat[box_id,phase_ind, 6 ]
-        value_mat[box_id, phase_ind, 8] = input_mat[box_id,phase_ind, 7 ]
-        value_mat[box_id, phase_ind, 9]  =input_mat[box_id,phase_ind, 8 ]
-        value_mat[box_id, phase_ind, 10]  =input_mat[box_id,phase_ind, 9 ]
+        if phase_ind == 0:
+            value_mat[box_id, phase_ind, 6] = 0
+            value_mat[box_id, phase_ind, 7] = 0
+            value_mat[box_id, phase_ind, 8] = 0
+            value_mat[box_id, phase_ind, 9]  =0
+            value_mat[box_id, phase_ind, 10]  =0
+
+
+        else:
+            value_mat[box_id, phase_ind, 6] = input_mat[box_id,phase_ind, 5 ].get()
+            value_mat[box_id, phase_ind, 7] = input_mat[box_id,phase_ind, 6 ].get()
+            value_mat[box_id, phase_ind, 8] = input_mat[box_id,phase_ind, 7 ].get()
+            value_mat[box_id, phase_ind, 9]  =input_mat[box_id,phase_ind, 8 ].get()
+            value_mat[box_id, phase_ind, 10]  =input_mat[box_id,phase_ind, 9 ].get()
 
 
     status.pack(side='bottom', fill='x')
@@ -6090,6 +6093,9 @@ def getAllBoxSchedule():
 
 def copyScheduletoAll(tab_index):
     global value_mat, input_mat
+
+    value_mat = np.zeros((5,12,11),)
+    input_mat = np.zeros((5,12,10),)
 
     current_frame = tab_index
     
@@ -11066,6 +11072,9 @@ if __name__ == '__main__':
     input_mat = np.asarray(input_mat)
 
     input_mat = input_mat.reshape(5,12,10)
+
+    value_mat = np.zeros((5,12,11),)
+    
     
 
 
