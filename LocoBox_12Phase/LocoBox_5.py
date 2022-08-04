@@ -6713,23 +6713,26 @@ if __name__ == '__main__':
         btnRun.place(x=610, y=450)
         btnSetAll.place(x=570, y=480)
         btnSetCurrent.place(x=610, y=480)
+        btnReplicateToAll.place(x=577, y=340)
     elif sys.platform.startswith('darwin'):
         btnSave.place(x=685, y=450)
         btnRun.place(x=745, y=450)
         btnSetAll.place(x=685, y=480)
         btnSetCurrent.place(x=745, y=480)
+        btnReplicateToAll.place(x=577, y=340)
     elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
         btnSave.place(x=730, y=yupperbtns -5)
-        btnRun.place(x=40, y=450)
+        btnRun.place(x=730, y=ylowerbtns-5)
         btnSetCurrent.place(x=430, y=340)       
-        btnReplicateToAll.place(x=577, y=340)
         btnSetAll.place(x=730, y=340)
+        btnReplicateToAll.place(x=577, y=340)
         
     else:
         btnSave.place(x=635, y=450)
         btnRun.place(x=695, y=450)
         btnSetAll.place(x=635, y=480)
         btnSetCurrent.place(x=695, y=480)
+        btnReplicateToAll.place(x=542, y=300)
 
     row_adj = 3  # useful when a new row is added above
 
