@@ -179,11 +179,7 @@ def get_data(istate=0): # Start recording
     status.pack(side='bottom', fill='x')
     status.set('Starting the recording...')
     boxrec_text.set('Preparing for recording.')
-    box1rec_text.set('Preparing for recording.')
-    box2rec_text.set('Preparing for recording.')
-    box3rec_text.set('Preparing for recording.')
-    box4rec_text.set('Preparing for recording.')
-    box5rec_text.set('Preparing for recording.')
+    
     window.update_idletasks()
     i=istate
     counti=0
@@ -428,19 +424,17 @@ def get_data(istate=0): # Start recording
                 status.set('Phase 11 schedules sent.')
                 status.set('All schedules transferred. Recording began.') 
                 boxrec_text.set('Recording on-going.')
-                box1rec_text.set('Recording on-going.')
-                box2rec_text.set('Recording on-going.')
-                box3rec_text.set('Recording on-going.')
-                box4rec_text.set('Recording on-going.')
-                box5rec_text.set('Recording on-going.')
+                
                 window.update_idletasks()
             i=i+1
             
             if len(string2)>=79:     #set the id according to current tab
-                window.update_idletasks()
+               
                 current_tab = tab_control.index('current')+1
                 if current_tab ==1:
                     boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
+            
+            
                 elif current_tab ==2:
                     boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
                 elif current_tab ==3:
@@ -451,16 +445,11 @@ def get_data(istate=0): # Start recording
                     boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
 
 
-
+                window.update_idletasks()
 
                 
                 
-                # if using analog sensor
-                # box1rec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31]) 
-                # box2rec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED2: '+string2[46:51]+'    '+'PIR2: '+string2[52:57])
-                # box3rec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED3: '+string2[72:76]+'    '+'PIR3: '+string2[78:83])
-                # box4rec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED4: '+string2[98:102]+'    '+'PIR4: '+string2[104:109])
-                # box5rec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED5: '+string2[124:129]+'    '+'PIR5: '+string2[130:135])
+               
                 counti = counti+1
 
 
@@ -471,11 +460,7 @@ def get_data(istate=0): # Start recording
         status.pack(side='bottom', fill='x')
         status.set('Stopped recording and disconnected from the boxes.') 
         boxrec_text.set('Recording stopped.')
-        box1rec_text.set('Recording stopped.')
-        box2rec_text.set('Recording stopped.')
-        box3rec_text.set('Recording stopped.')
-        box4rec_text.set('Recording stopped.')
-        box5rec_text.set('Recording stopped.')
+        
         window.update_idletasks()
 
 def writeToJSONFile(filename, data):
@@ -4918,11 +4903,7 @@ def disconnect():  # close the serial_obj thread
     status.pack(side='bottom', fill='x')
     status.set('Stopped recording and disconnected from the boxes.')
     boxrec_text.set('Recording stopped.')
-    box1rec_text.set('Recording stopped.')
-    box2rec_text.set('Recording stopped.')
-    box3rec_text.set('Recording stopped.')
-    box4rec_text.set('Recording stopped.')
-    box5rec_text.set('Recording stopped.')
+    
     
     window.update_idletasks()
 
@@ -7668,15 +7649,6 @@ if __name__ == '__main__':
     
     
     
-    box1sched_stat.grid(column=3, row=rowsButton+row_adj, columnspan='8', sticky='w')
-    rowStatusRecording = 14
-    tab1_title2 = Label(tab1, text= 'Recording status', anchor='center')
-    tab1_title2.grid(column=0, row= row_adj+rowStatusRecording, columnspan='27', sticky='we')
-    box1rec_text=StringVar()
-    box1rec_text.set('Recording not started yet.')
-    box1rec_stat=Label(tab1, textvariable=box1rec_text, anchor='center', justify=LEFT)
-    box1rec_stat.grid(column=0, row= row_adj+rowStatusRecording+1, columnspan='27', sticky='we')
-    window.update_idletasks()
 
     # Box2
     
@@ -8547,14 +8519,7 @@ if __name__ == '__main__':
 
     
    
-    box2sched_stat.grid(column=3, row=rowsButton+row_adj, columnspan='8', sticky='w') 
-    tab2_title2 = Label(tab1, text= 'Recording status', anchor='center')
-    tab2_title2.grid(column=0, row= row_adj+rowStatusRecording, columnspan='27', sticky='we')
-    box2rec_text=StringVar()
-    box2rec_text.set('Recording not started yet.')
-    box2rec_stat=Label(tab1, textvariable=box2rec_text, anchor='center', justify=LEFT)
-    box2rec_stat.grid(column=0, row= row_adj+rowStatusRecording+1, columnspan='27', sticky='we')
-    window.update_idletasks()
+   
 
     # Box3
    
@@ -9428,16 +9393,8 @@ if __name__ == '__main__':
     
     
    
-    box3sched_stat.grid(column=3, row=rowsButton+row_adj, columnspan='8', sticky='w')
-    window.update_idletasks()
 
-    tab3_title2 = Label(tab1, text= 'Recording status', anchor='center')
-    tab3_title2.grid(column=0, row= row_adj+rowStatusRecording, columnspan='27', sticky='we')
-    box3rec_text=StringVar()
-    box3rec_text.set('Recording not started yet.')
-    box3rec_stat=Label(tab1, textvariable=box3rec_text, anchor='center', justify=LEFT)
-    box3rec_stat.grid(column=0, row= row_adj+rowStatusRecording+1, columnspan='27', sticky='we')
-    window.update_idletasks()
+    
     
     # Box4
     
@@ -10318,15 +10275,7 @@ if __name__ == '__main__':
 
     
     
-    box4sched_stat.grid(column=3, row=rowsButton+row_adj, columnspan='8', sticky='w')
-    window.update_idletasks()
-    tab4_title2 = Label(tab1, text= 'Recording status', anchor='center')
-    tab4_title2.grid(column=0, row= row_adj+rowStatusRecording, columnspan='27', sticky='we')
-    box4rec_text=StringVar()
-    box4rec_text.set('Recording not started yet.')
-    box4rec_stat=Label(tab1, textvariable=box4rec_text, anchor='center', justify=LEFT)
-    box4rec_stat.grid(column=0, row= row_adj+rowStatusRecording+1, columnspan='27', sticky='we')
-    window.update_idletasks()
+   
 
     # Box5
     
@@ -11276,15 +11225,7 @@ if __name__ == '__main__':
 
    
     
-    box5sched_stat.grid(column=3, row=rowsButton+row_adj, columnspan='8', sticky='w')
-    window.update_idletasks()
-    tab5_title2 = Label(tab1, text= 'Recording status', anchor='center')
-    tab5_title2.grid(column=0, row= row_adj+rowStatusRecording, columnspan='27', sticky='we')
-    box5rec_text=StringVar()
-    box5rec_text.set('Recording not started yet.')
-    box5rec_stat=Label(tab1, textvariable=box5rec_text, anchor='center', justify=LEFT)
-    box5rec_stat.grid(column=0, row= row_adj+rowStatusRecording+1, columnspan='27', sticky='we')
-    window.update_idletasks()
+    
     
     tab_control.pack(expand=1, fill='both')
 
