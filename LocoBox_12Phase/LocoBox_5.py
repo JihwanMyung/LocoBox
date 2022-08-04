@@ -106,6 +106,8 @@ global value_mat, input_mat
  
 global setBox1, setBox2, setBox3, setBox4, setBox5
 
+global display_string, display_counter
+
 
 
 
@@ -124,6 +126,8 @@ setBox2=0
 setBox3=0
 setBox4=0
 setBox5=0
+display_string = ''
+display_counter = 0
 
 # Version information
 def about():
@@ -192,9 +196,11 @@ def get_data(istate=0): # Start recording
     global serial_obj
     global dead
     global value_mat
+    global display_string, display_counter
     try:
         while True:
             string2 = serial_obj.readline().decode('utf-8')
+            
             if string2 != '':
                 with open(filename,'a') as w:
                     w.write(string2)
@@ -441,9 +447,11 @@ def get_data(istate=0): # Start recording
                 #                  string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
                 # boxrec_text.set('# '+str(counti)+'    Time: ' +
                 #                  string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+                display_string = string2
+                display_counter = counti
 
                 on_tab_change(counti, string2)
-
+                
 
                 window.update_idletasks()
              
@@ -476,6 +484,29 @@ def on_tab_change( counti, string2):
     elif tab == 4:
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
     elif tab == 5:
+        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+
+
+def on_tab_change_trigger( event):
+    global display_counter, display_string
+    #tab = int(tab_control.index('current'))+1
+    counti = display_counter
+    string2 = display_string
+    
+    tab = event.widget.tab('current')['text']
+    
+    if tab == 'Box1':
+        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
+    elif tab == 'Box2':
+        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
+        
+
+    elif tab == 'Box3':
+        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
+               
+    elif tab == 'Box4':
+        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
+    elif tab == 'Box5':
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
 
 
@@ -6518,6 +6549,8 @@ if __name__ == '__main__':
     window.config(menu=menu)
 
     tab_control = ttk.Notebook(window)
+
+    tab_control.bind('<<NotebookTabChanged>>', on_tab_change_trigger)
 
     
     
