@@ -178,6 +178,7 @@ def destruct(): # Quit the program
 def get_data(istate=0): # Start recording
     status.pack(side='bottom', fill='x')
     status.set('Starting the recording...')
+    boxrec_text.set('Preparing for recording.')
     box1rec_text.set('Preparing for recording.')
     box2rec_text.set('Preparing for recording.')
     box3rec_text.set('Preparing for recording.')
@@ -426,6 +427,7 @@ def get_data(istate=0): # Start recording
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 11 schedules sent.')
                 status.set('All schedules transferred. Recording began.') 
+                boxrec_text.set('Recording on-going.')
                 box1rec_text.set('Recording on-going.')
                 box2rec_text.set('Recording on-going.')
                 box3rec_text.set('Recording on-going.')
@@ -434,12 +436,24 @@ def get_data(istate=0): # Start recording
                 window.update_idletasks()
             i=i+1
             
-            if len(string2)>=79:               
-                box1rec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
-                box2rec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
-                box3rec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
-                box4rec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
-                box5rec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+            if len(string2)>=79:     #set the id according to current tab
+                window.update_idletasks()
+                current_tab = tab_control.index('current')+1
+                if current_tab ==1:
+                    boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
+                elif current_tab ==2:
+                    boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
+                elif current_tab ==3:
+                    boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
+                elif current_tab ==4:
+                    boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
+                elif current_tab ==5:
+                    boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+
+
+
+
+                
                 
                 # if using analog sensor
                 # box1rec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31]) 
@@ -456,6 +470,7 @@ def get_data(istate=0): # Start recording
         print('Stopped recording and disconnected from the boxes.')
         status.pack(side='bottom', fill='x')
         status.set('Stopped recording and disconnected from the boxes.') 
+        boxrec_text.set('Recording stopped.')
         box1rec_text.set('Recording stopped.')
         box2rec_text.set('Recording stopped.')
         box3rec_text.set('Recording stopped.')
@@ -3484,6 +3499,8 @@ def read_conf(): # Read schedule configuration
 
     status.pack(side='bottom', fill='x')
     status.set('The schedule configuration is loaded.')
+
+    boxsched_text.set('Schedules loaded.')
     box1sched_text.set('Box1 schedule loaded.')
     box2sched_text.set('Box2 schedule loaded.')
     box3sched_text.set('Box3 schedule loaded.')
@@ -4900,6 +4917,7 @@ def disconnect():  # close the serial_obj thread
     print(threading.enumerate())
     status.pack(side='bottom', fill='x')
     status.set('Stopped recording and disconnected from the boxes.')
+    boxrec_text.set('Recording stopped.')
     box1rec_text.set('Recording stopped.')
     box2rec_text.set('Recording stopped.')
     box3rec_text.set('Recording stopped.')
@@ -5173,6 +5191,7 @@ def getBox1Schedule():
 
     status.pack(side='bottom', fill='x')
     status.set('Box1 schedule is set.')
+    boxsched_text.set('Box1 schedule set.')
     box1sched_text.set('Box1 schedule set.')
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
@@ -5418,6 +5437,7 @@ def getBox2Schedule():
     status.pack(side='bottom', fill='x')
     status.set('Box2 schedule is set.')
     box2sched_text.set('Box2 schedule set.')
+    box2sched_text.set('Box2 schedule set.')
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
         btnRun['state']='normal'
@@ -5661,6 +5681,8 @@ def getBox3Schedule():
 
     status.pack(side='bottom', fill='x')
     status.set('Box3 schedule is set.')
+    
+    boxsched_text.set('Box3 schedule set.')
     box3sched_text.set('Box3 schedule set.')
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
@@ -5905,6 +5927,7 @@ def getBox4Schedule():
 
     status.pack(side='bottom', fill='x')
     status.set('Box4 schedule is set.')
+    boxsched_text.set('Box4 schedule set.')
     box4sched_text.set('Box4 schedule set.')
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
@@ -6146,6 +6169,7 @@ def getBox5Schedule():
 
     status.pack(side='bottom', fill='x')
     status.set('Box5 schedule is set.')
+    boxsched_text.set('Box5 schedule set.')
     box5sched_text.set('Box5 schedule set.')
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
@@ -6161,6 +6185,8 @@ def getAllBoxSchedule():
     getBox3Schedule()
     getBox4Schedule()
     getBox5Schedule()
+
+    boxsched_text.set('All schedules set.')
 
     value_mat = [hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, dark1_1, light1_1, 0,0,0, 0, 0,
     hourOn2_1, minOn2_1, hourOff2_1, minOff2_1, dark2_1, light2_1, 0,0,0, 0, 0,
@@ -6677,6 +6703,24 @@ if __name__ == '__main__':
     configfilename_entry = Entry(width = 30)
     configfilename_entry.place(x=470, y=yupperbtns)
     configfilename_entry.insert(0,'BOX1-5-sched-'+date_string+'.json')
+
+    #SHOW STATUS
+    tab1_title2 = Label(text= 'Recording status', anchor='center')    
+    boxsched_text=StringVar()
+    boxsched_text.set('Schedule not set.')
+    boxsched_stat=Label(textvariable=boxsched_text, anchor=W, justify=LEFT)    
+    
+    boxrec_text=StringVar()
+    boxrec_text.set('Recording not started yet.')
+    boxrec_stat=Label(textvariable=boxrec_text, anchor='center', justify=LEFT)
+    
+    boxsched_stat.place(x=200, y=ylowerbtns+30)    
+    tab1_title2.place(x=40, y=ylowerbtns+30)
+    boxrec_stat.place(x=370, y=ylowerbtns+30)
+    window.update_idletasks()
+
+
+
 
     btnSave = Button(text=' Save ', command=save_conf, state='disabled')
     btnRun = Button(text= ' Recording Start ', command=connect, state='disabled')
@@ -7625,10 +7669,7 @@ if __name__ == '__main__':
     
     
     box1sched_stat.grid(column=3, row=rowsButton+row_adj, columnspan='8', sticky='w')
-    window.update_idletasks()
-
     rowStatusRecording = 14
-
     tab1_title2 = Label(tab1, text= 'Recording status', anchor='center')
     tab1_title2.grid(column=0, row= row_adj+rowStatusRecording, columnspan='27', sticky='we')
     box1rec_text=StringVar()
@@ -8506,10 +8547,7 @@ if __name__ == '__main__':
 
     
    
-    box2sched_stat.grid(column=3, row=rowsButton+row_adj, columnspan='8', sticky='w')
-    window.update_idletasks()
-
-    
+    box2sched_stat.grid(column=3, row=rowsButton+row_adj, columnspan='8', sticky='w') 
     tab2_title2 = Label(tab1, text= 'Recording status', anchor='center')
     tab2_title2.grid(column=0, row= row_adj+rowStatusRecording, columnspan='27', sticky='we')
     box2rec_text=StringVar()
