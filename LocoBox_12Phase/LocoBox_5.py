@@ -429,27 +429,22 @@ def get_data(istate=0): # Start recording
             i=i+1
             
             if len(string2)>=79:     #set the id according to current tab
-               
-                current_tab = tab_control.index('current')+1
-                if current_tab ==1:
-                    boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
-            
-            
-                elif current_tab ==2:
-                    boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
-                elif current_tab ==3:
-                    boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
-                elif current_tab ==4:
-                    boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
-                elif current_tab ==5:
-                    boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+                # tab_control.bind('<<NotebookTabChanged>>', on_tab_change)
+                # on_tab_change(event, counti, string2)
+                boxrec_text.set('# '+str(counti)+'    Time: ' +
+                                 string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
+                boxrec_text.set('# '+str(counti)+'    Time: ' +
+                                 string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
+                boxrec_text.set('# '+str(counti)+'    Time: ' +
+                                 string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
+                boxrec_text.set('# '+str(counti)+'    Time: ' +
+                                 string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
+                boxrec_text.set('# '+str(counti)+'    Time: ' +
+                                 string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
 
 
                 window.update_idletasks()
-
-                
-                
-               
+             
                 counti = counti+1
 
 
@@ -462,6 +457,24 @@ def get_data(istate=0): # Start recording
         boxrec_text.set('Recording stopped.')
         
         window.update_idletasks()
+
+
+
+def on_tab_change(event, counti, string2):
+    tab = event.widget.tab('current')['text']
+    if tab == 'Tab1':
+        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
+    elif tab == 'Tab2':
+        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
+
+    elif tab == 'Tab3':
+        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
+               
+    elif tab == 'Tab4':
+        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
+    elif tab == 'Tab5':
+        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+
 
 def writeToJSONFile(filename, data):
     filePathNameWExt = filename
@@ -6502,6 +6515,8 @@ if __name__ == '__main__':
     window.config(menu=menu)
 
     tab_control = ttk.Notebook(window)
+
+    
     
     ParentFrame1 = ttk.Frame(tab_control,width=850, height=200, relief=tk.FLAT)
     ParentFrame1.pack()
@@ -6762,6 +6777,7 @@ if __name__ == '__main__':
     row_adj = 3  # useful when a new row is added above
 
     runSeparator = ttk.Separator(window, orient='horizontal').place(x=0, y=400, relwidth=1)#ttk.Separator(window, orient='horizontal') #.place(x = 363, y = ylowerbtns + 30)
+    boxstatusSeparator = ttk.Separator(window, orient='horizontal').place(x=0, y=ylowerbtns+20, relwidth=1)
     #runSeparator.pack(fill='x')
     
 
