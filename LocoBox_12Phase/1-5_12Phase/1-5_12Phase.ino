@@ -2597,14 +2597,14 @@ void loop()
 
     rtc_delay();
 
-    if (Serial.read() == 0)
-    {
-      for (int i = 0; i < 5; i++)
-      {
-        digitalWrite(DOut[i], LOW);
-        LightFlag[i] = 0;
-      }
-    }
+    // if (Serial.read() == 0)
+    // {
+    //   for (int i = 0; i < 5; i++)
+    //   {
+    //     digitalWrite(DOut[i], LOW);
+    //     LightFlag[i] = 0;
+    //   }
+    // }
   }
 }
 

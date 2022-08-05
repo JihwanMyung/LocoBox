@@ -446,6 +446,7 @@ def get_data(istate=0): # Start recording
                 display_counter = counti
 
                 on_tab_change(counti, string2)
+                save_logs(counti, string2)
                 
 
                 window.update_idletasks()
@@ -463,6 +464,24 @@ def get_data(istate=0): # Start recording
         
         window.update_idletasks()
 
+
+
+def save_logs( counti, string2): #max 120 timepoints 
+    global log_mat
+    
+    log_mat[counti, 0] = counti
+    log_mat[counti, 1] = string2[0:8]
+    log_mat[counti, 2] = string2[20:25]
+    log_mat[counti, 3] = string2[26:31]
+    log_mat[counti, 4] = string2[32:37]
+    log_mat[counti, 5] = string2[38:43]
+    log_mat[counti, 6] = string2[44:49]
+    log_mat[counti, 7] = string2[50:55]
+    log_mat[counti, 8] = string2[56:61]
+    log_mat[counti, 9] = string2[62:67]
+    log_mat[counti, 10] = string2[68:73]
+    log_mat[counti, 11] = string2[74:79]
+    
 
 
 def on_tab_change( counti, string2):
@@ -6436,7 +6455,7 @@ if __name__ == '__main__':
     #### All of the components and their positions in the GUI ####
     # You can change the design from here # 
     # 
-    global value_mat, input_mat      
+    global value_mat, input_mat, log_mat      
     menu = Menu(window) #define menu    
 
     # Define Var to keep track of the schedule
@@ -6517,8 +6536,7 @@ if __name__ == '__main__':
     var4_12 = IntVar(value=1)
     var5_12 = IntVar(value=1)
 
-    log_stream = StringIO()    
-    logging.basicConfig(stream=log_stream, level=logging.INFO)
+    log_mat =np.empty((120,12), dtype="<U10")
     
     #Create file menu
     filemenu = Menu(menu)
@@ -6761,7 +6779,8 @@ if __name__ == '__main__':
     boxrec_text.set('Recording not started yet.')
 
     log_text = StringVar()
-    log_text.set(log_stream.getvalue())
+    log_text.set('# '+str(log_mat[0,0])+'    Time: '+str(log_mat[0,1])+'    LED: '+str(log_mat[0,2])+'    '+'PIR: '+str(log_mat[0,3]))
+    print(log_mat[0,:])
     log_display=Label(f2, textvariable=log_text, anchor='center', justify=LEFT)
 
     boxrec_stat=Label(f2, textvariable=boxrec_text, anchor='center', justify=LEFT)

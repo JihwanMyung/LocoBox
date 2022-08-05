@@ -1,4 +1,4 @@
-
+from tkinter import Frame, Label, SUNKEN,W, X
 
 def getDarkLightValue(var):
     if var.get()==1:
@@ -133,3 +133,16 @@ class BoxSchedule:
             else:
                 phase.assignSchedule(spin_A, spin_B, spin_C, spin_D, var,  date_entry, month_entry, year_entry, spin_E, spin_F) #assigns saved phase to corresponding spinboxes
 
+class StatusBar(Frame):  # scan open serial ports
+    def __init__(self, master):
+        Frame.__init__(self, master)
+        self.label = Label(self, bd=1, relief=SUNKEN, anchor=W)
+        self.label.pack(fill=X)
+
+    def set(self, format, *args):
+        self.label.config(text=format % args)
+        self.label.update_idletasks()
+
+    def clear(self):
+        self.label.config(text='')
+        self.label.update_idletasks()

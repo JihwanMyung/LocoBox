@@ -17,7 +17,7 @@ except ImportError:
     fileDialog = tk.filedialog
 import threading  # To run Arduino loop and tkinter loop alongside
 import serial.tools.list_ports  # For identifying Arduino port
-from BoxSchedule import BoxSchedule, PhaseSchedule, getDarkLightValue, inverseDarkLightValue
+from BoxSchedule import BoxSchedule, PhaseSchedule, getDarkLightValue, inverseDarkLightValue, StatusBar
 import numpy as np
 from scipy import io
 
@@ -106,7 +106,10 @@ global savedBoxSchedule, BoxSchedule1, BoxSchedule2, BoxSchedule3, BoxSchedule4,
 
 global BOX_N, PHASE_N
 
+global display_string, display_counter
+
 savedBoxSchedule = BoxSchedule()
+
 
 
 # Preset values
@@ -121,10 +124,14 @@ setBox8 = 0
 setBox9 = 0
 setBox10 = 0
 
-#value_mat = np.zeros((5,12,11),)
-#input_mat = np.zeros((5,12,10),)
+display_string = ''
+display_counter = 0
+
+
+
 
 # Version information
+
 
 
 def about():
@@ -147,22 +154,23 @@ def create_serial_obj(portPath, baud_rate, timeout):
     '''
     return serial.Serial(portPath, baud_rate, timeout=timeout)
 
-# Classes
 
+def create_tab(parentframe):
+        canvas = Canvas(parentframe, width=850, height=200)
+        scroll = Scrollbar(parentframe, orient=VERTICAL, command=canvas.yview)
+        canvas.grid(row=0, column=0)
+        scroll.grid(row=0, column=1, sticky='ns')
+        canvas.config(yscrollcommand=scroll.set)
+        tab = Frame(canvas, width=200, height=300)
+        tab.bind(
+        "<Configure>",
+        lambda e: canvas.configure(
+            scrollregion=canvas.bbox("all")
+            )
+        )
+        canvas.create_window(400, 175, window=tab)
+        return tab, canvas
 
-class StatusBar(Frame):  # scan open serial ports
-    def __init__(self, master):
-        Frame.__init__(self, master)
-        self.label = Label(self, bd=1, relief=SUNKEN, anchor=W)
-        self.label.pack(fill=X)
-
-    def set(self, format, *args):
-        self.label.config(text=format % args)
-        self.label.update_idletasks()
-
-    def clear(self):
-        self.label.config(text='')
-        self.label.update_idletasks()
 
 
 # Initialize the windows size and name
@@ -211,10 +219,7 @@ def destruct():  # Quit the program
 def get_data(istate=0):  # Start recording
     status.pack(side='bottom', fill='x')
     status.set('Starting the recording...')
-
-    for i in range(10):
-
-        boxrec_text[i].set('Preparing for recording.')
+    boxrec_text.set('Preparing for recording.')
     window.update_idletasks()
     i = istate
     counti = 0
@@ -227,6 +232,7 @@ def get_data(istate=0):  # Start recording
     global serial_obj
     global dead
     global value_mat
+    global display_string, display_counter
     try:
         while True:
             string2 = serial_obj.readline().decode('utf-8')
@@ -471,35 +477,64 @@ def get_data(istate=0):  # Start recording
             i = i+1
 
             if len(string2) >= 79:
-                box1rec_text.set('# '+str(counti)+'    Time: ' +
-                                 string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
-                box2rec_text.set('# '+str(counti)+'    Time: ' +
-                                 string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
-                box3rec_text.set('# '+str(counti)+'    Time: ' +
-                                 string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
-                box4rec_text.set('# '+str(counti)+'    Time: ' +
-                                 string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
-                box5rec_text.set('# '+str(counti)+'    Time: ' +
-                                 string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+                display_string = string2
+                display_counter = counti
 
-                # if using analog sensor
-                # box1rec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
-                # box2rec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED2: '+string2[46:51]+'    '+'PIR2: '+string2[52:57])
-                # box3rec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED3: '+string2[72:76]+'    '+'PIR3: '+string2[78:83])
-                # box4rec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED4: '+string2[98:102]+'    '+'PIR4: '+string2[104:109])
-                # box5rec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED5: '+string2[124:129]+'    '+'PIR5: '+string2[130:135])
+                on_tab_change(counti, string2)
+                
+
+                window.update_idletasks()
+             
                 counti = counti+1
 
     except:
         print('Stopped recording and disconnected from the boxes.')
         status.pack(side='bottom', fill='x')
         status.set('Stopped recording and disconnected from the boxes.')
-
-        for i in range(10):
-
-            boxrec_text[i].set('Recording stopped.')
-
+        boxrec_text.set('Recording stopped.')
+        
         window.update_idletasks()
+
+
+def on_tab_change( counti, string2):
+    tab = int(tab_control.index('current'))+1
+    #tab = event.widget.tab('current')['text']
+    if tab == 1:
+        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
+    elif tab == 2:
+        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
+
+    elif tab == 3:
+        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
+               
+    elif tab == 4:
+        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
+    elif tab == 5:
+        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+
+
+def on_tab_change_trigger( event):
+    global display_counter, display_string
+    #tab = int(tab_control.index('current'))+1
+    counti = display_counter
+    string2 = display_string
+    
+    tab = event.widget.tab('current')['text']
+    
+    if tab == 'Box1':
+        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
+    elif tab == 'Box2':
+        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
+        
+
+    elif tab == 'Box3':
+        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
+               
+    elif tab == 'Box4':
+        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
+    elif tab == 'Box5':
+        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+
 
 
 def writeToJSONFile(filename, data):
@@ -1196,6 +1231,26 @@ def save_conf():  # Save schedule configuration
     writeToJSONFile(configfilename, config)
     status.pack(side='bottom', fill='x')
     status.set('Schedule configuration saved.')
+
+    #SHOW STATUS
+    tab1_title2 = Label(text= 'Recording status', anchor='center')    
+    boxsched_text=StringVar()
+    boxsched_text.set('Schedule not set.')
+    boxsched_stat=Label(textvariable=boxsched_text, anchor=W, justify=LEFT)    
+    
+    boxrec_text=StringVar()
+    boxrec_text.set('Recording not started yet.')
+    boxrec_stat=Label(textvariable=boxrec_text, anchor='center', justify=LEFT)
+    
+    boxsched_stat.place(x=200, y=ylowerbtns+30)    
+    tab1_title2.place(x=40, y=ylowerbtns+30)
+    boxrec_stat.place(x=370, y=ylowerbtns+30)
+    window.update_idletasks()
+
+
+
+
+
 
 
 def read_data():  # Read data from file for plotting
@@ -3638,7 +3693,20 @@ def show_conf():  # Show schedule configuration
     row11_5.grid(column=0, row=6, padx=2, pady=0)
 
     # array that contains all the stringvars)
-    box_pha_text = np.arange((10, 12), StringVar())
+    box_pha_text = []
+    
+    for box_id in range(0, BOX_N):
+        phase_var_arr = []
+        for phase_id in range(0, phase_id):
+            str_var = StringVar()
+            phase_var_arr.append(str_var)
+        
+        phase_var_arr = np.asarray(phase_var_arr)
+        box_pha_text.append(phase_var_arr)
+
+    box_pha_text = np.asarray( box_pha_text)
+
+
 
     box1pha1text = StringVar()
     box1pha1text.set('                                ')
@@ -6231,6 +6299,8 @@ def getAllBoxSchedule():
     getBox4Schedule()
     getBox5Schedule()
 
+    boxsched_text.set('All schedules set.')
+
     value_mat = [hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, dark1_1, light1_1, 0, 0, 0, 0, 0,
                  hourOn2_1, minOn2_1, hourOff2_1, minOff2_1, dark2_1, light2_1, 0, 0, 0, 0, 0,
                  hourOn3_1, minOn3_1, hourOff3_1, minOff3_1, dark3_1, light3_1, 0, 0, 0, 0, 0,
@@ -6498,6 +6568,13 @@ if __name__ == '__main__':
     # You can change the design from here #
     #
     global value_mat, input_mat
+    global BOX_N, PHASE_N
+
+    BOX_N = 10
+    PHASE_N = 12
+
+    value_mat = np.empty((BOX_N, PHASE_N, 11),)
+    input_mat = np.empty((BOX_N, PHASE_N, 10),) #maybe include the radio buttons
     menu = Menu(window)  # define menu
 
     # Define Var to keep track of the schedule
@@ -6605,6 +6682,7 @@ if __name__ == '__main__':
     window.config(menu=menu)
 
     tab_control = ttk.Notebook(window)
+    tab_control.bind('<<NotebookTabChanged>>', on_tab_change_trigger)
 
     ParentFrame1 = ttk.Frame(tab_control, width=850,
                              height=200, relief=tk.FLAT)
@@ -6613,38 +6691,50 @@ if __name__ == '__main__':
     ParentFrame3 = ttk.Frame(tab_control)
     ParentFrame4 = ttk.Frame(tab_control)
     ParentFrame5 = ttk.Frame(tab_control)
+    ParentFrame6 = ttk.Frame(tab_control)
+    ParentFrame7 = ttk.Frame(tab_control)
+    ParentFrame8 = ttk.Frame(tab_control)
+    ParentFrame9 = ttk.Frame(tab_control)
+    ParentFrame10 = ttk.Frame(tab_control)
     ParentFrame11 = ttk.Frame(tab_control)
     tab_control.add(ParentFrame1, text='Box1')
     tab_control.add(ParentFrame2, text='Box2')
     tab_control.add(ParentFrame3, text='Box3')
     tab_control.add(ParentFrame4, text='Box4')
     tab_control.add(ParentFrame5, text='Box5')
+    tab_control.add(ParentFrame6, text='Box1')
+    tab_control.add(ParentFrame7, text='Box2')
+    tab_control.add(ParentFrame8, text='Box3')
+    tab_control.add(ParentFrame9, text='Box4')
+    tab_control.add(ParentFrame10, text='Box5')
     tab_control.add(ParentFrame11, text='Schedules')
 
     # tab1
 
-    canvas1 = Canvas(ParentFrame1, width=850, height=300, scrollregion=(
-        0, 0, 850, 300))  # , highlightbackground="red", highlightthickness=2
-    scroll1 = Scrollbar(ParentFrame1, orient=VERTICAL, command=canvas1.yview)
-    scrollx1 = Scrollbar(ParentFrame1, orient=HORIZONTAL,
-                         command=canvas1.xview)
-    scrollx1.grid(row=1, column=0, sticky=tk.EW)
-    canvas1.grid(row=0, column=0)
-    scroll1.grid(row=0, column=1, sticky='ns')
-    # scrollx1.pack(expand=1, fill=X, side=BOTTOM)window
-    # scroll1.pack(side = RIGHT, fill = Y, expand=1)
-    # canvas1.pack(side=LEFT,expand=True,fill=BOTH)
-    canvas1.config(yscrollcommand=scroll1.set, xscrollcommand=scrollx1.set)
+    # canvas1 = Canvas(ParentFrame1, width=850, height=300, scrollregion=(
+    #     0, 0, 850, 300))  # , highlightbackground="red", highlightthickness=2
+    # scroll1 = Scrollbar(ParentFrame1, orient=VERTICAL, command=canvas1.yview)
+    # scrollx1 = Scrollbar(ParentFrame1, orient=HORIZONTAL,
+    #                      command=canvas1.xview)
+    # scrollx1.grid(row=1, column=0, sticky=tk.EW)
+    # canvas1.grid(row=0, column=0)
+    # scroll1.grid(row=0, column=1, sticky='ns')
+    # # scrollx1.pack(expand=1, fill=X, side=BOTTOM)window
+    # # scroll1.pack(side = RIGHT, fill = Y, expand=1)
+    # # canvas1.pack(side=LEFT,expand=True,fill=BOTH)
+    # canvas1.config(yscrollcommand=scroll1.set, xscrollcommand=scrollx1.set)
 
-    # , highlightbackground="black", highlightthickness=1
-    tab1 = Frame(canvas1, width=200, height=300)
-    tab1.bind(
-        "<Configure>",
-        lambda e: canvas1.configure(
-            scrollregion=canvas1.bbox("all")
-        )
-    )
-    canvas1.create_window(400, 175, window=tab1)
+    # # , highlightbackground="black", highlightthickness=1
+    # tab1 = Frame(canvas1, width=200, height=300)
+    # tab1.bind(
+    #     "<Configure>",
+    #     lambda e: canvas1.configure(
+    #         scrollregion=canvas1.bbox("all")
+    #     )
+    # )
+    # canvas1.create_window(400, 175, window=tab1)
+
+    tab1, canvas1 = create_tab(ParentFrame1)
 
 # tab2
     canvas2 = Canvas(ParentFrame2, width=850, height=300)
@@ -6895,46 +6985,46 @@ if __name__ == '__main__':
     spin1_D_1.insert(0, '00')
 
 
-    for box_id in range(0,10):
-        for phase_id in range(0,12):
+    # for box_id in range(0,10):
+    #     for phase_id in range(0,12):
 
-            input_mat[box_id, phase_id, 0] = Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f') #change for the parent tab
-            input_mat[box_id, phase_id, 1] = Spinbox(tab1, from_=00, to=59, width=3, format='%02.0f')
-            input_mat[box_id, phase_id, 2] =  Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f')
-            input_mat[box_id, phase_id, 3] = Spinbox(tab1, from_=00, to=59, width=3, format='%02.0f')
-            input_mat[box_id, phase_id, 0].delete(0, 'end')
-            input_mat[box_id, phase_id, 0].insert(0, '07')
-            input_mat[box_id, phase_id, 1].delete(0, 'end')
-            input_mat[box_id, phase_id, 1].insert(0, '00')       
-            input_mat[box_id, phase_id, 2].delete(0, 'end')
-            input_mat[box_id, phase_id, 2].insert(0, '19')
-            input_mat[box_id, phase_id, 3].delete(0, 'end')
-            input_mat[box_id, phase_id, 3].insert(0, '00')
-            radiobuttons[box_id, phase_id, 0] = Radiobutton(tab1, text='LD', variable=input_mat[box_id, phase_id, 4], value=1)
-            radiobuttons[box_id, phase_id, 1] = Radiobutton(tab1, text='DD', variable=input_mat[box_id, phase_id, 4], value=2)
-            radiobuttons[box_id, phase_id, 2] = Radiobutton(tab1, text='LL', variable=input_mat[box_id, phase_id, 4], value=3)
+    #         input_mat[box_id, phase_id, 0] = Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f') #change for the parent tab
+    #         input_mat[box_id, phase_id, 1] = Spinbox(tab1, from_=00, to=59, width=3, format='%02.0f')
+    #         input_mat[box_id, phase_id, 2] =  Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f')
+    #         input_mat[box_id, phase_id, 3] = Spinbox(tab1, from_=00, to=59, width=3, format='%02.0f')
+    #         input_mat[box_id, phase_id, 0].delete(0, 'end')
+    #         input_mat[box_id, phase_id, 0].insert(0, '07')
+    #         input_mat[box_id, phase_id, 1].delete(0, 'end')
+    #         input_mat[box_id, phase_id, 1].insert(0, '00')       
+    #         input_mat[box_id, phase_id, 2].delete(0, 'end')
+    #         input_mat[box_id, phase_id, 2].insert(0, '19')
+    #         input_mat[box_id, phase_id, 3].delete(0, 'end')
+    #         input_mat[box_id, phase_id, 3].insert(0, '00')
+    #         radiobuttons[box_id, phase_id, 0] = Radiobutton(tab1, text='LD', variable=input_mat[box_id, phase_id, 4], value=1)
+    #         radiobuttons[box_id, phase_id, 1] = Radiobutton(tab1, text='DD', variable=input_mat[box_id, phase_id, 4], value=2)
+    #         radiobuttons[box_id, phase_id, 2] = Radiobutton(tab1, text='LL', variable=input_mat[box_id, phase_id, 4], value=3)
             
 
-            if phase_id>0:
-                input_mat[box_id, phase_id, 8] = Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f')
-                input_mat[box_id, phase_id, 9] = Spinbox(tab1, from_=00, to=59, width=3, format='%02.0f')  
+    #         if phase_id>0:
+    #             input_mat[box_id, phase_id, 8] = Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f')
+    #             input_mat[box_id, phase_id, 9] = Spinbox(tab1, from_=00, to=59, width=3, format='%02.0f')  
     
-                input_mat[box_id, phase_id, 8].delete(0, 'end')
-                input_mat[box_id, phase_id, 8].insert(0, '07')
-                input_mat[box_id, phase_id, 9].delete(0, 'end')
-                input_mat[box_id, phase_id, 9].insert(0, '00')
+    #             input_mat[box_id, phase_id, 8].delete(0, 'end')
+    #             input_mat[box_id, phase_id, 8].insert(0, '07')
+    #             input_mat[box_id, phase_id, 9].delete(0, 'end')
+    #             input_mat[box_id, phase_id, 9].insert(0, '00')
 
-                input_mat[box_id, phase_id, 5] = Spinbox(tab1, from_=00, to=31, width=3, format='%02.0f')
-                input_mat[box_id, phase_id, 6] = Spinbox(tab1, from_=00, to=12, width=3, format='%02.0f')
-                input_mat[box_id, phase_id, 7] = Spinbox(tab1, from_=2018, to=2030, width=5)
-                input_mat[box_id, phase_id, 5].delete(0, 'end')
-                today = datetime.date.today()  # today# calculate dates for 7 days after recording initiation
-                day_phase2 = today + datetime.timedelta(days=7)
-                input_mat[box_id, phase_id, 5].insert(0, '{:02d}'.format(day_phase2.day))
-                input_mat[box_id, phase_id, 6].delete(0, 'end')
-                input_mat[box_id, phase_id, 6].insert(0, '{:02d}'.format(day_phase2.month))
-                input_mat[box_id, phase_id, 7].delete(0, 'end')
-                input_mat[box_id, phase_id, 7].insert(0, day_phase2.year)  # ISO format is YYYY/MM/DD
+    #             input_mat[box_id, phase_id, 5] = Spinbox(tab1, from_=00, to=31, width=3, format='%02.0f')
+    #             input_mat[box_id, phase_id, 6] = Spinbox(tab1, from_=00, to=12, width=3, format='%02.0f')
+    #             input_mat[box_id, phase_id, 7] = Spinbox(tab1, from_=2018, to=2030, width=5)
+    #             input_mat[box_id, phase_id, 5].delete(0, 'end')
+    #             today = datetime.date.today()  # today# calculate dates for 7 days after recording initiation
+    #             day_phase2 = today + datetime.timedelta(days=7)
+    #             input_mat[box_id, phase_id, 5].insert(0, '{:02d}'.format(day_phase2.day))
+    #             input_mat[box_id, phase_id, 6].delete(0, 'end')
+    #             input_mat[box_id, phase_id, 6].insert(0, '{:02d}'.format(day_phase2.month))
+    #             input_mat[box_id, phase_id, 7].delete(0, 'end')
+    #             input_mat[box_id, phase_id, 7].insert(0, day_phase2.year)  # ISO format is YYYY/MM/DD
 
 
 
@@ -7802,21 +7892,6 @@ if __name__ == '__main__':
 
     rowsButton = 13
 
-    box1sched_stat.grid(column=3, row=rowsButton+row_adj,
-                        columnspan='8', sticky='w')
-    window.update_idletasks()
-
-    rowStatusRecording = 14
-
-    tab1_title2 = Label(tab1, text='Recording status', anchor='center')
-    tab1_title2.grid(column=0, row=row_adj+rowStatusRecording,
-                     columnspan='27', sticky='we')
-    box1rec_text = StringVar()
-    box1rec_text.set('Recording not started yet.')
-    box1rec_stat = Label(tab1, textvariable=box1rec_text,
-                         anchor='center', justify=LEFT)
-    box1rec_stat.grid(column=0, row=row_adj +
-                      rowStatusRecording+1, columnspan='27', sticky='we')
     window.update_idletasks()
 
     # Box2
@@ -8698,19 +8773,7 @@ if __name__ == '__main__':
     rad2_B_12.grid(column=24, row=rowPhase12+row_adj, padx=15, pady=5)
     rad2_C_12.grid(column=25, row=rowPhase12+row_adj, pady=5)
 
-    box2sched_stat.grid(column=3, row=rowsButton+row_adj,
-                        columnspan='8', sticky='w')
-    window.update_idletasks()
 
-    tab2_title2 = Label(tab1, text='Recording status', anchor='center')
-    tab2_title2.grid(column=0, row=row_adj+rowStatusRecording,
-                     columnspan='27', sticky='we')
-    box2rec_text = StringVar()
-    box2rec_text.set('Recording not started yet.')
-    box2rec_stat = Label(tab1, textvariable=box2rec_text,
-                         anchor='center', justify=LEFT)
-    box2rec_stat.grid(column=0, row=row_adj +
-                      rowStatusRecording+1, columnspan='27', sticky='we')
     window.update_idletasks()
 
     # Box3
@@ -9595,19 +9658,7 @@ if __name__ == '__main__':
     rad3_B_12.grid(column=24, row=rowPhase12+row_adj, padx=15, pady=5)
     rad3_C_12.grid(column=25, row=rowPhase12+row_adj, pady=5)
 
-    box3sched_stat.grid(column=3, row=rowsButton+row_adj,
-                        columnspan='8', sticky='w')
-    window.update_idletasks()
-
-    tab3_title2 = Label(tab1, text='Recording status', anchor='center')
-    tab3_title2.grid(column=0, row=row_adj+rowStatusRecording,
-                     columnspan='27', sticky='we')
-    box3rec_text = StringVar()
-    box3rec_text.set('Recording not started yet.')
-    box3rec_stat = Label(tab1, textvariable=box3rec_text,
-                         anchor='center', justify=LEFT)
-    box3rec_stat.grid(column=0, row=row_adj +
-                      rowStatusRecording+1, columnspan='27', sticky='we')
+    
     window.update_idletasks()
 
     # Box4
@@ -10492,18 +10543,7 @@ if __name__ == '__main__':
     rad4_B_12.grid(column=24, row=rowPhase12+row_adj, padx=15, pady=5)
     rad4_C_12.grid(column=25, row=rowPhase12+row_adj, pady=5)
 
-    box4sched_stat.grid(column=3, row=rowsButton+row_adj,
-                        columnspan='8', sticky='w')
-    window.update_idletasks()
-    tab4_title2 = Label(tab1, text='Recording status', anchor='center')
-    tab4_title2.grid(column=0, row=row_adj+rowStatusRecording,
-                     columnspan='27', sticky='we')
-    box4rec_text = StringVar()
-    box4rec_text.set('Recording not started yet.')
-    box4rec_stat = Label(tab1, textvariable=box4rec_text,
-                         anchor='center', justify=LEFT)
-    box4rec_stat.grid(column=0, row=row_adj +
-                      rowStatusRecording+1, columnspan='27', sticky='we')
+   
     window.update_idletasks()
 
     # Box5
@@ -11459,26 +11499,11 @@ if __name__ == '__main__':
     box5sched_stat.grid(column=3, row=rowsButton+row_adj,
                         columnspan='8', sticky='w')
     window.update_idletasks()
-    tab5_title2 = Label(tab1, text='Recording status', anchor='center')
-    tab5_title2.grid(column=0, row=row_adj+rowStatusRecording,
-                     columnspan='27', sticky='we')
-    box5rec_text = StringVar()
-    box5rec_text.set('Recording not started yet.')
-    box5rec_stat = Label(tab1, textvariable=box5rec_text,
-                         anchor='center', justify=LEFT)
-    box5rec_stat.grid(column=0, row=row_adj +
-                      rowStatusRecording+1, columnspan='27', sticky='we')
-    window.update_idletasks()
+    
 
     tab_control.pack(expand=1, fill='both')
 
-    boxrec_text = [box5rec_text, box5rec_text,
-                   box5rec_text, box5rec_text, box5rec_text]
-
-    for i in range(5, 11):
-        boxrec_text.append(StringVar())
-
-    boxrec_stat = []
+   
 
     # Main loop
     window.mainloop()
