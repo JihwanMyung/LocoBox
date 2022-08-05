@@ -6549,6 +6549,10 @@ if __name__ == '__main__':
 
     do_layout()
 
+    f2scrollbar=Scrollbar(f2,orient="vertical")
+    f2scrollbar.pack(side="right",fill="y")
+    #f2.config(yscrollcommand=f2scrollbar.set)
+
 
     tab_control = ttk.Notebook(f1)
 
