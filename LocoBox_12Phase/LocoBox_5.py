@@ -20,6 +20,8 @@ import serial.tools.list_ports # For identifying Arduino port
 from BoxSchedule import BoxSchedule, PhaseSchedule, getDarkLightValue, inverseDarkLightValue
 import numpy as np
 from scipy import io
+import logging
+from io import StringIO
 
 
 
@@ -99,7 +101,7 @@ global hourOn3_12, minOn3_12, hourOff3_12, minOff3_12, dark3_12, light3_12, date
 global hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12
 global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12
 
-global value_mat, input_mat
+global value_mat, input_mat, log_mat
 
 
  
@@ -193,10 +195,14 @@ def get_data(istate=0): # Start recording
     with open(filename,'w', encoding='utf-8') as w:
                 w.write(headers+'\n')
     w.close()
+
+    
     global serial_obj
     global dead
     global value_mat
-    global display_string, display_counter
+    global display_string, display_counter, log_mat
+
+
     try:
         while True:
             string2 = serial_obj.readline().decode('utf-8')
@@ -6510,6 +6516,9 @@ if __name__ == '__main__':
     var3_12 = IntVar(value=1)
     var4_12 = IntVar(value=1)
     var5_12 = IntVar(value=1)
+
+    log_stream = StringIO()    
+    logging.basicConfig(stream=log_stream, level=logging.INFO)
     
     #Create file menu
     filemenu = Menu(menu)
@@ -6536,10 +6545,10 @@ if __name__ == '__main__':
     aboutmenu.add_command(label='About LocoBox', command=about)
     menu.add_cascade(label='Help', menu=aboutmenu)
     window.config(menu=menu)
-
-    f1 = tk.Frame(window,  width=200,height=300)
-    f2 = tk.Frame(window,  width=400, height=100)
-    f3 = tk.Frame(window, width=400, height=100)
+    #Window 900x550
+    f1 = tk.Frame(window,  width=900,height=270)
+    f2 = tk.Frame(window,  width=900, height=250)
+    f3 = tk.Frame(window, width=900, height=70)
 
     def do_layout():
         f1.pack(side="top", fill="both", expand=True)
@@ -6710,16 +6719,17 @@ if __name__ == '__main__':
     status.pack(side='bottom', fill='x')
     status.set('Available ports: '+', '.join(map(str,openPorts)))
 
-    yupperbtns = 10
-    ylowerbtns = 30
+    yupperbtns = 2
+    ymidbtns = 30
+    ylowerbtns = 60
 
     #Entry for Port, Baud, timeout, filename to save
-    Label(f3,text =  'Schedule').place(x = 363, y = yupperbtns - 30)
+    Label(f3,text =  'Schedule').place(x = 363, y = yupperbtns)
     Label(f3,text = 'Port').place(x = 40, y = ylowerbtns)
     Label(f3,text =  'Baud rate').place(x = 363, y = ylowerbtns)
     Label(f3,text = 'Time out').place(x= 575, y=ylowerbtns)
-    Label(f3,text= 'Data').place(x=40, y=yupperbtns)
-    Label(f3,text= 'Schedule file').place(x=363, y=yupperbtns)
+    Label(f3,text= 'Data').place(x=40, y=ymidbtns)
+    Label(f3,text= 'Schedule file').place(x=363, y=ymidbtns)
 
     port_entry = Spinbox(f3,values=openPorts, width=25)
     port_entry.delete(0,'end')
@@ -6734,11 +6744,11 @@ if __name__ == '__main__':
     timeout_entry.insert(0,'10')
 
     filename_entry = Entry(f3, width = 25)
-    filename_entry.place(x=80, y=yupperbtns)
+    filename_entry.place(x=80, y=ymidbtns)
     date_string = time.strftime('%Y%m%d') # predefine a default filename with ISO date    
     filename_entry.insert(0,'BOX1-5-'+date_string+'.txt')
     configfilename_entry = Entry(f3,width = 30)
-    configfilename_entry.place(x=470, y=yupperbtns)
+    configfilename_entry.place(x=470, y=ymidbtns)
     configfilename_entry.insert(0,'BOX1-5-sched-'+date_string+'.json')
 
     #SHOW STATUS
@@ -6749,11 +6759,18 @@ if __name__ == '__main__':
     
     boxrec_text=StringVar()
     boxrec_text.set('Recording not started yet.')
+
+    log_text = StringVar()
+    log_text.set(log_stream.getvalue())
+    log_display=Label(f2, textvariable=log_text, anchor='center', justify=LEFT)
+
     boxrec_stat=Label(f2, textvariable=boxrec_text, anchor='center', justify=LEFT)
     
-    boxsched_stat.place(x=200, y=yupperbtns)    
-    tab1_title2.place(x=40, y=yupperbtns)
-    boxrec_stat.place(x=370, y=yupperbtns)
+    tab1_title2.pack()#place(x=40, y=yupperbtns )
+    boxsched_stat.pack()#.place(x=40, y=yupperbtns+20)        
+    log_display.pack()
+    boxrec_stat.pack()#.place(x=40, y=yupperbtns+40)
+    #log_stream.getvalue()
 
     window.update_idletasks()
 
@@ -6803,11 +6820,11 @@ if __name__ == '__main__':
         btnSetCurrent.place(x=745, y=480)
         btnReplicateToAll.place(x=577, y=340)
     elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-        btnSave.place(x=730, y=yupperbtns -5)
-        btnRun.place(x=730, y=ylowerbtns-5)
-        btnSetCurrent.place(x=430, y=340)       
-        btnSetAll.place(x=730, y=340)
-        btnReplicateToAll.place(x=577, y=340)
+        btnSave.place(x=730, y= ylowerbtns)
+        btnRun.place(x=730, y=ymidbtns)
+        btnSetCurrent.place(x=430, y=yupperbtns)       
+        btnSetAll.place(x=730, y=yupperbtns)
+        btnReplicateToAll.place(x=577, y=yupperbtns)
         
     else:
         btnSave.place(x=635, y=450)
