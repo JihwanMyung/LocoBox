@@ -7,12 +7,17 @@ LocoBox is a set of Arduino software and GUI interface for running either 5 or 1
 1. Original release (pre-2022):
 
 Arduino: Arduino 1.8.7
+
 Python: Python 3.7.0, Pyserial 3.4
+
 RTC library: 
+
 (1) Legacy version: RTC library 'DS1307' (https://github.com/Seeed-Studio/RTC_DS1307/archive/master.zip).
+
 (2) Revision: RTCLib for Adafruit DS3231 Precision RTC
 
 The LocomotorBox (LocoBox) GUI interface has been optimized for Windows, macOS, and Linux (tested on Ubuntu).
+
 
 2. Current release (post-2022):
 
