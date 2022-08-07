@@ -39,9 +39,11 @@ Upload .ino to Arduino microcontroller using Arduino software. Be sure to instal
 
 Run Python GUI interface by double-clicking the .py file or on command-line using python3.
 
+
 ## Deployment
 
-This software system requires Arduino Mega 2560 for controlling 10 boxes and a digital slot extension (custom-made). Each box requires 1 PIR sensor (digital input) and 1 relay switch.
+This software system requires Arduino Mega 2560 for controlling either 5 (main release) or 10 boxes (optional) and a digital slot extension (custom-made). Each box requires 1 PIR sensor (digital input) and 1 relay switch.
+
 
 ## Authors
 
