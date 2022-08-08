@@ -484,7 +484,8 @@ def save_logs( counti, string2): #max 120 timepoints
  
 
 def set_log_text(log_text, log_mat, tab):
-    history_str = ''
+    
+    history_str = '# '+str(log_mat[0 ,0])+'    Time: '+str(log_mat[0,1])+'    LED: '+str(log_mat[0,2])+'    '+'PIR: '+str(log_mat[0,3]) + "\n"
     for counti in range(0,120):
         
         if tab == 1:
@@ -506,10 +507,10 @@ def set_log_text(log_text, log_mat, tab):
             #if not str(log_mat[counti % 120,2]).strip():
             history_str = history_str + '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
 
-    print(history_str)
+    #print(history_str)
     log_text.set(history_str)
     log_display.config(state="normal")
-    log_display.delete('1.0','end')
+    #log_display.delete('1.0','end')
     log_display.insert(tk.END, history_str)
     log_display.config(state="disabled")
 
