@@ -481,6 +481,7 @@ def save_logs( counti, string2): #max 120 timepoints
     log_mat[counti, 9] = string2[62:67]
     log_mat[counti, 10] = string2[68:73]
     log_mat[counti, 11] = string2[74:79]
+    print(log_mat)
     
 
 

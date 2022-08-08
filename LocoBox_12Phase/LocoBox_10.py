@@ -6712,9 +6712,7 @@ if __name__ == '__main__':
     tab_control = ttk.Notebook(f1)
     tab_control.bind('<<NotebookTabChanged>>', on_tab_change_trigger)
 
-    ParentFrame1 = ttk.Frame(tab_control, width=850,
-                             height=200, relief=tk.FLAT)
-    ParentFrame1.pack()
+    ParentFrame1 = ttk.Frame(tab_control)
     ParentFrame2 = ttk.Frame(tab_control)
     ParentFrame3 = ttk.Frame(tab_control)
     ParentFrame4 = ttk.Frame(tab_control)
@@ -6730,145 +6728,27 @@ if __name__ == '__main__':
     tab_control.add(ParentFrame3, text='Box3')
     tab_control.add(ParentFrame4, text='Box4')
     tab_control.add(ParentFrame5, text='Box5')
-    tab_control.add(ParentFrame6, text='Box1')
-    tab_control.add(ParentFrame7, text='Box2')
-    tab_control.add(ParentFrame8, text='Box3')
-    tab_control.add(ParentFrame9, text='Box4')
-    tab_control.add(ParentFrame10, text='Box5')
+    tab_control.add(ParentFrame6, text='Box6')
+    tab_control.add(ParentFrame7, text='Box7')
+    tab_control.add(ParentFrame8, text='Box8')
+    tab_control.add(ParentFrame9, text='Box9')
+    tab_control.add(ParentFrame10, text='Box10')
     tab_control.add(ParentFrame11, text='Schedules')
 
-    # tab1
-
-    # canvas1 = Canvas(ParentFrame1, width=850, height=300, scrollregion=(
-    #     0, 0, 850, 300))  # , highlightbackground="red", highlightthickness=2
-    # scroll1 = Scrollbar(ParentFrame1, orient=VERTICAL, command=canvas1.yview)
-    # scrollx1 = Scrollbar(ParentFrame1, orient=HORIZONTAL,
-    #                      command=canvas1.xview)
-    # scrollx1.grid(row=1, column=0, sticky=tk.EW)
-    # canvas1.grid(row=0, column=0)
-    # scroll1.grid(row=0, column=1, sticky='ns')
-    # # scrollx1.pack(expand=1, fill=X, side=BOTTOM)window
-    # # scroll1.pack(side = RIGHT, fill = Y, expand=1)
-    # # canvas1.pack(side=LEFT,expand=True,fill=BOTH)
-    # canvas1.config(yscrollcommand=scroll1.set, xscrollcommand=scrollx1.set)
-
-    # # , highlightbackground="black", highlightthickness=1
-    # tab1 = Frame(canvas1, width=200, height=300)
-    # tab1.bind(
-    #     "<Configure>",
-    #     lambda e: canvas1.configure(
-    #         scrollregion=canvas1.bbox("all")
-    #     )
-    # )
-    # canvas1.create_window(400, 175, window=tab1)
-
     tab1, canvas1 = create_tab(ParentFrame1)
+    tab2, canvas2 = create_tab(ParentFrame1)
+    tab3, canvas3 = create_tab(ParentFrame3)
+    tab4, canvas4 = create_tab(ParentFrame4)
+    tab5, canvas5 = create_tab(ParentFrame5)
+    tab6, canvas6 = create_tab(ParentFrame6)
+    tab7, canvas7 = create_tab(ParentFrame7)
+    tab8, canvas8 = create_tab(ParentFrame8)
+    tab9, canvas9 = create_tab(ParentFrame9)
+    tab10, canvas10 = create_tab(ParentFrame10)
+    tab11, canvas11 = create_tab(ParentFrame10)
+   
 
-# tab2
-    canvas2 = Canvas(ParentFrame2, width=850, height=300)
-    canvas2.grid(row=0, column=0)
-    scroll2 = Scrollbar(ParentFrame2, orient=VERTICAL, command=canvas2.yview)
-
-    scroll2.grid(row=0, column=1, sticky='ns')
-    scrollx2 = Scrollbar(ParentFrame2, orient=HORIZONTAL,
-                         command=canvas2.xview)
-    scrollx2.grid(row=1, column=0, sticky=tk.EW)
-    canvas2.config(yscrollcommand=scroll2.set, xscrollcommand=scrollx2.set)
-    # scrollx2.pack(expand=1, fill=X, side=BOTTOM)
-    # scroll2.pack(side = RIGHT, fill = Y, expand=1)
-    # canvas2.pack(side=LEFT,expand=True,fill=BOTH)
-    tab2 = Frame(canvas2, width=200, height=300)
-    tab2.bind(
-        "<Configure>",
-        lambda e: canvas2.configure(
-            scrollregion=canvas2.bbox("all")
-        )
-    )
-
-    canvas2.create_window(400, 175, window=tab2)
-
-# tab3
-    canvas3 = Canvas(ParentFrame3, width=850, height=300)
-    scroll3 = Scrollbar(ParentFrame3, orient=VERTICAL, command=canvas3.yview)
-    canvas3.grid(row=0, column=0)
-    scroll3.grid(row=0, column=1, sticky='ns')
-    scrollx3 = Scrollbar(ParentFrame3, orient=HORIZONTAL,
-                         command=canvas3.xview)
-    # scrollx3.pack(expand=1, fill=X, side=BOTTOM)
-    # scroll3.pack(side = RIGHT, fill = Y, expand=1)
-    # canvas3.pack(side=LEFT,expand=True,fill=BOTH)
-    scrollx3.grid(row=1, column=0, sticky='ew')
-    canvas3.config(yscrollcommand=scroll3.set, xscrollcommand=scrollx3.set)
-    tab3 = Frame(canvas3, width=200, height=300)
-    tab3.bind(
-        "<Configure>",
-        lambda e: canvas3.configure(
-            scrollregion=canvas3.bbox("all")
-        )
-    )
-    canvas3.create_window(400, 175, window=tab3)
-
-
-# tab 4
-    canvas4 = Canvas(ParentFrame4, width=850, height=300)
-    scroll4 = Scrollbar(ParentFrame4, orient=VERTICAL, command=canvas4.yview)
-    canvas4.grid(row=0, column=0)
-    scroll4.grid(row=0, column=1, sticky='ns')
-    scrollx4 = Scrollbar(ParentFrame4, orient=HORIZONTAL,
-                         command=canvas4.xview)
-    scrollx4.grid(row=1, column=0, sticky='ew')
-    canvas4.config(yscrollcommand=scroll4.set, xscrollcommand=scrollx4.set)
-    #scrollx4.pack(expand=1, fill=X, side=BOTTOM)
-    #scroll4.pack(side = RIGHT, fill = Y, expand=1)
-    # canvas4.pack(side=LEFT,expand=True,fill=BOTH)
-    tab4 = Frame(canvas4, width=200, height=300)
-    tab4.bind(
-        "<Configure>",
-        lambda e: canvas4.configure(
-            scrollregion=canvas4.bbox("all")
-        )
-    )
-    canvas4.create_window(400, 175, window=tab4)
-
-
-# tab 5
-    canvas5 = Canvas(ParentFrame5, width=850, height=300)
-    scroll5 = Scrollbar(ParentFrame5, orient=VERTICAL, command=canvas5.yview)
-    canvas5.grid(row=0, column=0)
-    scroll5.grid(row=0, column=1, sticky='ns')
-    scrollx5 = Scrollbar(ParentFrame5, orient=HORIZONTAL,
-                         command=canvas5.xview)
-    scrollx5.grid(row=1, column=0, sticky='ew')
-    # scrollx5.pack(expand=1, fill=X, side=BOTTOM)
-    # scroll5.pack(side = RIGHT, fill = Y, expand=1)
-    # canvas5.pack(side=LEFT,expand=True,fill=BOTH)
-    canvas5.config(yscrollcommand=scroll5.set, xscrollcommand=scrollx5.set)
-    tab5 = Frame(canvas5, width=200, height=300)
-    tab5.bind(
-        "<Configure>",
-        lambda e: canvas5.configure(
-            scrollregion=canvas5.bbox("all")
-        )
-    )
-    canvas5.create_window(400, 175, window=tab5)
-
-    # , highlightbackground="red", highlightthickness=2
-    canvas11 = Canvas(ParentFrame11, width=850, height=300)
-    scroll11 = Scrollbar(ParentFrame11, orient=HORIZONTAL,
-                         command=canvas11.xview)
-    canvas11.grid(row=0, column=0)
-    scroll11.grid(row=1, column=0, sticky='ew')
-
-    canvas11.config(xscrollcommand=scroll11.set)
-    # , highlightbackground="black", highlightthickness=1
-    tab11 = Frame(canvas11, width=200, height=300)
-    tab11.bind(
-        "<Configure>",
-        lambda e: canvas11.configure(
-            scrollregion=canvas11.bbox("all")
-        )
-    )
-    canvas11.create_window(400, 175, window=tab11)
+    
 
     # Display all available serial ports
     ports = list(serial.tools.list_ports.comports())
