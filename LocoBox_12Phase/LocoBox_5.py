@@ -1,9 +1,9 @@
+from cmath import log
 from faulthandler import disable
 import serial   # For Serial communication
 import time     # Required for using delay functions
 import datetime # For date-time setting and timedelta calculations
-import platform
-import glob
+
 import tkinter as tk
 from tkinter import DISABLED, Tk, Frame, Canvas, Scrollbar, sys, Label, SUNKEN, BOTH, W, X, Y, Menu, IntVar, VERTICAL, HORIZONTAL, BOTTOM, Spinbox, Entry, ttk, messagebox, Button, StringVar, LEFT, RIGHT, Radiobutton
 #from tkinter import * #import INIT set of tkinter library for GUI
@@ -19,9 +19,8 @@ import threading # To run Arduino loop and tkinter loop alongside
 import serial.tools.list_ports # For identifying Arduino port
 from BoxSchedule import BoxSchedule, PhaseSchedule, getDarkLightValue, inverseDarkLightValue
 import numpy as np
-from scipy import io
-import logging
-from io import StringIO
+
+
 
 
 
@@ -171,7 +170,7 @@ if sys.platform.startswith('win'):
 elif sys.platform.startswith('darwin'):
     window.geometry('1200x640')
 elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-    window.geometry('900x550')
+    window.geometry('900x650')
 else:
     window.geometry('1000x440')
 status = StatusBar(window)
@@ -444,10 +443,10 @@ def get_data(istate=0): # Start recording
                 
                 display_string = string2
                 display_counter = counti
-
+                save_logs(counti, string2) 
                 on_tab_change(counti, string2)
-                save_logs(counti, string2)
-                
+                    
+                       
 
                 window.update_idletasks()
              
@@ -469,19 +468,52 @@ def get_data(istate=0): # Start recording
 def save_logs( counti, string2): #max 120 timepoints 
     global log_mat
     
-    log_mat[counti, 0] = counti
-    log_mat[counti, 1] = string2[0:8]
-    log_mat[counti, 2] = string2[20:25]
-    log_mat[counti, 3] = string2[26:31]
-    log_mat[counti, 4] = string2[32:37]
-    log_mat[counti, 5] = string2[38:43]
-    log_mat[counti, 6] = string2[44:49]
-    log_mat[counti, 7] = string2[50:55]
-    log_mat[counti, 8] = string2[56:61]
-    log_mat[counti, 9] = string2[62:67]
-    log_mat[counti, 10] = string2[68:73]
-    log_mat[counti, 11] = string2[74:79]
+    log_mat[counti % 120, 0] = counti
+    log_mat[counti % 120, 1] = string2[0:8]
+    log_mat[counti % 120, 2] = string2[20:25]
+    log_mat[counti % 120, 3] = string2[26:31]
+    log_mat[counti % 120, 4] = string2[32:37]
+    log_mat[counti % 120, 5] = string2[38:43]
+    log_mat[counti % 120, 6] = string2[44:49]
+    log_mat[counti % 120, 7] = string2[50:55]
+    log_mat[counti % 120, 8] = string2[56:61]
+    log_mat[counti % 120, 9] = string2[62:67]
+    log_mat[counti % 120, 10] = string2[68:73]
+    log_mat[counti % 120, 11] = string2[74:79]
     print(log_mat)
+ 
+
+def set_log_text(log_text, log_mat, tab):
+    history_str = ''
+    for counti in range(0,120):
+        
+        if tab == 1:
+            
+            #if not str(log_mat[counti % 120,2]).strip():
+            history_str = history_str + '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
+        elif tab == 2:
+            #if not str(log_mat[counti % 120,2]).strip():
+            history_str = history_str + '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
+
+        elif tab == 3:
+            #if not str(log_mat[counti % 120,2]).strip():
+            history_str = history_str + '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,6])+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
+                
+        elif tab == 4:
+            #if not str(log_mat[counti % 120,2]).strip():
+            history_str =history_str + '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
+        elif tab == 5:
+            #if not str(log_mat[counti % 120,2]).strip():
+            history_str = history_str + '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
+
+    print(history_str)
+    log_text.set(history_str)
+    log_display.config(state="normal")
+    log_display.delete('1.0','end')
+    log_display.insert(tk.END, history_str)
+    log_display.config(state="disabled")
+
+
     
 
 
@@ -490,16 +522,23 @@ def on_tab_change( counti, string2):
     #tab = event.widget.tab('current')['text']
     if tab == 1:
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
+        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]))
     elif tab == 2:
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
+        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]))
 
     elif tab == 3:
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
+        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,6])+'    '+'PIR: '+str(log_mat[counti % 120,7]))
                
     elif tab == 4:
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
+        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]))
     elif tab == 5:
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]))
+
+    set_log_text(log_text, log_mat, tab)
 
 
 def on_tab_change_trigger( event):
@@ -512,17 +551,27 @@ def on_tab_change_trigger( event):
     
     if tab == 'Box1':
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
+        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]))
+        
     elif tab == 'Box2':
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
+        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]))
         
 
     elif tab == 'Box3':
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
+        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,6])+'    '+'PIR: '+str(log_mat[counti % 120,7]))
+               
                
     elif tab == 'Box4':
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
+        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]))
     elif tab == 'Box5':
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]))
+
+    set_log_text(log_text, log_mat, tab)
+
 
 
 def writeToJSONFile(filename, data):
@@ -6568,6 +6617,7 @@ if __name__ == '__main__':
     f1 = tk.Frame(window,  width=900,height=270)
     f2 = tk.Frame(window,  width=900, height=250)
     f3 = tk.Frame(window, width=900, height=70)
+    canvas_status = Canvas(f2, width=900, height=250)
 
     def do_layout():
         f1.pack(side="top", fill="both", expand=True)
@@ -6577,9 +6627,9 @@ if __name__ == '__main__':
 
     do_layout()
 
-    f2scrollbar=Scrollbar(f2,orient="vertical")
+    f2scrollbar=Scrollbar(f2,orient="vertical", command=canvas_status.yview)
     f2scrollbar.pack(side="right",fill="y")
-    #f2.config(yscrollcommand=f2scrollbar.set)
+    canvas_status.config(yscrollcommand=f2scrollbar.set)
 
 
     tab_control = ttk.Notebook(f1)
@@ -6780,9 +6830,14 @@ if __name__ == '__main__':
     boxrec_text.set('Recording not started yet.')
 
     log_text = StringVar()
-    log_text.set('# '+str(log_mat[0,0])+'    Time: '+str(log_mat[0,1])+'    LED: '+str(log_mat[0,2])+'    '+'PIR: '+str(log_mat[0,3]))
-    print(log_mat[0,:])
-    log_display=Label(f2, textvariable=log_text, anchor='center', justify=LEFT)
+    first_log = '# '+str(log_mat[0,0])+'    Time: '+str(log_mat[0,1])+'    LED: '+str(log_mat[0,2])+'    '+'PIR: '+str(log_mat[0,3]) + '\n'
+    log_text.set(first_log)
+    
+    #log_display=Label(f2, textvariable=log_text, anchor='center', justify=LEFT)
+    log_display = tk.Text(f2, height=10, width=100, bg = 'grey')
+    log_display.config(state="normal")
+    log_display.insert(tk.END, first_log)
+    log_display.config(state="disabled")
 
     boxrec_stat=Label(f2, textvariable=boxrec_text, anchor='center', justify=LEFT)
     

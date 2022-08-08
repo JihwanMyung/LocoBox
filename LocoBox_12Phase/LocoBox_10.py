@@ -2,8 +2,7 @@ from faulthandler import disable
 import serial   # For Serial communication
 import time     # Required for using delay functions
 import datetime  # For date-time setting and timedelta calculations
-import platform
-import glob
+
 import tkinter as tk
 from tkinter import DISABLED, Tk, Frame, Canvas, Scrollbar, sys, Label, SUNKEN, BOTH, W, X, Y, Menu, IntVar, VERTICAL, HORIZONTAL, BOTTOM, Spinbox, Entry, ttk, messagebox, Button, StringVar, LEFT, RIGHT, Radiobutton
 # from tkinter import * #import INIT set of tkinter library for GUI
@@ -19,7 +18,7 @@ import threading  # To run Arduino loop and tkinter loop alongside
 import serial.tools.list_ports  # For identifying Arduino port
 from BoxSchedule import BoxSchedule, PhaseSchedule, getDarkLightValue, inverseDarkLightValue, StatusBar
 import numpy as np
-from scipy import io
+
 
 
 # sudo chmod 666 /dev/ttyACM0
@@ -498,25 +497,26 @@ def get_data(istate=0):  # Start recording
 def save_logs( counti, string2): #max 120 timepoints 
     global log_mat
     
-    log_mat[counti, 0] = counti
-    log_mat[counti, 1] = string2[0:8]
-    log_mat[counti, 2] = string2[20:25]
-    log_mat[counti, 3] = string2[26:31]
-    log_mat[counti, 4] = string2[32:37]
-    log_mat[counti, 5] = string2[38:43]
-    log_mat[counti, 6] = string2[44:49]
-    log_mat[counti, 7] = string2[50:55]
-    log_mat[counti, 8] = string2[56:61]
-    log_mat[counti, 9] = string2[62:67]
-    log_mat[counti, 10] = string2[68:73]
-    log_mat[counti, 11] = string2[74:79]
+    log_mat[counti % 120, 0] = counti
+    log_mat[counti % 120, 1] = string2[0:8]
+    log_mat[counti % 120, 2] = string2[20:25]
+    log_mat[counti % 120, 3] = string2[26:31]
+    log_mat[counti % 120, 4] = string2[32:37]
+    log_mat[counti % 120, 5] = string2[38:43]
+    log_mat[counti % 120, 6] = string2[44:49]
+    log_mat[counti % 120, 7] = string2[50:55]
+    log_mat[counti % 120, 8] = string2[56:61]
+    log_mat[counti % 120, 9] = string2[62:67]
+    log_mat[counti % 120, 10] = string2[68:73]
+    log_mat[counti % 120, 11] = string2[74:79]
+    print(log_mat)
 
 def on_tab_change( counti, string2):
     tab = int(tab_control.index('current'))+1
     #tab = event.widget.tab('current')['text']
     if tab == 1:
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
-    elif tab == 2:
+    elif tab == 2: 
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
 
     elif tab == 3:
