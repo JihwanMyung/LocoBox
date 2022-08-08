@@ -495,6 +495,21 @@ def get_data(istate=0):  # Start recording
         
         window.update_idletasks()
 
+def save_logs( counti, string2): #max 120 timepoints 
+    global log_mat
+    
+    log_mat[counti, 0] = counti
+    log_mat[counti, 1] = string2[0:8]
+    log_mat[counti, 2] = string2[20:25]
+    log_mat[counti, 3] = string2[26:31]
+    log_mat[counti, 4] = string2[32:37]
+    log_mat[counti, 5] = string2[38:43]
+    log_mat[counti, 6] = string2[44:49]
+    log_mat[counti, 7] = string2[50:55]
+    log_mat[counti, 8] = string2[56:61]
+    log_mat[counti, 9] = string2[62:67]
+    log_mat[counti, 10] = string2[68:73]
+    log_mat[counti, 11] = string2[74:79]
 
 def on_tab_change( counti, string2):
     tab = int(tab_control.index('current'))+1
@@ -1232,20 +1247,7 @@ def save_conf():  # Save schedule configuration
     status.pack(side='bottom', fill='x')
     status.set('Schedule configuration saved.')
 
-    #SHOW STATUS
-    tab1_title2 = Label(text= 'Recording status', anchor='center')    
-    boxsched_text=StringVar()
-    boxsched_text.set('Schedule not set.')
-    boxsched_stat=Label(textvariable=boxsched_text, anchor=W, justify=LEFT)    
-    
-    boxrec_text=StringVar()
-    boxrec_text.set('Recording not started yet.')
-    boxrec_stat=Label(textvariable=boxrec_text, anchor='center', justify=LEFT)
-    
-    boxsched_stat.place(x=200, y=ylowerbtns+30)    
-    tab1_title2.place(x=40, y=ylowerbtns+30)
-    boxrec_stat.place(x=370, y=ylowerbtns+30)
-    window.update_idletasks()
+  
 
 
 
@@ -6707,7 +6709,7 @@ if __name__ == '__main__':
 
 
 
-    tab_control = ttk.Notebook(window)
+    tab_control = ttk.Notebook(f1)
     tab_control.bind('<<NotebookTabChanged>>', on_tab_change_trigger)
 
     ParentFrame1 = ttk.Frame(tab_control, width=850,
@@ -6879,39 +6881,34 @@ if __name__ == '__main__':
     status.pack(side='bottom', fill='x')
     status.set('Available ports: '+', '.join(map(str, openPorts)))
 
-    yupperbtns = 370
-    ylowerbtns = 410
+    yupperbtns = 2
+    ymidbtns = 30
+    ylowerbtns = 60
+    #Entry for Port, Baud, timeout, filename to save
+    Label(f3,text =  'Baud rate').place(x = 363, y = ylowerbtns)
+    Label(f3,text = 'Time out').place(x= 575, y=ylowerbtns)
+    Label(f3,text= 'Data').place(x=40, y=ymidbtns)
+    Label(f3,text= 'Schedule file').place(x=363, y=ymidbtns)
 
-    # Entry for Port, Baud, timeout, filename to save
-    Label(text='Schedule').place(x=363, y=yupperbtns - 30)
-    Label(text='Port').place(x=40, y=ylowerbtns)
-    Label(text='Baud rate').place(x=363, y=ylowerbtns)
-    Label(text='Time out').place(x=575, y=ylowerbtns)
+    port_entry = Spinbox(f3,values=openPorts, width=25)
+    port_entry.delete(0,'end')
+    port_entry.insert(0,openPorts[0]) #first port is the default 
+    port_entry.place(x = 80, y = ylowerbtns)
+    baud_entry = Spinbox(f3,values=(300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, 115200), width=7)
+    baud_entry.delete(0,'end')
+    baud_entry.insert(0,'9600')    
+    baud_entry.place(x = 440, y = ylowerbtns)
+    timeout_entry = Entry(f3,width = 4)
+    timeout_entry.place(x=635,y=ylowerbtns)
+    timeout_entry.insert(0,'10')
 
-    Label(text='Data').place(x=40, y=yupperbtns)
-    Label(text='Schedule file').place(x=363, y=yupperbtns)
-
-    port_entry = Spinbox(values=openPorts, width=25)
-    port_entry.delete(0, 'end')
-    port_entry.insert(0, openPorts[0])  # first port is the default
-    port_entry.place(x=80, y=ylowerbtns)
-    baud_entry = Spinbox(values=(300, 600, 1200, 2400, 4800,
-                         9600, 14400, 19200, 28800, 38400, 57600, 115200), width=7)
-    baud_entry.delete(0, 'end')
-    baud_entry.insert(0, '9600')
-    baud_entry.place(x=440, y=ylowerbtns)
-    timeout_entry = Entry(width=4)
-    timeout_entry.place(x=635, y=ylowerbtns)
-    timeout_entry.insert(0, '10')
-
-    filename_entry = Entry(width=25)
-    filename_entry.place(x=80, y=yupperbtns)
-    # predefine a default filename with ISO date
-    date_string = time.strftime('%Y%m%d')
-    filename_entry.insert(0, 'BOX1-5-'+date_string+'.txt')
-    configfilename_entry = Entry(width=30)
-    configfilename_entry.place(x=470, y=yupperbtns)
-    configfilename_entry.insert(0, 'BOX1-5-sched-'+date_string+'.json')
+    filename_entry = Entry(f3, width = 25)
+    filename_entry.place(x=80, y=ymidbtns)
+    date_string = time.strftime('%Y%m%d') # predefine a default filename with ISO date    
+    filename_entry.insert(0,'BOX1-5-'+date_string+'.txt')
+    configfilename_entry = Entry(f3,width = 30)
+    configfilename_entry.place(x=470, y=ymidbtns)
+    configfilename_entry.insert(0,'BOX1-5-sched-'+date_string+'.json')
 
 
 
@@ -6955,15 +6952,14 @@ if __name__ == '__main__':
 
 
 
-    btnSave = Button(text=' Save ', command=save_conf, state='disabled')
-    btnRun = Button(text=' Recording Start ',
-                    command=connect, state='disabled')
-    btnSetCurrent = Button(text=' Set current box ', command=lambda: OnButtonClick(
-        int(tab_control.index('current'))+1))
-    btnSetAll = Button(text='Set All', command=getAllBoxSchedule)
-    #btnCopyCurrent = Button(text=' Copy current box sachedule ', command= lambda: copyBoxSchedule(int(tab_control.index('current'))+1))
-    btnReplicateToAll = Button(text=' Replicate to All ', command=lambda: copyScheduletoAll(
-        int(tab_control.index('current'))+1))
+ 
+    btnSave = Button(f3, text=' Save ', command=save_conf, state='disabled')
+    btnRun = Button(f3, text= ' Recording Start ', command=connect, state='disabled')
+    btnSetCurrent = Button(f3,text=' Set current box ', command=lambda: OnButtonClick(int(tab_control.index('current'))+1))
+    btnSetAll = Button(f3, text='Set All', command=getAllBoxSchedule)
+    
+    btnReplicateToAll = Button(f3, text=' Replicate to All ', command= lambda: copyScheduletoAll(int(tab_control.index('current'))+1))
+   
 
     # if box settings of all 5 boxes are done, activate save and run buttons
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
@@ -6991,31 +6987,32 @@ if __name__ == '__main__':
         btnRun.place(x=610, y=450)
         btnSetAll.place(x=570, y=480)
         btnSetCurrent.place(x=610, y=480)
+        btnReplicateToAll.place(x=577, y=340)
     elif sys.platform.startswith('darwin'):
         btnSave.place(x=685, y=450)
         btnRun.place(x=745, y=450)
         btnSetAll.place(x=685, y=480)
         btnSetCurrent.place(x=745, y=480)
-    elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-        btnSave.place(x=730, y=yupperbtns - 5)
-        btnRun.place(x=40, y=450)
-        btnSetCurrent.place(x=430, y=340)
         btnReplicateToAll.place(x=577, y=340)
-        btnSetAll.place(x=730, y=340)
-
+    elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
+        btnSave.place(x=730, y= ylowerbtns)
+        btnRun.place(x=730, y=ymidbtns)
+        btnSetCurrent.place(x=430, y=yupperbtns)       
+        btnSetAll.place(x=730, y=yupperbtns)
+        btnReplicateToAll.place(x=577, y=yupperbtns)
+        
     else:
         btnSave.place(x=635, y=450)
         btnRun.place(x=695, y=450)
         btnSetAll.place(x=635, y=480)
         btnSetCurrent.place(x=695, y=480)
+        btnReplicateToAll.place(x=542, y=300)   
 
     row_adj = 3  # useful when a new row is added above
 
-    # ttk.Separator(window, orient='horizontal') #.place(x = 363, y = ylowerbtns + 30)
-    runSeparator = ttk.Separator(
-        window, orient='horizontal').place(x=0, y=400, relwidth=1)
-    # runSeparator.pack(fill='x')
-
+    boxstatusSeparator = ttk.Separator(f2, orient='horizontal').place(x=0, y=0, relwidth=1)
+    runSeparator = ttk.Separator(f3, orient='horizontal').place(x=0, y=0, relwidth=1)#ttk.Separator(window, orient='horizontal') #.place(x = 363, y = ylowerbtns + 30)
+    
     # Box1
 
     radiobuttons = np.zeros((BOX_N, PHASE_N, 3),)
