@@ -6655,6 +6655,9 @@ if __name__ == '__main__':
     var4_12 = IntVar(value=1)
     var5_12 = IntVar(value=1)
 
+
+    log_mat =np.empty((120,12), dtype="<U10")
+
     # Create file menu
     filemenu = Menu(menu)
     filemenu.add_command(label='Load schedules', command=read_conf)
@@ -6680,6 +6683,29 @@ if __name__ == '__main__':
     aboutmenu.add_command(label='About LocoBox', command=about)
     menu.add_cascade(label='Help', menu=aboutmenu)
     window.config(menu=menu)
+
+
+     #Window 900x550
+    f1 = tk.Frame(window,  width=900,height=270)
+    f2 = tk.Frame(window,  width=900, height=250)
+    f3 = tk.Frame(window, width=900, height=70)
+
+    def do_layout():
+        f1.pack(side="top", fill="both", expand=True)
+        f2.pack(side="top", fill="both", expand=True)
+        f3.pack(side="top", fill="both", expand=True)
+
+
+    do_layout()
+
+    f2scrollbar=Scrollbar(f2,orient="vertical")
+    f2scrollbar.pack(side="right",fill="y")
+    #f2.config(yscrollcommand=f2scrollbar.set)
+
+
+    
+
+
 
     tab_control = ttk.Notebook(window)
     tab_control.bind('<<NotebookTabChanged>>', on_tab_change_trigger)
@@ -6886,6 +6912,48 @@ if __name__ == '__main__':
     configfilename_entry = Entry(width=30)
     configfilename_entry.place(x=470, y=yupperbtns)
     configfilename_entry.insert(0, 'BOX1-5-sched-'+date_string+'.json')
+
+
+
+
+#SHOW STATUS
+    tab1_title2 = Label(f2, text= 'Recording status', anchor='center')    
+    boxsched_text=StringVar()
+    boxsched_text.set('Schedule not set.')
+    boxsched_stat=Label(f2, textvariable=boxsched_text, anchor=W, justify=LEFT)    
+    
+    boxrec_text=StringVar()
+    boxrec_text.set('Recording not started yet.')
+
+    log_text = StringVar()
+    log_text.set('# '+str(log_mat[0,0])+'    Time: '+str(log_mat[0,1])+'    LED: '+str(log_mat[0,2])+'    '+'PIR: '+str(log_mat[0,3]))
+    print(log_mat[0,:])
+    log_display=Label(f2, textvariable=log_text, anchor='center', justify=LEFT)
+
+    boxrec_stat=Label(f2, textvariable=boxrec_text, anchor='center', justify=LEFT)
+    
+    tab1_title2.pack()#place(x=40, y=yupperbtns )
+    boxsched_stat.pack()#.place(x=40, y=yupperbtns+20)        
+    log_display.pack()
+    boxrec_stat.pack()#.place(x=40, y=yupperbtns+40)
+    #log_stream.getvalue()
+
+    window.update_idletasks()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     btnSave = Button(text=' Save ', command=save_conf, state='disabled')
     btnRun = Button(text=' Recording Start ',
