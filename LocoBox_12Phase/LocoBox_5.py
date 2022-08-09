@@ -7,7 +7,7 @@ import datetime # For date-time setting and timedelta calculations
 import tkinter as tk
 from tkinter import DISABLED, Tk, Frame, Canvas, Scrollbar, sys, Label, SUNKEN, BOTH, W, X, Y, Menu, IntVar, VERTICAL, HORIZONTAL, BOTTOM, Spinbox, Entry, ttk, messagebox, Button, StringVar, LEFT, RIGHT, Radiobutton
 #from tkinter import * #import INIT set of tkinter library for GUI
-
+import tkinter.scrolledtext as tkscrolled
 from tkinter.filedialog import askopenfilename
 from tkinter.messagebox import showinfo
 import json
@@ -6628,9 +6628,7 @@ if __name__ == '__main__':
 
     do_layout()
 
-    f2scrollbar=Scrollbar(f2,orient="vertical", command=canvas_status.yview)
-    f2scrollbar.pack(side="right",fill="y")
-    canvas_status.config(yscrollcommand=f2scrollbar.set)
+    
 
 
     tab_control = ttk.Notebook(f1)
@@ -6835,10 +6833,14 @@ if __name__ == '__main__':
     log_text.set(first_log)
     
     #log_display=Label(f2, textvariable=log_text, anchor='center', justify=LEFT)
-    log_display = tk.Text(f2, height=10, width=100, bg = 'grey')
+    log_display = tkscrolled.ScrolledText(f2, height=10, width=100, bg = 'grey')
     log_display.config(state="normal")
     log_display.insert(tk.END, first_log)
     log_display.config(state="disabled")
+
+    #f2scrollbar=Scrollbar(log_display,orient="vertical", command=log_display.yview)
+    #f2scrollbar.pack(side="right",fill="y")
+    #log_display.config(yscrollcommand=f2scrollbar.set)
 
     boxrec_stat=Label(f2, textvariable=boxrec_text, anchor='center', justify=LEFT)
     
