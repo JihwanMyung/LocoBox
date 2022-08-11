@@ -6882,40 +6882,71 @@ if __name__ == '__main__':
 
     radiobuttons = np.zeros((BOX_N, PHASE_N, 3),dtype= object)
 
-    tab1_title = Label(tab1, text='LED schedule', anchor='center')
-    tab1_title.grid(column=0, row=-1+row_adj, columnspan='27', sticky='we')
-    #capSep1 = ttk.Separator(tab1, orient=HORIZONTAL)
-    #capSep1.grid(column=0, row = row_adj+5, columnspan='27', sticky='we')
-    box1sched_text = StringVar()
-    box1sched_text.set('Schedule not set.')
-    box1sched_stat = Label(
-        tab1, textvariable=box1sched_text, anchor=W, justify=LEFT)
-    # phase 1
-    phaseLabel1_1 = Label(tab1, text='Phase 1')
-    # reads time for Phase 1 start-time
-    dateLabel = time.strftime('%H:%M   %Y/%m/%d')
-    fromLabel1_1 = Label(tab1, text='From:')
-    date_label1 = Label(tab1, text=dateLabel+' (HH:MN YYYY/MO/DD)')
-    rad1_A_1 = Radiobutton(tab1, text='LD', variable=var1_1, value=1)
-    rad1_B_1 = Radiobutton(tab1, text='DD', variable=var1_1, value=2)
-    rad1_C_1 = Radiobutton(tab1, text='LL', variable=var1_1, value=3)
+    # tab1_title = Label(tab1, text='LED schedule', anchor='center')
+    # tab1_title.grid(column=0, row=-1+row_adj, columnspan='27', sticky='we')
+    # #capSep1 = ttk.Separator(tab1, orient=HORIZONTAL)
+    # #capSep1.grid(column=0, row = row_adj+5, columnspan='27', sticky='we')
+    # box1sched_text = StringVar()
+    # box1sched_text.set('Schedule not set.')
+    # box1sched_stat = Label(
+    #     tab1, textvariable=box1sched_text, anchor=W, justify=LEFT)
+    # # phase 1
+    # phaseLabel1_1 = Label(tab1, text='Phase 1')
+    # # reads time for Phase 1 start-time
+    
+    # fromLabel1_1 = Label(tab1, text='From:')
+    # dateLabel = time.strftime('%H:%M   %Y/%m/%d')
+    # date_label1 = Label(tab1, text=dateLabel+' (HH:MN YYYY/MO/DD)')
+
+    # rad1_A_1 = Radiobutton(tab1, text='LD', variable=var1_1, value=1)
+    # rad1_B_1 = Radiobutton(tab1, text='DD', variable=var1_1, value=2)
+    # rad1_C_1 = Radiobutton(tab1, text='LL', variable=var1_1, value=3)
 
     
-    spin1_A_1 = Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f')
-    spin1_B_1 = Spinbox(tab1, from_=00, to=59, width=3, format='%02.0f')
-    spin1_C_1 = Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f')
-    spin1_D_1 = Spinbox(tab1, from_=00, to=59, width=3, format='%02.0f')
-    spin1_A_1.delete(0, 'end')
-    spin1_A_1.insert(0, '07')
-    spin1_B_1.delete(0, 'end')
-    spin1_B_1.insert(0, '00')       
-    spin1_C_1.delete(0, 'end')
-    spin1_C_1.insert(0, '19')
-    spin1_D_1.delete(0, 'end')
-    spin1_D_1.insert(0, '00')
+    # spin1_A_1 = Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f')
+    # spin1_B_1 = Spinbox(tab1, from_=00, to=59, width=3, format='%02.0f')
+    # spin1_C_1 = Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f')
+    # spin1_D_1 = Spinbox(tab1, from_=00, to=59, width=3, format='%02.0f')
+    # spin1_A_1.delete(0, 'end')
+    # spin1_A_1.insert(0, '07')
+    # spin1_B_1.delete(0, 'end')
+    # spin1_B_1.insert(0, '00')       
+    # spin1_C_1.delete(0, 'end')
+    # spin1_C_1.insert(0, '19')
+    # spin1_D_1.delete(0, 'end')
+    # spin1_D_1.insert(0, '00')
+
+
+    
+    # lbl1_A_1 = Label(tab1, text='On:')
+    # label1_h1_1 = Label(tab1, text=':')
+    # label1_m1_1 = Label(tab1, text='')
+    # lbl1_B_1 = Label(tab1, text='Off:')
+    # label1_h2_1 = Label(tab1, text=':')
+    # label1_m2_1 = Label(tab1, text='')
+    
+    # phaseLabel1_1.grid(column=0, row=1+row_adj, padx=15, pady=5)
+    # fromLabel1_1.grid(column=1, row=1+row_adj)
+    # date_label1.grid(column=2, row=1+row_adj, columnspan='10', sticky='w')
+
+    # rad1_A_1.grid(column=13, row=1+row_adj, pady=5)
+    # lbl1_A_1.grid(column=14, row=1+row_adj, pady=5)
+    # spin1_A_1.grid(column=15, row=1+row_adj, pady=5)
+    # label1_h1_1.grid(column=16, row=1+row_adj, pady=5, sticky='w')
+    # spin1_B_1.grid(column=17, row=1+row_adj, pady=5)
+    # label1_m1_1.grid(column=18, row=1+row_adj, pady=5, sticky='w')
+    # lbl1_B_1.grid(column=19, row=1+row_adj, pady=5)
+    # spin1_C_1.grid(column=20, row=1+row_adj, pady=5)
+    # label1_h2_1.grid(column=21, row=1+row_adj, pady=5, sticky='w')
+    # spin1_D_1.grid(column=22, row=1+row_adj, pady=5)
+    # label1_m2_1.grid(column=23, row=1+row_adj, pady=5, sticky='w')
+    # rad1_B_1.grid(column=24, row=1+row_adj, padx=15, pady=5)
+    # rad1_C_1.grid(column=25, row=1+row_adj, pady=5)
 
 #populate the input mat with spinboxes and radio buttons
-    for box_id in range(5,11):
+    for box_id in range(0,11):
+        tab_title = Label(tab_arr[box_id], text='LED schedule', anchor='center')
+        tab_title.grid(column=0, row=-1+row_adj, columnspan='27', sticky='we')
         for phase_id in range(0,12):
 
             lbl_A_1 = Label(tab_arr[box_id], text='On:')
@@ -6956,6 +6987,16 @@ if __name__ == '__main__':
             label_m2_1.grid(column=23, row=phase_id+1+row_adj, pady=5, sticky='w')
             radiobuttons[box_id, phase_id, 1].grid(column=24, row=phase_id+1+row_adj, padx=15, pady=5)
             radiobuttons[box_id, phase_id, 2].grid(column=25, row=phase_id+1+row_adj, pady=5)
+
+            phaseLabel = Label(tab_arr[box_id], text='Phase '+str(phase_id +1))
+            fromLabel = Label(tab_arr[box_id], text='From:')
+            phaseLabel.grid(column=0, row=phase_id+1+row_adj, padx=15, pady=5)
+            fromLabel.grid(column=1, row=phase_id+1+row_adj)
+            dateLabel = time.strftime('%H:%M   %Y/%m/%d')
+           
+            date_label1 = Label(tab_arr[box_id], text=dateLabel+' (HH:MN YYYY/MO/DD)')
+            date_label1.grid(column=2, row=phase_id+1+row_adj, columnspan='10', sticky='w')
+            
             
 
             if phase_id>0:
@@ -6979,8 +7020,8 @@ if __name__ == '__main__':
                 input_mat[box_id, phase_id, 7].delete(0, 'end')
                 input_mat[box_id, phase_id, 7].insert(0, day_phase2.year)  # ISO format is YYYY/MM/DD
 
-                phaseLabel = Label(tab_arr[box_id], text='Phase '+str(phase_id +1))
-                fromLabel = Label(tab_arr[box_id], text='From:')
+                
+
                 label_h0_2 = Label(tab_arr[box_id], text=':')
                 label_m0_2 = Label(tab_arr[box_id], text='')
                 space = Label(tab_arr[box_id], text=' ')
@@ -6988,8 +7029,8 @@ if __name__ == '__main__':
                 label1_d = Label(tab_arr[box_id], text='/')
                 label1_m = Label(tab_arr[box_id], text='/')
 
-                phaseLabel.grid(column=0, row=phase_id+1+row_adj, padx=15, pady=5)
-                fromLabel.grid(column=1, row=phase_id+1+row_adj)
+                
+
                 input_mat[box_id, phase_id, 8].grid(column=2, row=phase_id+1+row_adj)
                 label_h0_2.grid(column=3, row=phase_id+1+row_adj)
                 input_mat[box_id, phase_id, 9].grid(column=4, row=phase_id+1+row_adj)
@@ -7005,30 +7046,6 @@ if __name__ == '__main__':
 
 
 
-    lbl1_A_1 = Label(tab1, text='On:')
-    label1_h1_1 = Label(tab1, text=':')
-    label1_m1_1 = Label(tab1, text='')
-    lbl1_B_1 = Label(tab1, text='Off:')
-    label1_h2_1 = Label(tab1, text=':')
-    label1_m2_1 = Label(tab1, text='')
-    
-    phaseLabel1_1.grid(column=0, row=1+row_adj, padx=15, pady=5)
-    fromLabel1_1.grid(column=1, row=1+row_adj)
-    date_label1.grid(column=2, row=1+row_adj, columnspan='10', sticky='w')
-
-    rad1_A_1.grid(column=13, row=1+row_adj, pady=5)
-    lbl1_A_1.grid(column=14, row=1+row_adj, pady=5)
-    spin1_A_1.grid(column=15, row=1+row_adj, pady=5)
-    label1_h1_1.grid(column=16, row=1+row_adj, pady=5, sticky='w')
-    spin1_B_1.grid(column=17, row=1+row_adj, pady=5)
-    label1_m1_1.grid(column=18, row=1+row_adj, pady=5, sticky='w')
-    lbl1_B_1.grid(column=19, row=1+row_adj, pady=5)
-    spin1_C_1.grid(column=20, row=1+row_adj, pady=5)
-    label1_h2_1.grid(column=21, row=1+row_adj, pady=5, sticky='w')
-    spin1_D_1.grid(column=22, row=1+row_adj, pady=5)
-    label1_m2_1.grid(column=23, row=1+row_adj, pady=5, sticky='w')
-    rad1_B_1.grid(column=24, row=1+row_adj, padx=15, pady=5)
-    rad1_C_1.grid(column=25, row=1+row_adj, pady=5)
 
     # phase 2
     phaseLabel1_2 = Label(tab1, text='Phase 2')
@@ -11410,69 +11427,69 @@ if __name__ == '__main__':
 
     #hourOn1_2, minOn1_2, hourOff1_2, minOff1_2, dark1_2, light1_2, date1_2, month1_2, year1_2, hourFrom1_2, minuteFrom1_2,
 
-    input_mat = [spin1_A_1, spin1_B_1, spin1_C_1, spin1_D_1, var1_1, 0, 0, 0, 0, 0,
-                 spin1_A_2, spin1_B_2, spin1_C_2, spin1_D_2, var1_2, date1_2_entry, month1_2_entry, year1_2_entry, spin1_E_2, spin1_F_2,
-                 spin1_A_3, spin1_B_3, spin1_C_3, spin1_D_3, var1_3, date1_3_entry, month1_3_entry, year1_3_entry, spin1_E_3, spin1_F_3,
-                 spin1_A_4, spin1_B_4, spin1_C_4, spin1_D_4, var1_4, date1_4_entry, month1_4_entry, year1_4_entry, spin1_E_4, spin1_F_4,
-                 spin1_A_5, spin1_B_5, spin1_C_5, spin1_D_5, var1_5, date1_5_entry, month1_5_entry, year1_5_entry, spin1_E_5, spin1_F_5,
-                 spin1_A_6, spin1_B_6, spin1_C_6, spin1_D_6, var1_6, date1_6_entry, month1_6_entry, year1_6_entry, spin1_E_6, spin1_F_6,
-                 spin1_A_7, spin1_B_7, spin1_C_7, spin1_D_7, var1_7, date1_7_entry, month1_7_entry, year1_7_entry, spin1_E_7, spin1_F_7,
-                 spin1_A_8, spin1_B_8, spin1_C_8, spin1_D_8, var1_8, date1_8_entry, month1_8_entry, year1_8_entry, spin1_E_8, spin1_F_8,
-                 spin1_A_9, spin1_B_9, spin1_C_9, spin1_D_9, var1_9, date1_9_entry, month1_9_entry, year1_9_entry, spin1_E_9, spin1_F_9,
-                 spin1_A_10, spin1_B_10, spin1_C_10, spin1_D_10, var1_10, date1_10_entry, month1_10_entry, year1_10_entry, spin1_E_10, spin1_F_10,
-                 spin1_A_11, spin1_B_11, spin1_C_11, spin1_D_11, var1_11, date1_11_entry, month1_11_entry, year1_11_entry, spin1_E_11, spin1_F_11,
-                 spin1_A_12, spin1_B_12, spin1_C_12, spin1_D_12, var1_12, date1_12_entry, month1_12_entry, year1_12_entry, spin1_E_12, spin1_F_12,
-                 spin2_A_1, spin2_B_1, spin2_C_1, spin2_D_1, var2_1, 0, 0, 0, 0, 0,
-                 spin2_A_2, spin2_B_2, spin2_C_2, spin2_D_2, var2_2, date2_2_entry, month2_2_entry, year2_2_entry, spin2_E_2, spin2_F_2,
-                 spin2_A_3, spin2_B_3, spin2_C_3, spin2_D_3, var2_3, date2_3_entry, month2_3_entry, year2_3_entry, spin2_E_3, spin2_F_3,
-                 spin2_A_4, spin2_B_4, spin2_C_4, spin2_D_4, var2_4, date2_4_entry, month2_4_entry, year2_4_entry, spin2_E_4, spin2_F_4,
-                 spin2_A_5, spin2_B_5, spin2_C_5, spin2_D_5, var2_5, date2_5_entry, month2_5_entry, year2_5_entry, spin2_E_5, spin2_F_5,
-                 spin2_A_6, spin2_B_6, spin2_C_6, spin2_D_6, var2_6, date2_6_entry, month2_6_entry, year2_6_entry, spin2_E_6, spin2_F_6,
-                 spin2_A_7, spin2_B_7, spin2_C_7, spin2_D_7, var2_7, date2_7_entry, month2_7_entry, year2_7_entry, spin2_E_7, spin2_F_7,
-                 spin2_A_8, spin2_B_8, spin2_C_8, spin2_D_8, var2_8, date2_8_entry, month2_8_entry, year2_8_entry, spin2_E_8, spin2_F_8,
-                 spin2_A_9, spin2_B_9, spin2_C_9, spin2_D_9, var2_9, date2_9_entry, month2_9_entry, year2_9_entry, spin2_E_9, spin2_F_9,
-                 spin2_A_10, spin2_B_10, spin2_C_10, spin2_D_10, var2_10, date2_10_entry, month2_10_entry, year2_10_entry, spin2_E_10, spin2_F_10,
-                 spin2_A_11, spin2_B_11, spin2_C_11, spin2_D_11, var2_11, date2_11_entry, month2_11_entry, year2_11_entry, spin2_E_11, spin2_F_11,
-                 spin2_A_12, spin2_B_12, spin2_C_12, spin2_D_12, var2_12, date2_12_entry, month2_12_entry, year2_12_entry, spin2_E_12, spin2_F_12,
-                 spin3_A_1, spin3_B_1, spin3_C_1, spin3_D_1, var3_1, 0, 0, 0, 0, 0,
-                 spin3_A_2, spin3_B_2, spin3_C_2, spin3_D_2, var3_2, date3_2_entry, month3_2_entry, year3_2_entry, spin3_E_2, spin3_F_2,
-                 spin3_A_3, spin3_B_3, spin3_C_3, spin3_D_3, var3_3, date3_3_entry, month3_3_entry, year3_3_entry, spin3_E_3, spin3_F_3,
-                 spin3_A_4, spin3_B_4, spin3_C_4, spin3_D_4, var3_4, date3_4_entry, month3_4_entry, year3_4_entry, spin3_E_4, spin3_F_4,
-                 spin3_A_5, spin3_B_5, spin3_C_5, spin3_D_5, var3_5, date3_5_entry, month3_5_entry, year3_5_entry, spin3_E_5, spin3_F_5,
-                 spin3_A_6, spin3_B_6, spin3_C_6, spin3_D_6, var3_6, date3_6_entry, month3_6_entry, year3_6_entry, spin3_E_6, spin3_F_6,
-                 spin3_A_7, spin3_B_7, spin3_C_7, spin3_D_7, var3_7, date3_7_entry, month3_7_entry, year3_7_entry, spin3_E_7, spin3_F_7,
-                 spin3_A_8, spin3_B_8, spin3_C_8, spin3_D_8, var3_8, date3_8_entry, month3_8_entry, year3_8_entry, spin3_E_8, spin3_F_8,
-                 spin3_A_9, spin3_B_9, spin3_C_9, spin3_D_9, var3_9, date3_9_entry, month3_9_entry, year3_9_entry, spin3_E_9, spin3_F_9,
-                 spin3_A_10, spin3_B_10, spin3_C_10, spin3_D_10, var3_10, date3_10_entry, month3_10_entry, year3_10_entry, spin3_E_10, spin3_F_10,
-                 spin3_A_11, spin3_B_11, spin3_C_11, spin3_D_11, var3_11, date3_11_entry, month3_11_entry, year3_11_entry, spin3_E_11, spin3_F_11,
-                 spin3_A_12, spin3_B_12, spin3_C_12, spin3_D_12, var3_12, date3_12_entry, month3_12_entry, year3_12_entry, spin3_E_12, spin3_F_12,
-                 spin4_A_1, spin4_B_1, spin4_C_1, spin4_D_1, var4_1, 0, 0, 0, 0, 0,
-                 spin4_A_2, spin4_B_2, spin4_C_2, spin4_D_2, var4_2, date4_2_entry, month4_2_entry, year4_2_entry, spin4_E_2, spin4_F_2,
-                 spin4_A_3, spin4_B_3, spin4_C_3, spin4_D_3, var4_3, date4_3_entry, month4_3_entry, year4_3_entry, spin4_E_3, spin4_F_3,
-                 spin4_A_4, spin4_B_4, spin4_C_4, spin4_D_4, var4_4, date4_4_entry, month4_4_entry, year4_4_entry, spin4_E_4, spin4_F_4,
-                 spin4_A_5, spin4_B_5, spin4_C_5, spin4_D_5, var4_5, date4_5_entry, month4_5_entry, year4_5_entry, spin4_E_5, spin4_F_5,
-                 spin4_A_6, spin4_B_6, spin4_C_6, spin4_D_6, var4_6, date4_6_entry, month4_6_entry, year4_6_entry, spin4_E_6, spin4_F_6,
-                 spin4_A_7, spin4_B_7, spin4_C_7, spin4_D_7, var4_7, date4_7_entry, month4_7_entry, year4_7_entry, spin4_E_7, spin4_F_7,
-                 spin4_A_8, spin4_B_8, spin4_C_8, spin4_D_8, var4_8, date4_8_entry, month4_8_entry, year4_8_entry, spin4_E_8, spin4_F_8,
-                 spin4_A_9, spin4_B_9, spin4_C_9, spin4_D_9, var4_9, date4_9_entry, month4_9_entry, year4_9_entry, spin4_E_9, spin4_F_9,
-                 spin4_A_10, spin4_B_10, spin4_C_10, spin4_D_10, var4_10, date4_10_entry, month4_10_entry, year4_10_entry, spin4_E_10, spin4_F_10,
-                 spin4_A_11, spin4_B_11, spin4_C_11, spin4_D_11, var4_11, date4_11_entry, month4_11_entry, year4_11_entry, spin4_E_11, spin4_F_11,
-                 spin4_A_12, spin4_B_12, spin4_C_12, spin4_D_12, var4_12, date4_12_entry, month4_12_entry, year4_12_entry, spin4_E_12, spin4_F_12,
-                 spin5_A_1, spin5_B_1, spin5_C_1, spin5_D_1, var5_1, 0, 0, 0, 0, 0,
-                 spin5_A_2, spin5_B_2, spin5_C_2, spin5_D_2, var5_2, date5_2_entry, month5_2_entry, year5_2_entry, spin5_E_2, spin5_F_2,
-                 spin5_A_3, spin5_B_3, spin5_C_3, spin5_D_3, var5_3, date5_3_entry, month5_3_entry, year5_3_entry, spin5_E_3, spin5_F_3,
-                 spin5_A_4, spin5_B_4, spin5_C_4, spin5_D_4, var5_4, date5_4_entry, month5_4_entry, year5_4_entry, spin5_E_4, spin5_F_4,
-                 spin5_A_5, spin5_B_5, spin5_C_5, spin5_D_5, var5_5, date5_5_entry, month5_5_entry, year5_5_entry, spin5_E_5, spin5_F_5,
-                 spin5_A_6, spin5_B_6, spin5_C_6, spin5_D_6, var5_6, date5_6_entry, month5_6_entry, year5_6_entry, spin5_E_6, spin5_F_6,
-                 spin5_A_7, spin5_B_7, spin5_C_7, spin5_D_7, var5_7, date5_7_entry, month5_7_entry, year5_7_entry, spin5_E_7, spin5_F_7,
-                 spin5_A_8, spin5_B_8, spin5_C_8, spin5_D_8, var5_8, date5_8_entry, month5_8_entry, year5_8_entry, spin5_E_8, spin5_F_8,
-                 spin5_A_9, spin5_B_9, spin5_C_9, spin5_D_9, var5_9, date5_9_entry, month5_9_entry, year5_9_entry, spin5_E_9, spin5_F_9,
-                 spin5_A_10, spin5_B_10, spin5_C_10, spin5_D_10, var5_10, date5_10_entry, month5_10_entry, year5_10_entry, spin5_E_10, spin5_F_10,
-                 spin5_A_11, spin5_B_11, spin5_C_11, spin5_D_11, var5_11, date5_11_entry, month5_11_entry, year5_11_entry, spin5_E_11, spin5_F_11,
-                 spin5_A_12, spin5_B_12, spin5_C_12, spin5_D_12, var5_12, date5_12_entry, month5_12_entry, year5_12_entry, spin5_E_12, spin5_F_12]
-    input_mat = np.asarray(input_mat)
+    # input_mat = [spin1_A_1, spin1_B_1, spin1_C_1, spin1_D_1, var1_1, 0, 0, 0, 0, 0,
+    #              spin1_A_2, spin1_B_2, spin1_C_2, spin1_D_2, var1_2, date1_2_entry, month1_2_entry, year1_2_entry, spin1_E_2, spin1_F_2,
+    #              spin1_A_3, spin1_B_3, spin1_C_3, spin1_D_3, var1_3, date1_3_entry, month1_3_entry, year1_3_entry, spin1_E_3, spin1_F_3,
+    #              spin1_A_4, spin1_B_4, spin1_C_4, spin1_D_4, var1_4, date1_4_entry, month1_4_entry, year1_4_entry, spin1_E_4, spin1_F_4,
+    #              spin1_A_5, spin1_B_5, spin1_C_5, spin1_D_5, var1_5, date1_5_entry, month1_5_entry, year1_5_entry, spin1_E_5, spin1_F_5,
+    #              spin1_A_6, spin1_B_6, spin1_C_6, spin1_D_6, var1_6, date1_6_entry, month1_6_entry, year1_6_entry, spin1_E_6, spin1_F_6,
+    #              spin1_A_7, spin1_B_7, spin1_C_7, spin1_D_7, var1_7, date1_7_entry, month1_7_entry, year1_7_entry, spin1_E_7, spin1_F_7,
+    #              spin1_A_8, spin1_B_8, spin1_C_8, spin1_D_8, var1_8, date1_8_entry, month1_8_entry, year1_8_entry, spin1_E_8, spin1_F_8,
+    #              spin1_A_9, spin1_B_9, spin1_C_9, spin1_D_9, var1_9, date1_9_entry, month1_9_entry, year1_9_entry, spin1_E_9, spin1_F_9,
+    #              spin1_A_10, spin1_B_10, spin1_C_10, spin1_D_10, var1_10, date1_10_entry, month1_10_entry, year1_10_entry, spin1_E_10, spin1_F_10,
+    #              spin1_A_11, spin1_B_11, spin1_C_11, spin1_D_11, var1_11, date1_11_entry, month1_11_entry, year1_11_entry, spin1_E_11, spin1_F_11,
+    #              spin1_A_12, spin1_B_12, spin1_C_12, spin1_D_12, var1_12, date1_12_entry, month1_12_entry, year1_12_entry, spin1_E_12, spin1_F_12,
+    #              spin2_A_1, spin2_B_1, spin2_C_1, spin2_D_1, var2_1, 0, 0, 0, 0, 0,
+    #              spin2_A_2, spin2_B_2, spin2_C_2, spin2_D_2, var2_2, date2_2_entry, month2_2_entry, year2_2_entry, spin2_E_2, spin2_F_2,
+    #              spin2_A_3, spin2_B_3, spin2_C_3, spin2_D_3, var2_3, date2_3_entry, month2_3_entry, year2_3_entry, spin2_E_3, spin2_F_3,
+    #              spin2_A_4, spin2_B_4, spin2_C_4, spin2_D_4, var2_4, date2_4_entry, month2_4_entry, year2_4_entry, spin2_E_4, spin2_F_4,
+    #              spin2_A_5, spin2_B_5, spin2_C_5, spin2_D_5, var2_5, date2_5_entry, month2_5_entry, year2_5_entry, spin2_E_5, spin2_F_5,
+    #              spin2_A_6, spin2_B_6, spin2_C_6, spin2_D_6, var2_6, date2_6_entry, month2_6_entry, year2_6_entry, spin2_E_6, spin2_F_6,
+    #              spin2_A_7, spin2_B_7, spin2_C_7, spin2_D_7, var2_7, date2_7_entry, month2_7_entry, year2_7_entry, spin2_E_7, spin2_F_7,
+    #              spin2_A_8, spin2_B_8, spin2_C_8, spin2_D_8, var2_8, date2_8_entry, month2_8_entry, year2_8_entry, spin2_E_8, spin2_F_8,
+    #              spin2_A_9, spin2_B_9, spin2_C_9, spin2_D_9, var2_9, date2_9_entry, month2_9_entry, year2_9_entry, spin2_E_9, spin2_F_9,
+    #              spin2_A_10, spin2_B_10, spin2_C_10, spin2_D_10, var2_10, date2_10_entry, month2_10_entry, year2_10_entry, spin2_E_10, spin2_F_10,
+    #              spin2_A_11, spin2_B_11, spin2_C_11, spin2_D_11, var2_11, date2_11_entry, month2_11_entry, year2_11_entry, spin2_E_11, spin2_F_11,
+    #              spin2_A_12, spin2_B_12, spin2_C_12, spin2_D_12, var2_12, date2_12_entry, month2_12_entry, year2_12_entry, spin2_E_12, spin2_F_12,
+    #              spin3_A_1, spin3_B_1, spin3_C_1, spin3_D_1, var3_1, 0, 0, 0, 0, 0,
+    #              spin3_A_2, spin3_B_2, spin3_C_2, spin3_D_2, var3_2, date3_2_entry, month3_2_entry, year3_2_entry, spin3_E_2, spin3_F_2,
+    #              spin3_A_3, spin3_B_3, spin3_C_3, spin3_D_3, var3_3, date3_3_entry, month3_3_entry, year3_3_entry, spin3_E_3, spin3_F_3,
+    #              spin3_A_4, spin3_B_4, spin3_C_4, spin3_D_4, var3_4, date3_4_entry, month3_4_entry, year3_4_entry, spin3_E_4, spin3_F_4,
+    #              spin3_A_5, spin3_B_5, spin3_C_5, spin3_D_5, var3_5, date3_5_entry, month3_5_entry, year3_5_entry, spin3_E_5, spin3_F_5,
+    #              spin3_A_6, spin3_B_6, spin3_C_6, spin3_D_6, var3_6, date3_6_entry, month3_6_entry, year3_6_entry, spin3_E_6, spin3_F_6,
+    #              spin3_A_7, spin3_B_7, spin3_C_7, spin3_D_7, var3_7, date3_7_entry, month3_7_entry, year3_7_entry, spin3_E_7, spin3_F_7,
+    #              spin3_A_8, spin3_B_8, spin3_C_8, spin3_D_8, var3_8, date3_8_entry, month3_8_entry, year3_8_entry, spin3_E_8, spin3_F_8,
+    #              spin3_A_9, spin3_B_9, spin3_C_9, spin3_D_9, var3_9, date3_9_entry, month3_9_entry, year3_9_entry, spin3_E_9, spin3_F_9,
+    #              spin3_A_10, spin3_B_10, spin3_C_10, spin3_D_10, var3_10, date3_10_entry, month3_10_entry, year3_10_entry, spin3_E_10, spin3_F_10,
+    #              spin3_A_11, spin3_B_11, spin3_C_11, spin3_D_11, var3_11, date3_11_entry, month3_11_entry, year3_11_entry, spin3_E_11, spin3_F_11,
+    #              spin3_A_12, spin3_B_12, spin3_C_12, spin3_D_12, var3_12, date3_12_entry, month3_12_entry, year3_12_entry, spin3_E_12, spin3_F_12,
+    #              spin4_A_1, spin4_B_1, spin4_C_1, spin4_D_1, var4_1, 0, 0, 0, 0, 0,
+    #              spin4_A_2, spin4_B_2, spin4_C_2, spin4_D_2, var4_2, date4_2_entry, month4_2_entry, year4_2_entry, spin4_E_2, spin4_F_2,
+    #              spin4_A_3, spin4_B_3, spin4_C_3, spin4_D_3, var4_3, date4_3_entry, month4_3_entry, year4_3_entry, spin4_E_3, spin4_F_3,
+    #              spin4_A_4, spin4_B_4, spin4_C_4, spin4_D_4, var4_4, date4_4_entry, month4_4_entry, year4_4_entry, spin4_E_4, spin4_F_4,
+    #              spin4_A_5, spin4_B_5, spin4_C_5, spin4_D_5, var4_5, date4_5_entry, month4_5_entry, year4_5_entry, spin4_E_5, spin4_F_5,
+    #              spin4_A_6, spin4_B_6, spin4_C_6, spin4_D_6, var4_6, date4_6_entry, month4_6_entry, year4_6_entry, spin4_E_6, spin4_F_6,
+    #              spin4_A_7, spin4_B_7, spin4_C_7, spin4_D_7, var4_7, date4_7_entry, month4_7_entry, year4_7_entry, spin4_E_7, spin4_F_7,
+    #              spin4_A_8, spin4_B_8, spin4_C_8, spin4_D_8, var4_8, date4_8_entry, month4_8_entry, year4_8_entry, spin4_E_8, spin4_F_8,
+    #              spin4_A_9, spin4_B_9, spin4_C_9, spin4_D_9, var4_9, date4_9_entry, month4_9_entry, year4_9_entry, spin4_E_9, spin4_F_9,
+    #              spin4_A_10, spin4_B_10, spin4_C_10, spin4_D_10, var4_10, date4_10_entry, month4_10_entry, year4_10_entry, spin4_E_10, spin4_F_10,
+    #              spin4_A_11, spin4_B_11, spin4_C_11, spin4_D_11, var4_11, date4_11_entry, month4_11_entry, year4_11_entry, spin4_E_11, spin4_F_11,
+    #              spin4_A_12, spin4_B_12, spin4_C_12, spin4_D_12, var4_12, date4_12_entry, month4_12_entry, year4_12_entry, spin4_E_12, spin4_F_12,
+    #              spin5_A_1, spin5_B_1, spin5_C_1, spin5_D_1, var5_1, 0, 0, 0, 0, 0,
+    #              spin5_A_2, spin5_B_2, spin5_C_2, spin5_D_2, var5_2, date5_2_entry, month5_2_entry, year5_2_entry, spin5_E_2, spin5_F_2,
+    #              spin5_A_3, spin5_B_3, spin5_C_3, spin5_D_3, var5_3, date5_3_entry, month5_3_entry, year5_3_entry, spin5_E_3, spin5_F_3,
+    #              spin5_A_4, spin5_B_4, spin5_C_4, spin5_D_4, var5_4, date5_4_entry, month5_4_entry, year5_4_entry, spin5_E_4, spin5_F_4,
+    #              spin5_A_5, spin5_B_5, spin5_C_5, spin5_D_5, var5_5, date5_5_entry, month5_5_entry, year5_5_entry, spin5_E_5, spin5_F_5,
+    #              spin5_A_6, spin5_B_6, spin5_C_6, spin5_D_6, var5_6, date5_6_entry, month5_6_entry, year5_6_entry, spin5_E_6, spin5_F_6,
+    #              spin5_A_7, spin5_B_7, spin5_C_7, spin5_D_7, var5_7, date5_7_entry, month5_7_entry, year5_7_entry, spin5_E_7, spin5_F_7,
+    #              spin5_A_8, spin5_B_8, spin5_C_8, spin5_D_8, var5_8, date5_8_entry, month5_8_entry, year5_8_entry, spin5_E_8, spin5_F_8,
+    #              spin5_A_9, spin5_B_9, spin5_C_9, spin5_D_9, var5_9, date5_9_entry, month5_9_entry, year5_9_entry, spin5_E_9, spin5_F_9,
+    #              spin5_A_10, spin5_B_10, spin5_C_10, spin5_D_10, var5_10, date5_10_entry, month5_10_entry, year5_10_entry, spin5_E_10, spin5_F_10,
+    #              spin5_A_11, spin5_B_11, spin5_C_11, spin5_D_11, var5_11, date5_11_entry, month5_11_entry, year5_11_entry, spin5_E_11, spin5_F_11,
+    #              spin5_A_12, spin5_B_12, spin5_C_12, spin5_D_12, var5_12, date5_12_entry, month5_12_entry, year5_12_entry, spin5_E_12, spin5_F_12]
+    # input_mat = np.asarray(input_mat)
 
-    input_mat = input_mat.reshape(5, 12, 10)
+    # input_mat = input_mat.reshape(5, 12, 10)
 
     value_mat = np.zeros((5, 12, 11),)
 
