@@ -480,7 +480,7 @@ def save_logs( counti, string2): #max 120 timepoints
     log_mat[counti % 120, 9] = string2[62:67]
     log_mat[counti % 120, 10] = string2[68:73]
     log_mat[counti % 120, 11] = string2[74:79]
-    print(log_mat)
+    #print(log_mat)
  
 
 def set_log_text(log_text, log_mat, tab):
@@ -488,22 +488,22 @@ def set_log_text(log_text, log_mat, tab):
     history_str = ''
     for counti in range(0,120):
         
-        if tab == 1:
+        if tab == 1 or tab == 'Box1' :
             
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str =  '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
-        elif tab == 2:
+        elif tab == 2 or tab == 'Box2':
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
 
-        elif tab == 3:
+        elif tab == 3 or tab == 'Box3':
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str =  '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,6])+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
                 
-        elif tab == 4:
+        elif tab == 4 or tab == 'Box4':
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
-        elif tab == 5:
+        elif tab == 5 or tab == 'Box5':
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str =  '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
 
