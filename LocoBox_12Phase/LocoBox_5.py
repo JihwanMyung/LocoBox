@@ -7,7 +7,7 @@ import datetime # For date-time setting and timedelta calculations
 import tkinter as tk
 from tkinter import DISABLED, Tk, Frame, Canvas, Scrollbar, sys, Label, SUNKEN, BOTH, W, X, Y, Menu, IntVar, VERTICAL, HORIZONTAL, BOTTOM, Spinbox, Entry, ttk, messagebox, Button, StringVar, LEFT, RIGHT, Radiobutton
 #from tkinter import * #import INIT set of tkinter library for GUI
-
+import tkinter.scrolledtext as tkscrolled
 from tkinter.filedialog import askopenfilename
 from tkinter.messagebox import showinfo
 import json
@@ -6629,9 +6629,7 @@ if __name__ == '__main__':
 
     do_layout()
 
-    f2scrollbar=Scrollbar(f2,orient="vertical", command=canvas_status.yview)
-    f2scrollbar.pack(side="right",fill="y")
-    canvas_status.config(yscrollcommand=f2scrollbar.set)
+    
 
 
     tab_control = ttk.Notebook(f1)
@@ -6836,10 +6834,14 @@ if __name__ == '__main__':
     log_text.set(first_log)
     
     #log_display=Label(f2, textvariable=log_text, anchor='center', justify=LEFT)
-    log_display = tk.Text(f2, height=10, width=100, bg = 'grey')
+    log_display = tkscrolled.ScrolledText(f2, height=10, width=100, bg = 'grey')
     log_display.config(state="normal")
     log_display.insert(tk.END, first_log)
     log_display.config(state="disabled")
+
+    #f2scrollbar=Scrollbar(log_display,orient="vertical", command=log_display.yview)
+    #f2scrollbar.pack(side="right",fill="y")
+    #log_display.config(yscrollcommand=f2scrollbar.set)
 
     boxrec_stat=Label(f2, textvariable=boxrec_text, anchor='center', justify=LEFT)
     
@@ -6880,35 +6882,34 @@ if __name__ == '__main__':
 
     # button positions change depending on OS
     
-    #yupperbtns = 370
-    #ylowerbtns = 410
+    
 
 
     if sys.platform.startswith('win'):
-        btnSave.place(x=570, y=450)
-        btnRun.place(x=610, y=450)
-        btnSetAll.place(x=570, y=480)
-        btnSetCurrent.place(x=610, y=480)
-        btnReplicateToAll.place(x=577, y=340)
+        btnSave.place(x=730, y= ymidbtns)
+        btnRun.place(x=730, y=ylowerbtns)
+        btnSetCurrent.place(x=430, y=yupperbtns)       
+        btnSetAll.place(x=730, y=yupperbtns)
+        btnReplicateToAll.place(x=577, y=yupperbtns)
     elif sys.platform.startswith('darwin'):
-        btnSave.place(x=685, y=450)
-        btnRun.place(x=745, y=450)
-        btnSetAll.place(x=685, y=480)
-        btnSetCurrent.place(x=745, y=480)
-        btnReplicateToAll.place(x=577, y=340)
+        btnSave.place(x=730, y= ymidbtns)
+        btnRun.place(x=730, y=ylowerbtns)
+        btnSetCurrent.place(x=430, y=yupperbtns)       
+        btnSetAll.place(x=730, y=yupperbtns)
+        btnReplicateToAll.place(x=577, y=yupperbtns)
     elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-        btnSave.place(x=730, y= ylowerbtns)
-        btnRun.place(x=730, y=ymidbtns)
+        btnSave.place(x=730, y= ymidbtns)
+        btnRun.place(x=730, y=ylowerbtns)
         btnSetCurrent.place(x=430, y=yupperbtns)       
         btnSetAll.place(x=730, y=yupperbtns)
         btnReplicateToAll.place(x=577, y=yupperbtns)
         
     else:
-        btnSave.place(x=635, y=450)
-        btnRun.place(x=695, y=450)
-        btnSetAll.place(x=635, y=480)
-        btnSetCurrent.place(x=695, y=480)
-        btnReplicateToAll.place(x=542, y=300)
+        btnSave.place(x=730, y= ymidbtns)
+        btnRun.place(x=730, y=ylowerbtns)
+        btnSetCurrent.place(x=430, y=yupperbtns)       
+        btnSetAll.place(x=730, y=yupperbtns)
+        btnReplicateToAll.place(x=577, y=yupperbtns)
 
     row_adj = 3  # useful when a new row is added above
     boxstatusSeparator = ttk.Separator(f2, orient='horizontal').place(x=0, y=0, relwidth=1)
