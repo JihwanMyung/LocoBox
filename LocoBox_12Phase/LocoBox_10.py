@@ -6572,11 +6572,11 @@ if __name__ == '__main__':
     global value_mat, input_mat
     global BOX_N, PHASE_N
 
-    BOX_N = 10
+    BOX_N = 11
     PHASE_N = 12
 
-    value_mat = np.empty((BOX_N, PHASE_N, 11),)
-    input_mat = np.empty((BOX_N, PHASE_N, 10),) #maybe include the radio buttons
+    value_mat = np.empty((BOX_N, PHASE_N, 11),dtype=object)
+    input_mat = np.empty((BOX_N, PHASE_N, 10),dtype=object) #maybe include the radio buttons
     menu = Menu(window)  # define menu
 
     # Define Var to keep track of the schedule
@@ -6736,7 +6736,7 @@ if __name__ == '__main__':
     tab_control.add(ParentFrame11, text='Schedules')
 
     tab1, canvas1 = create_tab(ParentFrame1)
-    tab2, canvas2 = create_tab(ParentFrame1)
+    tab2, canvas2 = create_tab(ParentFrame2)
     tab3, canvas3 = create_tab(ParentFrame3)
     tab4, canvas4 = create_tab(ParentFrame4)
     tab5, canvas5 = create_tab(ParentFrame5)
@@ -6746,6 +6746,8 @@ if __name__ == '__main__':
     tab9, canvas9 = create_tab(ParentFrame9)
     tab10, canvas10 = create_tab(ParentFrame10)
     tab11, canvas11 = create_tab(ParentFrame10)
+
+    tab_arr = [tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11]
    
 
     
@@ -6815,24 +6817,7 @@ if __name__ == '__main__':
     boxrec_stat.pack()#.place(x=40, y=yupperbtns+40)
     #log_stream.getvalue()
 
-    window.update_idletasks()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
+    window.update_idletasks() 
     btnSave = Button(f3, text=' Save ', command=save_conf, state='disabled')
     btnRun = Button(f3, text= ' Recording Start ', command=connect, state='disabled')
     btnSetCurrent = Button(f3,text=' Set current box ', command=lambda: OnButtonClick(int(tab_control.index('current'))+1))
@@ -6895,7 +6880,7 @@ if __name__ == '__main__':
     
     # Box1
 
-    radiobuttons = np.zeros((BOX_N, PHASE_N, 3),)
+    radiobuttons = np.zeros((BOX_N, PHASE_N, 3),dtype= object)
 
     tab1_title = Label(tab1, text='LED schedule', anchor='center')
     tab1_title.grid(column=0, row=-1+row_adj, columnspan='27', sticky='we')
@@ -6929,47 +6914,93 @@ if __name__ == '__main__':
     spin1_D_1.delete(0, 'end')
     spin1_D_1.insert(0, '00')
 
+#populate the input mat with spinboxes and radio buttons
+    for box_id in range(5,11):
+        for phase_id in range(0,12):
 
-    # for box_id in range(0,10):
-    #     for phase_id in range(0,12):
+            lbl_A_1 = Label(tab_arr[box_id], text='On:')
+            label_h1_1 = Label(tab_arr[box_id], text=':')
+            label_m1_1 = Label(tab_arr[box_id], text='')
+            lbl_B_1 = Label(tab_arr[box_id], text='Off:')
+            label_h2_1 = Label(tab_arr[box_id], text=':')
+            label_m2_1 = Label(tab_arr[box_id], text='')
 
-    #         input_mat[box_id, phase_id, 0] = Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f') #change for the parent tab
-    #         input_mat[box_id, phase_id, 1] = Spinbox(tab1, from_=00, to=59, width=3, format='%02.0f')
-    #         input_mat[box_id, phase_id, 2] =  Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f')
-    #         input_mat[box_id, phase_id, 3] = Spinbox(tab1, from_=00, to=59, width=3, format='%02.0f')
-    #         input_mat[box_id, phase_id, 0].delete(0, 'end')
-    #         input_mat[box_id, phase_id, 0].insert(0, '07')
-    #         input_mat[box_id, phase_id, 1].delete(0, 'end')
-    #         input_mat[box_id, phase_id, 1].insert(0, '00')       
-    #         input_mat[box_id, phase_id, 2].delete(0, 'end')
-    #         input_mat[box_id, phase_id, 2].insert(0, '19')
-    #         input_mat[box_id, phase_id, 3].delete(0, 'end')
-    #         input_mat[box_id, phase_id, 3].insert(0, '00')
-    #         radiobuttons[box_id, phase_id, 0] = Radiobutton(tab1, text='LD', variable=input_mat[box_id, phase_id, 4], value=1)
-    #         radiobuttons[box_id, phase_id, 1] = Radiobutton(tab1, text='DD', variable=input_mat[box_id, phase_id, 4], value=2)
-    #         radiobuttons[box_id, phase_id, 2] = Radiobutton(tab1, text='LL', variable=input_mat[box_id, phase_id, 4], value=3)
+            input_mat[box_id, phase_id, 0] = Spinbox(tab_arr[box_id], from_=00, to=24, width=3, format='%02.0f') #change for the parent tab
+            input_mat[box_id, phase_id, 1] = Spinbox(tab_arr[box_id], from_=00, to=59, width=3, format='%02.0f')
+            input_mat[box_id, phase_id, 2] =  Spinbox(tab_arr[box_id], from_=00, to=24, width=3, format='%02.0f')
+            input_mat[box_id, phase_id, 3] = Spinbox(tab_arr[box_id], from_=00, to=59, width=3, format='%02.0f')
+            input_mat[box_id, phase_id, 0].delete(0, 'end')
+            input_mat[box_id, phase_id, 0].insert(0, '07')
+            input_mat[box_id, phase_id, 1].delete(0, 'end')
+            input_mat[box_id, phase_id, 1].insert(0, '00')       
+            input_mat[box_id, phase_id, 2].delete(0, 'end')
+            input_mat[box_id, phase_id, 2].insert(0, '19')
+            input_mat[box_id, phase_id, 3].delete(0, 'end')
+            input_mat[box_id, phase_id, 3].insert(0, '00')
+           
+            radiobuttons[box_id, phase_id, 0] = Radiobutton(tab_arr[box_id], text='LD', variable=input_mat[box_id, phase_id, 4], value=1)
+            radiobuttons[box_id, phase_id, 1] = Radiobutton(tab_arr[box_id], text='DD', variable=input_mat[box_id, phase_id, 4], value=2)
+            radiobuttons[box_id, phase_id, 2] = Radiobutton(tab_arr[box_id], text='LL', variable=input_mat[box_id, phase_id, 4], value=3)
+
+
+            radiobuttons[box_id, phase_id, 0].grid(column=13, row=phase_id+1+row_adj, pady=5)
+            lbl_A_1.grid(column=14, row=1+row_adj, pady=5)
+            input_mat[box_id, phase_id, 0].grid(column=15, row=phase_id+1+row_adj, pady=5)
+            label_h1_1.grid(column=16, row=phase_id+1+row_adj, pady=5, sticky='w')
+            input_mat[box_id, phase_id, 1].grid(column=17, row=phase_id+1+row_adj, pady=5)
+            label_m1_1.grid(column=18, row=phase_id+1+row_adj, pady=5, sticky='w')
+            lbl_B_1.grid(column=19, row=phase_id+1+row_adj, pady=5)
+            input_mat[box_id, phase_id, 2].grid(column=20, row=phase_id+1+row_adj, pady=5)
+            label_h2_1.grid(column=21, row=phase_id+1+row_adj, pady=5, sticky='w')
+            input_mat[box_id, phase_id, 3].grid(column=22, row=phase_id+1+row_adj, pady=5)
+            label_m2_1.grid(column=23, row=phase_id+1+row_adj, pady=5, sticky='w')
+            radiobuttons[box_id, phase_id, 1].grid(column=24, row=phase_id+1+row_adj, padx=15, pady=5)
+            radiobuttons[box_id, phase_id, 2].grid(column=25, row=phase_id+1+row_adj, pady=5)
             
 
-    #         if phase_id>0:
-    #             input_mat[box_id, phase_id, 8] = Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f')
-    #             input_mat[box_id, phase_id, 9] = Spinbox(tab1, from_=00, to=59, width=3, format='%02.0f')  
+            if phase_id>0:
+                input_mat[box_id, phase_id, 8] = Spinbox(tab_arr[box_id], from_=00, to=24, width=3, format='%02.0f')
+                input_mat[box_id, phase_id, 9] = Spinbox(tab_arr[box_id], from_=00, to=59, width=3, format='%02.0f')  
     
-    #             input_mat[box_id, phase_id, 8].delete(0, 'end')
-    #             input_mat[box_id, phase_id, 8].insert(0, '07')
-    #             input_mat[box_id, phase_id, 9].delete(0, 'end')
-    #             input_mat[box_id, phase_id, 9].insert(0, '00')
+                input_mat[box_id, phase_id, 8].delete(0, 'end')
+                input_mat[box_id, phase_id, 8].insert(0, '07')
+                input_mat[box_id, phase_id, 9].delete(0, 'end')
+                input_mat[box_id, phase_id, 9].insert(0, '00')
 
-    #             input_mat[box_id, phase_id, 5] = Spinbox(tab1, from_=00, to=31, width=3, format='%02.0f')
-    #             input_mat[box_id, phase_id, 6] = Spinbox(tab1, from_=00, to=12, width=3, format='%02.0f')
-    #             input_mat[box_id, phase_id, 7] = Spinbox(tab1, from_=2018, to=2030, width=5)
-    #             input_mat[box_id, phase_id, 5].delete(0, 'end')
-    #             today = datetime.date.today()  # today# calculate dates for 7 days after recording initiation
-    #             day_phase2 = today + datetime.timedelta(days=7)
-    #             input_mat[box_id, phase_id, 5].insert(0, '{:02d}'.format(day_phase2.day))
-    #             input_mat[box_id, phase_id, 6].delete(0, 'end')
-    #             input_mat[box_id, phase_id, 6].insert(0, '{:02d}'.format(day_phase2.month))
-    #             input_mat[box_id, phase_id, 7].delete(0, 'end')
-    #             input_mat[box_id, phase_id, 7].insert(0, day_phase2.year)  # ISO format is YYYY/MM/DD
+                input_mat[box_id, phase_id, 5] = Spinbox(tab_arr[box_id], from_=00, to=31, width=3, format='%02.0f')
+                input_mat[box_id, phase_id, 6] = Spinbox(tab_arr[box_id], from_=00, to=12, width=3, format='%02.0f')
+                input_mat[box_id, phase_id, 7] = Spinbox(tab_arr[box_id], from_=2018, to=2030, width=5)
+                input_mat[box_id, phase_id, 5].delete(0, 'end')
+                today = datetime.date.today()  # today# calculate dates for 7 days after recording initiation
+                day_phase2 = today + datetime.timedelta(days=7)
+                input_mat[box_id, phase_id, 5].insert(0, '{:02d}'.format(day_phase2.day))
+                input_mat[box_id, phase_id, 6].delete(0, 'end')
+                input_mat[box_id, phase_id, 6].insert(0, '{:02d}'.format(day_phase2.month))
+                input_mat[box_id, phase_id, 7].delete(0, 'end')
+                input_mat[box_id, phase_id, 7].insert(0, day_phase2.year)  # ISO format is YYYY/MM/DD
+
+                phaseLabel = Label(tab_arr[box_id], text='Phase '+str(phase_id +1))
+                fromLabel = Label(tab_arr[box_id], text='From:')
+                label_h0_2 = Label(tab_arr[box_id], text=':')
+                label_m0_2 = Label(tab_arr[box_id], text='')
+                space = Label(tab_arr[box_id], text=' ')
+                space_2 = Label(tab_arr[box_id], text=' ')
+                label1_d = Label(tab_arr[box_id], text='/')
+                label1_m = Label(tab_arr[box_id], text='/')
+
+                phaseLabel.grid(column=0, row=phase_id+1+row_adj, padx=15, pady=5)
+                fromLabel.grid(column=1, row=phase_id+1+row_adj)
+                input_mat[box_id, phase_id, 8].grid(column=2, row=phase_id+1+row_adj)
+                label_h0_2.grid(column=3, row=phase_id+1+row_adj)
+                input_mat[box_id, phase_id, 9].grid(column=4, row=phase_id+1+row_adj)
+                label_m0_2.grid(column=5, row=phase_id+1+row_adj)
+                space.grid(column=6, row=2+row_adj)
+                input_mat[box_id, phase_id, 7].grid(column=7, row=phase_id+1+row_adj)
+                label1_m.grid(column=8, row=phase_id+1+row_adj)
+                input_mat[box_id, phase_id, 6].grid(column=9, row=phase_id+1+row_adj)
+                label1_d.grid(column=10, row=phase_id+1+row_adj)
+                input_mat[box_id, phase_id, 5].grid(column=11, row=phase_id+1+row_adj)  # ISO format
+                space_2.grid(column=12, row=phase_id+1+row_adj, padx=5)
 
 
 
@@ -6984,6 +7015,7 @@ if __name__ == '__main__':
     phaseLabel1_1.grid(column=0, row=1+row_adj, padx=15, pady=5)
     fromLabel1_1.grid(column=1, row=1+row_adj)
     date_label1.grid(column=2, row=1+row_adj, columnspan='10', sticky='w')
+
     rad1_A_1.grid(column=13, row=1+row_adj, pady=5)
     lbl1_A_1.grid(column=14, row=1+row_adj, pady=5)
     spin1_A_1.grid(column=15, row=1+row_adj, pady=5)
@@ -7016,6 +7048,7 @@ if __name__ == '__main__':
     date1_2_entry = Spinbox(tab1, from_=00, to=31, width=3, format='%02.0f')
     month1_2_entry = Spinbox(tab1, from_=00, to=12, width=3, format='%02.0f')
     year1_2_entry = Spinbox(tab1, from_=2018, to=2030, width=5)
+
     date1_2_entry.delete(0, 'end')
     today = datetime.date.today()  # today# calculate dates for 7 days after recording initiation
     day_phase2 = today + datetime.timedelta(days=7)
@@ -7047,6 +7080,8 @@ if __name__ == '__main__':
     label1_m2_2 = Label(tab1, text='')
     rad1_B_2 = Radiobutton(tab1, text='DD', variable=var1_2, value=2)
     rad1_C_2 = Radiobutton(tab1, text='LL', variable=var1_2, value=3)
+
+
     phaseLabel1_2.grid(column=0, row=2+row_adj, padx=15, pady=5)
     fromLabel1_2.grid(column=1, row=2+row_adj)
     spin1_E_2.grid(column=2, row=2+row_adj)
