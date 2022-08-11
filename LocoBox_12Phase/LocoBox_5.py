@@ -1,13 +1,13 @@
+from cmath import log
 from faulthandler import disable
 import serial   # For Serial communication
 import time     # Required for using delay functions
 import datetime # For date-time setting and timedelta calculations
-import platform
-import glob
+
 import tkinter as tk
 from tkinter import DISABLED, Tk, Frame, Canvas, Scrollbar, sys, Label, SUNKEN, BOTH, W, X, Y, Menu, IntVar, VERTICAL, HORIZONTAL, BOTTOM, Spinbox, Entry, ttk, messagebox, Button, StringVar, LEFT, RIGHT, Radiobutton
 #from tkinter import * #import INIT set of tkinter library for GUI
-
+import tkinter.scrolledtext as tkscrolled
 from tkinter.filedialog import askopenfilename
 from tkinter.messagebox import showinfo
 import json
@@ -19,7 +19,8 @@ import threading # To run Arduino loop and tkinter loop alongside
 import serial.tools.list_ports # For identifying Arduino port
 from BoxSchedule import BoxSchedule, PhaseSchedule, getDarkLightValue, inverseDarkLightValue
 import numpy as np
-from scipy import io
+
+
 
 
 
@@ -99,7 +100,7 @@ global hourOn3_12, minOn3_12, hourOff3_12, minOff3_12, dark3_12, light3_12, date
 global hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12
 global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12
 
-global value_mat, input_mat
+global value_mat, input_mat, log_mat
 
 
  
@@ -169,7 +170,7 @@ if sys.platform.startswith('win'):
 elif sys.platform.startswith('darwin'):
     window.geometry('1200x640')
 elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-    window.geometry('900x520')
+    window.geometry('900x650')
 else:
     window.geometry('1000x440')
 status = StatusBar(window)
@@ -193,10 +194,14 @@ def get_data(istate=0): # Start recording
     with open(filename,'w', encoding='utf-8') as w:
                 w.write(headers+'\n')
     w.close()
+
+    
     global serial_obj
     global dead
     global value_mat
-    global display_string, display_counter
+    global display_string, display_counter, log_mat
+
+
     try:
         while True:
             string2 = serial_obj.readline().decode('utf-8')
@@ -435,23 +440,13 @@ def get_data(istate=0): # Start recording
             i=i+1
             
             if len(string2)>=79:     #set the id according to current tab
-                # tab_control.bind('<<NotebookTabChanged>>', on_tab_change)
-                # on_tab_change(event, counti, string2)
-                # boxrec_text.set('# '+str(counti)+'    Time: ' +
-                #                  string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
-                # boxrec_text.set('# '+str(counti)+'    Time: ' +
-                #                  string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
-                # boxrec_text.set('# '+str(counti)+'    Time: ' +
-                #                  string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
-                # boxrec_text.set('# '+str(counti)+'    Time: ' +
-                #                  string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
-                # boxrec_text.set('# '+str(counti)+'    Time: ' +
-                #                  string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+                
                 display_string = string2
                 display_counter = counti
-
+                save_logs(counti, string2) 
                 on_tab_change(counti, string2)
-                
+                    
+                       
 
                 window.update_idletasks()
              
@@ -470,21 +465,111 @@ def get_data(istate=0): # Start recording
 
 
 
+def save_logs( counti, string2): #max 120 timepoints 
+    global log_mat
+    
+    log_mat[counti % 120, 0] = counti
+    log_mat[counti % 120, 1] = string2[0:8]
+    log_mat[counti % 120, 2] = string2[20:25]
+    log_mat[counti % 120, 3] = string2[26:31]
+    log_mat[counti % 120, 4] = string2[32:37]
+    log_mat[counti % 120, 5] = string2[38:43]
+    log_mat[counti % 120, 6] = string2[44:49]
+    log_mat[counti % 120, 7] = string2[50:55]
+    log_mat[counti % 120, 8] = string2[56:61]
+    log_mat[counti % 120, 9] = string2[62:67]
+    log_mat[counti % 120, 10] = string2[68:73]
+    log_mat[counti % 120, 11] = string2[74:79]
+    #print(log_mat)
+ 
+
+def set_log_text(log_text, log_mat, tab):
+    
+    history_str = ''
+    for counti in range(0,120):
+        
+        if tab == 1 or tab == 'Box1' :
+            
+            if str(log_mat[counti % 120,1]).strip() != '':
+                history_str =  '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
+        elif tab == 2 or tab == 'Box2':
+            if str(log_mat[counti % 120,1]).strip() != '':
+                history_str = '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
+
+        elif tab == 3 or tab == 'Box3':
+            if str(log_mat[counti % 120,1]).strip() != '':
+                history_str =  '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,6])+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
+                
+        elif tab == 4 or tab == 'Box4':
+            if str(log_mat[counti % 120,1]).strip() != '':
+                history_str = '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
+        elif tab == 5 or tab == 'Box5':
+            if str(log_mat[counti % 120,1]).strip() != '':
+                history_str =  '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
+
+    #print(history_str)
+    log_text.set(history_str)
+    log_display.config(state="normal")
+    #log_display.delete('1.0','end')
+    log_display.insert(tk.END, history_str)
+    log_display.config(state="disabled")
+
+def restore_history(log_text, log_mat, tab):
+    history_str = ''
+    for counti in range(0,120):
+        
+        if tab == 1 or tab == 'Box1' :
+            
+            if str(log_mat[counti % 120,1]).strip() != '':
+                history_str =  history_str + '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
+        elif tab == 2 or tab == 'Box2':
+            if str(log_mat[counti % 120,1]).strip() != '':
+                history_str = history_str +'# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
+
+        elif tab == 3 or tab == 'Box3':
+            if str(log_mat[counti % 120,1]).strip() != '':
+                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,6])+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
+                
+        elif tab == 4 or tab == 'Box4':
+            if str(log_mat[counti % 120,1]).strip() != '':
+                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
+        elif tab == 5 or tab == 'Box5':
+            if str(log_mat[counti % 120,1]).strip() != '':
+                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
+    log_text.set(history_str)
+    log_display.config(state="normal")
+    #log_display.delete('1.0','end')
+    log_display.insert(tk.END, history_str)
+    log_display.config(state="disabled")
+
+
+    
+
+
 def on_tab_change( counti, string2):
     tab = int(tab_control.index('current'))+1
     #tab = event.widget.tab('current')['text']
     if tab == 1:
+        
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
+        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]))
     elif tab == 2:
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
+        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]))
 
     elif tab == 3:
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
+        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,6])+'    '+'PIR: '+str(log_mat[counti % 120,7]))
                
     elif tab == 4:
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
+        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]))
     elif tab == 5:
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]))
+    #log_display.config(state="normal")
+    #log_display.delete('1.0','end')
+    set_log_text(log_text, log_mat, tab)
 
 
 def on_tab_change_trigger( event):
@@ -497,17 +582,29 @@ def on_tab_change_trigger( event):
     
     if tab == 'Box1':
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
+        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]))
+        
     elif tab == 'Box2':
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
+        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]))
         
 
     elif tab == 'Box3':
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
+        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,6])+'    '+'PIR: '+str(log_mat[counti % 120,7]))
+               
                
     elif tab == 'Box4':
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
+        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]))
     elif tab == 'Box5':
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]))
+    log_display.config(state="normal")
+    log_display.delete('1.0','end')
+    restore_history(log_text, log_mat, tab)
+    
+
 
 
 def writeToJSONFile(filename, data):
@@ -6441,7 +6538,7 @@ if __name__ == '__main__':
     #### All of the components and their positions in the GUI ####
     # You can change the design from here # 
     # 
-    global value_mat, input_mat      
+    global value_mat, input_mat, log_mat      
     menu = Menu(window) #define menu    
 
     # Define Var to keep track of the schedule
@@ -6521,6 +6618,8 @@ if __name__ == '__main__':
     var3_12 = IntVar(value=1)
     var4_12 = IntVar(value=1)
     var5_12 = IntVar(value=1)
+
+    log_mat =np.empty((120,12), dtype="<U10")
     
     #Create file menu
     filemenu = Menu(menu)
@@ -6547,8 +6646,24 @@ if __name__ == '__main__':
     aboutmenu.add_command(label='About LocoBox', command=about)
     menu.add_cascade(label='Help', menu=aboutmenu)
     window.config(menu=menu)
+    #Window 900x550
+    f1 = tk.Frame(window,  width=900,height=270)
+    f2 = tk.Frame(window,  width=900, height=250)
+    f3 = tk.Frame(window, width=900, height=70)
+    canvas_status = Canvas(f2, width=900, height=250)
 
-    tab_control = ttk.Notebook(window)
+    def do_layout():
+        f1.pack(side="top", fill="both", expand=True)
+        f2.pack(side="top", fill="both", expand=True)
+        f3.pack(side="top", fill="both", expand=True)
+
+
+    do_layout()
+
+    
+
+
+    tab_control = ttk.Notebook(f1)
 
     tab_control.bind('<<NotebookTabChanged>>', on_tab_change_trigger)
 
@@ -6704,62 +6819,80 @@ if __name__ == '__main__':
     status.pack(side='bottom', fill='x')
     status.set('Available ports: '+', '.join(map(str,openPorts)))
 
-    yupperbtns = 370
-    ylowerbtns = 410
+    yupperbtns = 2
+    ymidbtns = 30
+    ylowerbtns = 60
 
     #Entry for Port, Baud, timeout, filename to save
-    Label(text =  'Schedule').place(x = 363, y = yupperbtns - 30)
-    Label(text = 'Port').place(x = 40, y = ylowerbtns)
-    Label(text =  'Baud rate').place(x = 363, y = ylowerbtns)
-    Label(text = 'Time out').place(x= 575, y=ylowerbtns)
+    Label(f3,text =  'Schedule').place(x = 363, y = yupperbtns)
+    Label(f3,text = 'Port').place(x = 40, y = ylowerbtns)
+    Label(f3,text =  'Baud rate').place(x = 363, y = ylowerbtns)
+    Label(f3,text = 'Time out').place(x= 575, y=ylowerbtns)
+    Label(f3,text= 'Data').place(x=40, y=ymidbtns)
+    Label(f3,text= 'Schedule file').place(x=363, y=ymidbtns)
 
-    Label(text= 'Data').place(x=40, y=yupperbtns)
-    Label(text= 'Schedule file').place(x=363, y=yupperbtns)
-
-    port_entry = Spinbox(values=openPorts, width=25)
+    port_entry = Spinbox(f3,values=openPorts, width=25)
     port_entry.delete(0,'end')
     port_entry.insert(0,openPorts[0]) #first port is the default 
     port_entry.place(x = 80, y = ylowerbtns)
-    baud_entry = Spinbox(values=(300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, 115200), width=7)
+    baud_entry = Spinbox(f3,values=(300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, 115200), width=7)
     baud_entry.delete(0,'end')
     baud_entry.insert(0,'9600')    
     baud_entry.place(x = 440, y = ylowerbtns)
-    timeout_entry = Entry(width = 4)
+    timeout_entry = Entry(f3,width = 4)
     timeout_entry.place(x=635,y=ylowerbtns)
     timeout_entry.insert(0,'10')
 
-    filename_entry = Entry(width = 25)
-    filename_entry.place(x=80, y=yupperbtns)
+    filename_entry = Entry(f3, width = 25)
+    filename_entry.place(x=80, y=ymidbtns)
     date_string = time.strftime('%Y%m%d') # predefine a default filename with ISO date    
     filename_entry.insert(0,'BOX1-5-'+date_string+'.txt')
-    configfilename_entry = Entry(width = 30)
-    configfilename_entry.place(x=470, y=yupperbtns)
+    configfilename_entry = Entry(f3,width = 30)
+    configfilename_entry.place(x=470, y=ymidbtns)
     configfilename_entry.insert(0,'BOX1-5-sched-'+date_string+'.json')
 
     #SHOW STATUS
-    tab1_title2 = Label(text= 'Recording status', anchor='center')    
+    tab1_title2 = Label(f2, text= 'Recording status', anchor='center')    
     boxsched_text=StringVar()
     boxsched_text.set('Schedule not set.')
-    boxsched_stat=Label(textvariable=boxsched_text, anchor=W, justify=LEFT)    
+    boxsched_stat=Label(f2, textvariable=boxsched_text, anchor=W, justify=LEFT)    
     
     boxrec_text=StringVar()
     boxrec_text.set('Recording not started yet.')
-    boxrec_stat=Label(textvariable=boxrec_text, anchor='center', justify=LEFT)
+
+    log_text = StringVar()
+    first_log = ''
+    log_text.set(first_log)
     
-    boxsched_stat.place(x=200, y=ylowerbtns+30)    
-    tab1_title2.place(x=40, y=ylowerbtns+30)
-    boxrec_stat.place(x=370, y=ylowerbtns+30)
+    #log_display=Label(f2, textvariable=log_text, anchor='center', justify=LEFT)
+    log_display = tkscrolled.ScrolledText(f2, height=10, width=100, bg = 'grey')
+    log_display.config(state="normal")
+    log_display.insert(tk.END, first_log)
+    log_display.config(state="disabled")
+
+    #f2scrollbar=Scrollbar(log_display,orient="vertical", command=log_display.yview)
+    #f2scrollbar.pack(side="right",fill="y")
+    #log_display.config(yscrollcommand=f2scrollbar.set)
+
+    boxrec_stat=Label(f2, textvariable=boxrec_text, anchor='center', justify=LEFT)
+    
+    tab1_title2.pack()#place(x=40, y=yupperbtns )
+    boxsched_stat.pack()#.place(x=40, y=yupperbtns+20)        
+    log_display.pack()
+    boxrec_stat.pack()#.place(x=40, y=yupperbtns+40)
+    #log_stream.getvalue()
+
     window.update_idletasks()
 
 
 
 
-    btnSave = Button(text=' Save ', command=save_conf, state='disabled')
-    btnRun = Button(text= ' Recording Start ', command=connect, state='disabled')
-    btnSetCurrent = Button(text=' Set current box ', command=lambda: OnButtonClick(int(tab_control.index('current'))+1))
-    btnSetAll = Button(text='Set All', command=getAllBoxSchedule)
-    #btnCopyCurrent = Button(text=' Copy current box sachedule ', command= lambda: copyBoxSchedule(int(tab_control.index('current'))+1))
-    btnReplicateToAll = Button(text=' Replicate to All ', command= lambda: copyScheduletoAll(int(tab_control.index('current'))+1))
+    btnSave = Button(f3, text=' Save ', command=save_conf, state='disabled')
+    btnRun = Button(f3, text= ' Recording Start ', command=connect, state='disabled')
+    btnSetCurrent = Button(f3,text=' Set current box ', command=lambda: OnButtonClick(int(tab_control.index('current'))+1))
+    btnSetAll = Button(f3, text='Set All', command=getAllBoxSchedule)
+    
+    btnReplicateToAll = Button(f3, text=' Replicate to All ', command= lambda: copyScheduletoAll(int(tab_control.index('current'))+1))
     
   
     # if box settings of all 5 boxes are done, activate save and run buttons
@@ -6780,40 +6913,39 @@ if __name__ == '__main__':
 
     # button positions change depending on OS
     
-    #yupperbtns = 370
-    #ylowerbtns = 410
+    
 
 
     if sys.platform.startswith('win'):
-        btnSave.place(x=570, y=450)
-        btnRun.place(x=610, y=450)
-        btnSetAll.place(x=570, y=480)
-        btnSetCurrent.place(x=610, y=480)
-        btnReplicateToAll.place(x=577, y=340)
+        btnSave.place(x=730, y= ymidbtns)
+        btnRun.place(x=730, y=ylowerbtns)
+        btnSetCurrent.place(x=430, y=yupperbtns)       
+        btnSetAll.place(x=730, y=yupperbtns)
+        btnReplicateToAll.place(x=577, y=yupperbtns)
     elif sys.platform.startswith('darwin'):
-        btnSave.place(x=685, y=450)
-        btnRun.place(x=745, y=450)
-        btnSetAll.place(x=685, y=480)
-        btnSetCurrent.place(x=745, y=480)
-        btnReplicateToAll.place(x=577, y=340)
+        btnSave.place(x=730, y= ymidbtns)
+        btnRun.place(x=730, y=ylowerbtns)
+        btnSetCurrent.place(x=430, y=yupperbtns)       
+        btnSetAll.place(x=730, y=yupperbtns)
+        btnReplicateToAll.place(x=577, y=yupperbtns)
     elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-        btnSave.place(x=730, y=yupperbtns -5)
-        btnRun.place(x=730, y=ylowerbtns-5)
-        btnSetCurrent.place(x=430, y=340)       
-        btnSetAll.place(x=730, y=340)
-        btnReplicateToAll.place(x=577, y=340)
+        btnSave.place(x=730, y= ymidbtns)
+        btnRun.place(x=730, y=ylowerbtns)
+        btnSetCurrent.place(x=430, y=yupperbtns)       
+        btnSetAll.place(x=730, y=yupperbtns)
+        btnReplicateToAll.place(x=577, y=yupperbtns)
         
     else:
-        btnSave.place(x=635, y=450)
-        btnRun.place(x=695, y=450)
-        btnSetAll.place(x=635, y=480)
-        btnSetCurrent.place(x=695, y=480)
-        btnReplicateToAll.place(x=542, y=300)
+        btnSave.place(x=730, y= ymidbtns)
+        btnRun.place(x=730, y=ylowerbtns)
+        btnSetCurrent.place(x=430, y=yupperbtns)       
+        btnSetAll.place(x=730, y=yupperbtns)
+        btnReplicateToAll.place(x=577, y=yupperbtns)
 
     row_adj = 3  # useful when a new row is added above
-
-    runSeparator = ttk.Separator(window, orient='horizontal').place(x=0, y=400, relwidth=1)#ttk.Separator(window, orient='horizontal') #.place(x = 363, y = ylowerbtns + 30)
-    boxstatusSeparator = ttk.Separator(window, orient='horizontal').place(x=0, y=ylowerbtns+20, relwidth=1)
+    boxstatusSeparator = ttk.Separator(f2, orient='horizontal').place(x=0, y=0, relwidth=1)
+    runSeparator = ttk.Separator(f3, orient='horizontal').place(x=0, y=0, relwidth=1)#ttk.Separator(window, orient='horizontal') #.place(x = 363, y = ylowerbtns + 30)
+    
     #runSeparator.pack(fill='x')
     
     # Box1
