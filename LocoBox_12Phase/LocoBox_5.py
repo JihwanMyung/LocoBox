@@ -539,7 +539,8 @@ def on_tab_change( counti, string2):
     elif tab == 5:
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]))
-
+    #log_display.config(state="normal")
+    #log_display.delete('1.0','end')
     set_log_text(log_text, log_mat, tab)
 
 
@@ -571,7 +572,8 @@ def on_tab_change_trigger( event):
     elif tab == 'Box5':
         boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]))
-
+    log_display.config(state="normal")
+    log_display.delete('1.0','end')
     set_log_text(log_text, log_mat, tab)
 
 
