@@ -112,17 +112,6 @@ savedBoxSchedule = BoxSchedule()
 
 
 
-# Preset values
-# setBox1 = 0
-# setBox2 = 0
-# setBox3 = 0
-# setBox4 = 0
-# setBox5 = 0
-# setBox6 = 0
-# setBox7 = 0
-# setBox8 = 0
-# setBox9 = 0
-# setBox10 = 0
 
 display_string = ''
 display_counter = 0
@@ -3554,77 +3543,7 @@ def read_conf():  # Read schedule configuration
 
 
 def show_conf():  # Show schedule configuration
-    global hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, dark1_1, light1_1
-    global hourOn2_1, minOn2_1, hourOff2_1, minOff2_1, dark2_1, light2_1
-    global hourOn3_1, minOn3_1, hourOff3_1, minOff3_1, dark3_1, light3_1
-    global hourOn4_1, minOn4_1, hourOff4_1, minOff4_1, dark4_1, light4_1
-    global hourOn5_1, minOn5_1, hourOff5_1, minOff5_1, dark5_1, light5_1
-
-    global hourOn1_2, minOn1_2, hourOff1_2, minOff1_2, date1_2, month1_2, year1_2, dark1_2, light1_2, hourFrom1_2, minuteFrom1_2
-    global hourOn2_2, minOn2_2, hourOff2_2, minOff2_2, date2_2, month2_2, year2_2, dark2_2, light2_2, hourFrom2_2, minuteFrom2_2
-    global hourOn3_2, minOn3_2, hourOff3_2, minOff3_2, date3_2, month3_2, year3_2, dark3_2, light3_2, hourFrom3_2, minuteFrom3_2
-    global hourOn4_2, minOn4_2, hourOff4_2, minOff4_2, date4_2, month4_2, year4_2, dark4_2, light4_2, hourFrom4_2, minuteFrom4_2
-    global hourOn5_2, minOn5_2, hourOff5_2, minOff5_2, date5_2, month5_2, year5_2, dark5_2, light5_2, hourFrom5_2, minuteFrom5_2
-
-    global hourOn1_3, minOn1_3, hourOff1_3, minOff1_3, dark1_3, light1_3, date1_3, month1_3, year1_3, hourFrom1_3, minuteFrom1_3
-    global hourOn2_3, minOn2_3, hourOff2_3, minOff2_3, dark2_3, light2_3, date2_3, month2_3, year2_3, hourFrom2_3, minuteFrom2_3
-    global hourOn3_3, minOn3_3, hourOff3_3, minOff3_3, dark3_3, light3_3, date3_3, month3_3, year3_3, hourFrom3_3, minuteFrom3_3
-    global hourOn4_3, minOn4_3, hourOff4_3, minOff4_3, dark4_3, light4_3, date4_3, month4_3, year4_3, hourFrom4_3, minuteFrom4_3
-    global hourOn5_3, minOn5_3, hourOff5_3, minOff5_3, dark5_3, light5_3, date5_3, month5_3, year5_3, hourFrom5_3, minuteFrom5_3
-
-    global hourOn1_4, minOn1_4, hourOff1_4, minOff1_4, dark1_4, light1_4, date1_4, month1_4, year1_4, hourFrom1_4, minuteFrom1_4
-    global hourOn2_4, minOn2_4, hourOff2_4, minOff2_4, dark2_4, light2_4, date2_4, month2_4, year2_4, hourFrom2_4, minuteFrom2_4
-    global hourOn3_4, minOn3_4, hourOff3_4, minOff3_4, dark3_4, light3_4, date3_4, month3_4, year3_4, hourFrom3_4, minuteFrom3_4
-    global hourOn4_4, minOn4_4, hourOff4_4, minOff4_4, dark4_4, light4_4, date4_4, month4_4, year4_4, hourFrom4_4, minuteFrom4_4
-    global hourOn5_4, minOn5_4, hourOff5_4, minOff5_4, dark5_4, light5_4, date5_4, month5_4, year5_4, hourFrom5_4, minuteFrom5_4
-
-    global hourOn1_5, minOn1_5, hourOff1_5, minOff1_5, dark1_5, light1_5, date1_5, month1_5, year1_5, hourFrom1_5, minuteFrom1_5
-    global hourOn2_5, minOn2_5, hourOff2_5, minOff2_5, dark2_5, light2_5, date2_5, month2_5, year2_5, hourFrom2_5, minuteFrom2_5
-    global hourOn3_5, minOn3_5, hourOff3_5, minOff3_5, dark3_5, light3_5, date3_5, month3_5, year3_5, hourFrom3_5, minuteFrom3_5
-    global hourOn4_5, minOn4_5, hourOff4_5, minOff4_5, dark4_5, light4_5, date4_5, month4_5, year4_5, hourFrom4_5, minuteFrom4_5
-    global hourOn5_5, minOn5_5, hourOff5_5, minOff5_5, dark5_5, light5_5, date5_5, month5_5, year5_5, hourFrom5_5, minuteFrom5_5
-
-    global hourOn1_6, minOn1_6, hourOff1_6, minOff1_6, dark1_6, light1_6, date1_6, month1_6, year1_6, hourFrom1_6, minuteFrom1_6
-    global hourOn2_6, minOn2_6, hourOff2_6, minOff2_6, dark2_6, light2_6, date2_6, month2_6, year2_6, hourFrom2_6, minuteFrom2_6
-    global hourOn3_6, minOn3_6, hourOff3_6, minOff3_6, dark3_6, light3_6, date3_6, month3_6, year3_6, hourFrom3_6, minuteFrom3_6
-    global hourOn4_6, minOn4_6, hourOff4_6, minOff4_6, dark4_6, light4_6, date4_6, month4_6, year4_6, hourFrom4_6, minuteFrom4_6
-    global hourOn5_6, minOn5_6, hourOff5_6, minOff5_6, dark5_6, light5_6, date5_6, month5_6, year5_6, hourFrom5_6, minuteFrom5_6
-
-    global hourOn1_7, minOn1_7, hourOff1_7, minOff1_7, dark1_7, light1_7, date1_7, month1_7, year1_7, hourFrom1_7, minuteFrom1_7
-    global hourOn2_7, minOn2_7, hourOff2_7, minOff2_7, dark2_7, light2_7, date2_7, month2_7, year2_7, hourFrom2_7, minuteFrom2_7
-    global hourOn3_7, minOn3_7, hourOff3_7, minOff3_7, dark3_7, light3_7, date3_7, month3_7, year3_7, hourFrom3_7, minuteFrom3_7
-    global hourOn4_7, minOn4_7, hourOff4_7, minOff4_7, dark4_7, light4_7, date4_7, month4_7, year4_7, hourFrom4_7, minuteFrom4_7
-    global hourOn5_7, minOn5_7, hourOff5_7, minOff5_7, dark5_7, light5_7, date5_7, month5_7, year5_7, hourFrom5_7, minuteFrom5_7
-
-    global hourOn1_8, minOn1_8, hourOff1_8, minOff1_8, dark1_8, light1_8, date1_8, month1_8, year1_8, hourFrom1_8, minuteFrom1_8
-    global hourOn2_8, minOn2_8, hourOff2_8, minOff2_8, dark2_8, light2_8, date2_8, month2_8, year2_8, hourFrom2_8, minuteFrom2_8
-    global hourOn3_8, minOn3_8, hourOff3_8, minOff3_8, dark3_8, light3_8, date3_8, month3_8, year3_8, hourFrom3_8, minuteFrom3_8
-    global hourOn4_8, minOn4_8, hourOff4_8, minOff4_8, dark4_8, light4_8, date4_8, month4_8, year4_8, hourFrom4_8, minuteFrom4_8
-    global hourOn5_8, minOn5_8, hourOff5_8, minOff5_8, dark5_8, light5_8, date5_8, month5_8, year5_8, hourFrom5_8, minuteFrom5_8
-
-    global hourOn1_9, minOn1_9, hourOff1_9, minOff1_9, dark1_9, light1_9, date1_9, month1_9, year1_9, hourFrom1_9, minuteFrom1_9
-    global hourOn2_9, minOn2_9, hourOff2_9, minOff2_9, dark2_9, light2_9, date2_9, month2_9, year2_9, hourFrom2_9, minuteFrom2_9
-    global hourOn3_9, minOn3_9, hourOff3_9, minOff3_9, dark3_9, light3_9, date3_9, month3_9, year3_9, hourFrom3_9, minuteFrom3_9
-    global hourOn4_9, minOn4_9, hourOff4_9, minOff4_9, dark4_9, light4_9, date4_9, month4_9, year4_9, hourFrom4_9, minuteFrom4_9
-    global hourOn5_9, minOn5_9, hourOff5_9, minOff5_9, dark5_9, light5_9, date5_9, month5_9, year5_9, hourFrom5_9, minuteFrom5_9
-
-    global hourOn1_10, minOn1_10, hourOff1_10, minOff1_10, dark1_10, light1_10, date1_10, month1_10, year1_10, hourFrom1_10, minuteFrom1_10
-    global hourOn2_10, minOn2_10, hourOff2_10, minOff2_10, dark2_10, light2_10, date2_10, month2_10, year2_10, hourFrom2_10, minuteFrom2_10
-    global hourOn3_10, minOn3_10, hourOff3_10, minOff3_10, dark3_10, light3_10, date3_10, month3_10, year3_10, hourFrom3_10, minuteFrom3_10
-    global hourOn4_10, minOn4_10, hourOff4_10, minOff4_10, dark4_10, light4_10, date4_10, month4_10, year4_10, hourFrom4_10, minuteFrom4_10
-    global hourOn5_10, minOn5_10, hourOff5_10, minOff5_10, dark5_10, light5_10, date5_10, month5_10, year5_10, hourFrom5_10, minuteFrom5_10
-
-    global hourOn1_11, minOn1_11, hourOff1_11, minOff1_11, dark1_11, light1_11, date1_11, month1_11, year1_11, hourFrom1_11, minuteFrom1_11
-    global hourOn2_11, minOn2_11, hourOff2_11, minOff2_11, dark2_11, light2_11, date2_11, month2_11, year2_11, hourFrom2_11, minuteFrom2_11
-    global hourOn3_11, minOn3_11, hourOff3_11, minOff3_11, dark3_11, light3_11, date3_11, month3_11, year3_11, hourFrom3_11, minuteFrom3_11
-    global hourOn4_11, minOn4_11, hourOff4_11, minOff4_11, dark4_11, light4_11, date4_11, month4_11, year4_11, hourFrom4_11, minuteFrom4_11
-    global hourOn5_11, minOn5_11, hourOff5_11, minOff5_11, dark5_11, light5_11, date5_11, month5_11, year5_11, hourFrom5_11, minuteFrom5_11
-
-    global hourOn1_12, minOn1_12, hourOff1_12, minOff1_12, dark1_12, light1_12, date1_12, month1_12, year1_12, hourFrom1_12, minuteFrom1_12
-    global hourOn2_12, minOn2_12, hourOff2_12, minOff2_12, dark2_12, light2_12, date2_12, month2_12, year2_12, hourFrom2_12, minuteFrom2_12
-    global hourOn3_12, minOn3_12, hourOff3_12, minOff3_12, dark3_12, light3_12, date3_12, month3_12, year3_12, hourFrom3_12, minuteFrom3_12
-    global hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12
-    global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12
+    
 
     #print("hourOn1_1" + str(hourOn1_1))
 
@@ -3646,6 +3565,11 @@ def show_conf():  # Show schedule configuration
     row11_3 = Label(tab11, text='Box3')
     row11_4 = Label(tab11, text='Box4')
     row11_5 = Label(tab11, text='Box5')
+    row11_1 = Label(tab11, text='Box6')
+    row11_2 = Label(tab11, text='Box7')
+    row11_3 = Label(tab11, text='Box8')
+    row11_4 = Label(tab11, text='Box9')
+    row11_5 = Label(tab11, text='Box10')
 
     col11_1.grid(column=2, row=0, padx=5)
     col11_2.grid(column=4, row=0, padx=5)
@@ -3696,18 +3620,22 @@ def show_conf():  # Show schedule configuration
     row11_5.grid(column=0, row=6, padx=2, pady=0)
 
     # array that contains all the stringvars)
-    box_pha_text = []
+    box_pha_text_arr = []
     
     for box_id in range(0, BOX_N):
         phase_var_arr = []
-        for phase_id in range(0, phase_id):
+        box_pha_LD_arr = []
+        for phase_id in range(0, PHASE_N):
             str_var = StringVar()
             phase_var_arr.append(str_var)
+            box_pha_LD = Label(tab11, textvariable=str_var,
+                        width=40, anchor=W, justify=LEFT)
+            box_pha_LD.grid(column=2*(phase_id+1), row=2, padx=2, pady=0)
         
         phase_var_arr = np.asarray(phase_var_arr)
-        box_pha_text.append(phase_var_arr)
+        box_pha_text_arr.append(phase_var_arr)
 
-    box_pha_text = np.asarray( box_pha_text)
+    box_pha_text_arr = np.asarray( box_pha_text)
 
 
 
@@ -3773,6 +3701,9 @@ def show_conf():  # Show schedule configuration
     box1pha12_LD.grid(column=24, row=2, padx=2, pady=0)
 
     window.update_idletasks()
+
+
+    #BOX2
 
     box2pha1text = StringVar()
     box2pha1text.set('                                ')
@@ -3898,7 +3829,7 @@ def show_conf():  # Show schedule configuration
                          width=40, anchor=W, justify=LEFT)
     box3pha12_LD.grid(column=24, row=4, padx=2, pady=0)
 
-    window.update_idletasks()
+    
 
     box4pha1text = StringVar()
     box4pha1text.set('                                ')
@@ -3961,7 +3892,7 @@ def show_conf():  # Show schedule configuration
                          width=40, anchor=W, justify=LEFT)
     box4pha12_LD.grid(column=24, row=5, padx=2, pady=0)
 
-    window.update_idletasks()
+    
 
     box5pha1text = StringVar()
     box5pha1text.set('                                ')
@@ -5215,7 +5146,7 @@ def OnButtonClick(button_id):
 
 def getBoxSchedule(box_id):
     
-    global setBox1, input_mat, value_mat
+    global  input_mat, value_mat
 
     
     # maybe I will have to change it for accounting for the 1st line
@@ -5670,7 +5601,7 @@ if __name__ == '__main__':
 
 
 
-    value_mat = np.zeros((5, 12, 11),)
+    #value_mat = np.zeros((, 12, 11),)
 
     
     window.update_idletasks()
