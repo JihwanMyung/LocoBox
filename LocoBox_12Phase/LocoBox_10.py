@@ -5600,7 +5600,7 @@ if __name__ == '__main__':
 
 
             radiobuttons[box_id, phase_id, 0].grid(column=13, row=phase_id+1+row_adj, pady=5)
-            lbl_A_1.grid(column=14, row=1+row_adj, pady=5)
+            lbl_A_1.grid(column=14, row=phase_id+1 +row_adj, pady=5)
             input_mat[box_id, phase_id, 0].grid(column=15, row=phase_id+1+row_adj, pady=5)
             label_h1_1.grid(column=16, row=phase_id+1+row_adj, pady=5, sticky='w')
             input_mat[box_id, phase_id, 1].grid(column=17, row=phase_id+1+row_adj, pady=5)
