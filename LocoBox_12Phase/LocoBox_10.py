@@ -5219,6 +5219,7 @@ def getBoxSchedule(box_id):
 
     
     # maybe I will have to change it for accounting for the 1st line
+    #set all value_mat values acording to the input displayed
     for phase_ind in range(0, 12):
         value_mat[box_id, phase_ind, 0] = input_mat[box_id,
                                                     phase_ind, 0].get()  # box, phase, variable
@@ -5250,7 +5251,7 @@ def getBoxSchedule(box_id):
                       10] = input_mat[box_id, phase_ind, 9].get()
 
     status.pack(side='bottom', fill='x')
-    status.set('Box1 schedule is set.')
+    status.set('Box '+str(box_id)+' schedule is set.')
     boxsched_text.set('Box1 schedule set.')
     if np.sum(setBox_arr)  == 10:
         btnSave['state'] = 'normal'
@@ -5286,7 +5287,7 @@ def copyScheduletoAll(tab_index):
     current_frame = tab_index -1
 
     
-    temp_savedBoxSchedule = copyBoxN(current_frame)
+    temp_savedBoxSchedule = copyBoxN(current_frame, input_mat)
     
 
     for ind in range(1, 12):
@@ -5331,9 +5332,13 @@ def copyBoxN(n, input_mat): #N is the box's ID
     temp_savedBoxSchedule = BoxSchedule()
 
     temp_savedBoxSchedule.addPhase1(
-        input_mat[n, 0, 0], input_mat[n, 0, 1], input_mat[n, 0, 2], input_mat[n, 0, 3], input_mat[n, 0, 4])
+        input_mat[n, 0, 0].get(), input_mat[n, 0, 1].get(), input_mat[n, 0, 2].get(), input_mat[n, 0, 3].get(), input_mat[n, 0, 4])
     for phase_ind in range(1, 12):
-        temp_savedBoxSchedule.addPhase(*input_mat[n, phase_ind])
+        
+        temp_savedBoxSchedule.addPhase(hourOn=input_mat[n, phase_ind, 0].get(), minOn=input_mat[n, phase_ind, 1].get(), hourOff=input_mat[n, phase_ind, 2].get(), minOff=input_mat[n,phase_ind, 3].get(),
+         var=input_mat[n, phase_ind, 4], date=input_mat[n, phase_ind, 5].get(), month=input_mat[n, phase_ind, 6].get(), year=input_mat[n, phase_ind, 7].get(), hourFrom=input_mat[n,phase_ind, 8].get(),  minuteFrom=input_mat[n, phase_ind, 9].get())
+
+    return temp_savedBoxSchedule
 
 
 if __name__ == '__main__':
