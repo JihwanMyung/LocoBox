@@ -219,6 +219,7 @@ def get_data(istate=0): # Start recording
                 t = t + datetime.timedelta(minutes=1)
                 serial_obj.write(str.encode(t.strftime('%Y-%m-%d %H:%M:%S')))
             if i==1:
+                phase_id = i-1
                 serial_obj.write(str.encode(hourOn1_1+minOn1_1+hourOff1_1+minOff1_1+hourOn2_1+minOn2_1+hourOff2_1+minOff2_1+
                                             hourOn3_1+minOn3_1+hourOff3_1+minOff3_1+hourOn4_1+minOn4_1+hourOff4_1+minOff4_1+
                                             hourOn5_1+minOn5_1+hourOff5_1+minOff5_1))
@@ -455,7 +456,8 @@ def get_data(istate=0): # Start recording
 
 
                 
-    except:
+    except Exception as e:
+        print(e)
         print('Stopped recording and disconnected from the boxes.')
         status.pack(side='bottom', fill='x')
         status.set('Stopped recording and disconnected from the boxes.') 
