@@ -519,6 +519,7 @@ def get_data(istate=0):  # Start recording
             i = i+1
 
             if len(string2) >= 79:
+                print(string2)
                 display_string = string2
                 display_counter = counti
 
@@ -548,7 +549,7 @@ def update_GUI_fields(value_mat):
         newSchedule = BoxSchedule()
         print(value_mat[box_id, 0, :])
         newSchedule.addPhase1(value_mat[box_id, 0, 0], value_mat[box_id, 0, 1], value_mat[box_id, 0, 2], value_mat[box_id, 0, 3], inverseDarkLightValue(value_mat[box_id, 0, 4], value_mat[box_id, 0, 5]))
-        for phase_id in range(1,13):
+        for phase_id in range(1,12):
             print(value_mat[box_id, phase_id, :])
             newSchedule.addPhase(value_mat[box_id, phase_id, 0], value_mat[box_id,  phase_id, 1], value_mat[box_id,  phase_id, 2], value_mat[box_id,  phase_id, 3], inverseDarkLightValue(value_mat[box_id,  phase_id, 4], value_mat[box_id,  phase_id, 5]),  value_mat[box_id, phase_id, 6], value_mat[box_id, phase_id, 7], value_mat[box_id, phase_id, 8], value_mat[box_id, phase_id, 9], value_mat[box_id, phase_id, 10] )
 

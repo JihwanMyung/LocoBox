@@ -1,16 +1,28 @@
 from tkinter import Frame, Label, SUNKEN,W, X
 
 def getDarkLightValue(var):
-    if var.get()==1:
-        dark='0'
-        light='0'
-    if var.get()==2:
-        dark='1'
-        light='0'
-    if var.get()==3:
-        dark='0'
-        light='1'
-    return dark, light
+    if isinstance(var, int):
+        if var==1:
+            dark='0'
+            light='0'
+        if var==2:
+            dark='1'
+            light='0'
+        if var==3:
+            dark='0'
+            light='1'
+        return dark, light
+    else:
+        if var.get()==1:
+            dark='0'
+            light='0'
+        if var.get()==2:
+            dark='1'
+            light='0'
+        if var.get()==3:
+            dark='0'
+            light='1'
+        return dark, light
 
 def inverseDarkLightValue(dark, light):
     dark = str(int(dark))
