@@ -493,23 +493,28 @@ def set_log_text(log_text, log_mat, tab):
     for counti in range(0,120):
         
         if tab == 1 or tab == 'Box1' :
+            phase_id = get_phase(1)
             
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str =  '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
+                history_str =  '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
         elif tab == 2 or tab == 'Box2':
+            phase_id = get_phase(2)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str = '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
+                history_str = '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
 
         elif tab == 3 or tab == 'Box3':
+            phase_id = get_phase(3)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str =  '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,6])+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
+                history_str =  '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,6])+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
                 
         elif tab == 4 or tab == 'Box4':
+            phase_id = get_phase(4)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str = '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
+                history_str = '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
         elif tab == 5 or tab == 'Box5':
+            phase_id = get_phase(5)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str =  '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
+                history_str =  '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
 
     #print(history_str)
     log_text.set(history_str)
@@ -523,23 +528,28 @@ def restore_history(log_text, log_mat, tab):
     for counti in range(0,120):
         
         if tab == 1 or tab == 'Box1' :
+            phase_id = get_phase(1)
             
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str =  history_str + '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
+                history_str =  history_str + '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
         elif tab == 2 or tab == 'Box2':
+            phase_id = get_phase(2)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str = history_str +'# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
+                history_str = history_str +'# '+str(log_mat[counti % 120,0])+'    Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
 
         elif tab == 3 or tab == 'Box3':
+            phase_id = get_phase(3)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,6])+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
+                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,6])+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
                 
         elif tab == 4 or tab == 'Box4':
+            phase_id = get_phase(4)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
+                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
         elif tab == 5 or tab == 'Box5':
+            phase_id = get_phase(5)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
+                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
     log_text.set(history_str)
     log_display.config(state="normal")
     #log_display.delete('1.0','end')
@@ -554,8 +564,8 @@ def on_tab_change( counti, string2):
     tab = int(tab_control.index('current'))+1
     #tab = event.widget.tab('current')['text']
     if tab == 1:
-        
-        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
+        phase_id = get_phase(1)
+        boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) +'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]))
     elif tab == 2:
         phase_id = get_phase(2)
@@ -617,6 +627,28 @@ def on_tab_change_trigger( event):
     log_display.config(state="normal")
     log_display.delete('1.0','end')
     restore_history(log_text, log_mat, tab)
+
+
+def time_in_range(start, end, current):
+    """Returns whether current is in the range [start, end]"""
+    return start <= current <= end
+
+def get_phase(box_id):
+    global value_mat
+
+    box_id = box_id-1
+    
+    for phase_id in range(0,12):
+        if phase_id == 11:
+            return 11 +1
+        if int(value_mat[box_id, phase_id, 8]) == 0:
+            return 1
+
+        start = datetime.datetime(year=int(value_mat[box_id, phase_id, 8]), month=int(value_mat[box_id, phase_id, 7]), day=int(value_mat[box_id, phase_id, 6]), hour=int(value_mat[box_id, phase_id, 9]), minute= int(value_mat[box_id, phase_id, 10]))
+        end = datetime.datetime(year=int(value_mat[box_id, phase_id +1, 8]), month=int(value_mat[box_id, phase_id+1, 7]), day=int(value_mat[box_id, phase_id+1, 6]), hour=int(value_mat[box_id, phase_id+1, 9]), minute= int(value_mat[box_id, phase_id+1, 10]))
+        current = datetime.datetime.now()
+        if time_in_range(start, end, current):
+            return phase_id +1
     
 
 
