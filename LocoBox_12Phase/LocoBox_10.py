@@ -160,7 +160,9 @@ def get_data(istate=0):  # Start recording
                 with open(filename, 'a') as w:
                     w.write(string2)
                 w.close()
-            print(string2)
+            print("string 2: " + str(string2))
+            print("i: "+ str(i))
+            num_boxes = 5
             if i == 0:
                 print('Synching time...')
                 status.pack(side='bottom', fill='x')
@@ -171,29 +173,33 @@ def get_data(istate=0):  # Start recording
             if i == 1:
                 phase_id = i-1
                 all_boxes_line = ""
-                for box_id in range(0, 10):
+                for box_id in range(0, num_boxes):
                     box_line = str(value_mat[box_id, phase_id, 0]) + str(value_mat[box_id, phase_id,
                                                                           1]) + str(value_mat[box_id, phase_id, 2]) + str(value_mat[box_id, phase_id, 3])
                     all_boxes_line = all_boxes_line + box_line
+
+                #print(all_boxes_line)
 
                 serial_obj.write(str.encode(all_boxes_line))
 
             if i == 2:
                 phase_id = 0
                 all_boxes_line = ""
-                for box_id in range(0, 10):
+                for box_id in range(0, num_boxes):
                     box_line = str(value_mat[box_id, phase_id, 4]) + str(value_mat[box_id, phase_id,5]) 
                     all_boxes_line = all_boxes_line + box_line
 
+
+
                 serial_obj.write(str.encode(all_boxes_line))
-                
+                print(all_boxes_line)
 
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 1 schedules sent.')
             if i == 3:
                 phase_id = 1
                 all_boxes_line = ""
-                for box_id in range(0, 10):
+                for box_id in range(0, num_boxes):
                     box_line = str(value_mat[box_id, phase_id, 0]) + str(value_mat[box_id, phase_id,
                                                                           1]) + str(value_mat[box_id, phase_id, 2]) + str(value_mat[box_id, phase_id, 3])
                                                                          
@@ -205,7 +211,7 @@ def get_data(istate=0):  # Start recording
             if i == 4:
                 phase_id = 1
                 all_boxes_line = ""
-                for box_id in range(0, 10):
+                for box_id in range(0, num_boxes):
                     box_line = str(value_mat[box_id, phase_id, 4]) + str(value_mat[box_id, phase_id,5]) 
                     all_boxes_line = all_boxes_line + box_line
 
@@ -214,10 +220,18 @@ def get_data(istate=0):  # Start recording
             if i == 5:
                 phase_id = 2
                 all_boxes_line = ""
-                for box_id in range(0, 10):
-                    box_line = str(value_mat[box_id, phase_id, 5]) + str(value_mat[box_id, phase_id,
-                                                                          6]) +str( value_mat[box_id, phase_id, 7]) + str(value_mat[box_id, phase_id, 8])  + str(value_mat[box_id, phase_id, 9])
-                    all_boxes_line = all_boxes_line + box_line
+                allbox_line1 = ""
+                allbox_line2 = ""
+                for box_id in range(0, num_boxes):
+                    box_line1 = str(value_mat[box_id, phase_id, 5]) + str(value_mat[box_id, phase_id,
+                                                                          6]) +str( value_mat[box_id, phase_id, 7]) 
+                    box_line2 = str(value_mat[box_id, phase_id, 8])  + str(value_mat[box_id, phase_id, 9])
+                    allbox_line1 = allbox_line1 +box_line1
+                    allbox_line2 = allbox_line1 +box_line2
+
+
+
+                all_boxes_line = allbox_line1 + allbox_line2
                 serial_obj.write(str.encode(all_boxes_line))
                 
                 status.pack(side='bottom', fill='x')
@@ -225,7 +239,7 @@ def get_data(istate=0):  # Start recording
             if i == 6:
                 phase_id = 2
                 all_boxes_line = ""
-                for box_id in range(0, 10):
+                for box_id in range(0, num_boxes):
                     box_line =str( value_mat[box_id, phase_id, 0]) + str(value_mat[box_id, phase_id,
                                                                           1]) + str(value_mat[box_id, phase_id, 2]) + str(value_mat[box_id, phase_id, 3])
                     all_boxes_line = all_boxes_line + box_line
@@ -235,7 +249,7 @@ def get_data(istate=0):  # Start recording
             if i == 7:
                 phase_id = 2
                 all_boxes_line = ""
-                for box_id in range(0, 10):
+                for box_id in range(0, num_boxes):
                     box_line = str(value_mat[box_id, phase_id, 4]) + str(value_mat[box_id, phase_id,5]) 
                     all_boxes_line = all_boxes_line + box_line
 
@@ -245,18 +259,25 @@ def get_data(istate=0):  # Start recording
             if i == 8:
                 phase_id = 2
                 all_boxes_line = ""
-                for box_id in range(0, 10):
-                    box_line = str(value_mat[box_id, phase_id, 5]) + str(value_mat[box_id, phase_id,
-                                                                          6]) + str(value_mat[box_id, phase_id, 7]) + str(value_mat[box_id, phase_id, 8])  + str(value_mat[box_id, phase_id, 9])
-                    all_boxes_line = all_boxes_line + box_line
-                serial_obj.write(str.encode(all_boxes_line))
+                allbox_line1 = ""
+                allbox_line2 = ""
+                for box_id in range(0, num_boxes):
+                    box_line1 = str(value_mat[box_id, phase_id, 5]) + str(value_mat[box_id, phase_id,
+                                                                          6]) +str( value_mat[box_id, phase_id, 7]) 
+                    box_line2 = str(value_mat[box_id, phase_id, 8])  + str(value_mat[box_id, phase_id, 9])
+                    allbox_line1 = allbox_line1 +box_line1
+                    allbox_line2 = allbox_line1 +box_line2
 
+
+
+                all_boxes_line = allbox_line1 + allbox_line2
+                serial_obj.write(str.encode(all_boxes_line))
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 3 schedules sent.')
             if i == 9:
                 phase_id = 3
                 all_boxes_line = ""
-                for box_id in range(0, 10):
+                for box_id in range(0, num_boxes):
                     box_line = str(value_mat[box_id, phase_id, 0]) + str(value_mat[box_id, phase_id,
                                                                           1]) + str(value_mat[box_id, phase_id, 2]) + str(value_mat[box_id, phase_id, 3])
                     all_boxes_line = all_boxes_line + box_line
@@ -266,7 +287,7 @@ def get_data(istate=0):  # Start recording
             if i == 10:
                 phase_id = 3
                 all_boxes_line = ""
-                for box_id in range(0, 10):
+                for box_id in range(0, num_boxes):
                     box_line = str(value_mat[box_id, phase_id, 4]) + str(value_mat[box_id, phase_id,5] )
                     all_boxes_line = all_boxes_line + box_line
 
@@ -276,18 +297,25 @@ def get_data(istate=0):  # Start recording
             if i == 11:
                 phase_id = 3
                 all_boxes_line = ""
-                for box_id in range(0, 10):
-                    box_line = str(value_mat[box_id, phase_id, 5] )+ str(value_mat[box_id, phase_id,
-                                                                          6] )+ str(value_mat[box_id, phase_id, 7]) + str(value_mat[box_id, phase_id, 8] ) + str(value_mat[box_id, phase_id, 9])
-                    all_boxes_line = all_boxes_line + box_line
-                serial_obj.write(str.encode(all_boxes_line))
+                allbox_line1 = ""
+                allbox_line2 = ""
+                for box_id in range(0, num_boxes):
+                    box_line1 = str(value_mat[box_id, phase_id, 5]) + str(value_mat[box_id, phase_id,
+                                                                          6]) +str( value_mat[box_id, phase_id, 7]) 
+                    box_line2 = str(value_mat[box_id, phase_id, 8])  + str(value_mat[box_id, phase_id, 9])
+                    allbox_line1 = allbox_line1 +box_line1
+                    allbox_line2 = allbox_line1 +box_line2
 
+
+
+                all_boxes_line = allbox_line1 + allbox_line2
+                serial_obj.write(str.encode(all_boxes_line))
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 4 schedules sent.')
             if i == 12:
                 phase_id = 4
                 all_boxes_line = ""
-                for box_id in range(0, 10):
+                for box_id in range(0, num_boxes):
                     box_line = str(value_mat[box_id, phase_id, 0]) + str(value_mat[box_id, phase_id,
                                                                           1] )+ str(value_mat[box_id, phase_id, 2] )+ str(value_mat[box_id, phase_id, 3])
                     all_boxes_line = all_boxes_line + box_line
@@ -297,7 +325,7 @@ def get_data(istate=0):  # Start recording
             if i == 13:
                 phase_id = 4
                 all_boxes_line = ""
-                for box_id in range(0, 10):
+                for box_id in range(0, num_boxes):
                     box_line = str(value_mat[box_id, phase_id, 4] )+ str(value_mat[box_id, phase_id,5] )
                     all_boxes_line = all_boxes_line + box_line
 
@@ -305,10 +333,18 @@ def get_data(istate=0):  # Start recording
             if i == 14:
                 phase_id = 4
                 all_boxes_line = ""
-                for box_id in range(0, 10):
-                    box_line = str(value_mat[box_id, phase_id, 5]) + str(value_mat[box_id, phase_id,
-                                                                          6]) + str(value_mat[box_id, phase_id, 7]) + str(value_mat[box_id, phase_id, 8])  + str(value_mat[box_id, phase_id, 9])
-                    all_boxes_line = all_boxes_line + box_line
+                allbox_line1 = ""
+                allbox_line2 = ""
+                for box_id in range(0, num_boxes):
+                    box_line1 = str(value_mat[box_id, phase_id, 5]) + str(value_mat[box_id, phase_id,
+                                                                          6]) +str( value_mat[box_id, phase_id, 7]) 
+                    box_line2 = str(value_mat[box_id, phase_id, 8])  + str(value_mat[box_id, phase_id, 9])
+                    allbox_line1 = allbox_line1 +box_line1
+                    allbox_line2 = allbox_line1 +box_line2
+
+
+
+                all_boxes_line = allbox_line1 + allbox_line2
                 serial_obj.write(str.encode(all_boxes_line))
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 5 schedules sent.')
@@ -316,42 +352,55 @@ def get_data(istate=0):  # Start recording
             if i == 15:
                 phase_id = 5
                 all_boxes_line = ""
-                for box_id in range(0, 10):
+                for box_id in range(0, num_boxes):
                     box_line = str(value_mat[box_id, phase_id, 0] )+ str(value_mat[box_id, phase_id,
                                                                           1]) + str(value_mat[box_id, phase_id, 2]) + str(value_mat[box_id, phase_id, 3])
                     all_boxes_line = all_boxes_line + box_line
 
+                print(all_boxes_line)
+
             if i == 16:
                 phase_id = 5
                 all_boxes_line = ""
-                for box_id in range(0, 10):
+                for box_id in range(0, num_boxes):
                     box_line = str(value_mat[box_id, phase_id, 4]) + str(value_mat[box_id, phase_id,5]) 
                     all_boxes_line = all_boxes_line + box_line
 
                 serial_obj.write(str.encode(all_boxes_line))
 
+                print(all_boxes_line)
+
             if i == 17:
                 phase_id = 5
                 all_boxes_line = ""
-                for box_id in range(0, 10):
-                    box_line = str(value_mat[box_id, phase_id, 5] )+ str(value_mat[box_id, phase_id,
-                                                                          6] )+ str(value_mat[box_id, phase_id, 7]) + str(value_mat[box_id, phase_id, 8])  + str(value_mat[box_id, phase_id, 9])
-                    all_boxes_line = all_boxes_line + box_line
+                allbox_line1 = ""
+                allbox_line2 = ""
+                for box_id in range(0, num_boxes):
+                    box_line1 = str(value_mat[box_id, phase_id, 5]) + str(value_mat[box_id, phase_id,
+                                                                          6]) +str( value_mat[box_id, phase_id, 7]) 
+                    box_line2 = str(value_mat[box_id, phase_id, 8])  + str(value_mat[box_id, phase_id, 9])
+                    allbox_line1 = allbox_line1 +box_line1
+                    allbox_line2 = allbox_line1 +box_line2
+
+
+
+                all_boxes_line = allbox_line1 + allbox_line2
                 serial_obj.write(str.encode(all_boxes_line))
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 6 schedules sent.')
+                print(all_boxes_line)
             # Phase 7
             if i == 18:
                 phase_id = 6
                 all_boxes_line = ""
-                for box_id in range(0, 10):
+                for box_id in range(0, num_boxes):
                     box_line = str(value_mat[box_id, phase_id, 0]) +str( value_mat[box_id, phase_id,
                                                                           1] )+ str(value_mat[box_id, phase_id, 2]) + str(value_mat[box_id, phase_id, 3])
                     all_boxes_line = all_boxes_line + box_line
             if i == 19:
                 phase_id = 6
                 all_boxes_line = ""
-                for box_id in range(0, 10):
+                for box_id in range(0, num_boxes):
                     box_line = str(value_mat[box_id, phase_id, 4]) + str(value_mat[box_id, phase_id,5] )
                     all_boxes_line = all_boxes_line + box_line
 
@@ -359,10 +408,18 @@ def get_data(istate=0):  # Start recording
             if i == 20:
                 phase_id = 6
                 all_boxes_line = ""
-                for box_id in range(0, 10):
-                    box_line = str(value_mat[box_id, phase_id, 5] )+ str(value_mat[box_id, phase_id,
-                                                                          6] )+ str(value_mat[box_id, phase_id, 7] )+ str(value_mat[box_id, phase_id, 8] ) + str(value_mat[box_id, phase_id, 9])
-                    all_boxes_line = all_boxes_line + box_line
+                allbox_line1 = ""
+                allbox_line2 = ""
+                for box_id in range(0, num_boxes):
+                    box_line1 = str(value_mat[box_id, phase_id, 5]) + str(value_mat[box_id, phase_id,
+                                                                          6]) +str( value_mat[box_id, phase_id, 7]) 
+                    box_line2 = str(value_mat[box_id, phase_id, 8])  + str(value_mat[box_id, phase_id, 9])
+                    allbox_line1 = allbox_line1 +box_line1
+                    allbox_line2 = allbox_line1 +box_line2
+
+
+
+                all_boxes_line = allbox_line1 + allbox_line2
                 serial_obj.write(str.encode(all_boxes_line))
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 7 schedules sent.')
@@ -370,14 +427,14 @@ def get_data(istate=0):  # Start recording
             if i == 21:
                 phase_id = 7
                 all_boxes_line = ""
-                for box_id in range(0, 10):
+                for box_id in range(0, num_boxes):
                     box_line = str(value_mat[box_id, phase_id, 0] )+ str(value_mat[box_id, phase_id,
                                                                           1]) + str(value_mat[box_id, phase_id, 2]) + str(value_mat[box_id, phase_id, 3])
                     all_boxes_line = all_boxes_line + box_line
             if i == 22:
                 phase_id = 7
                 all_boxes_line = ""
-                for box_id in range(0, 10):
+                for box_id in range(0, num_boxes):
                     box_line = str(value_mat[box_id, phase_id, 4] )+str( value_mat[box_id, phase_id,5] )
                     all_boxes_line = all_boxes_line + box_line
 
@@ -386,10 +443,18 @@ def get_data(istate=0):  # Start recording
             if i == 23:
                 phase_id = 7
                 all_boxes_line = ""
-                for box_id in range(0, 10):
-                    box_line = str(value_mat[box_id, phase_id, 5] )+ str(value_mat[box_id, phase_id,
-                                                                          6]) + str(value_mat[box_id, phase_id, 7] )+ str(value_mat[box_id, phase_id, 8])  + str(value_mat[box_id, phase_id, 9])
-                    all_boxes_line = all_boxes_line + box_line
+                allbox_line1 = ""
+                allbox_line2 = ""
+                for box_id in range(0, num_boxes):
+                    box_line1 = str(value_mat[box_id, phase_id, 5]) + str(value_mat[box_id, phase_id,
+                                                                          6]) +str( value_mat[box_id, phase_id, 7]) 
+                    box_line2 = str(value_mat[box_id, phase_id, 8])  + str(value_mat[box_id, phase_id, 9])
+                    allbox_line1 = allbox_line1 +box_line1
+                    allbox_line2 = allbox_line1 +box_line2
+
+
+
+                all_boxes_line = allbox_line1 + allbox_line2
                 serial_obj.write(str.encode(all_boxes_line))
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 8 schedules sent.')
@@ -397,7 +462,7 @@ def get_data(istate=0):  # Start recording
             if i == 24:
                 phase_id = 8
                 all_boxes_line = ""
-                for box_id in range(0, 10):
+                for box_id in range(0, num_boxes):
                     box_line = str(value_mat[box_id, phase_id, 0]) + str(value_mat[box_id, phase_id,
                                                                           1] )+ str(value_mat[box_id, phase_id, 2] )+str( value_mat[box_id, phase_id, 3])
                     all_boxes_line = all_boxes_line + box_line
@@ -405,7 +470,7 @@ def get_data(istate=0):  # Start recording
             if i == 25:
                 phase_id = 8
                 all_boxes_line = ""
-                for box_id in range(0, 10):
+                for box_id in range(0, num_boxes):
                     box_line = str(value_mat[box_id, phase_id, 4] )+ str(value_mat[box_id, phase_id,5] )
                     all_boxes_line = all_boxes_line + box_line
 
@@ -414,10 +479,18 @@ def get_data(istate=0):  # Start recording
             if i == 26:
                 phase_id = 8
                 all_boxes_line = ""
-                for box_id in range(0, 10):
-                    box_line = str(value_mat[box_id, phase_id, 5] )+str(value_mat[box_id, phase_id,
-                                                                          6] )+ str(value_mat[box_id, phase_id, 7] )+ str(value_mat[box_id, phase_id, 8])  + str(value_mat[box_id, phase_id, 9])
-                    all_boxes_line = all_boxes_line + box_line
+                allbox_line1 = ""
+                allbox_line2 = ""
+                for box_id in range(0, num_boxes):
+                    box_line1 = str(value_mat[box_id, phase_id, 5]) + str(value_mat[box_id, phase_id,
+                                                                          6]) +str( value_mat[box_id, phase_id, 7]) 
+                    box_line2 = str(value_mat[box_id, phase_id, 8])  + str(value_mat[box_id, phase_id, 9])
+                    allbox_line1 = allbox_line1 +box_line1
+                    allbox_line2 = allbox_line1 +box_line2
+
+
+
+                all_boxes_line = allbox_line1 + allbox_line2
                 serial_obj.write(str.encode(all_boxes_line))
 
                 status.pack(side='bottom', fill='x')
@@ -426,7 +499,7 @@ def get_data(istate=0):  # Start recording
             if i == 27:
                 phase_id = 9
                 all_boxes_line = ""
-                for box_id in range(0, 10):
+                for box_id in range(0, num_boxes):
                     box_line = str(value_mat[box_id, phase_id, 0] )+str( value_mat[box_id, phase_id,
                                                                           1]) + str(value_mat[box_id, phase_id, 2]) + str(value_mat[box_id, phase_id, 3])
                     all_boxes_line = all_boxes_line + box_line
@@ -434,7 +507,7 @@ def get_data(istate=0):  # Start recording
             if i == 28:
                 phase_id = 9
                 all_boxes_line = ""
-                for box_id in range(0, 10):
+                for box_id in range(0, num_boxes):
                     box_line = str(value_mat[box_id, phase_id, 4]) + str(value_mat[box_id, phase_id,5] )
                     all_boxes_line = all_boxes_line + box_line
 
@@ -443,19 +516,26 @@ def get_data(istate=0):  # Start recording
             if i == 29:
                 phase_id = 9
                 all_boxes_line = ""
-                for box_id in range(0, 10):
-                    box_line = str(value_mat[box_id, phase_id, 5] )+ str(value_mat[box_id, phase_id,
-                                                                          6] )+ str(value_mat[box_id, phase_id, 7] )+ str(value_mat[box_id, phase_id, 8])  + str(value_mat[box_id, phase_id, 9])
-                    all_boxes_line = all_boxes_line + box_line
-                serial_obj.write(str.encode(all_boxes_line))
+                allbox_line1 = ""
+                allbox_line2 = ""
+                for box_id in range(0, num_boxes):
+                    box_line1 = str(value_mat[box_id, phase_id, 5]) + str(value_mat[box_id, phase_id,
+                                                                          6]) +str( value_mat[box_id, phase_id, 7]) 
+                    box_line2 = str(value_mat[box_id, phase_id, 8])  + str(value_mat[box_id, phase_id, 9])
+                    allbox_line1 = allbox_line1 +box_line1
+                    allbox_line2 = allbox_line1 +box_line2
 
+
+
+                all_boxes_line = allbox_line1 + allbox_line2
+                serial_obj.write(str.encode(all_boxes_line))
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 10 schedules sent.')
             # Phase 11
             if i == 30:
                 phase_id = 10
                 all_boxes_line = ""
-                for box_id in range(0, 10):
+                for box_id in range(0, num_boxes):
                     box_line = str(value_mat[box_id, phase_id, 0]) + str(value_mat[box_id, phase_id,
                                                                           1]) + str(value_mat[box_id, phase_id, 2] )+ str(value_mat[box_id, phase_id, 3])
                     all_boxes_line = all_boxes_line + box_line
@@ -463,7 +543,7 @@ def get_data(istate=0):  # Start recording
             if i == 31:
                 phase_id = 10
                 all_boxes_line = ""
-                for box_id in range(0, 10):
+                for box_id in range(0, num_boxes):
                     box_line =str( value_mat[box_id, phase_id, 4]) + str(value_mat[box_id, phase_id,5] )
                     all_boxes_line = all_boxes_line + box_line
 
@@ -472,10 +552,18 @@ def get_data(istate=0):  # Start recording
             if i == 32:
                 phase_id = 10
                 all_boxes_line = ""
-                for box_id in range(0, 10):
-                    box_line = str(value_mat[box_id, phase_id, 5] )+str( value_mat[box_id, phase_id,
-                                                                          6]) + str(value_mat[box_id, phase_id, 7]) + str(value_mat[box_id, phase_id, 8] ) + str(value_mat[box_id, phase_id, 9])
-                    all_boxes_line = all_boxes_line + box_line
+                allbox_line1 = ""
+                allbox_line2 = ""
+                for box_id in range(0, num_boxes):
+                    box_line1 = str(value_mat[box_id, phase_id, 5]) + str(value_mat[box_id, phase_id,
+                                                                          6]) +str( value_mat[box_id, phase_id, 7]) 
+                    box_line2 = str(value_mat[box_id, phase_id, 8])  + str(value_mat[box_id, phase_id, 9])
+                    allbox_line1 = allbox_line1 +box_line1
+                    allbox_line2 = allbox_line1 +box_line2
+
+
+
+                all_boxes_line = allbox_line1 + allbox_line2
                 serial_obj.write(str.encode(all_boxes_line))
 
                 status.pack(side='bottom', fill='x')
@@ -485,7 +573,7 @@ def get_data(istate=0):  # Start recording
             if i == 33:
                 phase_id = 11
                 all_boxes_line = ""
-                for box_id in range(0, 10):
+                for box_id in range(0, num_boxes):
                     box_line = str(value_mat[box_id, phase_id, 0]) + str(value_mat[box_id, phase_id,
                                                                           1] )+ str(value_mat[box_id, phase_id, 2] )+ str(value_mat[box_id, phase_id, 3])
                     all_boxes_line = all_boxes_line + box_line
@@ -493,7 +581,7 @@ def get_data(istate=0):  # Start recording
             if i == 34:
                 phase_id = 11
                 all_boxes_line = ""
-                for box_id in range(0, 10):
+                for box_id in range(0, num_boxes):
                     box_line = str(value_mat[box_id, phase_id, 4]) + str(value_mat[box_id, phase_id,5] )
                     all_boxes_line = all_boxes_line + box_line
 
@@ -502,10 +590,18 @@ def get_data(istate=0):  # Start recording
             if i == 35:
                 phase_id = 11
                 all_boxes_line = ""
-                for box_id in range(0, 10):
-                    box_line = str(value_mat[box_id, phase_id, 5] )+ str(value_mat[box_id, phase_id,
-                                                                          6]) + str(value_mat[box_id, phase_id, 7] )+ str(value_mat[box_id, phase_id, 8] ) + str(value_mat[box_id, phase_id, 9])
-                    all_boxes_line = all_boxes_line + box_line
+                allbox_line1 = ""
+                allbox_line2 = ""
+                for box_id in range(0, num_boxes):
+                    box_line1 = str(value_mat[box_id, phase_id, 5]) + str(value_mat[box_id, phase_id,
+                                                                          6]) +str( value_mat[box_id, phase_id, 7]) 
+                    box_line2 = str(value_mat[box_id, phase_id, 8])  + str(value_mat[box_id, phase_id, 9])
+                    allbox_line1 = allbox_line1 +box_line1
+                    allbox_line2 = allbox_line1 +box_line2
+
+
+
+                all_boxes_line = allbox_line1 + allbox_line2
                 serial_obj.write(str.encode(all_boxes_line))
 
                 status.pack(side='bottom', fill='x')
@@ -516,6 +612,8 @@ def get_data(istate=0):  # Start recording
 
                 boxrec_text.set('Recording on-going.')
                 window.update_idletasks()
+
+
             i = i+1
 
             if len(string2) >= 79:

@@ -406,11 +406,16 @@ def get_data(istate=0): # Start recording
                                             dark4_11+light4_11+dark5_11+light5_11))
                 
             if i==32:
-                serial_obj.write(str.encode(date1_11+month1_11+year1_11+date2_11+month2_11+year2_11+
-                                            date3_11+month3_11+year3_11+date4_11+month4_11+year4_11+
-                                            date5_11+month5_11+year5_11+hourFrom1_11+minuteFrom1_11+
-                                            hourFrom2_11+minuteFrom2_11+hourFrom3_11+minuteFrom3_11+
-                                            hourFrom4_11+minuteFrom4_11+hourFrom5_11+minuteFrom5_11))
+                serial_obj.write(str.encode(date1_11+month1_11+year1_11+
+                                            date2_11+month2_11+year2_11+
+                                            date3_11+month3_11+year3_11+
+                                            date4_11+month4_11+year4_11+
+                                            date5_11+month5_11+year5_11+
+                                            hourFrom1_11+minuteFrom1_11+
+                                            hourFrom2_11+minuteFrom2_11+
+                                            hourFrom3_11+minuteFrom3_11+
+                                            hourFrom4_11+minuteFrom4_11+
+                                            hourFrom5_11+minuteFrom5_11))
 
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 11 schedules sent.')
