@@ -546,13 +546,14 @@ def update_GUI_fields(value_mat):
     global input_mat
     #temp_savedBoxSchedule.pasteSchedule(ind, input_mat)
     for box_id in range(0,11):
+        print("updating GUI")
         newSchedule = BoxSchedule()
-        print(value_mat[box_id, 0, :])
+        #print(value_mat[box_id, 0, :])
         newSchedule.addPhase1(value_mat[box_id, 0, 0], value_mat[box_id, 0, 1], value_mat[box_id, 0, 2], value_mat[box_id, 0, 3], inverseDarkLightValue(value_mat[box_id, 0, 4], value_mat[box_id, 0, 5]))
         for phase_id in range(1,12):
-            print(value_mat[box_id, phase_id, :])
+            #print(value_mat[box_id, phase_id, :])
             newSchedule.addPhase(value_mat[box_id, phase_id, 0], value_mat[box_id,  phase_id, 1], value_mat[box_id,  phase_id, 2], value_mat[box_id,  phase_id, 3], inverseDarkLightValue(value_mat[box_id,  phase_id, 4], value_mat[box_id,  phase_id, 5]),  value_mat[box_id, phase_id, 6], value_mat[box_id, phase_id, 7], value_mat[box_id, phase_id, 8], value_mat[box_id, phase_id, 9], value_mat[box_id, phase_id, 10] )
-
+        newSchedule.pasteSchedule(box_id, input_mat)
 
 def save_logs( counti, string2): #max 120 timepoints 
     global log_mat
@@ -620,7 +621,7 @@ def save_conf():  # Save schedule configuration
     status.pack(side='bottom', fill='x')
     status.set('Saving the schedule configuration...')
     config = value_mat.reshape(value_mat.shape[0], -1)
-    print(config)
+    print(config.shape)
 
     configfilename = configfilename_entry.get()
     np.savetxt(configfilename, config, fmt='%s') #save as txt    
@@ -647,8 +648,9 @@ def read_conf():  # Read schedule configuration
     status.pack(side='bottom', fill='x')
     status.set('Reading the schedule configuration...')
     configfilename = filedialog.askopenfilename()
-    loaded_arr = np.loadtxt(configfilename)
+    loaded_arr = np.loadtxt(configfilename, dtype=int)
     load_original_arr = loaded_arr.reshape(loaded_arr.shape[0], loaded_arr.shape[1] // 11, 11)
+
     print("shape of load_original_arr: ", load_original_arr.shape) 
     value_mat = load_original_arr
     #update GUI
@@ -1239,7 +1241,7 @@ def copyScheduletoAll(tab_index):
 
 
 def copyBoxN(n, input_mat): #N is the box's ID
-    #print("copy box n "+ str(n))
+    print("copy box n "+ str(n))
     temp_savedBoxSchedule = BoxSchedule()
 
     temp_savedBoxSchedule.addPhase1(
@@ -1248,8 +1250,7 @@ def copyBoxN(n, input_mat): #N is the box's ID
         
         temp_savedBoxSchedule.addPhase(hourOn=input_mat[n, phase_ind, 0].get(), minOn=input_mat[n, phase_ind, 1].get(), hourOff=input_mat[n, phase_ind, 2].get(), minOff=input_mat[n,phase_ind, 3].get(),
          var=input_mat[n, phase_ind, 4], date=input_mat[n, phase_ind, 5].get(), month=input_mat[n, phase_ind, 6].get(), year=input_mat[n, phase_ind, 7].get(), hourFrom=input_mat[n,phase_ind, 8].get(),  minuteFrom=input_mat[n, phase_ind, 9].get())
-
-
+    return temp_savedBoxSchedule
 
 # def assignPhasefromtxt(n, loaded_mat):
 #     temp_savedBoxSchedule = BoxSchedule()
@@ -1587,7 +1588,7 @@ if __name__ == '__main__':
                 input_mat[box_id, phase_id, 7] = Spinbox(tab_arr[box_id], from_=2018, to=2030, width=5)
                 input_mat[box_id, phase_id, 5].delete(0, 'end')
                 today = datetime.date.today()  # today# calculate dates for 7 days after recording initiation
-                day_phase2 = today + datetime.timedelta(days=7)
+                day_phase2 = today + datetime.timedelta(days=7*phase_id)
                 input_mat[box_id, phase_id, 5].insert(0, '{:02d}'.format(day_phase2.day))
                 input_mat[box_id, phase_id, 6].delete(0, 'end')
                 input_mat[box_id, phase_id, 6].insert(0, '{:02d}'.format(day_phase2.month))
