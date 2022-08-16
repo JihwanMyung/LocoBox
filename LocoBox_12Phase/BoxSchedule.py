@@ -13,6 +13,8 @@ def getDarkLightValue(var):
     return dark, light
 
 def inverseDarkLightValue(dark, light):
+    dark = str(int(dark))
+    light = str(int(light))
     if (dark=='0' ) and (light=='0'):
         temp_var = 1
     elif (dark=='1') and (light=='0'):

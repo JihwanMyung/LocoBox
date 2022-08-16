@@ -1,4 +1,4 @@
-from cmath import log
+from cmath import log, phase
 from faulthandler import disable
 import serial   # For Serial communication
 import time     # Required for using delay functions
@@ -633,22 +633,41 @@ def time_in_range(start, end, current):
     """Returns whether current is in the range [start, end]"""
     return start <= current <= end
 
+def DarkenLabel(label):
+    label.config(bg="darkgray")
+
 def get_phase(box_id):
     global value_mat
 
     box_id = box_id-1
+    #print(value_mat)
     
     for phase_id in range(0,12):
+        print(phase_id)
+        
+        if phase_id == 0:
+            return 1
         if phase_id == 11:
             return 11 +1
-        if int(value_mat[box_id, phase_id, 8]) == 0:
-            return 1
 
+        
         start = datetime.datetime(year=int(value_mat[box_id, phase_id, 8]), month=int(value_mat[box_id, phase_id, 7]), day=int(value_mat[box_id, phase_id, 6]), hour=int(value_mat[box_id, phase_id, 9]), minute= int(value_mat[box_id, phase_id, 10]))
         end = datetime.datetime(year=int(value_mat[box_id, phase_id +1, 8]), month=int(value_mat[box_id, phase_id+1, 7]), day=int(value_mat[box_id, phase_id+1, 6]), hour=int(value_mat[box_id, phase_id+1, 9]), minute= int(value_mat[box_id, phase_id+1, 10]))
         current = datetime.datetime.now()
-        if time_in_range(start, end, current):
-            return phase_id +1
+        if phase == 1:
+            print(start)
+            print(current)
+            print(end)
+        
+        if start < current:
+            
+            pass
+        if current < end:
+            return phase_id + 1
+        #if time_in_range(start, end, current):
+            #return phase_id +1
+
+        
     
 
 
@@ -3771,6 +3790,8 @@ def show_conf(): # Show schedule configuration
     col11_10 = Label(tab11, text='Phase 10')
     col11_11 = Label(tab11, text='Phase 11')
     col11_12 = Label(tab11, text='Phase 12')
+
+    
 
     row11_1 = Label(tab11, text='Box1')
     row11_2 = Label(tab11, text='Box2')
@@ -11446,7 +11467,8 @@ if __name__ == '__main__':
     input_mat = np.asarray(input_mat)
 
     input_mat = input_mat.reshape(5,12,10)
-    
+    #phaseLabels1
+    #phaseLabel1_6
 
 
 

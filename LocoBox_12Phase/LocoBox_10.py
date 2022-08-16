@@ -543,10 +543,13 @@ def get_data(istate=0):  # Start recording
 
 def update_GUI_fields(value_mat):
     global input_mat
+    #temp_savedBoxSchedule.pasteSchedule(ind, input_mat)
     for box_id in range(0,11):
         newSchedule = BoxSchedule()
+        print(value_mat[box_id, 0, :])
         newSchedule.addPhase1(value_mat[box_id, 0, 0], value_mat[box_id, 0, 1], value_mat[box_id, 0, 2], value_mat[box_id, 0, 3], inverseDarkLightValue(value_mat[box_id, 0, 4], value_mat[box_id, 0, 5]))
-        for phase_id in range(1,13)
+        for phase_id in range(1,13):
+            print(value_mat[box_id, phase_id, :])
             newSchedule.addPhase(value_mat[box_id, phase_id, 0], value_mat[box_id,  phase_id, 1], value_mat[box_id,  phase_id, 2], value_mat[box_id,  phase_id, 3], inverseDarkLightValue(value_mat[box_id,  phase_id, 4], value_mat[box_id,  phase_id, 5]),  value_mat[box_id, phase_id, 6], value_mat[box_id, phase_id, 7], value_mat[box_id, phase_id, 8], value_mat[box_id, phase_id, 9], value_mat[box_id, phase_id, 10] )
 
 
@@ -649,7 +652,7 @@ def read_conf():  # Read schedule configuration
     value_mat = load_original_arr
     #update GUI
     #   
-    
+    update_GUI_fields(value_mat)
 
     
 
@@ -1130,9 +1133,9 @@ def disconnect():  # close the serial_obj thread
     status.pack(side='bottom', fill='x')
     status.set('Stopped recording and disconnected from the boxes.')
 
-    for i in range(10):
+    
 
-        boxrec_text[i].set('Recording stopped.')
+    boxrec_text.set('Recording stopped.')
 
     window.update_idletasks()
 
