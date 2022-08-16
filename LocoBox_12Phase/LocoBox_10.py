@@ -1226,13 +1226,13 @@ def copyScheduletoAll(tab_index):
     #input_mat = np.zeros((5, 12, 10),dtype = object)
     #print("current frame " +str(tab_index))
 
-    current_frame = tab_index # -1
+    current_frame = tab_index  -1
 
     
-    temp_savedBoxSchedule = copyBoxN(current_frame, input_mat)
+    temp_savedBoxSchedule = copyBoxN(current_frame, input_mat) #copies box in current tab
     
 
-    for ind in range(1, 12):
+    for ind in range(0, 11):
         # box_index_to be pasted, global_mat
         temp_savedBoxSchedule.pasteSchedule(ind, input_mat)
 
