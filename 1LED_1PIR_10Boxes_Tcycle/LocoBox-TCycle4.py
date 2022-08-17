@@ -19,6 +19,7 @@ from tkinter import messagebox
 from tkinter.filedialog import askopenfilename
 
 import json
+import sys
 
 try:
 

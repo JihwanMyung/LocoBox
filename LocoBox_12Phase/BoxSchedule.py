@@ -1,18 +1,32 @@
 from tkinter import Frame, Label, SUNKEN,W, X
 
 def getDarkLightValue(var):
-    if var.get()==1:
-        dark='0'
-        light='0'
-    if var.get()==2:
-        dark='1'
-        light='0'
-    if var.get()==3:
-        dark='0'
-        light='1'
-    return dark, light
+    if isinstance(var, int):
+        if var==1:
+            dark='0'
+            light='0'
+        if var==2:
+            dark='1'
+            light='0'
+        if var==3:
+            dark='0'
+            light='1'
+        return dark, light
+    else:
+        if var.get()==1:
+            dark='0'
+            light='0'
+        if var.get()==2:
+            dark='1'
+            light='0'
+        if var.get()==3:
+            dark='0'
+            light='1'
+        return dark, light
 
 def inverseDarkLightValue(dark, light):
+    dark = str(int(dark))
+    light = str(int(light))
     if (dark=='0' ) and (light=='0'):
         temp_var = 1
     elif (dark=='1') and (light=='0'):
@@ -109,6 +123,33 @@ class BoxSchedule:
 
     #self is the copied box schedule
     def pasteSchedule(self, box_index, input_mat): #box to be pasted
+        box_index = box_index -1
+           
+        #for phase_ind, phase in enumerate(self.phase_sched[1:], start=1):
+        for phase_ind, phase in enumerate(self.phase_sched, start=0):
+            spin_A = input_mat[box_index, phase_ind, 0 ] #box, phase, variable
+            spin_B =  input_mat[box_index, phase_ind, 1 ]
+            spin_C = input_mat[box_index, phase_ind, 2 ]
+            spin_D = input_mat[box_index, phase_ind, 3 ]
+            var = input_mat[box_index,phase_ind, 4 ]
+            date_entry = input_mat[box_index,phase_ind, 5 ]
+            month_entry = input_mat[box_index,phase_ind, 6 ]
+            year_entry = input_mat[box_index,phase_ind, 7 ]
+            spin_E = input_mat[box_index,phase_ind, 8 ]
+            spin_F  =input_mat[box_index,phase_ind, 9 ]
+
+            # if phase_ind == 1:
+            #     print(spin_A,spin_B,spin_C ,spin_D,var, date_entry, month_entry, year_entry, spin_E, spin_F)
+            if phase_ind ==0:
+                phase.assignPhase1(spin_A,spin_B,spin_C ,spin_D,var)
+                
+
+            else:
+                phase.assignSchedule(spin_A, spin_B, spin_C, spin_D, var,  date_entry, month_entry, year_entry, spin_E, spin_F) #assigns saved phase to corresponding spinboxes
+
+
+
+    def pasteSchedule_fromValueMat(self, box_index,value_mat): #box to be pasted
         box_index = box_index -1
            
         #for phase_ind, phase in enumerate(self.phase_sched[1:], start=1):
