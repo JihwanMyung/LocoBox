@@ -4,20 +4,29 @@ LocoBox is a set of Arduino software and GUI interface for running either 5 or 1
 
 ### Prerequisites & Dependencies
 
-The following Arduino software is used: Arduino 1.8.7
+1. Original release (pre-2022):
 
-The following Python versions are used: Python 3.7.0, Pyserial 3.4
+Arduino: Arduino 1.8.7
+
+Python: Python 3.7.0, Pyserial 3.4
 
 RTC library: 
+
 (1) Legacy version: RTC library 'DS1307' (https://github.com/Seeed-Studio/RTC_DS1307/archive/master.zip).
+
 (2) Revision: RTCLib for Adafruit DS3231 Precision RTC
 
 The LocomotorBox (LocoBox) GUI interface has been optimized for Windows, macOS, and Linux (tested on Ubuntu).
 
 
-### Current GUI
+2. Current release (post-2022):
 
-![image](https://user-images.githubusercontent.com/7980453/181711619-593a8afd-ae77-48ce-b1c7-e377e0c779d8.png)
+Development was performed on Ubuntu Linux. Some testes were done on virtual Windows environment.
+Arduino, python3, and libraries (numpy, pyserial, and RTC) were the most current ones (to be specified with the release).
+
+
+### Current GUI
+![image](https://user-images.githubusercontent.com/7980453/185054205-f0ec948b-6690-40d6-b44a-fe41aef7d195.png)
 
 
 
@@ -29,9 +38,11 @@ Upload .ino to Arduino microcontroller using Arduino software. Be sure to instal
 
 Run Python GUI interface by double-clicking the .py file or on command-line using python3.
 
+
 ## Deployment
 
-This software system requires Arduino Mega 2560 for controlling 10 boxes and a digital slot extension (custom-made). Each box requires 1 PIR sensor (digital input) and 1 relay switch.
+This software system requires Arduino Mega 2560 for controlling either 5 (main release) or 10 boxes (optional) and a digital slot extension (custom-made). Each box requires 1 PIR sensor (digital input) and 1 relay switch.
+
 
 ## Authors
 
@@ -40,4 +51,4 @@ This software system requires Arduino Mega 2560 for controlling 10 boxes and a d
 * Firdani Rianda Putra - reduction to 5-box and extension to 12 phases
 * Zow Ormazabal - stabilization and GUI improvement
 
-See braintimelab for the release version.
+See braintimelab for the official release version.

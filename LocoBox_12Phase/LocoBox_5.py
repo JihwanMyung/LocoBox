@@ -1,4 +1,6 @@
+
 from cmath import log, phase
+
 from faulthandler import disable
 import serial   # For Serial communication
 import time     # Required for using delay functions
@@ -26,7 +28,9 @@ import numpy as np
 
 #sudo chmod 666 /dev/ttyACM0
 
+
 #Actogram reference: https://gist.githubusercontent.com/matham/61c45e66567b07f20840eaea0488767a/raw/04ece1483d963b0361f25959557f4a515417bb8e/actogram.py
+
 
 
 # Global variables 1_1 = Box_Phases
@@ -102,14 +106,18 @@ global hourOn3_12, minOn3_12, hourOff3_12, minOff3_12, dark3_12, light3_12, date
 global hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12
 global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12
 
+
 global value_mat, input_mat, log_mat, phase_delimiters
+
 
 
  
  
 global setBox1, setBox2, setBox3, setBox4, setBox5
 
+
 global display_string, display_counter, current_phase
+
 
 
 
@@ -212,7 +220,7 @@ def get_data(istate=0): # Start recording
                 with open(filename,'a') as w:
                     w.write(string2)
                 w.close()
-            
+
             if i==0:
                 print('Synching time...')
                 status.pack(side='bottom', fill='x')
@@ -221,7 +229,9 @@ def get_data(istate=0): # Start recording
                 t = t + datetime.timedelta(minutes=1)
                 serial_obj.write(str.encode(t.strftime('%Y-%m-%d %H:%M:%S')))
             if i==1:
+
                 phase_id = i-1
+
                 serial_obj.write(str.encode(hourOn1_1+minOn1_1+hourOff1_1+minOff1_1+hourOn2_1+minOn2_1+hourOff2_1+minOff2_1+
                                             hourOn3_1+minOn3_1+hourOff3_1+minOff3_1+hourOn4_1+minOn4_1+hourOff4_1+minOff4_1+
                                             hourOn5_1+minOn5_1+hourOff5_1+minOff5_1))
@@ -408,6 +418,7 @@ def get_data(istate=0): # Start recording
                                             dark4_11+light4_11+dark5_11+light5_11))
                 
             if i==32:
+
                 serial_obj.write(str.encode(date1_11+month1_11+year1_11+
                                             date2_11+month2_11+year2_11+
                                             date3_11+month3_11+year3_11+
@@ -418,6 +429,7 @@ def get_data(istate=0): # Start recording
                                             hourFrom3_11+minuteFrom3_11+
                                             hourFrom4_11+minuteFrom4_11+
                                             hourFrom5_11+minuteFrom5_11))
+
 
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 11 schedules sent.')
@@ -449,7 +461,9 @@ def get_data(istate=0): # Start recording
             
             if len(string2)>=79:     #set the id according to current tab
 
+
                 print(string2)
+
                 
                 display_string = string2
                 display_counter = counti
@@ -465,8 +479,10 @@ def get_data(istate=0): # Start recording
 
 
                 
+
     except Exception as e:
         print(e)
+
         print('Stopped recording and disconnected from the boxes.')
         status.pack(side='bottom', fill='x')
         status.set('Stopped recording and disconnected from the boxes.') 
@@ -496,12 +512,15 @@ def save_logs( counti, string2): #max 120 timepoints
 
 def set_log_text(log_text, log_mat, tab):
 
+
     phase_id = 0
+
     
     history_str = ''
     for counti in range(0,120):
         
         if tab == 1 or tab == 'Box1' :
+
             phase_id = get_phase(1)
             
             if str(log_mat[counti % 120,1]).strip() != '':
@@ -525,6 +544,8 @@ def set_log_text(log_text, log_mat, tab):
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str =  '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
 
+
+
     #print(history_str)
     log_text.set(history_str)
     log_display.config(state="normal")
@@ -537,6 +558,7 @@ def restore_history(log_text, log_mat, tab):
     for counti in range(0,120):
         
         if tab == 1 or tab == 'Box1' :
+
             phase_id = get_phase(1)
             
             if str(log_mat[counti % 120,1]).strip() != '':
@@ -559,6 +581,7 @@ def restore_history(log_text, log_mat, tab):
             phase_id = get_phase(5)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = history_str + '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
+
     log_text.set(history_str)
     log_display.config(state="normal")
     #log_display.delete('1.0','end')
@@ -573,6 +596,7 @@ def on_tab_change( counti, string2):
     tab = int(tab_control.index('current'))+1
     #tab = event.widget.tab('current')['text']
     if tab == 1:
+
         phase_id = get_phase(1)
         boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) +'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]))
@@ -593,6 +617,7 @@ def on_tab_change( counti, string2):
     elif tab == 5:
         phase_id = get_phase(5)
         boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]))
     #log_display.config(state="normal")
     #log_display.delete('1.0','end')
@@ -605,6 +630,7 @@ def on_tab_change_trigger( event):
     counti = display_counter
     string2 = display_string
     
+
     
     tab = event.widget.tab('current')['text']
     
@@ -616,26 +642,29 @@ def on_tab_change_trigger( event):
     elif tab == 'Box2':
         phase_id = get_phase(2)
         boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
+
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]))
         
 
     elif tab == 'Box3':
+
         phase_id = get_phase(3)
         boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
-        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,6])+'    '+'PIR: '+str(log_mat[counti % 120,7]))
-               
-               
+
     elif tab == 'Box4':
+
         phase_id = get_phase(4)
         boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]))
     elif tab == 'Box5':
         phase_id = get_phase(5)
         boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]))
     log_display.config(state="normal")
     log_display.delete('1.0','end')
     restore_history(log_text, log_mat, tab)
+
 
 
 def time_in_range(start, end, current):
@@ -677,9 +706,7 @@ def get_phase(box_id):
         if phase_id == 11:
             return 11 +1
 
-  
-        
-    
+
 
 
 
@@ -1401,7 +1428,7 @@ def read_conf(): # Read schedule configuration
     configfilename = filedialog.askopenfilename()
     with open(configfilename) as data_file:
         config = json.load(data_file)
-        print(config)
+
 
     global hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, hourOn2_1, minOn2_1, hourOff2_1, minOff2_1 
     global hourOn3_1, minOn3_1, hourOff3_1, minOff3_1, hourOn4_1, minOn4_1, hourOff4_1, minOff4_1 
@@ -3802,7 +3829,6 @@ def show_conf(): # Show schedule configuration
     col11_11 = Label(tab11, text='Phase 11')
     col11_12 = Label(tab11, text='Phase 12')
 
-    
 
     row11_1 = Label(tab11, text='Box1')
     row11_2 = Label(tab11, text='Box2')
@@ -6383,7 +6409,9 @@ def getBox5Schedule():
 
 
 def getAllBoxSchedule(): 
+
     global value_mat, phase_delimiters
+
     getBox1Schedule()
     getBox2Schedule()
     getBox3Schedule()
@@ -6391,6 +6419,7 @@ def getAllBoxSchedule():
     getBox5Schedule()
 
     boxsched_text.set('All schedules set.')
+
 
     today=datetime.date.today()
     day = today.day
@@ -6472,11 +6501,13 @@ def getAllBoxSchedule():
     hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12,
     hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12]
 
+
     value_mat = np.asarray(value_mat)
     
     value_mat = value_mat.reshape(5,12,11)
 
     np.save("value_mat.npy", value_mat)
+
     
     
    
@@ -11499,6 +11530,7 @@ if __name__ == '__main__':
     input_mat = np.asarray(input_mat)
 
     input_mat = input_mat.reshape(5,12,10)
+
     #phaseLabels1
     #phaseLabel1_6
 
@@ -11506,6 +11538,7 @@ if __name__ == '__main__':
 
    
     getAllBoxSchedule()
+
     
     
     tab_control.pack(expand=1, fill='both')

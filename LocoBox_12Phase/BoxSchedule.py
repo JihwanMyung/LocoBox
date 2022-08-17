@@ -148,6 +148,7 @@ class BoxSchedule:
                 phase.assignSchedule(spin_A, spin_B, spin_C, spin_D, var,  date_entry, month_entry, year_entry, spin_E, spin_F) #assigns saved phase to corresponding spinboxes
 
 
+
     def pasteSchedule_fromValueMat(self, box_index,value_mat): #box to be pasted
         box_index = box_index -1
            
