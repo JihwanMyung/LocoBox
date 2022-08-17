@@ -26,6 +26,8 @@ import numpy as np
 
 #sudo chmod 666 /dev/ttyACM0
 
+#Actogram reference: https://gist.githubusercontent.com/matham/61c45e66567b07f20840eaea0488767a/raw/04ece1483d963b0361f25959557f4a515417bb8e/actogram.py
+
 
 # Global variables 1_1 = Box_Phases
 global hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, dark1_1, light1_1
@@ -100,7 +102,7 @@ global hourOn3_12, minOn3_12, hourOff3_12, minOff3_12, dark3_12, light3_12, date
 global hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12
 global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12
 
-global value_mat, input_mat, log_mat
+global value_mat, input_mat, log_mat, phase_delimiters
 
 
  
@@ -210,7 +212,7 @@ def get_data(istate=0): # Start recording
                 with open(filename,'a') as w:
                     w.write(string2)
                 w.close()
-            print(string2)
+            #print(string2)
             if i==0:
                 print('Synching time...')
                 status.pack(side='bottom', fill='x')
@@ -648,30 +650,32 @@ def get_phase(box_id):
     #print(value_mat)
     
     for phase_id in range(0,12):
-        print(phase_id)
+        #start = datetime.datetime(year=int(value_mat[box_id, phase_id, 8]), month=int(value_mat[box_id, phase_id, 7]), day=int(value_mat[box_id, phase_id, 6]), hour=int(value_mat[box_id, phase_id, 9]), minute= int(value_mat[box_id, phase_id, 10]))
+        #end = datetime.datetime(year=int(value_mat[box_id, phase_id +1, 8]), month=int(value_mat[box_id, phase_id+1, 7]), day=int(value_mat[box_id, phase_id+1, 6]), hour=int(value_mat[box_id, phase_id+1, 9]), minute= int(value_mat[box_id, phase_id+1, 10]))
+        start = phase_delimiters[phase_id]
+        end = phase_delimiters[phase_id +1]
+        current = datetime.datetime.now()
         
-        if phase_id == 0:
+        # print(start)
+        # print(current)
+        # print(end)
+
+        if start >= current:
+            #print(phase_id)
             return 1
+            
+            
+        if current < end:
+            return phase_id + 1
+
+        if current > end:
+            continue
+
+        
         if phase_id == 11:
             return 11 +1
 
-        
-        start = datetime.datetime(year=int(value_mat[box_id, phase_id, 8]), month=int(value_mat[box_id, phase_id, 7]), day=int(value_mat[box_id, phase_id, 6]), hour=int(value_mat[box_id, phase_id, 9]), minute= int(value_mat[box_id, phase_id, 10]))
-        end = datetime.datetime(year=int(value_mat[box_id, phase_id +1, 8]), month=int(value_mat[box_id, phase_id+1, 7]), day=int(value_mat[box_id, phase_id+1, 6]), hour=int(value_mat[box_id, phase_id+1, 9]), minute= int(value_mat[box_id, phase_id+1, 10]))
-        current = datetime.datetime.now()
-        if phase == 1:
-            print(start)
-            print(current)
-            print(end)
-        
-        if start < current:
-            
-            pass
-        if current < end:
-            return phase_id + 1
-        #if time_in_range(start, end, current):
-            #return phase_id +1
-
+  
         
     
 
@@ -6377,7 +6381,7 @@ def getBox5Schedule():
 
 
 def getAllBoxSchedule(): 
-    global value_mat
+    global value_mat, phase_delimiters
     getBox1Schedule()
     getBox2Schedule()
     getBox3Schedule()
@@ -6386,11 +6390,30 @@ def getAllBoxSchedule():
 
     boxsched_text.set('All schedules set.')
 
-    value_mat = [hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, dark1_1, light1_1, 0,0,0, 0, 0,
-    hourOn2_1, minOn2_1, hourOff2_1, minOff2_1, dark2_1, light2_1, 0,0,0, 0, 0,
-    hourOn3_1, minOn3_1, hourOff3_1, minOff3_1, dark3_1, light3_1,0,0,0, 0, 0,
-    hourOn4_1, minOn4_1, hourOff4_1, minOff4_1, dark4_1, light4_1,0,0,0, 0, 0,
-    hourOn5_1, minOn5_1, hourOff5_1, minOff5_1, dark5_1, light5_1, 0,0,0, 0, 0,
+    today=datetime.date.today()
+    day = today.day
+    thismonth = today.month
+    thisyear = today.year
+    thishour = datetime.datetime.now().hour
+    thismin = datetime.datetime.now().minute
+    date_p2 = datetime.datetime(int(year1_2), int(month1_2), int(date1_2), int(hourFrom1_2), int(minuteFrom1_2))
+    date_p3 = datetime.datetime(int(year1_3), int(month1_3), int(date1_3), int(hourFrom1_3), int(minuteFrom1_3))
+    date_p4 = datetime.datetime(int(year1_4), int(month1_4), int(date1_4), int(hourFrom1_4), int(minuteFrom1_4))
+    date_p5 = datetime.datetime(int(year1_5), int(month1_5), int(date1_5), int(hourFrom1_5), int(minuteFrom1_5))
+    date_p6 = datetime.datetime(int(year1_6), int(month1_6), int(date1_6), int(hourFrom1_6), int(minuteFrom1_6))
+    date_p7 = datetime.datetime(int(year1_7), int(month1_7), int(date1_7), int(hourFrom1_7), int(minuteFrom1_7))
+    date_p8 = datetime.datetime(int(year1_8), int(month1_8), int(date1_8), int(hourFrom1_8), int(minuteFrom1_8))
+    date_p9 = datetime.datetime(int(year1_9), int(month1_9), int(date1_9), int(hourFrom1_9), int(minuteFrom1_9))
+    date_p10 = datetime.datetime(int(year1_10), int(month1_10), int(date1_10), int(hourFrom1_10), int(minuteFrom1_10))
+    date_p11 = datetime.datetime(int(year1_11), int(month1_11), int(date1_11), int(hourFrom1_11), int(minuteFrom1_11))
+    date_p12 = datetime.datetime(int(year1_12), int(month1_12), int(date1_12), int(hourFrom1_12), int(minuteFrom1_12))
+    phase_delimiters = [datetime.datetime.now(), date_p2, date_p3, date_p4, date_p5, date_p6, date_p7, date_p8, date_p9, date_p10, date_p11, date_p12 ]
+
+    value_mat = [hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, dark1_1, light1_1, day,thismonth, thisyear, thishour, thismin,
+    hourOn2_1, minOn2_1, hourOff2_1, minOff2_1, dark2_1, light2_1, day,thismonth, thisyear, thishour, thismin,
+    hourOn3_1, minOn3_1, hourOff3_1, minOff3_1, dark3_1, light3_1,day,thismonth, thisyear, thishour, thismin,
+    hourOn4_1, minOn4_1, hourOff4_1, minOff4_1, dark4_1, light4_1,day,thismonth, thisyear, thishour, thismin,
+    hourOn5_1, minOn5_1, hourOff5_1, minOff5_1, dark5_1, light5_1, day,thismonth, thisyear, thishour, thismin,
     hourOn1_2, minOn1_2, hourOff1_2, minOff1_2, dark1_2, light1_2, date1_2, month1_2, year1_2, hourFrom1_2, minuteFrom1_2,
     hourOn2_2, minOn2_2, hourOff2_2, minOff2_2, dark2_2, light2_2, date2_2, month2_2, year2_2, hourFrom2_2, minuteFrom2_2,
     hourOn3_2, minOn3_2, hourOff3_2, minOff3_2, dark3_2, light3_2, date3_2, month3_2, year3_2, hourFrom3_2, minuteFrom3_2,
@@ -6450,6 +6473,8 @@ def getAllBoxSchedule():
     value_mat = np.asarray(value_mat)
     
     value_mat = value_mat.reshape(5,12,11)
+
+    np.save("value_mat.npy", value_mat)
     
     
    
@@ -11475,7 +11500,7 @@ if __name__ == '__main__':
     #phaseLabels1
     #phaseLabel1_6
 
-
+    phase_delimiters = [datetime.datetime.now()]
 
    
     getAllBoxSchedule()

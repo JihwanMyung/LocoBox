@@ -1256,7 +1256,12 @@ def getBoxSchedule(box_id):
     
     global  input_mat, value_mat
 
-    
+    today=datetime.date.today()
+    day = today.day
+    thismonth = today.month
+    thisyear = today.year
+    thishour = datetime.datetime.now().hour
+    thismin = datetime.datetime.now().minute
     # maybe I will have to change it for accounting for the 1st line
     #set all value_mat values acording to the input displayed
     for phase_ind in range(0, 12):
@@ -1271,11 +1276,11 @@ def getBoxSchedule(box_id):
         value_mat[box_id, phase_ind, 5] = getDarkLightValue(
             input_mat[box_id, phase_ind, 4])[1]  # light
         if phase_ind == 0:
-            value_mat[box_id, phase_ind, 6] = 0
-            value_mat[box_id, phase_ind, 7] = 0
-            value_mat[box_id, phase_ind, 8] = 0
-            value_mat[box_id, phase_ind, 9] = 0
-            value_mat[box_id, phase_ind, 10] = 0
+            value_mat[box_id, phase_ind, 6] = day
+            value_mat[box_id, phase_ind, 7] = thismonth
+            value_mat[box_id, phase_ind, 8] = thishour
+            value_mat[box_id, phase_ind, 9] = thishour
+            value_mat[box_id, phase_ind, 10] = thismin
 
         else:
             value_mat[box_id, phase_ind,
