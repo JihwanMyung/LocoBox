@@ -26,8 +26,7 @@ Arduino, python3, and libraries (numpy, pyserial, and RTC) were the most current
 
 
 ### Current GUI
-
-![image](https://user-images.githubusercontent.com/7980453/181711619-593a8afd-ae77-48ce-b1c7-e377e0c779d8.png)
+![image](https://user-images.githubusercontent.com/7980453/185054205-f0ec948b-6690-40d6-b44a-fe41aef7d195.png)
 
 
 
