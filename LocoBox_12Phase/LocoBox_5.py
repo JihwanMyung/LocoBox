@@ -212,7 +212,7 @@ def get_data(istate=0): # Start recording
                 with open(filename,'a') as w:
                     w.write(string2)
                 w.close()
-            #print(string2)
+            
             if i==0:
                 print('Synching time...')
                 status.pack(side='bottom', fill='x')
@@ -448,6 +448,8 @@ def get_data(istate=0): # Start recording
             i=i+1
             
             if len(string2)>=79:     #set the id according to current tab
+
+                print(string2)
                 
                 display_string = string2
                 display_counter = counti
@@ -656,12 +658,12 @@ def get_phase(box_id):
         end = phase_delimiters[phase_id +1]
         current = datetime.datetime.now()
         
-        # print(start)
-        # print(current)
-        # print(end)
+        #print(start)
+        #print(current)
+        #print(end)
 
         if start >= current:
-            #print(phase_id)
+            print(phase_id)
             return 1
             
             
@@ -1399,7 +1401,7 @@ def read_conf(): # Read schedule configuration
     configfilename = filedialog.askopenfilename()
     with open(configfilename) as data_file:
         config = json.load(data_file)
-        #print(config)
+        print(config)
 
     global hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, hourOn2_1, minOn2_1, hourOff2_1, minOff2_1 
     global hourOn3_1, minOn3_1, hourOff3_1, minOff3_1, hourOn4_1, minOn4_1, hourOff4_1, minOff4_1 
