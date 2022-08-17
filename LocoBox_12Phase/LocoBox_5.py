@@ -176,7 +176,7 @@ class StatusBar(Frame): # scan open serial ports
 window = Tk()
 window.title('LocoBox (1-5_box)')
 if sys.platform.startswith('win'):
-    window.geometry('870x620')
+    window.geometry('900x730')
 elif sys.platform.startswith('darwin'):
     window.geometry('1200x640')
 elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
@@ -6506,7 +6506,7 @@ def getAllBoxSchedule():
     
     value_mat = value_mat.reshape(5,12,11)
 
-    np.save("value_mat.npy", value_mat)
+    #np.save("value_mat.npy", value_mat)
 
     
     
