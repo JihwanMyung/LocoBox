@@ -17,8 +17,8 @@ box = 'BOX2'
 pir = 'PIR02'
 led = 'LED02'
 #filename = 'BOX1-3-20181018.txt'
-#filename = 'BOX2-COM4-20181018.txt'
-filename = 'BOX1-COM3-20181012.txt'
+filename = '/home/zow/LocoBox/actogram/BOX1-3-20181018.txt'
+#filename = 'BOX1-COM3-20181012.txt'
 
 df = pd.read_table(filename, sep='\s+',
                    skiprows=23, index_col=None)

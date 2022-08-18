@@ -21,6 +21,8 @@ import threading # To run Arduino loop and tkinter loop alongside
 import serial.tools.list_ports # For identifying Arduino port
 from BoxSchedule import BoxSchedule, PhaseSchedule, getDarkLightValue, inverseDarkLightValue
 import numpy as np
+import termplotlib as tpl
+import traceback
 
 
 
@@ -469,6 +471,7 @@ def get_data(istate=0): # Start recording
                 display_counter = counti
                 save_logs(counti, string2) 
                 on_tab_change(counti, string2)
+                get_values_for_actogram()
                     
                        
 
@@ -480,8 +483,8 @@ def get_data(istate=0): # Start recording
 
                 
 
-    except Exception as e:
-        print(e)
+    except Exception:
+        traceback.print_exc() 
 
         print('Stopped recording and disconnected from the boxes.')
         status.pack(side='bottom', fill='x')
@@ -508,6 +511,43 @@ def save_logs( counti, string2): #max 120 timepoints
     log_mat[counti % 120, 10] = string2[68:73]
     log_mat[counti % 120, 11] = string2[74:79]
     #print(log_mat)
+
+
+def get_values_for_actogram():
+    global log_mat
+    tab = int(tab_control.index('current'))+1
+    indices = []
+    pirs = []
+    box_id = 3
+    if tab == 2 or tab == 'Box2':
+        box_id = 5
+    elif tab == 3 or tab == 'Box3':
+        box_id = 7
+    elif tab == 4 or tab == 'Box4':
+
+        box_id = 9
+    elif tab == 5 or tab == 'Box5':
+        box_id = 11
+    print(log_mat)
+
+    for counti in range(1,120):
+        if log_mat[counti % 120,0] == '':
+            indices.append(0)
+        else:
+            indices.append(int(log_mat[counti % 120,0]))
+        if 'PIR' in log_mat[counti % 120,box_id]:
+            pirs.append(0)
+        elif log_mat[counti % 120,box_id] == '':
+            pirs.append(0)
+        else:
+            pirs.append(int(log_mat[counti % 120,box_id]))
+    plot_ascii(indices, pirs)
+
+def plot_ascii(x,y):
+    fig = tpl.figure()
+    fig.plot(x, y, label="PIR1", width=50, height=15)
+    fig.show()
+
  
 
 def set_log_text(log_text, log_mat, tab):
@@ -517,7 +557,7 @@ def set_log_text(log_text, log_mat, tab):
 
     
     history_str = ''
-    for counti in range(0,120):
+    for counti in range(0,120): #check if I can get rid of the loop
         
         if tab == 1 or tab == 'Box1' :
 
@@ -3727,7 +3767,7 @@ def read_conf(): # Read schedule configuration
     btnRun['state']='normal'
     recordingmenu.entryconfig('Start new', state='normal')
     show_conf()
-    window.update_idletasks()
+    
 
     status.pack(side='bottom', fill='x')
     status.set('The schedule configuration is loaded.')
@@ -3933,7 +3973,7 @@ def show_conf(): # Show schedule configuration
     box1pha12_LD=Label(tab11, textvariable=box1pha12text, width=40, anchor=W, justify=LEFT)
     box1pha12_LD.grid(column=24,row=2,padx=2,pady=0)
 
-    window.update_idletasks()
+    
 
     box2pha1text=StringVar()
     box2pha1text.set('                                ')
@@ -3984,7 +4024,7 @@ def show_conf(): # Show schedule configuration
     box2pha12_LD=Label(tab11, textvariable=box2pha12text, width=40, anchor=W, justify=LEFT)
     box2pha12_LD.grid(column=24,row=3,padx=2,pady=0)
 
-    window.update_idletasks()
+    
 
     box3pha1text=StringVar()
     box3pha1text.set('                                ')
@@ -4035,7 +4075,7 @@ def show_conf(): # Show schedule configuration
     box3pha12_LD=Label(tab11, textvariable=box3pha12text, width=40, anchor=W, justify=LEFT)
     box3pha12_LD.grid(column=24,row=4,padx=2,pady=0)
     
-    window.update_idletasks()
+    
 
     box4pha1text=StringVar()
     box4pha1text.set('                                ')
@@ -4086,7 +4126,7 @@ def show_conf(): # Show schedule configuration
     box4pha12_LD=Label(tab11, textvariable=box4pha12text, width=40, anchor=W, justify=LEFT)
     box4pha12_LD.grid(column=24,row=5,padx=2,pady=0)
 
-    window.update_idletasks()
+   
 
     box5pha1text=StringVar()
     box5pha1text.set('                                ')
@@ -4137,331 +4177,331 @@ def show_conf(): # Show schedule configuration
     box5pha12_LD=Label(tab11, textvariable=box5pha12text, width=40, anchor=W, justify=LEFT)
     box5pha12_LD.grid(column=24,row=6,padx=2,pady=0)
 
-    window.update_idletasks()
+   
 
     #1 Phase
     if light1_1=='0' and dark1_1=='0':
         box1pha1text.set('                                ')
-        window.update_idletasks()
+        
         box1pha1text.set('From record onset'+' | '+hourOn1_1+':'+minOn1_1+' on>'+hourOff1_1+':'+minOff1_1+' off')
-        window.update_idletasks()
+       
     if light1_1=='0' and dark1_1=='1':
         box1pha1text.set('                                ')
-        window.update_idletasks()
+        
         box1pha1text.set('From record onset'+' | '+'DD')
-        window.update_idletasks()
+       
     if light1_1=='1' and dark1_1=='0':
         box1pha1text.set('                                ')
-        window.update_idletasks()
+        
         box1pha1text.set('From record onset'+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light2_1=='0' and dark2_1=='0':
         box2pha1text.set('                                ')
-        window.update_idletasks()
+        
         box2pha1text.set('From record onset'+' | '+hourOn2_1+':'+minOn2_1+' on>'+hourOff2_1+':'+minOff2_1+' off')
-        window.update_idletasks()
+       
     if light2_1=='0' and dark2_1=='1':
         box2pha1text.set('                                ')
-        window.update_idletasks()
+       
         box2pha1text.set('From record onset'+' | '+'DD')
-        window.update_idletasks()
+        
     if light2_1=='1' and dark2_1=='0':
         box2pha1text.set('                                ')
-        window.update_idletasks()
+       
         box2pha1text.set('From record onset'+' | '+'LL')
-        window.update_idletasks()
+       
 
     if light3_1=='0' and dark3_1=='0':
         box3pha1text.set('                                ')
-        window.update_idletasks()
+       
         box3pha1text.set('From record onset'+' | '+hourOn3_1+':'+minOn3_1+' on>'+hourOff3_1+':'+minOff3_1+' off')
-        window.update_idletasks()
+        
     if light3_1=='0' and dark3_1=='1':
         box3pha1text.set('                                ')
-        window.update_idletasks()
+       
         box3pha1text.set('From record onset'+' | '+'DD')
-        window.update_idletasks()
+        
     if light3_1=='1' and dark3_1=='0':
         box3pha1text.set('                                ')
-        window.update_idletasks()
+        
         box3pha1text.set('From record onset'+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light4_1=='0' and dark4_1=='0':
         box4pha1text.set('                                ')
-        window.update_idletasks()
+        
         box4pha1text.set('From record onset'+' | '+hourOn4_1+':'+minOn4_1+' on>'+hourOff4_1+':'+minOff4_1+' off')
-        window.update_idletasks()
+        
     if light4_1=='0' and dark4_1=='1':
         box4pha1text.set('                                ')
-        window.update_idletasks()
+        
         box4pha1text.set('From record onset'+' | '+'DD')
-        window.update_idletasks()
+        
     if light4_1=='1' and dark4_1=='0':
         box4pha1text.set('                                ')
-        window.update_idletasks()
+        
         box4pha1text.set('From record onset'+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light5_1=='0' and dark5_1=='0':
         box5pha1text.set('                                ')
-        window.update_idletasks()
+        
         box5pha1text.set('From record onset'+' | '+hourOn5_1+':'+minOn5_1+' on>'+hourOff5_1+':'+minOff5_1+' off')
-        window.update_idletasks()
+        
     if light5_1=='0' and dark5_1=='1':
         box5pha1text.set('                                ')
-        window.update_idletasks()
+        
         box5pha1text.set('From record onset'+' | '+'DD')
-        window.update_idletasks()
+        
     if light5_1=='1' and dark5_1=='0':
         box5pha1text.set('                                ')
-        window.update_idletasks()
+        
         box5pha1text.set('From record onset'+' | '+'LL')
-        window.update_idletasks()
+        
 
     #2 Phase
     if light1_2=='0' and dark1_2=='0':
         box1pha2text.set('                                ')
-        window.update_idletasks()
+        
         box1pha2text.set(year1_2+'/'+month1_2+'/'+date1_2+' '+hourFrom2_2+':'+minuteFrom1_2+' | '+hourOn1_2+':'+minOn1_2+' on>'+hourOff1_2+':'+minOff1_2+' off')
-        window.update_idletasks()
+        
     if light1_2=='0' and dark1_2=='1':
         box1pha2text.set('                                ')
-        window.update_idletasks()
+        
         box1pha2text.set(year1_2+'/'+month1_2+'/'+date1_2+' '+hourFrom2_2+':'+minuteFrom1_2+' | '+'DD')
-        window.update_idletasks()
+        
     if light1_2=='1' and dark1_2=='0':
         box1pha2text.set('                                ')
-        window.update_idletasks()
+        
         box1pha2text.set(year1_2+'/'+month1_2+'/'+date1_2+' '+hourFrom2_2+':'+minuteFrom1_2+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light2_2=='0' and dark2_2=='0':
         box2pha2text.set('                                ')
-        window.update_idletasks()
+        
         box2pha2text.set(year2_2+'/'+month2_2+'/'+date2_2+' '+hourFrom2_2+':'+minuteFrom2_2+' | '+hourOn2_2+':'+minOn2_2+' on>'+hourOff2_2+':'+minOff2_2+' off')
-        window.update_idletasks()
+        
     if light2_2=='0' and dark2_2=='1':
         box2pha2text.set('                                ')
-        window.update_idletasks()
+        
         box2pha2text.set(year2_2+'/'+month2_2+'/'+date2_2+' '+hourFrom2_2+':'+minuteFrom2_2+' | '+'DD')
-        window.update_idletasks()
+        
     if light2_2=='1' and dark2_2=='0':
         box2pha2text.set('                                ')
-        window.update_idletasks()
+        
         box2pha2text.set(year2_2+'/'+month2_2+'/'+date2_2+' '+hourFrom2_2+':'+minuteFrom2_2+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light3_2=='0' and dark3_2=='0':
         box3pha2text.set('                                ')
-        window.update_idletasks()
+        
         box3pha2text.set(year3_2+'/'+month3_2+'/'+date3_2+' '+hourFrom3_2+':'+minuteFrom3_2+' | '+hourOn3_2+':'+minOn3_2+' on>'+hourOff3_2+':'+minOff3_2+' off')
-        window.update_idletasks()
+        
     if light3_2=='0' and dark3_2=='1':
         box3pha2text.set('                                ')
-        window.update_idletasks()
+        
         box3pha2text.set(year3_2+'/'+month3_2+'/'+date3_2+' '+hourFrom3_2+':'+minuteFrom3_2+' | '+'DD')
-        window.update_idletasks()
+        
     if light3_2=='1' and dark3_2=='0':
         box3pha2text.set('                                ')
-        window.update_idletasks()
+        
         box3pha2text.set(year3_2+'/'+month3_2+'/'+date3_2+' '+hourFrom3_2+':'+minuteFrom3_2+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light4_2=='0' and dark4_2=='0':
         box4pha2text.set('                                ')
-        window.update_idletasks()
+        
         box4pha2text.set(year4_2+'/'+month4_2+'/'+date4_2+' '+hourFrom4_2+':'+minuteFrom4_2+' | '+hourOn4_2+':'+minOn4_2+' on>'+hourOff4_2+':'+minOff4_2+' off')
-        window.update_idletasks()
+        
     if light4_2=='0' and dark4_2=='1':
         box4pha2text.set('                                ')
-        window.update_idletasks()
+        
         box4pha2text.set(year4_2+'/'+month4_2+'/'+date4_2+' '+hourFrom4_2+':'+minuteFrom4_2+' | '+'DD')
-        window.update_idletasks()
+        
     if light4_2=='1' and dark4_2=='0':
         box4pha2text.set('                                ')
-        window.update_idletasks()
+        
         box4pha2text.set(year4_2+'/'+month4_2+'/'+date4_2+' '+hourFrom4_2+':'+minuteFrom4_2+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light5_2=='0' and dark5_2=='0':
         box5pha2text.set('                                ')
-        window.update_idletasks()
+        
         box5pha2text.set(year5_2+'/'+month5_2+'/'+date5_2+' '+hourFrom5_2+':'+minuteFrom5_2+' | '+hourOn5_2+':'+minOn5_2+' on>'+hourOff5_2+':'+minOff5_2+' off')
-        window.update_idletasks()
+        
     if light5_2=='0' and dark5_2=='1':
         box5pha2text.set('                                ')
-        window.update_idletasks()
+        
         box5pha2text.set(year5_2+'/'+month5_2+'/'+date5_2+' '+hourFrom5_2+':'+minuteFrom5_2+' | '+'DD')
-        window.update_idletasks()
+        
     if light5_2=='1' and dark5_2=='0':
         box5pha2text.set('                                ')
-        window.update_idletasks()
+        
         box5pha2text.set(year5_2+'/'+month5_2+'/'+date5_2+' '+hourFrom5_2+':'+minuteFrom5_2+' | '+'LL')
-        window.update_idletasks()
+        
 
     #3 Phase
     if light1_3=='0' and dark1_3=='0':
         box1pha3text.set('                                ')
-        window.update_idletasks()
+        
         box1pha3text.set(year1_3+'/'+month1_3+'/'+date1_3+' '+hourFrom2_3+':'+minuteFrom1_3+' | '+hourOn1_3+':'+minOn1_3+' on>'+hourOff1_3+':'+minOff1_3+' off')
-        window.update_idletasks()
+        
     if light1_3=='0' and dark1_3=='1':
         box1pha3text.set('                                ')
-        window.update_idletasks()
+        
         box1pha3text.set(year1_3+'/'+month1_3+'/'+date1_3+' '+hourFrom2_3+':'+minuteFrom1_3+' | '+'DD')
-        window.update_idletasks()
+        
     if light1_3=='1' and dark1_3=='0':
         box1pha3text.set('                                 ')
-        window.update_idletasks()
+        
         box1pha3text.set(year1_3+'/'+month1_3+'/'+date1_3+' '+hourFrom2_3+':'+minuteFrom1_3+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light2_3=='0' and dark2_3=='0':
         box2pha3text.set('                                ')
-        window.update_idletasks()
+        
         box2pha3text.set(year2_3+'/'+month2_3+'/'+date2_3+' '+hourFrom2_3+':'+minuteFrom2_3+' | '+hourOn2_3+':'+minOn2_3+' on>'+hourOff2_3+':'+minOff2_3+' off')
-        window.update_idletasks()
+        
     if light2_3=='0' and dark2_3=='1':
         box2pha3text.set('                                ')
-        window.update_idletasks()
+        
         box2pha3text.set(year2_3+'/'+month2_3+'/'+date2_3+' '+hourFrom2_3+':'+minuteFrom2_3+' | '+'DD')
-        window.update_idletasks()
+        
     if light2_3=='1' and dark2_3=='0':
         box2pha3text.set('                                 ')
-        window.update_idletasks()
+        
         box2pha3text.set(year2_3+'/'+month2_3+'/'+date2_3+' '+hourFrom2_3+':'+minuteFrom2_3+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light3_3=='0' and dark3_3=='0':
         box3pha3text.set('                                ')
-        window.update_idletasks()
+        
         box3pha3text.set(year3_3+'/'+month3_3+'/'+date3_3+' '+hourFrom3_3+':'+minuteFrom3_3+' | '+hourOn3_3+':'+minOn3_3+' on>'+hourOff3_3+':'+minOff3_3+' off')
-        window.update_idletasks()
+        
     if light3_3=='0' and dark3_3=='1':
         box3pha3text.set('                                ')
-        window.update_idletasks()
+        
         box3pha3text.set(year3_3+'/'+month3_3+'/'+date3_3+' '+hourFrom3_3+':'+minuteFrom3_3+' | '+'DD')
-        window.update_idletasks()
+        
     if light3_3=='1' and dark3_3=='0':
         box3pha3text.set('                                 ')
-        window.update_idletasks()
+        
         box3pha3text.set(year3_3+'/'+month3_3+'/'+date3_3+' '+hourFrom3_3+':'+minuteFrom3_3+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light4_3=='0' and dark4_3=='0':
         box4pha3text.set('                                ')
-        window.update_idletasks()
+        
         box4pha3text.set(year4_3+'/'+month4_3+'/'+date4_3+' '+hourFrom4_3+':'+minuteFrom4_3+' | '+hourOn4_3+':'+minOn4_3+' on>'+hourOff4_3+':'+minOff4_3+' off')
-        window.update_idletasks()
+        
     if light4_3=='0' and dark4_3=='1':
         box4pha3text.set('                                ')
-        window.update_idletasks()
+        
         box4pha3text.set(year4_3+'/'+month4_3+'/'+date4_3+' '+hourFrom4_3+':'+minuteFrom4_3+' | '+'DD')
-        window.update_idletasks()
+        
     if light4_3=='1' and dark4_3=='0':
         box4pha3text.set('                                 ')
-        window.update_idletasks()
+        
         box4pha3text.set(year4_3+'/'+month4_3+'/'+date4_3+' '+hourFrom4_3+':'+minuteFrom4_3+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light5_3=='0' and dark5_3=='0':
         box5pha3text.set('                                ')
-        window.update_idletasks()
+        
         box5pha3text.set(year5_3+'/'+month5_3+'/'+date5_3+' '+hourFrom5_3+':'+minuteFrom5_3+' | '+hourOn5_3+':'+minOn5_3+' on>'+hourOff5_3+':'+minOff5_3+' off')
-        window.update_idletasks()
+        
     if light5_3=='0' and dark5_3=='1':
         box5pha3text.set('                                ')
-        window.update_idletasks()
+        
         box5pha3text.set(year5_3+'/'+month5_3+'/'+date5_3+' '+hourFrom5_3+':'+minuteFrom5_3+' | '+'DD')
-        window.update_idletasks()
+        
     if light5_3=='1' and dark5_3=='0':
         box5pha3text.set('                                 ')
-        window.update_idletasks()
+        
         box5pha3text.set(year5_3+'/'+month5_3+'/'+date5_3+' '+hourFrom5_3+':'+minuteFrom5_3+' | '+'LL')
-        window.update_idletasks()
+        
 
     # 4 Phase
     if light1_4=='0' and dark1_4=='0':
         box1pha4text.set('                                ')
-        window.update_idletasks()
+        
         box1pha4text.set(year1_4+'/'+month1_4+'/'+date1_4+' '+hourFrom2_4+':'+minuteFrom1_4+' | '+hourOn1_4+':'+minOn1_4+' on>'+hourOff1_4+':'+minOff1_4+' off')
-        window.update_idletasks()
+        
     if light1_4=='0' and dark1_4=='1':
         box1pha4text.set('                                ')
-        window.update_idletasks()
+        
         box1pha4text.set(year1_4+'/'+month1_4+'/'+date1_4+' '+hourFrom2_4+':'+minuteFrom1_4+' | '+'DD')
-        window.update_idletasks()
+        
     if light1_4=='1' and dark1_4=='0':
         box1pha4text.set('                                 ')
-        window.update_idletasks()
+        
         box1pha4text.set(year1_4+'/'+month1_4+'/'+date1_4+' '+hourFrom2_4+':'+minuteFrom1_4+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light2_4=='0' and dark2_4=='0':
         box2pha4text.set('                                ')
-        window.update_idletasks()
+        
         box2pha4text.set(year2_4+'/'+month2_4+'/'+date2_4+' '+hourFrom2_4+':'+minuteFrom2_4+' | '+hourOn2_4+':'+minOn2_4+' on>'+hourOff2_4+':'+minOff2_4+' off')
-        window.update_idletasks()
+        
     if light2_4=='0' and dark2_4=='1':
         box2pha4text.set('                                ')
-        window.update_idletasks()
+        
         box2pha4text.set(year2_4+'/'+month2_4+'/'+date2_4+' '+hourFrom2_4+':'+minuteFrom2_4+' | '+'DD')
-        window.update_idletasks()
+        
     if light2_4=='1' and dark2_4=='0':
         box2pha4text.set('                                 ')
-        window.update_idletasks()
+        
         box2pha4text.set(year2_4+'/'+month2_4+'/'+date2_4+' '+hourFrom2_4+':'+minuteFrom2_4+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light3_4=='0' and dark3_4=='0':
         box3pha4text.set('                                ')
-        window.update_idletasks()
+        
         box3pha4text.set(year3_4+'/'+month3_4+'/'+date3_4+' '+hourFrom3_4+':'+minuteFrom3_4+' | '+hourOn3_4+':'+minOn3_4+' on>'+hourOff3_4+':'+minOff3_4+' off')
-        window.update_idletasks()
+        
     if light3_4=='0' and dark3_4=='1':
         box3pha4text.set('                                ')
-        window.update_idletasks()
+        
         box3pha4text.set(year3_4+'/'+month3_4+'/'+date3_4+' '+hourFrom3_4+':'+minuteFrom3_4+' | '+'DD')
-        window.update_idletasks()
+        
     if light3_4=='1' and dark3_4=='0':
         box3pha4text.set('                                 ')
-        window.update_idletasks()
+        
         box3pha4text.set(year3_4+'/'+month3_4+'/'+date3_4+' '+hourFrom3_4+':'+minuteFrom3_4+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light4_4=='0' and dark4_4=='0':
         box4pha4text.set('                                ')
-        window.update_idletasks()
+        
         box4pha4text.set(year4_4+'/'+month4_4+'/'+date4_4+' '+hourFrom4_4+':'+minuteFrom4_4+' | '+hourOn4_4+':'+minOn4_4+' on>'+hourOff4_4+':'+minOff4_4+' off')
-        window.update_idletasks()
+        
     if light4_4=='0' and dark4_4=='1':
         box4pha4text.set('                                ')
-        window.update_idletasks()
+        
         box4pha4text.set(year4_4+'/'+month4_4+'/'+date4_4+' '+hourFrom4_4+':'+minuteFrom4_4+' | '+'DD')
-        window.update_idletasks()
+        
     if light4_4=='1' and dark4_4=='0':
         box4pha4text.set('                                 ')
-        window.update_idletasks()
+        
         box4pha4text.set(year4_4+'/'+month4_4+'/'+date4_4+' '+hourFrom4_4+':'+minuteFrom4_4+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light5_4=='0' and dark5_4=='0':
         box5pha4text.set('                                ')
-        window.update_idletasks()
+        
         box5pha4text.set(year5_4+'/'+month5_4+'/'+date5_4+' '+hourFrom5_4+':'+minuteFrom5_4+' | '+hourOn5_4+':'+minOn5_4+' on>'+hourOff5_4+':'+minOff5_4+' off')
-        window.update_idletasks()
+        
     if light5_4=='0' and dark5_4=='1':
         box5pha4text.set('                                ')
-        window.update_idletasks()
+        
         box5pha4text.set(year5_4+'/'+month5_4+'/'+date5_4+' '+hourFrom5_4+':'+minuteFrom5_4+' | '+'DD')
-        window.update_idletasks()
+        
     if light5_4=='1' and dark5_4=='0':
         box5pha4text.set('                                 ')
-        window.update_idletasks()
+        
         box5pha4text.set(year5_4+'/'+month5_4+'/'+date5_4+' '+hourFrom5_4+':'+minuteFrom5_4+' | '+'LL')
-        window.update_idletasks()
+        
 
     
 
@@ -4469,651 +4509,651 @@ def show_conf(): # Show schedule configuration
     
     if light1_5=='0' and dark1_5=='0':
         box1pha5text.set('                                ')
-        window.update_idletasks()
+        
         box1pha5text.set(year1_5+'/'+month1_5+'/'+date1_5+' '+hourFrom2_5+':'+minuteFrom1_5+' | '+hourOn1_5+':'+minOn1_5+' on>'+hourOff1_5+':'+minOff1_5+' off')
-        window.update_idletasks()
+        
     if light1_5=='0' and dark1_5=='1':
         box1pha5text.set('                                ')
-        window.update_idletasks()
+        
         box1pha5text.set(year1_5+'/'+month1_5+'/'+date1_5+' '+hourFrom2_5+':'+minuteFrom1_5+' | '+'DD')
-        window.update_idletasks()
+        
     if light1_5=='1' and dark1_5=='0':
         box1pha5text.set('                                 ')
-        window.update_idletasks()
+        
         box1pha5text.set(year1_5+'/'+month1_5+'/'+date1_5+' '+hourFrom2_5+':'+minuteFrom1_5+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light2_5=='0' and dark2_5=='0':
         box2pha5text.set('                                ')
-        window.update_idletasks()
+        
         box2pha5text.set(year2_5+'/'+month2_5+'/'+date2_5+' '+hourFrom2_5+':'+minuteFrom2_5+' | '+hourOn2_5+':'+minOn2_5+' on>'+hourOff2_5+':'+minOff2_5+' off')
-        window.update_idletasks()
+        
     if light2_5=='0' and dark2_5=='1':
         box2pha5text.set('                                ')
-        window.update_idletasks()
+        
         box2pha5text.set(year2_5+'/'+month2_5+'/'+date2_5+' '+hourFrom2_5+':'+minuteFrom2_5+' | '+'DD')
-        window.update_idletasks()
+        
     if light2_5=='1' and dark2_5=='0':
         box2pha5text.set('                                 ')
-        window.update_idletasks()
+        
         box2pha5text.set(year2_5+'/'+month2_5+'/'+date2_5+' '+hourFrom2_5+':'+minuteFrom2_5+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light3_5=='0' and dark3_5=='0':
         box3pha5text.set('                                ')
-        window.update_idletasks()
+        
         box3pha5text.set(year3_5+'/'+month3_5+'/'+date3_5+' '+hourFrom3_5+':'+minuteFrom3_5+' | '+hourOn3_5+':'+minOn3_5+' on>'+hourOff3_5+':'+minOff3_5+' off')
-        window.update_idletasks()
+        
     if light3_5=='0' and dark3_5=='1':
         box3pha5text.set('                                ')
-        window.update_idletasks()
+        
         box3pha5text.set(year3_5+'/'+month3_5+'/'+date3_5+' '+hourFrom3_5+':'+minuteFrom3_5+' | '+'DD')
-        window.update_idletasks()
+        
     if light3_5=='1' and dark3_5=='0':
         box3pha5text.set('                                 ')
-        window.update_idletasks()
+        
         box3pha5text.set(year3_5+'/'+month3_5+'/'+date3_5+' '+hourFrom3_5+':'+minuteFrom3_5+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light4_5=='0' and dark4_5=='0':
         box4pha5text.set('                                ')
-        window.update_idletasks()
+        
         box4pha5text.set(year4_5+'/'+month4_5+'/'+date4_5+' '+hourFrom4_5+':'+minuteFrom4_5+' | '+hourOn4_5+':'+minOn4_5+' on>'+hourOff4_5+':'+minOff4_5+' off')
-        window.update_idletasks()
+        
     if light4_5=='0' and dark4_5=='1':
         box4pha5text.set('                                ')
-        window.update_idletasks()
+        
         box4pha5text.set(year4_5+'/'+month4_5+'/'+date4_5+' '+hourFrom4_5+':'+minuteFrom4_5+' | '+'DD')
-        window.update_idletasks()
+        
     if light4_5=='1' and dark4_5=='0':
         box4pha5text.set('                                 ')
-        window.update_idletasks()
+        
         box4pha5text.set(year4_5+'/'+month4_5+'/'+date4_5+' '+hourFrom4_5+':'+minuteFrom4_5+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light5_5=='0' and dark5_5=='0':
         box5pha5text.set('                                ')
-        window.update_idletasks()
+        
         box5pha5text.set(year5_5+'/'+month5_5+'/'+date5_5+' '+hourFrom5_5+':'+minuteFrom5_5+' | '+hourOn5_5+':'+minOn5_5+' on>'+hourOff5_5+':'+minOff5_5+' off')
-        window.update_idletasks()
+        
     if light5_5=='0' and dark5_5=='1':
         box5pha5text.set('                                ')
-        window.update_idletasks()
+        
         box5pha5text.set(year5_5+'/'+month5_5+'/'+date5_5+' '+hourFrom5_5+':'+minuteFrom5_5+' | '+'DD')
-        window.update_idletasks()
+        
     if light5_5=='1' and dark5_5=='0':
         box5pha5text.set('                                 ')
-        window.update_idletasks()
+        
         box5pha5text.set(year5_5+'/'+month5_5+'/'+date5_5+' '+hourFrom5_5+':'+minuteFrom5_5+' | '+'LL')
-        window.update_idletasks()
+        
 
     #6 Phase
     if light1_6=='0' and dark1_6=='0':
         box1pha6text.set('                                ')
-        window.update_idletasks()
+        
         box1pha6text.set(year1_6+'/'+month1_6+'/'+date1_6+' '+hourFrom2_6+':'+minuteFrom1_6+' | '+hourOn1_6+':'+minOn1_6+' on>'+hourOff1_6+':'+minOff1_6+' off')
-        window.update_idletasks()
+        
     if light1_6=='0' and dark1_6=='1':
         box1pha6text.set('                                ')
-        window.update_idletasks()
+        
         box1pha6text.set(year1_6+'/'+month1_6+'/'+date1_6+' '+hourFrom2_6+':'+minuteFrom1_6+' | '+'DD')
-        window.update_idletasks()
+        
     if light1_6=='1' and dark1_6=='0':
         box1pha6text.set('                                 ')
-        window.update_idletasks()
+        
         box1pha6text.set(year1_6+'/'+month1_6+'/'+date1_6+' '+hourFrom2_6+':'+minuteFrom1_6+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light2_6=='0' and dark2_6=='0':
         box2pha6text.set('                                ')
-        window.update_idletasks()
+        
         box2pha6text.set(year2_6+'/'+month2_6+'/'+date2_6+' '+hourFrom2_6+':'+minuteFrom2_6+' | '+hourOn2_6+':'+minOn2_6+' on>'+hourOff2_6+':'+minOff2_6+' off')
-        window.update_idletasks()
+        
     if light2_6=='0' and dark2_6=='1':
         box2pha6text.set('                                ')
-        window.update_idletasks()
+        
         box2pha6text.set(year2_6+'/'+month2_6+'/'+date2_6+' '+hourFrom2_6+':'+minuteFrom2_6+' | '+'DD')
-        window.update_idletasks()
+        
     if light2_6=='1' and dark2_6=='0':
         box2pha6text.set('                                 ')
-        window.update_idletasks()
+        
         box2pha6text.set(year2_6+'/'+month2_6+'/'+date2_6+' '+hourFrom2_6+':'+minuteFrom2_6+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light3_6=='0' and dark3_6=='0':
         box3pha6text.set('                                ')
-        window.update_idletasks()
+        
         box3pha6text.set(year3_6+'/'+month3_6+'/'+date3_6+' '+hourFrom3_6+':'+minuteFrom3_6+' | '+hourOn3_6+':'+minOn3_6+' on>'+hourOff3_6+':'+minOff3_6+' off')
-        window.update_idletasks()
+        
     if light3_6=='0' and dark3_6=='1':
         box3pha6text.set('                                ')
-        window.update_idletasks()
+        
         box3pha6text.set(year3_6+'/'+month3_6+'/'+date3_6+' '+hourFrom3_6+':'+minuteFrom3_6+' | '+'DD')
-        window.update_idletasks()
+        
     if light3_6=='1' and dark3_6=='0':
         box3pha6text.set('                                 ')
-        window.update_idletasks()
+        
         box3pha6text.set(year3_6+'/'+month3_6+'/'+date3_6+' '+hourFrom3_6+':'+minuteFrom3_6+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light4_6=='0' and dark4_6=='0':
         box4pha6text.set('                                ')
-        window.update_idletasks()
+        
         box4pha6text.set(year4_6+'/'+month4_6+'/'+date4_6+' '+hourFrom4_6+':'+minuteFrom4_6+' | '+hourOn4_6+':'+minOn4_6+' on>'+hourOff4_6+':'+minOff4_6+' off')
-        window.update_idletasks()
+        
     if light4_6=='0' and dark4_6=='1':
         box4pha6text.set('                                ')
-        window.update_idletasks()
+        
         box4pha6text.set(year4_6+'/'+month4_6+'/'+date4_6+' '+hourFrom4_6+':'+minuteFrom4_6+' | '+'DD')
-        window.update_idletasks()
+        
     if light4_6=='1' and dark4_6=='0':
         box4pha6text.set('                                 ')
-        window.update_idletasks()
+        
         box4pha6text.set(year4_6+'/'+month4_6+'/'+date4_6+' '+hourFrom4_6+':'+minuteFrom4_6+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light5_6=='0' and dark5_6=='0':
         box5pha6text.set('                                ')
-        window.update_idletasks()
+        
         box5pha6text.set(year5_6+'/'+month5_6+'/'+date5_6+' '+hourFrom5_6+':'+minuteFrom5_6+' | '+hourOn5_6+':'+minOn5_6+' on>'+hourOff5_6+':'+minOff5_6+' off')
-        window.update_idletasks()
+        
     if light5_6=='0' and dark5_6=='1':
         box5pha6text.set('                                ')
-        window.update_idletasks()
+        
         box5pha6text.set(year5_6+'/'+month5_6+'/'+date5_6+' '+hourFrom5_6+':'+minuteFrom5_6+' | '+'DD')
-        window.update_idletasks()
+        
     if light5_6=='1' and dark5_6=='0':
         box5pha6text.set('                                 ')
-        window.update_idletasks()
+        
         box5pha6text.set(year5_6+'/'+month5_6+'/'+date5_6+' '+hourFrom5_6+':'+minuteFrom5_6+' | '+'LL')
-        window.update_idletasks()
+        
 
     #7 Phase
     if light1_7=='0' and dark1_7=='0':
         box1pha7text.set('                                ')
-        window.update_idletasks()
+        
         box1pha7text.set(year1_7+'/'+month1_7+'/'+date1_7+' '+hourFrom2_7+':'+minuteFrom1_7+' | '+hourOn1_7+':'+minOn1_7+' on>'+hourOff1_7+':'+minOff1_7+' off')
-        window.update_idletasks()
+        
     if light1_7=='0' and dark1_7=='1':
         box1pha7text.set('                                ')
-        window.update_idletasks()
+        
         box1pha7text.set(year1_7+'/'+month1_7+'/'+date1_7+' '+hourFrom2_7+':'+minuteFrom1_7+' | '+'DD')
-        window.update_idletasks()
+        
     if light1_7=='1' and dark1_7=='0':
         box1pha7text.set('                                 ')
-        window.update_idletasks()
+        
         box1pha7text.set(year1_7+'/'+month1_7+'/'+date1_7+' '+hourFrom2_7+':'+minuteFrom1_7+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light2_7=='0' and dark2_7=='0':
         box2pha7text.set('                                ')
-        window.update_idletasks()
+        
         box2pha7text.set(year2_7+'/'+month2_7+'/'+date2_7+' '+hourFrom2_7+':'+minuteFrom2_7+' | '+hourOn2_7+':'+minOn2_7+' on>'+hourOff2_7+':'+minOff2_7+' off')
-        window.update_idletasks()
+        
     if light2_7=='0' and dark2_7=='1':
         box2pha7text.set('                                ')
-        window.update_idletasks()
+        
         box2pha7text.set(year2_7+'/'+month2_7+'/'+date2_7+' '+hourFrom2_7+':'+minuteFrom2_7+' | '+'DD')
-        window.update_idletasks()
+        
     if light2_7=='1' and dark2_7=='0':
         box2pha7text.set('                                 ')
-        window.update_idletasks()
+        
         box2pha7text.set(year2_7+'/'+month2_7+'/'+date2_7+' '+hourFrom2_7+':'+minuteFrom2_7+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light3_7=='0' and dark3_7=='0':
         box3pha7text.set('                                ')
-        window.update_idletasks()
+        
         box3pha7text.set(year3_7+'/'+month3_7+'/'+date3_7+' '+hourFrom3_7+':'+minuteFrom3_7+' | '+hourOn3_7+':'+minOn3_6+' on>'+hourOff3_7+':'+minOff3_7+' off')
-        window.update_idletasks() 
+         
     if light3_7=='0' and dark3_7=='1':
         box3pha7text.set('                                ')
-        window.update_idletasks()
+        
         box3pha7text.set(year3_7+'/'+month3_7+'/'+date3_7+' '+hourFrom3_7+':'+minuteFrom3_7+' | '+'DD')
-        window.update_idletasks()
+        
     if light3_7=='1' and dark3_7=='0':
         box3pha7text.set('                                 ')
-        window.update_idletasks()
+        
         box3pha7text.set(year3_7+'/'+month3_7+'/'+date3_7+' '+hourFrom3_7+':'+minuteFrom3_7+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light4_7=='0' and dark4_7=='0':
         box4pha7text.set('                                ')
-        window.update_idletasks()
+        
         box4pha7text.set(year4_7+'/'+month4_7+'/'+date4_7+' '+hourFrom4_7+':'+minuteFrom4_7+' | '+hourOn4_7+':'+minOn4_7+' on>'+hourOff4_7+':'+minOff4_7+' off')
-        window.update_idletasks()
+        
     if light4_7=='0' and dark4_7=='1':
         box4pha7text.set('                                ')
-        window.update_idletasks()
+        
         box4pha7text.set(year4_7+'/'+month4_7+'/'+date4_7+' '+hourFrom4_7+':'+minuteFrom4_7+' | '+'DD')
-        window.update_idletasks()
+        
     if light4_7=='1' and dark4_7=='0':
         box4pha7text.set('                                 ')
-        window.update_idletasks()
+        
         box4pha7text.set(year4_7+'/'+month4_7+'/'+date4_7+' '+hourFrom4_7+':'+minuteFrom4_7+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light5_7=='0' and dark5_7=='0':
         box5pha7text.set('                                ')
-        window.update_idletasks()
+        
         box5pha7text.set(year5_7+'/'+month5_7+'/'+date5_7+' '+hourFrom5_7+':'+minuteFrom5_7+' | '+hourOn5_7+':'+minOn5_7+' on>'+hourOff5_7+':'+minOff5_7+' off')
-        window.update_idletasks()
+        
     if light5_7=='0' and dark5_7=='1':
         box5pha7text.set('                                ')
-        window.update_idletasks()
+        
         box5pha7text.set(year5_7+'/'+month5_7+'/'+date5_7+' '+hourFrom5_7+':'+minuteFrom5_7+' | '+'DD')
-        window.update_idletasks()
+        
     if light5_7=='1' and dark5_7=='0':
         box5pha7text.set('                                 ')
-        window.update_idletasks()
+        
         box5pha7text.set(year5_7+'/'+month5_7+'/'+date5_7+' '+hourFrom5_7+':'+minuteFrom5_7+' | '+'LL')
-        window.update_idletasks()   
+           
 
     #8 Phase
     if light1_8=='0' and dark1_8=='0':
         box1pha8text.set('                                ')
-        window.update_idletasks()
+        
         box1pha8text.set(year1_8+'/'+month1_8+'/'+date1_8+' '+hourFrom2_8+':'+minuteFrom1_8+' | '+hourOn1_8+':'+minOn1_8+' on>'+hourOff1_8+':'+minOff1_8+' off')
-        window.update_idletasks()
+        
     if light1_8=='0' and dark1_8=='1':
         box1pha8text.set('                                ')
-        window.update_idletasks()
+        
         box1pha8text.set(year1_8+'/'+month1_8+'/'+date1_8+' '+hourFrom2_8+':'+minuteFrom1_8+' | '+'DD')
-        window.update_idletasks()
+        
     if light1_8=='1' and dark1_8=='0':
         box1pha8text.set('                                 ')
-        window.update_idletasks()
+        
         box1pha8text.set(year1_8+'/'+month1_8+'/'+date1_8+' '+hourFrom2_8+':'+minuteFrom1_8+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light2_8=='0' and dark2_8=='0':
         box2pha8text.set('                                ')
-        window.update_idletasks()
+        
         box2pha8text.set(year2_8+'/'+month2_8+'/'+date2_8+' '+hourFrom2_8+':'+minuteFrom2_8+' | '+hourOn2_8+':'+minOn2_8+' on>'+hourOff2_8+':'+minOff2_8+' off')
-        window.update_idletasks()
+        
     if light2_8=='0' and dark2_8=='1':
         box2pha8text.set('                                ')
-        window.update_idletasks()
+        
         box2pha8text.set(year2_8+'/'+month2_8+'/'+date2_8+' '+hourFrom2_8+':'+minuteFrom2_8+' | '+'DD')
-        window.update_idletasks()
+        
     if light2_8=='1' and dark2_8=='0':
         box2pha8text.set('                                 ')
-        window.update_idletasks()
+        
         box2pha8text.set(year2_8+'/'+month2_8+'/'+date2_8+' '+hourFrom2_8+':'+minuteFrom2_8+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light3_8=='0' and dark3_8=='0':
         box3pha8text.set('                                ')
-        window.update_idletasks()
+        
         box3pha8text.set(year3_8+'/'+month3_8+'/'+date3_8+' '+hourFrom3_8+':'+minuteFrom3_8+' | '+hourOn3_8+':'+minOn3_6+' on>'+hourOff3_8+':'+minOff3_8+' off')
-        window.update_idletasks() 
+         
     if light3_8=='0' and dark3_8=='1':
         box3pha8text.set('                                ')
-        window.update_idletasks()
+        
         box3pha8text.set(year3_8+'/'+month3_8+'/'+date3_8+' '+hourFrom3_8+':'+minuteFrom3_8+' | '+'DD')
-        window.update_idletasks()
+        
     if light3_8=='1' and dark3_8=='0':
         box3pha8text.set('                                 ')
-        window.update_idletasks()
+        
         box3pha8text.set(year3_8+'/'+month3_8+'/'+date3_8+' '+hourFrom3_8+':'+minuteFrom3_8+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light4_8=='0' and dark4_8=='0':
         box4pha8text.set('                                ')
-        window.update_idletasks()
+        
         box4pha8text.set(year4_8+'/'+month4_8+'/'+date4_8+' '+hourFrom4_8+':'+minuteFrom4_8+' | '+hourOn4_8+':'+minOn4_8+' on>'+hourOff4_8+':'+minOff4_8+' off')
-        window.update_idletasks()
+        
     if light4_8=='0' and dark4_8=='1':
         box4pha8text.set('                                ')
-        window.update_idletasks()
+        
         box4pha8text.set(year4_8+'/'+month4_8+'/'+date4_8+' '+hourFrom4_8+':'+minuteFrom4_8+' | '+'DD')
-        window.update_idletasks()
+        
     if light4_8=='1' and dark4_8=='0':
         box4pha8text.set('                                 ')
-        window.update_idletasks()
+        
         box4pha8text.set(year4_8+'/'+month4_8+'/'+date4_8+' '+hourFrom4_8+':'+minuteFrom4_8+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light5_8=='0' and dark5_8=='0':
         box5pha8text.set('                                ')
-        window.update_idletasks()
+        
         box5pha8text.set(year5_8+'/'+month5_8+'/'+date5_8+' '+hourFrom5_8+':'+minuteFrom5_8+' | '+hourOn5_8+':'+minOn5_8+' on>'+hourOff5_8+':'+minOff5_8+' off')
-        window.update_idletasks()
+        
     if light5_8=='0' and dark5_8=='1':
         box5pha8text.set('                                ')
-        window.update_idletasks()
+        
         box5pha8text.set(year5_8+'/'+month5_8+'/'+date5_8+' '+hourFrom5_8+':'+minuteFrom5_8+' | '+'DD')
-        window.update_idletasks()
+        
     if light5_8=='1' and dark5_8=='0':
         box5pha8text.set('                                 ')
-        window.update_idletasks()
+        
         box5pha8text.set(year5_8+'/'+month5_8+'/'+date5_8+' '+hourFrom5_8+':'+minuteFrom5_8+' | '+'LL')
-        window.update_idletasks()    
+            
       
     #9 Phase
     if light1_9=='0' and dark1_9=='0':
         box1pha9text.set('                                ')
-        window.update_idletasks()
+        
         box1pha9text.set(year1_9+'/'+month1_9+'/'+date1_9+' '+hourFrom2_9+':'+minuteFrom1_9+' | '+hourOn1_9+':'+minOn1_9+' on>'+hourOff1_9+':'+minOff1_9+' off')
-        window.update_idletasks()
+        
     if light1_9=='0' and dark1_9=='1':
         box1pha9text.set('                                ')
-        window.update_idletasks()
+        
         box1pha9text.set(year1_9+'/'+month1_9+'/'+date1_9+' '+hourFrom2_9+':'+minuteFrom1_9+' | '+'DD')
-        window.update_idletasks()
+        
     if light1_9=='1' and dark1_9=='0':
         box1pha9text.set('                                 ')
-        window.update_idletasks()
+        
         box1pha9text.set(year1_9+'/'+month1_9+'/'+date1_9+' '+hourFrom2_9+':'+minuteFrom1_9+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light2_9=='0' and dark2_9=='0':
         box2pha9text.set('                                ')
-        window.update_idletasks()
+        
         box2pha9text.set(year2_9+'/'+month2_9+'/'+date2_9+' '+hourFrom2_9+':'+minuteFrom2_9+' | '+hourOn2_9+':'+minOn2_9+' on>'+hourOff2_9+':'+minOff2_9+' off')
-        window.update_idletasks()
+        
     if light2_9=='0' and dark2_9=='1':
         box2pha9text.set('                                ')
-        window.update_idletasks()
+        
         box2pha9text.set(year2_9+'/'+month2_9+'/'+date2_9+' '+hourFrom2_9+':'+minuteFrom2_9+' | '+'DD')
-        window.update_idletasks()
+        
     if light2_9=='1' and dark2_9=='0':
         box2pha9text.set('                                 ')
-        window.update_idletasks()
+        
         box2pha9text.set(year2_9+'/'+month2_9+'/'+date2_9+' '+hourFrom2_9+':'+minuteFrom2_9+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light3_9=='0' and dark3_9=='0':
         box3pha9text.set('                                ')
-        window.update_idletasks()
+        
         box3pha9text.set(year3_9+'/'+month3_9+'/'+date3_9+' '+hourFrom3_9+':'+minuteFrom3_9+' | '+hourOn3_9+':'+minOn3_6+' on>'+hourOff3_9+':'+minOff3_9+' off')
-        window.update_idletasks() 
+         
     if light3_9=='0' and dark3_9=='1':
         box3pha9text.set('                                ')
-        window.update_idletasks()
+        
         box3pha9text.set(year3_9+'/'+month3_9+'/'+date3_9+' '+hourFrom3_9+':'+minuteFrom3_9+' | '+'DD')
-        window.update_idletasks()
+        
     if light3_9=='1' and dark3_9=='0':
         box3pha9text.set('                                 ')
-        window.update_idletasks()
+        
         box3pha9text.set(year3_9+'/'+month3_9+'/'+date3_9+' '+hourFrom3_9+':'+minuteFrom3_9+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light4_9=='0' and dark4_9=='0':
         box4pha9text.set('                                ')
-        window.update_idletasks()
+        
         box4pha9text.set(year4_9+'/'+month4_9+'/'+date4_9+' '+hourFrom4_9+':'+minuteFrom4_9+' | '+hourOn4_9+':'+minOn4_9+' on>'+hourOff4_9+':'+minOff4_9+' off')
-        window.update_idletasks()
+        
     if light4_9=='0' and dark4_9=='1':
         box4pha9text.set('                                ')
-        window.update_idletasks()
+        
         box4pha9text.set(year4_9+'/'+month4_9+'/'+date4_9+' '+hourFrom4_9+':'+minuteFrom4_9+' | '+'DD')
-        window.update_idletasks()
+        
     if light4_9=='1' and dark4_9=='0':
         box4pha9text.set('                                 ')
-        window.update_idletasks()
+        
         box4pha9text.set(year4_9+'/'+month4_9+'/'+date4_9+' '+hourFrom4_9+':'+minuteFrom4_9+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light5_9=='0' and dark5_9=='0':
         box5pha9text.set('                                ')
-        window.update_idletasks()
+        
         box5pha9text.set(year5_9+'/'+month5_9+'/'+date5_9+' '+hourFrom5_9+':'+minuteFrom5_9+' | '+hourOn5_9+':'+minOn5_9+' on>'+hourOff5_9+':'+minOff5_9+' off')
-        window.update_idletasks()
+        
     if light5_9=='0' and dark5_9=='1':
         box5pha9text.set('                                ')
-        window.update_idletasks()
+        
         box5pha9text.set(year5_9+'/'+month5_9+'/'+date5_9+' '+hourFrom5_9+':'+minuteFrom5_9+' | '+'DD')
-        window.update_idletasks()
+        
     if light5_9=='1' and dark5_9=='0':
         box5pha9text.set('                                 ')
-        window.update_idletasks()
+        
         box5pha9text.set(year5_9+'/'+month5_9+'/'+date5_9+' '+hourFrom5_9+':'+minuteFrom5_9+' | '+'LL')
-        window.update_idletasks()   
+           
 
     #10 Phase
     if light1_10=='0' and dark1_10=='0':
         box1pha10text.set('                                ')
-        window.update_idletasks()
+        
         box1pha10text.set(year1_10+'/'+month1_10+'/'+date1_10+' '+hourFrom2_10+':'+minuteFrom1_10+' | '+hourOn1_10+':'+minOn1_10+' on>'+hourOff1_10+':'+minOff1_10+' off')
-        window.update_idletasks()
+        
     if light1_10=='0' and dark1_10=='1':
         box1pha10text.set('                                ')
-        window.update_idletasks()
+        
         box1pha10text.set(year1_10+'/'+month1_10+'/'+date1_10+' '+hourFrom2_10+':'+minuteFrom1_10+' | '+'DD')
-        window.update_idletasks()
+        
     if light1_10=='1' and dark1_10=='0':
         box1pha10text.set('                                 ')
-        window.update_idletasks()
+        
         box1pha10text.set(year1_10+'/'+month1_10+'/'+date1_10+' '+hourFrom2_10+':'+minuteFrom1_10+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light2_10=='0' and dark2_10=='0':
         box2pha10text.set('                                ')
-        window.update_idletasks()
+        
         box2pha10text.set(year2_10+'/'+month2_10+'/'+date2_10+' '+hourFrom2_10+':'+minuteFrom2_10+' | '+hourOn2_10+':'+minOn2_10+' on>'+hourOff2_10+':'+minOff2_10+' off')
-        window.update_idletasks()
+        
     if light2_10=='0' and dark2_10=='1':
         box2pha10text.set('                                ')
-        window.update_idletasks()
+        
         box2pha10text.set(year2_10+'/'+month2_10+'/'+date2_10+' '+hourFrom2_10+':'+minuteFrom2_10+' | '+'DD')
-        window.update_idletasks()
+        
     if light2_10=='1' and dark2_10=='0':
         box2pha10text.set('                                 ')
-        window.update_idletasks()
+        
         box2pha10text.set(year2_10+'/'+month2_10+'/'+date2_10+' '+hourFrom2_10+':'+minuteFrom2_10+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light3_10=='0' and dark3_10=='0':
         box3pha10text.set('                                ')
-        window.update_idletasks()
+        
         box3pha10text.set(year3_10+'/'+month3_10+'/'+date3_10+' '+hourFrom3_10+':'+minuteFrom3_10+' | '+hourOn3_10+':'+minOn3_6+' on>'+hourOff3_10+':'+minOff3_10+' off')
-        window.update_idletasks() 
+         
     if light3_10=='0' and dark3_10=='1':
         box3pha10text.set('                                ')
-        window.update_idletasks()
+        
         box3pha10text.set(year3_10+'/'+month3_10+'/'+date3_10+' '+hourFrom3_10+':'+minuteFrom3_10+' | '+'DD')
-        window.update_idletasks()
+        
     if light3_10=='1' and dark3_10=='0':
         box3pha10text.set('                                 ')
-        window.update_idletasks()
+        
         box3pha10text.set(year3_10+'/'+month3_10+'/'+date3_10+' '+hourFrom3_10+':'+minuteFrom3_10+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light4_10=='0' and dark4_10=='0':
         box4pha10text.set('                                ')
-        window.update_idletasks()
+        
         box4pha10text.set(year4_10+'/'+month4_10+'/'+date4_10+' '+hourFrom4_10+':'+minuteFrom4_10+' | '+hourOn4_10+':'+minOn4_10+' on>'+hourOff4_10+':'+minOff4_10+' off')
-        window.update_idletasks()
+        
     if light4_10=='0' and dark4_10=='1':
         box4pha10text.set('                                ')
-        window.update_idletasks()
+        
         box4pha10text.set(year4_10+'/'+month4_10+'/'+date4_10+' '+hourFrom4_10+':'+minuteFrom4_10+' | '+'DD')
-        window.update_idletasks()
+        
     if light4_10=='1' and dark4_10=='0':
         box4pha10text.set('                                 ')
-        window.update_idletasks()
+        
         box4pha10text.set(year4_10+'/'+month4_10+'/'+date4_10+' '+hourFrom4_10+':'+minuteFrom4_10+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light5_10=='0' and dark5_10=='0':
         box5pha10text.set('                                ')
-        window.update_idletasks()
+        
         box5pha10text.set(year5_10+'/'+month5_10+'/'+date5_10+' '+hourFrom5_10+':'+minuteFrom5_10+' | '+hourOn5_10+':'+minOn5_10+' on>'+hourOff5_10+':'+minOff5_10+' off')
-        window.update_idletasks()
+        
     if light5_10=='0' and dark5_10=='1':
         box5pha10text.set('                                ')
-        window.update_idletasks()
+        
         box5pha10text.set(year5_10+'/'+month5_10+'/'+date5_10+' '+hourFrom5_10+':'+minuteFrom5_10+' | '+'DD')
-        window.update_idletasks()
+        
     if light5_10=='1' and dark5_10=='0':
         box5pha10text.set('                                 ')
-        window.update_idletasks()
+        
         box5pha10text.set(year5_10+'/'+month5_10+'/'+date5_10+' '+hourFrom5_10+':'+minuteFrom5_10+' | '+'LL')
-        window.update_idletasks()  
+          
 
     #11 Phase
     if light1_11=='0' and dark1_11=='0':
         box1pha11text.set('                                ')
-        window.update_idletasks()
+        
         box1pha11text.set(year1_11+'/'+month1_11+'/'+date1_11+' '+hourFrom2_11+':'+minuteFrom1_11+' | '+hourOn1_11+':'+minOn1_11+' on>'+hourOff1_11+':'+minOff1_11+' off')
-        window.update_idletasks()
+        
     if light1_11=='0' and dark1_11=='1':
         box1pha11text.set('                                ')
-        window.update_idletasks()
+        
         box1pha11text.set(year1_11+'/'+month1_11+'/'+date1_11+' '+hourFrom2_11+':'+minuteFrom1_11+' | '+'DD')
-        window.update_idletasks()
+        
     if light1_11=='1' and dark1_11=='0':
         box1pha11text.set('                                 ')
-        window.update_idletasks()
+        
         box1pha11text.set(year1_11+'/'+month1_11+'/'+date1_11+' '+hourFrom2_11+':'+minuteFrom1_11+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light2_11=='0' and dark2_11=='0':
         box2pha11text.set('                                ')
-        window.update_idletasks()
+        
         box2pha11text.set(year2_11+'/'+month2_11+'/'+date2_11+' '+hourFrom2_11+':'+minuteFrom2_11+' | '+hourOn2_11+':'+minOn2_11+' on>'+hourOff2_11+':'+minOff2_11+' off')
-        window.update_idletasks()
+        
     if light2_11=='0' and dark2_11=='1':
         box2pha11text.set('                                ')
-        window.update_idletasks()
+        
         box2pha11text.set(year2_11+'/'+month2_11+'/'+date2_11+' '+hourFrom2_11+':'+minuteFrom2_11+' | '+'DD')
-        window.update_idletasks()
+        
     if light2_11=='1' and dark2_11=='0':
         box2pha11text.set('                                 ')
-        window.update_idletasks()
+        
         box2pha11text.set(year2_11+'/'+month2_11+'/'+date2_11+' '+hourFrom2_11+':'+minuteFrom2_11+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light3_11=='0' and dark3_11=='0':
         box3pha11text.set('                                ')
-        window.update_idletasks()
+        
         box3pha11text.set(year3_11+'/'+month3_11+'/'+date3_11+' '+hourFrom3_11+':'+minuteFrom3_11+' | '+hourOn3_11+':'+minOn3_6+' on>'+hourOff3_11+':'+minOff3_11+' off')
-        window.update_idletasks() 
+         
     if light3_11=='0' and dark3_11=='1':
         box3pha11text.set('                                ')
-        window.update_idletasks()
+        
         box3pha11text.set(year3_11+'/'+month3_11+'/'+date3_11+' '+hourFrom3_11+':'+minuteFrom3_11+' | '+'DD')
-        window.update_idletasks()
+        
     if light3_11=='1' and dark3_11=='0':
         box3pha11text.set('                                 ')
-        window.update_idletasks()
+        
         box3pha11text.set(year3_11+'/'+month3_11+'/'+date3_11+' '+hourFrom3_11+':'+minuteFrom3_11+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light4_11=='0' and dark4_11=='0':
         box4pha11text.set('                                ')
-        window.update_idletasks()
+        
         box4pha11text.set(year4_11+'/'+month4_11+'/'+date4_11+' '+hourFrom4_11+':'+minuteFrom4_11+' | '+hourOn4_11+':'+minOn4_11+' on>'+hourOff4_11+':'+minOff4_11+' off')
-        window.update_idletasks()
+        
     if light4_11=='0' and dark4_11=='1':
         box4pha11text.set('                                ')
-        window.update_idletasks()
+        
         box4pha11text.set(year4_11+'/'+month4_11+'/'+date4_11+' '+hourFrom4_11+':'+minuteFrom4_11+' | '+'DD')
-        window.update_idletasks()
+        
     if light4_11=='1' and dark4_11=='0':
         box4pha11text.set('                                 ')
-        window.update_idletasks()
+        
         box4pha11text.set(year4_11+'/'+month4_11+'/'+date4_11+' '+hourFrom4_11+':'+minuteFrom4_11+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light5_11=='0' and dark5_11=='0':
         box5pha11text.set('                                ')
-        window.update_idletasks()
+        
         box5pha11text.set(year5_11+'/'+month5_11+'/'+date5_11+' '+hourFrom5_11+':'+minuteFrom5_11+' | '+hourOn5_11+':'+minOn5_11+' on>'+hourOff5_11+':'+minOff5_11+' off')
-        window.update_idletasks()
+        
     if light5_11=='0' and dark5_11=='1':
         box5pha11text.set('                                ')
-        window.update_idletasks()
+        
         box5pha11text.set(year5_11+'/'+month5_11+'/'+date5_11+' '+hourFrom5_11+':'+minuteFrom5_11+' | '+'DD')
-        window.update_idletasks()
+        
     if light5_11=='1' and dark5_11=='0':
         box5pha11text.set('                                 ')
-        window.update_idletasks()
+        
         box5pha11text.set(year5_11+'/'+month5_11+'/'+date5_11+' '+hourFrom5_11+':'+minuteFrom5_11+' | '+'LL')
-        window.update_idletasks()  
+          
 
     #12 Phase
     if light1_12=='0' and dark1_12=='0':
         box1pha12text.set('                                ')
-        window.update_idletasks()
+        
         box1pha12text.set(year1_12+'/'+month1_12+'/'+date1_12+' '+hourFrom2_12+':'+minuteFrom1_12+' | '+hourOn1_12+':'+minOn1_12+' on>'+hourOff1_12+':'+minOff1_12+' off')
-        window.update_idletasks()
+        
     if light1_12=='0' and dark1_12=='1':
         box1pha12text.set('                                ')
-        window.update_idletasks()
+        
         box1pha12text.set(year1_12+'/'+month1_12+'/'+date1_12+' '+hourFrom2_12+':'+minuteFrom1_12+' | '+'DD')
-        window.update_idletasks()
+        
     if light1_12=='1' and dark1_12=='0':
         box1pha12text.set('                                 ')
-        window.update_idletasks()
+        
         box1pha12text.set(year1_12+'/'+month1_12+'/'+date1_12+' '+hourFrom2_12+':'+minuteFrom1_12+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light2_12=='0' and dark2_12=='0':
         box2pha12text.set('                                ')
-        window.update_idletasks()
+        
         box2pha12text.set(year2_12+'/'+month2_12+'/'+date2_12+' '+hourFrom2_12+':'+minuteFrom2_12+' | '+hourOn2_12+':'+minOn2_12+' on>'+hourOff2_12+':'+minOff2_12+' off')
-        window.update_idletasks()
+        
     if light2_12=='0' and dark2_12=='1':
         box2pha12text.set('                                ')
-        window.update_idletasks()
+        
         box2pha12text.set(year2_12+'/'+month2_12+'/'+date2_12+' '+hourFrom2_12+':'+minuteFrom2_12+' | '+'DD')
-        window.update_idletasks()
+        
     if light2_12=='1' and dark2_12=='0':
         box2pha12text.set('                                 ')
-        window.update_idletasks()
+        
         box2pha12text.set(year2_12+'/'+month2_12+'/'+date2_12+' '+hourFrom2_12+':'+minuteFrom2_12+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light3_12=='0' and dark3_12=='0':
         box3pha12text.set('                                ')
-        window.update_idletasks()
+        
         box3pha12text.set(year3_12+'/'+month3_12+'/'+date3_12+' '+hourFrom3_12+':'+minuteFrom3_12+' | '+hourOn3_12+':'+minOn3_6+' on>'+hourOff3_12+':'+minOff3_12+' off')
-        window.update_idletasks() 
+         
     if light3_12=='0' and dark3_12=='1':
         box3pha12text.set('                                ')
-        window.update_idletasks()
+        
         box3pha12text.set(year3_12+'/'+month3_12+'/'+date3_12+' '+hourFrom3_12+':'+minuteFrom3_12+' | '+'DD')
-        window.update_idletasks()
+        
     if light3_12=='1' and dark3_12=='0':
         box3pha12text.set('                                 ')
-        window.update_idletasks()
+        
         box3pha12text.set(year3_12+'/'+month3_12+'/'+date3_12+' '+hourFrom3_12+':'+minuteFrom3_12+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light4_12=='0' and dark4_12=='0':
         box4pha12text.set('                                ')
-        window.update_idletasks()
+        
         box4pha12text.set(year4_12+'/'+month4_12+'/'+date4_12+' '+hourFrom4_12+':'+minuteFrom4_12+' | '+hourOn4_12+':'+minOn4_12+' on>'+hourOff4_12+':'+minOff4_12+' off')
-        window.update_idletasks()
+        
     if light4_12=='0' and dark4_12=='1':
         box4pha12text.set('                                ')
-        window.update_idletasks()
+        
         box4pha12text.set(year4_12+'/'+month4_12+'/'+date4_12+' '+hourFrom4_12+':'+minuteFrom4_12+' | '+'DD')
-        window.update_idletasks()
+        
     if light4_12=='1' and dark4_12=='0':
         box4pha12text.set('                                 ')
-        window.update_idletasks()
+        
         box4pha12text.set(year4_12+'/'+month4_12+'/'+date4_12+' '+hourFrom4_12+':'+minuteFrom4_12+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light5_12=='0' and dark5_12=='0':
         box5pha12text.set('                                ')
-        window.update_idletasks()
+        
         box5pha12text.set(year5_12+'/'+month5_12+'/'+date5_12+' '+hourFrom5_12+':'+minuteFrom5_12+' | '+hourOn5_12+':'+minOn5_12+' on>'+hourOff5_12+':'+minOff5_12+' off')
-        window.update_idletasks()
+        
     if light5_12=='0' and dark5_12=='1':
         box5pha12text.set('                                ')
-        window.update_idletasks()
+        
         box5pha12text.set(year5_12+'/'+month5_12+'/'+date5_12+' '+hourFrom5_12+':'+minuteFrom5_12+' | '+'DD')
-        window.update_idletasks()
+        
     if light5_12=='1' and dark5_12=='0':
         box5pha12text.set('                                 ')
-        window.update_idletasks()
+        
         box5pha12text.set(year5_12+'/'+month5_12+'/'+date5_12+' '+hourFrom5_12+':'+minuteFrom5_12+' | '+'LL')
-        window.update_idletasks()  
-     
+        
+    window.update_idletasks()   
 
     
 
@@ -6993,10 +7033,16 @@ if __name__ == '__main__':
     log_text.set(first_log)
     
     #log_display=Label(f2, textvariable=log_text, anchor='center', justify=LEFT)
-    log_display = tkscrolled.ScrolledText(f2, height=10, width=100, bg = 'grey')
+    log_display = tkscrolled.ScrolledText(f2, height=10, width=50, bg = 'grey')
     log_display.config(state="normal")
     log_display.insert(tk.END, first_log)
     log_display.config(state="disabled")
+
+
+    acto_display = tkscrolled.ScrolledText(f2, height=10, width=50, bg = 'grey')
+    acto_display.config(state="normal")
+    acto_display.insert(tk.END, first_log)
+    acto_display.config(state="disabled")
 
     #f2scrollbar=Scrollbar(log_display,orient="vertical", command=log_display.yview)
     #f2scrollbar.pack(side="right",fill="y")
@@ -7006,7 +7052,8 @@ if __name__ == '__main__':
     
     tab1_title2.pack()#place(x=40, y=yupperbtns )
     boxsched_stat.pack()#.place(x=40, y=yupperbtns+20)        
-    log_display.pack()
+    log_display.pack(side = LEFT,ipadx=6)
+    acto_display.pack(side = RIGHT,ipadx=6)
     boxrec_stat.pack()#.place(x=40, y=yupperbtns+40)
     #log_stream.getvalue()
 

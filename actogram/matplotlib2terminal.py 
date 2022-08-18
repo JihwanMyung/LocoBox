@@ -1,15 +1,4 @@
-
-# coding: utf-8
-
-import pandas as pd
 import numpy as np
-import matplotlib.pylab as plt
-import matplotlib
-import matplotlib.animation as animation
-import datetime as dt
-import matplotlib.dates as md
-from numpy import arange
-#matplotlib.use('module://drawilleplot')
 import PIL
 from io import BytesIO
 import matplotlib.pyplot as plt
@@ -70,35 +59,3 @@ def plt_to_text(plt_fig=None,width=144,vscale=0.96,colorful=True,invert=False,cr
         # For loop is important for printing lines, otherwise breaks appear.
         for line in out_str.splitlines():
             print(line)
-
-y_stepsize = 10
-
-plt.ion()
-fig, ax = plt.subplots()
-ax.set_yticks(np.arange(1.0, 50.0, y_stepsize))
-ax.xaxis.set_major_locator(md.DayLocator())
-ax.xaxis.set_minor_locator(md.HourLocator(arange(0, 25, 1)))
-ax.xaxis.set_minor_formatter(md.DateFormatter('%H:%M:%S'))
-ax.xaxis.set_major_formatter(md.DateFormatter('%m/%d/%Y'))
-
-i = 1
-while True:
-    df = pd.read_table('/home/zow/LocoBox/actogram/test3.txt', sep='\s+', skiprows=12, index_col=None)
-    # print(df)
-    df.index = pd.to_datetime(df['MO/DY/YEAR']+' ' + df['HH:MM:SS'],
-                              format="%m/%d/%Y %H:%M:%S")
-    # df['PIR01'][:i].plot(ax = ax)
-    x = df.index[:i]
-    y = df['PIR01'][:i]
-    ax.plot(x, y, color='blue')
-    if i % 20 == 0:
-        ax.clear()
-        x = df.index[:(i+10)]
-        y = df['PIR01'][:i+10]
-    plt.draw()
-    # plt.savefig('gif/books_read'+str(i)+'.png')
-    plt.pause(0.00001)
-    i += 1
-
-
-plt.show()
