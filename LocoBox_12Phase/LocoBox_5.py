@@ -528,7 +528,7 @@ def get_values_for_actogram():
         box_id = 9
     elif tab == 5 or tab == 'Box5':
         box_id = 11
-    print(log_mat)
+    
 
     for counti in range(1,120):
         if log_mat[counti % 120,0] == '':
@@ -545,8 +545,14 @@ def get_values_for_actogram():
 
 def plot_ascii(x,y):
     fig = tpl.figure()
-    fig.plot(x, y, label="PIR1", width=50, height=15)
+    fig.plot(x, y, label="PIR1",ylim =(0,50), width=50, height=15)
+    ascii_p = fig.get_string()
     fig.show()
+    acto_text.set(ascii_p)
+    acto_display.config(state="normal")
+    acto_display.delete('1.0','end')
+    acto_display.insert(tk.END, ascii_p)
+    acto_display.config(state="disabled")
 
  
 
@@ -704,6 +710,7 @@ def on_tab_change_trigger( event):
     log_display.config(state="normal")
     log_display.delete('1.0','end')
     restore_history(log_text, log_mat, tab)
+    get_values_for_actogram()
 
 
 
@@ -7033,13 +7040,19 @@ if __name__ == '__main__':
     log_text.set(first_log)
     
     #log_display=Label(f2, textvariable=log_text, anchor='center', justify=LEFT)
-    log_display = tkscrolled.ScrolledText(f2, height=10, width=50, bg = 'grey')
+    log_display = tkscrolled.ScrolledText(f2, height=20, width=50, bg = 'grey')
     log_display.config(state="normal")
     log_display.insert(tk.END, first_log)
     log_display.config(state="disabled")
 
 
-    acto_display = tkscrolled.ScrolledText(f2, height=10, width=50, bg = 'grey')
+    #ACTOGRAM ASCII DISPLAY
+
+    acto_text = StringVar()
+    acto_text.set(first_log)
+
+
+    acto_display = tkscrolled.ScrolledText(f2, height=20, width=50, bg = 'grey')
     acto_display.config(state="normal")
     acto_display.insert(tk.END, first_log)
     acto_display.config(state="disabled")
