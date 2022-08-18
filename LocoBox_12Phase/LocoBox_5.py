@@ -545,7 +545,7 @@ def get_values_for_actogram():
 
 def plot_ascii(x,y):
     fig = tpl.figure()
-    fig.plot(x, y, label="PIR1",ylim =(0,50), width=50, height=15)
+    fig.plot(x, y, label="PIR1",ylim =(0,200), width=50, height=15) # xlim = (0,120),
     ascii_p = fig.get_string()
     fig.show()
     acto_text.set(ascii_p)
