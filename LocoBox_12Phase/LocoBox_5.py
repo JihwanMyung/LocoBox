@@ -204,7 +204,7 @@ def destruct(): # Quit the program
 def get_data(istate=0): # Start recording
     status.pack(side='bottom', fill='x')
     status.set('Starting the recording...')
-    boxrec_text.set('Preparing for recording.')
+    #boxrec_text.set('Preparing for recording.')
     
     window.update_idletasks()
     i=istate
