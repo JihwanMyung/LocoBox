@@ -645,25 +645,25 @@ def on_tab_change( counti, string2):
     if tab == 1:
 
         phase_id = get_phase(1)
-        boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) +'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
+        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) +'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]))
     elif tab == 2:
         phase_id = get_phase(2)
-        boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
+        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]))
 
     elif tab == 3:
         phase_id = get_phase(3)
-        boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
+        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,6])+'    '+'PIR: '+str(log_mat[counti % 120,7]))
                
     elif tab == 4:
         phase_id = get_phase(4)
-        boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
+        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]))
     elif tab == 5:
         phase_id = get_phase(5)
-        boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
 
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]))
     #log_display.config(state="normal")
@@ -683,12 +683,12 @@ def on_tab_change_trigger( event):
     
     if tab == 'Box1':
         phase_id = get_phase(1)
-        boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
+        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]))
         
     elif tab == 'Box2':
         phase_id = get_phase(2)
-        boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
+        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
 
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]))
         
@@ -696,16 +696,16 @@ def on_tab_change_trigger( event):
     elif tab == 'Box3':
 
         phase_id = get_phase(3)
-        boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
+        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
 
     elif tab == 'Box4':
 
         phase_id = get_phase(4)
-        boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
+        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]))
     elif tab == 'Box5':
         phase_id = get_phase(5)
-        boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
 
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]))
     log_display.config(state="normal")
@@ -3780,12 +3780,7 @@ def read_conf(): # Read schedule configuration
     status.pack(side='bottom', fill='x')
     status.set('The schedule configuration is loaded.')
 
-    boxsched_text.set('Schedules loaded.')
-    box1sched_text.set('Box1 schedule loaded.')
-    box2sched_text.set('Box2 schedule loaded.')
-    box3sched_text.set('Box3 schedule loaded.')
-    box4sched_text.set('Box4 schedule loaded.')
-    box5sched_text.set('Box5 schedule loaded.')
+ 
     
     window.update_idletasks()
 
@@ -5198,7 +5193,7 @@ def disconnect():  # close the serial_obj thread
     print(threading.enumerate())
     status.pack(side='bottom', fill='x')
     status.set('Stopped recording and disconnected from the boxes.')
-    boxrec_text.set('Recording stopped.')
+   
     
     
     window.update_idletasks()
@@ -5468,8 +5463,7 @@ def getBox1Schedule():
 
     status.pack(side='bottom', fill='x')
     status.set('Box1 schedule is set.')
-    boxsched_text.set('Box1 schedule set.')
-    box1sched_text.set('Box1 schedule set.')
+    
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
         btnRun['state']='normal'  
@@ -5959,8 +5953,7 @@ def getBox3Schedule():
     status.pack(side='bottom', fill='x')
     status.set('Box3 schedule is set.')
     
-    boxsched_text.set('Box3 schedule set.')
-    box3sched_text.set('Box3 schedule set.')
+    
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
         btnRun['state']='normal'
@@ -6204,8 +6197,7 @@ def getBox4Schedule():
 
     status.pack(side='bottom', fill='x')
     status.set('Box4 schedule is set.')
-    boxsched_text.set('Box4 schedule set.')
-    box4sched_text.set('Box4 schedule set.')
+    
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
         btnRun['state']='normal'
@@ -6446,8 +6438,7 @@ def getBox5Schedule():
 
     status.pack(side='bottom', fill='x')
     status.set('Box5 schedule is set.')
-    boxsched_text.set('Box5 schedule set.')
-    box5sched_text.set('Box5 schedule set.')
+    
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
         btnRun['state']='normal'
@@ -6466,7 +6457,7 @@ def getAllBoxSchedule():
     getBox4Schedule()
     getBox5Schedule()
 
-    boxsched_text.set('All schedules set.')
+  
 
 
     today=datetime.date.today()
@@ -7029,19 +7020,17 @@ if __name__ == '__main__':
 
     #SHOW STATUS
     
-    boxsched_text=StringVar()
-    boxsched_text.set('Schedule not set.')
-    boxsched_stat=Label(f2, textvariable=boxsched_text, anchor=W, justify=LEFT)    
     
-    boxrec_text=StringVar()
-    boxrec_text.set('Recording not started yet.')
+    #boxsched_stat=Label(f2, textvariable=boxsched_text, anchor=W, justify=LEFT)    
+    
+   
 
     log_text = StringVar()
     first_log = ''
     log_text.set(first_log)
     
     #log_display=Label(f2, textvariable=log_text, anchor='center', justify=LEFT)
-    log_display = tkscrolled.ScrolledText(f2, height=20, width=50, bg = 'grey')
+    log_display = tkscrolled.ScrolledText(f2, height=20, width=80, bg = 'grey')
     log_display.config(state="normal")
     log_display.insert(tk.END, first_log)
     log_display.config(state="disabled")
@@ -7062,13 +7051,13 @@ if __name__ == '__main__':
     #f2scrollbar.pack(side="right",fill="y")
     #log_display.config(yscrollcommand=f2scrollbar.set)
 
-    boxrec_stat=Label(f2, textvariable=boxrec_text, anchor='center', justify=LEFT)
+    #boxrec_stat=Label(f2, textvariable=boxrec_text, anchor='center', justify=LEFT)
     
     
-    boxsched_stat.pack()#.place(x=40, y=yupperbtns+20)        
-    log_display.pack(side = LEFT,ipadx=6)
+    #boxsched_stat.pack()#.place(x=40, y=yupperbtns+20)        
+    log_display.pack(side = LEFT)
     acto_display.pack(side = RIGHT,ipadx=6)
-    boxrec_stat.pack()#.place(x=40, y=yupperbtns+40)
+    #boxrec_stat.pack()#.place(x=40, y=yupperbtns+40)
     #log_stream.getvalue()
 
     window.update_idletasks()
