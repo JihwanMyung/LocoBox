@@ -6814,7 +6814,7 @@ if __name__ == '__main__':
     menu.add_cascade(label='Help', menu=aboutmenu)
     window.config(menu=menu)
     #Window 900x550
-    f1 = tk.Frame(window,  width=900,height=270)
+    f1 = tk.Frame(window,  width=900,height=160)
     f2 = tk.Frame(window,  width=900, height=250)
     f3 = tk.Frame(window, width=900, height=70)
     canvas_status = Canvas(f2, width=900, height=250)
@@ -6864,14 +6864,14 @@ if __name__ == '__main__':
     # canvas1.pack(side=LEFT,expand=True,fill=BOTH)
     canvas1.config(yscrollcommand=scroll1.set, xscrollcommand=scrollx1.set)
     
-    tab1 = Frame(canvas1, width=200, height=300)#, highlightbackground="black", highlightthickness=1
+    tab1 = Frame(canvas1, width=200, height=150)#, highlightbackground="black", highlightthickness=1
     tab1.bind(
     "<Configure>",
     lambda e: canvas1.configure(
         scrollregion=canvas1.bbox("all")
         )
     )
-    canvas1.create_window(400, 175, window=tab1)
+    canvas1.create_window(400, 155, window=tab1)
 
 #tab2
     canvas2 = Canvas(ParentFrame2, width=850, height=150)
@@ -6885,7 +6885,7 @@ if __name__ == '__main__':
     # scrollx2.pack(expand=1, fill=X, side=BOTTOM)
     # scroll2.pack(side = RIGHT, fill = Y, expand=1)
     # canvas2.pack(side=LEFT,expand=True,fill=BOTH)
-    tab2 = Frame(canvas2, width=200, height=300)
+    tab2 = Frame(canvas2, width=200, height=150)
     tab2.bind(
     "<Configure>",
     lambda e: canvas2.configure(
@@ -6906,7 +6906,7 @@ if __name__ == '__main__':
     # canvas3.pack(side=LEFT,expand=True,fill=BOTH)
     scrollx3.grid(row=1, column=0, sticky='ew')
     canvas3.config(yscrollcommand=scroll3.set, xscrollcommand=scrollx3.set)
-    tab3 = Frame(canvas3, width=200, height=300)
+    tab3 = Frame(canvas3, width=200, height=150)
     tab3.bind(
     "<Configure>",
     lambda e: canvas3.configure(
@@ -6927,7 +6927,7 @@ if __name__ == '__main__':
     #scrollx4.pack(expand=1, fill=X, side=BOTTOM)
     #scroll4.pack(side = RIGHT, fill = Y, expand=1)
     #canvas4.pack(side=LEFT,expand=True,fill=BOTH)
-    tab4 = Frame(canvas4, width=200, height=300)
+    tab4 = Frame(canvas4, width=200, height=150)
     tab4.bind(
     "<Configure>",
     lambda e: canvas4.configure(
@@ -6948,7 +6948,7 @@ if __name__ == '__main__':
     # scroll5.pack(side = RIGHT, fill = Y, expand=1)
     # canvas5.pack(side=LEFT,expand=True,fill=BOTH)
     canvas5.config(yscrollcommand=scroll5.set, xscrollcommand=scrollx5.set)
-    tab5 = Frame(canvas5, width=200, height=300)
+    tab5 = Frame(canvas5, width=200, height=150)
     tab5.bind(
     "<Configure>",
     lambda e: canvas5.configure(
@@ -6964,7 +6964,7 @@ if __name__ == '__main__':
     
    
     canvas11.config(xscrollcommand=scroll11.set )
-    tab11 = Frame(canvas11, width=200, height=300)#, highlightbackground="black", highlightthickness=1
+    tab11 = Frame(canvas11, width=200, height=150)#, highlightbackground="black", highlightthickness=1
     tab11.bind(
     "<Configure>",
     lambda e: canvas11.configure(
