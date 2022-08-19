@@ -21,8 +21,17 @@ import threading # To run Arduino loop and tkinter loop alongside
 import serial.tools.list_ports # For identifying Arduino port
 from BoxSchedule import BoxSchedule, PhaseSchedule, getDarkLightValue, inverseDarkLightValue
 import numpy as np
-import termplotlib as tpl
+
 import traceback
+import matplotlib.pyplot as plt
+import matplotlib
+from matplotlib.backends.backend_tkagg import (
+    FigureCanvasTkAgg,
+    NavigationToolbar2Tk
+)
+import pandas as pd
+matplotlib.use('TkAgg')
+
 
 
 
@@ -7030,33 +7039,52 @@ if __name__ == '__main__':
     log_text.set(first_log)
     
     #log_display=Label(f2, textvariable=log_text, anchor='center', justify=LEFT)
-    log_display = tkscrolled.ScrolledText(f2, height=20, width=80, bg = 'grey')
+    log_display = tkscrolled.ScrolledText(f2, height=20, width=70, bg = 'grey')
     log_display.config(state="normal")
     log_display.insert(tk.END, first_log)
     log_display.config(state="disabled")
 
 
     #ACTOGRAM ASCII DISPLAY
+    #display as double plot using time series
+    df = pd.read_table('/home/zow/LocoBox/actogram/test3.txt', sep='\s+', skiprows=12, index_col=None)
 
-    acto_text = StringVar()
-    acto_text.set(first_log)
 
+    x = df.index
+    y = df['PIR01']
 
-    acto_display = tkscrolled.ScrolledText(f2, height=20, width=50, bg = 'grey')
-    acto_display.config(state="normal")
-    acto_display.insert(tk.END, first_log)
-    acto_display.config(state="disabled")
+    
 
-    #f2scrollbar=Scrollbar(log_display,orient="vertical", command=log_display.yview)
-    #f2scrollbar.pack(side="right",fill="y")
-    #log_display.config(yscrollcommand=f2scrollbar.set)
+    
+    # create a figure
+    figure = plt.Figure(figsize=(2, 2), dpi=100)
 
-    #boxrec_stat=Label(f2, textvariable=boxrec_text, anchor='center', justify=LEFT)
+    # create FigureCanvasTkAgg object
+    figure_canvas = FigureCanvasTkAgg(figure, f2)
+
+    # create the toolbar
+    #NavigationToolbar2Tk(figure_canvas,f2)
+
+    # create axes
+    axes = figure.add_subplot()
+
+    # create the barchart
+    axes.bar(x,y)
+    axes.set_title('Actogram')
+    axes.set_ylabel('Days')
+    figure_canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=1)
+   
+   
+
     
     
-    #boxsched_stat.pack()#.place(x=40, y=yupperbtns+20)        
+   
+   
+
+
+    
     log_display.pack(side = LEFT)
-    acto_display.pack(side = RIGHT,ipadx=6)
+    
     #boxrec_stat.pack()#.place(x=40, y=yupperbtns+40)
     #log_stream.getvalue()
 
