@@ -6861,7 +6861,7 @@ if __name__ == '__main__':
 
     #tab1
 
-    canvas1 = Canvas(ParentFrame1, width=850, height=300, scrollregion=(0,0,850,300)) #, highlightbackground="red", highlightthickness=2
+    canvas1 = Canvas(ParentFrame1, width=850, height=150, scrollregion=(0,0,850,300)) #, highlightbackground="red", highlightthickness=2
     scroll1 = Scrollbar(ParentFrame1, orient=VERTICAL, command=canvas1.yview)
     scrollx1 = Scrollbar(ParentFrame1, orient=HORIZONTAL, command=canvas1.xview)
     scrollx1.grid(row=1, column=0, sticky=tk.EW)    
@@ -6882,7 +6882,7 @@ if __name__ == '__main__':
     canvas1.create_window(400, 175, window=tab1)
 
 #tab2
-    canvas2 = Canvas(ParentFrame2, width=850, height=300)
+    canvas2 = Canvas(ParentFrame2, width=850, height=150)
     canvas2.grid(row=0, column=0)
     scroll2 = Scrollbar(ParentFrame2, orient=VERTICAL, command=canvas2.yview)
     
@@ -6904,7 +6904,7 @@ if __name__ == '__main__':
     canvas2.create_window(400, 175, window=tab2)
 
 #tab3
-    canvas3 = Canvas(ParentFrame3, width=850, height=300)
+    canvas3 = Canvas(ParentFrame3, width=850, height=150)
     scroll3 = Scrollbar(ParentFrame3, orient=VERTICAL, command=canvas3.yview)
     canvas3.grid(row=0, column=0)
     scroll3.grid(row=0, column=1, sticky='ns')
@@ -6925,7 +6925,7 @@ if __name__ == '__main__':
 
 
 #tab 4 
-    canvas4 = Canvas(ParentFrame4, width=850, height=300)
+    canvas4 = Canvas(ParentFrame4, width=850, height=150)
     scroll4 = Scrollbar(ParentFrame4, orient=VERTICAL, command=canvas4.yview)
     canvas4.grid(row=0, column=0)
     scroll4.grid(row=0, column=1, sticky='ns')
@@ -6946,7 +6946,7 @@ if __name__ == '__main__':
 
 
 #tab 5
-    canvas5 = Canvas(ParentFrame5, width=850, height=300)
+    canvas5 = Canvas(ParentFrame5, width=850, height=150)
     scroll5 = Scrollbar(ParentFrame5, orient=VERTICAL, command=canvas5.yview)
     canvas5.grid(row=0, column=0)
     scroll5.grid(row=0, column=1, sticky='ns')
@@ -6965,7 +6965,7 @@ if __name__ == '__main__':
     )
     canvas5.create_window(400, 175, window=tab5)
     
-    canvas11 = Canvas(ParentFrame11, width=850, height=300) #, highlightbackground="red", highlightthickness=2
+    canvas11 = Canvas(ParentFrame11, width=850, height=150) #, highlightbackground="red", highlightthickness=2
     scroll11 = Scrollbar(ParentFrame11, orient=HORIZONTAL, command=canvas11.xview)
     canvas11.grid(row=0, column=0)
     scroll11.grid(row=1, column=0, sticky='ew')
