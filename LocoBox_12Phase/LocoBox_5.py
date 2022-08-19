@@ -544,15 +544,16 @@ def get_values_for_actogram():
     plot_ascii(indices, pirs)
 
 def plot_ascii(x,y):
-    fig = tpl.figure()
-    fig.plot(x, y, label="PIR1",ylim =(0,200), width=50, height=15) # xlim = (0,120),
-    ascii_p = fig.get_string()
-    fig.show()
-    acto_text.set(ascii_p)
-    acto_display.config(state="normal")
-    acto_display.delete('1.0','end')
-    acto_display.insert(tk.END, ascii_p)
-    acto_display.config(state="disabled")
+    pass
+    # fig = tpl.figure()
+    # fig.plot(x, y, label="PIR1",ylim =(0,200), width=50, height=15) # xlim = (0,120),
+    # ascii_p = fig.get_string()
+    # fig.show()
+    # acto_text.set(ascii_p)
+    # acto_display.config(state="normal")
+    # acto_display.delete('1.0','end')
+    # acto_display.insert(tk.END, ascii_p)
+    # acto_display.config(state="disabled")
 
  
 
@@ -7027,7 +7028,7 @@ if __name__ == '__main__':
     configfilename_entry.insert(0,'BOX1-5-sched-'+date_string+'.json')
 
     #SHOW STATUS
-    tab1_title2 = Label(f2, text= 'Recording status', anchor='center')    
+    
     boxsched_text=StringVar()
     boxsched_text.set('Schedule not set.')
     boxsched_stat=Label(f2, textvariable=boxsched_text, anchor=W, justify=LEFT)    
@@ -7063,7 +7064,7 @@ if __name__ == '__main__':
 
     boxrec_stat=Label(f2, textvariable=boxrec_text, anchor='center', justify=LEFT)
     
-    tab1_title2.pack()#place(x=40, y=yupperbtns )
+    
     boxsched_stat.pack()#.place(x=40, y=yupperbtns+20)        
     log_display.pack(side = LEFT,ipadx=6)
     acto_display.pack(side = RIGHT,ipadx=6)
