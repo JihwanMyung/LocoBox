@@ -29,8 +29,9 @@ from matplotlib.backends.backend_tkagg import (
     FigureCanvasTkAgg,
     NavigationToolbar2Tk
 )
-import pandas as pd
-matplotlib.use('TkAgg')
+#import pandas as pd
+from actogram.Actogram import plot_doubleplot
+#matplotlib.use('TkAgg')
 
 
 
