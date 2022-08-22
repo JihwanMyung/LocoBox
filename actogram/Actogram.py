@@ -17,7 +17,7 @@ pd.set_option("display.max_rows", None)
 # box = 'BOX2'
 # pir = 'PIR02'
 # led = 'LED02'
-# #filename = 'BOX1-3-20181018.txt'
+# # #filename = 'BOX1-3-20181018.txt'
 # filename = '/home/zow/LocoBox/actogram/BOX1-3-20181018.txt'
 #filename = 'BOX1-COM3-20181012.txt'
 
@@ -133,7 +133,13 @@ def plot_doubleplot(box, pir, led, filename):
     plt.axis('off')
     plt.suptitle(box, size=9)
     #plt.savefig(box+'.png')
-    plt.show()
+    #plt.show()
+    return fig 
 
 
-#plot_doubleplot(box, pir, led, filename)
+
+# box = 'BOX2'
+# pir = 'PIR02'
+# led = 'LED02'
+# filename = '/home/zow/LocoBox/actogram/BOX1-3-20181018.txt'
+# plot_doubleplot(box, pir, led, filename)

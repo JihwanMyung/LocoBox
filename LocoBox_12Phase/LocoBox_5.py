@@ -29,9 +29,9 @@ from matplotlib.backends.backend_tkagg import (
     FigureCanvasTkAgg,
     NavigationToolbar2Tk
 )
-#import pandas as pd
+import pandas as pd
 from actogram.Actogram import plot_doubleplot
-#matplotlib.use('TkAgg')
+matplotlib.use('TkAgg')
 
 
 
@@ -466,7 +466,7 @@ def get_data(istate=0): # Start recording
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 11 schedules sent.')
                 status.set('All schedules transferred. Recording began.') 
-                boxrec_text.set('Recording on-going.')
+                
                 
                 window.update_idletasks()
             i=i+1
@@ -499,7 +499,7 @@ def get_data(istate=0): # Start recording
         print('Stopped recording and disconnected from the boxes.')
         status.pack(side='bottom', fill='x')
         status.set('Stopped recording and disconnected from the boxes.') 
-        boxrec_text.set('Recording stopped.')
+       
         
         window.update_idletasks()
 
@@ -7048,17 +7048,18 @@ if __name__ == '__main__':
 
     #ACTOGRAM ASCII DISPLAY
     #display as double plot using time series
-    df = pd.read_table('/home/zow/LocoBox/actogram/test3.txt', sep='\s+', skiprows=12, index_col=None)
-
-
-    x = df.index
-    y = df['PIR01']
+    filename = '/home/zow/LocoBox/actogram/BOX1-3-20181018.txt'
 
     
 
-    
+    box = 'BOX1'
+    pir = 'PIR01'
+    led = 'LED01'
+
+   
     # create a figure
-    figure = plt.Figure(figsize=(2, 2), dpi=100)
+    #figure = plt.Figure(figsize=(2, 2), dpi=100)
+    figure = plot_doubleplot(box, pir, led, filename)
 
     # create FigureCanvasTkAgg object
     figure_canvas = FigureCanvasTkAgg(figure, f2)
@@ -7067,12 +7068,13 @@ if __name__ == '__main__':
     #NavigationToolbar2Tk(figure_canvas,f2)
 
     # create axes
-    axes = figure.add_subplot()
+    #axes = figure.add_subplot()
+    figure.canvas.draw_idle()
 
-    # create the barchart
-    axes.bar(x,y)
-    axes.set_title('Actogram')
-    axes.set_ylabel('Days')
+    
+    # axes.bar(x,y)
+    # axes.set_title('Actogram')
+    # axes.set_ylabel('Days')
     figure_canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=1)
    
    
