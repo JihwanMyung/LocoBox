@@ -514,7 +514,7 @@ def display_as_ON_OFF(led_value):
 def display_LD(box_id, phase_id):
     global value_mat, input_mat
     #get_var 
-    print
+    
     var = input_mat[box_id, phase_id, 4].get()
     if var == 2:
         return "DD"
@@ -647,25 +647,25 @@ def restore_history(log_text, log_mat, tab):
             phase_id = get_phase(1)
             
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str =  history_str + '# '+str(log_mat[counti % 120,0])+ '   ' + display_LD(1, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,2]))+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
+                history_str =  history_str + '# '+str(log_mat[counti % 120,0])+ '   ' + display_LD(0, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,2]))+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
         elif tab == 2 or tab == 'Box2':
             phase_id = get_phase(2)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str = history_str +'# '+str(log_mat[counti % 120,0])+'   ' +display_LD(2, phase_id-1) +'  Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,4]))+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
+                history_str = history_str +'# '+str(log_mat[counti % 120,0])+'   ' +display_LD(1, phase_id-1) +'  Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,4]))+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
 
         elif tab == 3 or tab == 'Box3':
             phase_id = get_phase(3)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'   ' +display_LD(3, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,6]))+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
+                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'   ' +display_LD(2, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,6]))+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
                 
         elif tab == 4 or tab == 'Box4':
             phase_id = get_phase(4)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'   ' +display_LD(4, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,8]))+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
+                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'   ' +display_LD(3, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,8]))+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
         elif tab == 5 or tab == 'Box5':
             phase_id = get_phase(5)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'   ' +display_LD(5, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,10]))+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
+                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'   ' +display_LD(4, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,10]))+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
 
     log_text.set(history_str)
     log_display.config(state="normal")

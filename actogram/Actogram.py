@@ -64,7 +64,7 @@ def plot_doubleplot(box, pir, led, filename):
 
     #df3 = df3.groupby(np.arange(len(df3))//60).mean() 
 
-
+    df2 = df.groupby(pd.Grouper(freq='H')).mean() 
     df = pd.concat([df0, df1, df, df3, df2])
     #df = df.groupby(np.arange(len(df))//60).mean() 
     dategroup = df.groupby(pd.Grouper(freq='D'))
@@ -147,10 +147,10 @@ def plot_doubleplot(box, pir, led, filename):
 
 
 
-box = 'BOX2'
-pir = 'PIR02'
-led = 'LED02'
+# box = 'BOX2'
+# pir = 'PIR02'
+# led = 'LED02'
 
-filename = '/home/zow/LocoBox/actogram/BOX1-3-20181018.txt'
+# filename = '/home/zow/LocoBox/actogram/BOX1-3-20181018.txt'
 
 #plot_doubleplot(box, pir, led, filename)
