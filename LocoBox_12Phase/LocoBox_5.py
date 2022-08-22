@@ -141,6 +141,7 @@ global display_string, display_counter, current_phase
 global savedBoxSchedule, BoxSchedule1, BoxSchedule2, BoxSchedule3, BoxSchedule4, BoxSchedule5
 
 savedBoxSchedule = BoxSchedule()
+phase_delimiters = []
 
 
 # Preset values
@@ -481,7 +482,7 @@ def get_data(istate=0): # Start recording
                 display_counter = counti
                 save_logs(counti, string2) 
                 on_tab_change(counti, string2)
-                get_values_for_actogram()
+                #get_values_for_actogram()
                     
                        
 
@@ -502,6 +503,13 @@ def get_data(istate=0): # Start recording
        
         
         window.update_idletasks()
+
+def display_as_ON_OFF(led_value):
+    led_value = str(led_value)
+    if led_value == '00000':
+        return 'OFF'
+    else:
+        return 'ON'
 
 
 
@@ -528,42 +536,47 @@ def get_values_for_actogram():
     tab = int(tab_control.index('current'))+1
     indices = []
     pirs = []
-    box_id = 3
+    box_id = 1
     if tab == 2 or tab == 'Box2':
-        box_id = 5
+        box_id = 1
     elif tab == 3 or tab == 'Box3':
-        box_id = 7
+        box_id = 1
     elif tab == 4 or tab == 'Box4':
 
-        box_id = 9
+        box_id = 1
     elif tab == 5 or tab == 'Box5':
-        box_id = 11
+        box_id = 5
     
 
-    for counti in range(1,120):
-        if log_mat[counti % 120,0] == '':
-            indices.append(0)
-        else:
-            indices.append(int(log_mat[counti % 120,0]))
-        if 'PIR' in log_mat[counti % 120,box_id]:
-            pirs.append(0)
-        elif log_mat[counti % 120,box_id] == '':
-            pirs.append(0)
-        else:
-            pirs.append(int(log_mat[counti % 120,box_id]))
-    plot_ascii(indices, pirs)
+    # for counti in range(1,120):
+    #     if log_mat[counti % 120,0] == '':
+    #         indices.append(0)
+    #     else:
+    #         indices.append(int(log_mat[counti % 120,0]))
+    #     if 'PIR' in log_mat[counti % 120,box_id]:
+    #         pirs.append(0)
+    #     elif log_mat[counti % 120,box_id] == '':
+    #         pirs.append(0)
+    #     else:
+    #         pirs.append(int(log_mat[counti % 120,box_id]))
 
-def plot_ascii(x,y):
-    pass
-    # fig = tpl.figure()
-    # fig.plot(x, y, label="PIR1",ylim =(0,200), width=50, height=15) # xlim = (0,120),
-    # ascii_p = fig.get_string()
-    # fig.show()
-    # acto_text.set(ascii_p)
-    # acto_display.config(state="normal")
-    # acto_display.delete('1.0','end')
-    # acto_display.insert(tk.END, ascii_p)
-    # acto_display.config(state="disabled")
+    plot_double_acto(box_id)
+
+def plot_double_acto(tab):
+    #the filename has to correspond to the filename that is being saved, if not, fill in with empty DF
+    filename = '/home/zow/LocoBox/actogram/BOX1-3-20181018.txt'
+
+    
+
+    box = 'BOX' + str(tab)
+    pir = 'PIR0'  + str(tab)
+    led = 'LED0'   + str(tab)
+    #graph.clear()
+    figure = plot_doubleplot(box, pir, led, filename)    
+    figure_canvas = FigureCanvasTkAgg(figure, f2)   
+    figure.canvas.draw_idle()
+    figure.canvas.draw()
+    figure_canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=1)
 
  
 
@@ -581,25 +594,25 @@ def set_log_text(log_text, log_mat, tab):
             phase_id = get_phase(1)
             
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str =  '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
+                history_str =  '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+ display_as_ON_OFF(str(log_mat[counti % 120,2]))+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
         elif tab == 2 or tab == 'Box2':
             phase_id = get_phase(2)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str = '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
+                history_str = '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,4]))+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
 
         elif tab == 3 or tab == 'Box3':
             phase_id = get_phase(3)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str =  '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,6])+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
+                history_str =  '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,6]))+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
                 
         elif tab == 4 or tab == 'Box4':
             phase_id = get_phase(4)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str = '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
+                history_str = '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,8]))+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
         elif tab == 5 or tab == 'Box5':
             phase_id = get_phase(5)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str =  '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
+                history_str =  '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,10]))+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
 
 
 
@@ -619,25 +632,25 @@ def restore_history(log_text, log_mat, tab):
             phase_id = get_phase(1)
             
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str =  history_str + '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
+                history_str =  history_str + '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,2]))+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
         elif tab == 2 or tab == 'Box2':
             phase_id = get_phase(2)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str = history_str +'# '+str(log_mat[counti % 120,0])+'    Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
+                history_str = history_str +'# '+str(log_mat[counti % 120,0])+'    Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,4]))+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
 
         elif tab == 3 or tab == 'Box3':
             phase_id = get_phase(3)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,6])+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
+                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,6]))+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
                 
         elif tab == 4 or tab == 'Box4':
             phase_id = get_phase(4)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
+                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,8]))+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
         elif tab == 5 or tab == 'Box5':
             phase_id = get_phase(5)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
+                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'     Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,10]))+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
 
     log_text.set(history_str)
     log_display.config(state="normal")
@@ -733,10 +746,13 @@ def DarkenLabel(label):
     label.config(bg="darkgray")
 
 def get_phase(box_id):
-    global value_mat
+    global value_mat, phase_delimiters
 
     box_id = box_id-1
     #print(value_mat)
+    if len(phase_delimiters) == 0:
+        
+        return 1
     
     for phase_id in range(0,12):
         #start = datetime.datetime(year=int(value_mat[box_id, phase_id, 8]), month=int(value_mat[box_id, phase_id, 7]), day=int(value_mat[box_id, phase_id, 6]), hour=int(value_mat[box_id, phase_id, 9]), minute= int(value_mat[box_id, phase_id, 10]))
