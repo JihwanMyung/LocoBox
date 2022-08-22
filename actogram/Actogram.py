@@ -3,8 +3,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pylab as plt
-import matplotlib
-import matplotlib.animation as animation
+
 from matplotlib import style
 from matplotlib.colors import ListedColormap
 from matplotlib.pyplot import figure
@@ -14,15 +13,10 @@ style.use('seaborn-colorblind')
 
 pd.set_option("display.max_rows", None)
 
-# box = 'BOX2'
-# pir = 'PIR02'
-# led = 'LED02'
-# # #filename = 'BOX1-3-20181018.txt'
-# filename = '/home/zow/LocoBox/actogram/BOX1-3-20181018.txt'
-#filename = 'BOX1-COM3-20181012.txt'
+
 
 def plot_doubleplot(box, pir, led, filename):
-    plt.clf()
+    
 
     df = pd.read_table(filename, sep='\s+',
                     skiprows=23, index_col=None)
@@ -35,6 +29,8 @@ def plot_doubleplot(box, pir, led, filename):
     df0.index = pd.to_datetime(df0['MO/DY/YEAR']+' ' + df0['HH:MM:SS'],
                             format="%m/%d/%Y %H:%M:%S")
 
+    #df0 = df0.groupby(np.arange(len(df0))//60).mean() 
+
     df1 = pd.DataFrame(
         {'HH:MM:SS': df['HH:MM:SS'][0],  'MO/DY/YEAR':  [df['MO/DY/YEAR'][0]],
         'LED01': [0], 'PIR01': [0], 'LED02': [0], 'PIR02': [0], 'LED03': [0], 'PIR03': [0], 'LED04': [0], 'PIR04': [0], 'LED05': [0], 'PIR05': [0], 'LED06': [0], 'PIR06': [0], 'LED07': [0], 'PIR07': [0], 'LED08': [0], 'PIR08': [0], 'LED09': [0], 'PIR09': [0], 'LED10': [0], 'PIR10': [0]
@@ -43,6 +39,8 @@ def plot_doubleplot(box, pir, led, filename):
                             format="%m/%d/%Y %H:%M:%S")
     # df1.index.set_value(df1.index, df1.index[0], pd.Timestamp(
     #     df1.index.date[0].year, df1.index.date[0].month, df1.index.date[0].day, df1.index.time[0].hour, df1.index.time[0].minute-1, df1.index.time[0].second))
+
+    #df1 = df1.groupby(np.arange(len(df1))//60).mean() 
 
     df2 = pd.DataFrame(
         {'HH:MM:SS': ['00:00:00'],  'MO/DY/YEAR':  [df['MO/DY/YEAR'][-1]],
@@ -53,6 +51,8 @@ def plot_doubleplot(box, pir, led, filename):
     # df2.index.set_value(df2.index, df2.index[0], pd.Timestamp(
     #     df2.index.date[0].year, df2.index.date[0].month, df2.index.date[0].day, 23, 59, 0))
 
+    #df2 = df2.groupby(np.arange(len(df2))//60).mean() 
+
     df3 = pd.DataFrame(
         {'HH:MM:SS': df['HH:MM:SS'][-1],  'MO/DY/YEAR':  [df['MO/DY/YEAR'][-1]],
         'LED01': [0], 'PIR01': [0], 'LED02': [0], 'PIR02': [0], 'LED03': [0], 'PIR03': [0], 'LED04': [0], 'PIR04': [0], 'LED05': [0], 'PIR05': [0], 'LED06': [0], 'PIR06': [0], 'LED07': [0], 'PIR07': [0], 'LED08': [0], 'PIR08': [0], 'LED09': [0], 'PIR09': [0], 'LED10': [0], 'PIR10': [0]
@@ -62,9 +62,13 @@ def plot_doubleplot(box, pir, led, filename):
     # df3.index.set_value(df3.index, df3.index[0], pd.Timestamp(
     #     df3.index.date[0].year, df3.index.date[0].month, df3.index.date[0].day, df3.index.time[0].hour, df3.index.time[0].minute+1, df3.index.time[0].second))
 
+    #df3 = df3.groupby(np.arange(len(df3))//60).mean() 
+
 
     df = pd.concat([df0, df1, df, df3, df2])
+    #df = df.groupby(np.arange(len(df))//60).mean() 
     dategroup = df.groupby(pd.Grouper(freq='D'))
+    
 
     k = 0
     df2 = pd.DataFrame()
@@ -74,7 +78,7 @@ def plot_doubleplot(box, pir, led, filename):
             df2 = pd.concat([df2, a], axis=0)
         k = k+1
 
-    # Remove the margins
+    # Remove the marginsclear
     dategroup2 = df2.groupby(pd.Grouper(freq='D'))
     plt.rcParams['axes.autolimit_mode'] = 'round_numbers'
     plt.rcParams['axes.xmargin'] = 0.
@@ -137,13 +141,16 @@ def plot_doubleplot(box, pir, led, filename):
     plt.axis('off')
     plt.suptitle(box, size=9)
     #plt.savefig(box+'.png')
-    plt.show()
+    #plt.show()
     return fig 
 
 
 
-# box = 'BOX2'
-# pir = 'PIR02'
-# led = 'LED02'
-# filename = '/home/zow/LocoBox/actogram/BOX1-3-20181018.txt'
-# plot_doubleplot(box, pir, led, filename)
+
+box = 'BOX2'
+pir = 'PIR02'
+led = 'LED02'
+
+filename = '/home/zow/LocoBox/actogram/BOX1-3-20181018.txt'
+
+#plot_doubleplot(box, pir, led, filename)
