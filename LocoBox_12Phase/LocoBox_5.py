@@ -176,7 +176,7 @@ def create_serial_obj(portPath, baud_rate, timeout):
 
 def refactor_by_tcycle_factor(tcycle_factor = 24, original_time_of_day = 0): #transform current or specified time to time using the new factor
     
-    earth = datetime.timedelta(hours=(abs(tcycle_factor/24)-1),minutes=00,seconds=00) #new time unit    
+    earth = datetime.timedelta(hours=abs((tcycle_factor/24)-1),minutes=00,seconds=00) #new time unit    
     #hours = int(earth.seconds/3600)
     #minutes = int((earth.seconds-(hours*3600))/60)
     #seconds = int(earth.seconds-(minutes*60))
