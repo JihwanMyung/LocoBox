@@ -7498,7 +7498,11 @@ def copyBoxn(n, input_mat):
     for phase_ind in range(1,12):
         temp_savedBoxSchedule.addPhase(*input_mat[n, phase_ind])
 
+def change_time_display():
+    global tcyclefactor, tcyclelength
 
+    tcyclefactor = tcyclelength.get()
+    spin5_A_4 = Spinbox(tab5, from_=00, to=24, width=3, format='%02.0f')
 
 
 if __name__ == '__main__':
@@ -7797,7 +7801,7 @@ if __name__ == '__main__':
     tcyclelength.place(x = 150, y = 0)
     tcyclelength.delete(0,'end')
     tcyclelength.insert(0,24)
-    tcyclebtn = Button(f3, text=' Set cycle', command=save_conf, state='disabled')
+    tcyclebtn = Button(f3, text=' Set cycle', command=change_time_display, state='disabled')
     tcyclebtn.place(x = 220, y = 0)
 
     #Entry for Port, Baud, timeout, filename to save
