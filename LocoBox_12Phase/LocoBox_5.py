@@ -5313,6 +5313,7 @@ def getBox1Schedule():
         light1_1='1'
 
     phase1 = PhaseSchedule(hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, dark1_1, light1_1)
+
     #Phase2
     global date1_2, month1_2, year1_2, hourFrom1_2, minuteFrom1_2, hourOn1_2, minOn1_2, hourOff1_2, minOff1_2, dark1_2, light1_2
     date1_2 = date1_2_entry.get()
@@ -5324,7 +5325,15 @@ def getBox1Schedule():
     hourOff1_2=spin1_C_2.get()
     minOff1_2=spin1_D_2.get()     
     hourFrom1_2= spin1_E_2.get()
-    minuteFrom1_2= spin1_F_2.get()                       
+    minuteFrom1_2= spin1_F_2.get()
+
+    conv_time_on = convert_time(datetime.datetime(int(year1_2), int(month1_2), int(date1_2), int(hourOn1_2), int(minOn1_2)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year1_2), int(month1_2), int(date1_2), int(hourOff1_2), int(minOff1_2)), datetime.datetime.now(), tcyclefactor)     
+    hourOn1_2 = time_to_str(conv_time_on.hour)    
+    minOn1_2 = time_to_str( conv_time_on.minute)
+    hourOff1_2=time_to_str(conv_time_off.hour)
+    minOff1_2=time_to_str(conv_time_off.minute)
+
     if var1_2.get()==1:
         dark1_2='0'
         light1_2='0'
@@ -5346,7 +5355,17 @@ def getBox1Schedule():
     hourOn1_3=spin1_A_3.get()
     minOn1_3=spin1_B_3.get()
     hourOff1_3=spin1_C_3.get()
-    minOff1_3=spin1_D_3.get()                            
+    minOff1_3=spin1_D_3.get()   
+
+
+    conv_time_on = convert_time(datetime.datetime(int(year1_3), int(month1_3), int(date1_3), int(hourOn1_3), int(minOn1_3)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year1_3), int(month1_3), int(date1_3), int(hourOff1_3), int(minOff1_3)), datetime.datetime.now(), tcyclefactor)     
+    hourOn1_3 = time_to_str(conv_time_on.hour)    
+    minOn1_3 = time_to_str( conv_time_on.minute)
+    hourOff1_3=time_to_str(conv_time_off.hour)
+    minOff1_3=time_to_str(conv_time_off.minute)
+
+
     if var1_3.get()==1:
         dark1_3='0'
         light1_3='0'
@@ -5368,7 +5387,16 @@ def getBox1Schedule():
     hourOn1_4=spin1_A_4.get()
     minOn1_4=spin1_B_4.get()
     hourOff1_4=spin1_C_4.get()
-    minOff1_4=spin1_D_4.get()                            
+    minOff1_4=spin1_D_4.get() 
+
+    conv_time_on = convert_time(datetime.datetime(int(year1_4), int(month1_4), int(date1_4), int(hourOn1_4), int(minOn1_4)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year1_4), int(month1_4), int(date1_4), int(hourOff1_4), int(minOff1_4)), datetime.datetime.now(), tcyclefactor)     
+    hourOn1_4 = time_to_str(conv_time_on.hour)    
+    minOn1_4 = time_to_str( conv_time_on.minute)
+    hourOff1_4=time_to_str(conv_time_off.hour)
+    minOff1_4=time_to_str(conv_time_off.minute)
+
+
     if var1_4.get()==1:
         dark1_4='0'
         light1_4='0'
@@ -5388,7 +5416,17 @@ def getBox1Schedule():
     hourOn1_5=spin1_A_5.get()
     minOn1_5=spin1_B_5.get()
     hourOff1_5=spin1_C_5.get()
-    minOff1_5=spin1_D_5.get()                            
+    minOff1_5=spin1_D_5.get()  
+
+
+    conv_time_on = convert_time(datetime.datetime(int(year1_5), int(month1_5), int(date1_5), int(hourOn1_5), int(minOn1_5)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year1_5), int(month1_5), int(date1_5), int(hourOff1_5), int(minOff1_5)), datetime.datetime.now(), tcyclefactor)     
+    hourOn1_5 = time_to_str(conv_time_on.hour)    
+    minOn1_5 = time_to_str( conv_time_on.minute)
+    hourOff1_5=time_to_str(conv_time_off.hour)
+    minOff1_5=time_to_str(conv_time_off.minute)
+
+
     if var1_5.get()==1:
         dark1_5='0'
         light1_5='0'
@@ -5408,7 +5446,17 @@ def getBox1Schedule():
     hourOn1_6=spin1_A_6.get()
     minOn1_6=spin1_B_6.get()
     hourOff1_6=spin1_C_6.get()
-    minOff1_6=spin1_D_6.get()                            
+    minOff1_6=spin1_D_6.get()  
+
+    conv_time_on = convert_time(datetime.datetime(int(year1_6), int(month1_6), int(date1_6), int(hourOn1_6), int(minOn1_6)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year1_6), int(month1_6), int(date1_6), int(hourOff1_6), int(minOff1_6)), datetime.datetime.now(), tcyclefactor)     
+    hourOn1_6 = time_to_str(conv_time_on.hour)    
+    minOn1_6 = time_to_str( conv_time_on.minute)
+    hourOff1_6=time_to_str(conv_time_off.hour)
+    minOff1_6=time_to_str(conv_time_off.minute)
+
+
+
     if var1_6.get()==1:
         dark1_6='0'
         light1_6='0'
@@ -5428,7 +5476,16 @@ def getBox1Schedule():
     hourOn1_7=spin1_A_7.get()
     minOn1_7=spin1_B_7.get()
     hourOff1_7=spin1_C_7.get()
-    minOff1_7=spin1_D_7.get()                            
+    minOff1_7=spin1_D_7.get()
+
+
+    conv_time_on = convert_time(datetime.datetime(int(year1_7), int(month1_7), int(date1_7), int(hourOn1_7), int(minOn1_7)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year1_7), int(month1_7), int(date1_7), int(hourOff1_7), int(minOff1_7)), datetime.datetime.now(), tcyclefactor)     
+    hourOn1_7 = time_to_str(conv_time_on.hour)    
+    minOn1_7 = time_to_str( conv_time_on.minute)
+    hourOff1_7=time_to_str(conv_time_off.hour)
+    minOff1_7=time_to_str(conv_time_off.minute)
+
     if var1_7.get()==1:
         dark1_7='0'
         light1_7='0'
@@ -5448,7 +5505,17 @@ def getBox1Schedule():
     hourOn1_8=spin1_A_8.get()
     minOn1_8=spin1_B_8.get()
     hourOff1_8=spin1_C_8.get()
-    minOff1_8=spin1_D_8.get()                            
+    minOff1_8=spin1_D_8.get()  
+
+
+    conv_time_on = convert_time(datetime.datetime(int(year1_8), int(month1_8), int(date1_8), int(hourOn1_8), int(minOn1_8)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year1_8), int(month1_8), int(date1_8), int(hourOff1_8), int(minOff1_8)), datetime.datetime.now(), tcyclefactor)     
+    hourOn1_8 = time_to_str(conv_time_on.hour)    
+    minOn1_8 = time_to_str( conv_time_on.minute)
+    hourOff1_8=time_to_str(conv_time_off.hour)
+    minOff1_8=time_to_str(conv_time_off.minute)
+
+
     if var1_8.get()==1:
         dark1_8='0'
         light1_8='0'
@@ -5468,7 +5535,16 @@ def getBox1Schedule():
     hourOn1_9=spin1_A_9.get()
     minOn1_9=spin1_B_9.get()
     hourOff1_9=spin1_C_9.get()
-    minOff1_9=spin1_D_9.get()                            
+    minOff1_9=spin1_D_9.get()    
+
+    conv_time_on = convert_time(datetime.datetime(int(year1_9), int(month1_9), int(date1_9), int(hourOn1_9), int(minOn1_9)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year1_9), int(month1_9), int(date1_9), int(hourOff1_9), int(minOff1_9)), datetime.datetime.now(), tcyclefactor)     
+    hourOn1_9 = time_to_str(conv_time_on.hour)    
+    minOn1_9 = time_to_str( conv_time_on.minute)
+    hourOff1_9=time_to_str(conv_time_off.hour)
+    minOff1_9=time_to_str(conv_time_off.minute)
+
+
     if var1_9.get()==1:
         dark1_9='0'
         light1_9='0'
@@ -5488,7 +5564,17 @@ def getBox1Schedule():
     hourOn1_10=spin1_A_10.get()
     minOn1_10=spin1_B_10.get()
     hourOff1_10=spin1_C_10.get()
-    minOff1_10=spin1_D_10.get()                            
+    minOff1_10=spin1_D_10.get()   
+
+    conv_time_on = convert_time(datetime.datetime(int(year1_10), int(month1_10), int(date1_10), int(hourOn1_10), int(minOn1_10)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year1_10), int(month1_10), int(date1_10), int(hourOff1_10), int(minOff1_10)), datetime.datetime.now(), tcyclefactor)     
+    hourOn1_10 = time_to_str(conv_time_on.hour)    
+    minOn1_10 = time_to_str( conv_time_on.minute)
+    hourOff1_10=time_to_str(conv_time_off.hour)
+    minOff1_10=time_to_str(conv_time_off.minute)
+
+
+
     if var1_10.get()==1:
         dark1_10='0'
         light1_10='0'
@@ -5508,7 +5594,15 @@ def getBox1Schedule():
     hourOn1_11=spin1_A_11.get()
     minOn1_11=spin1_B_11.get()
     hourOff1_11=spin1_C_11.get()
-    minOff1_11=spin1_D_11.get()                            
+    minOff1_11=spin1_D_11.get() 
+
+    conv_time_on = convert_time(datetime.datetime(int(year1_11), int(month1_11), int(date1_11), int(hourOn1_11), int(minOn1_11)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year1_11), int(month1_11), int(date1_11), int(hourOff1_11), int(minOff1_11)), datetime.datetime.now(), tcyclefactor)     
+    hourOn1_11 = time_to_str(conv_time_on.hour)    
+    minOn1_11 = time_to_str( conv_time_on.minute)
+    hourOff1_11=time_to_str(conv_time_off.hour)
+    minOff1_11=time_to_str(conv_time_off.minute)
+
     if var1_11.get()==1:
         dark1_11='0'
         light1_11='0'
@@ -5528,7 +5622,15 @@ def getBox1Schedule():
     hourOn1_12=spin1_A_12.get()
     minOn1_12=spin1_B_12.get()
     hourOff1_12=spin1_C_12.get()
-    minOff1_12=spin1_D_12.get()                            
+    minOff1_12=spin1_D_12.get()
+
+    conv_time_on = convert_time(datetime.datetime(int(year1_12), int(month1_12), int(date1_12), int(hourOn1_12), int(minOn1_12)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year1_12), int(month1_12), int(date1_12), int(hourOff1_12), int(minOff1_12)), datetime.datetime.now(), tcyclefactor)     
+    hourOn1_12 = time_to_str(conv_time_on.hour)    
+    minOn1_12 = time_to_str( conv_time_on.minute)
+    hourOff1_12=time_to_str(conv_time_off.hour)
+    minOff1_12=time_to_str(conv_time_off.minute)
+
     if var1_12.get()==1:
         dark1_12='0'
         light1_12='0'
