@@ -176,7 +176,7 @@ def create_serial_obj(portPath, baud_rate, timeout):
 
 def refactor_by_tcycle_factor(tcycle_factor = 24, original_time_of_day = 0): #transform current or specified time to time using the new factor
     
-    earth = datetime.timedelta(hours=tcycle_factor/24,minutes=00,seconds=00) #new time unit    
+    earth = datetime.timedelta(hours=(abs(tcycle_factor/24)-1),minutes=00,seconds=00) #new time unit    
     #hours = int(earth.seconds/3600)
     #minutes = int((earth.seconds-(hours*3600))/60)
     #seconds = int(earth.seconds-(minutes*60))
@@ -5297,8 +5297,9 @@ def getBox1Schedule():
     conv_time_on = convert_time(datetime.datetime(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day, int(hourOn1_1), int(minOn1_1)), datetime.datetime.now(), tcyclefactor)
     conv_time_off =  convert_time(datetime.datetime(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day, int(hourOff1_1), int(hourOff1_1)), datetime.datetime.now(), tcyclefactor)     
     hourOn1_1 = time_to_str(conv_time_on.hour)
+    print("tc factor"  +str(tcyclefactor))
     print("hour on conv")
-    print(hourOn1_1)  
+    print(hourOn1_1, minOn1_1)  
     minOn1_1 = time_to_str( conv_time_on.minute)
     hourOff1_1=time_to_str(conv_time_off.hour)
     minOff1_1=time_to_str(conv_time_off.minute)
