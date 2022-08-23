@@ -5291,16 +5291,17 @@ def getBox1Schedule():
     hourOff1_1=spin1_C_1.get()
     minOff1_1=spin1_D_1.get()    
     print("hour on")
-    print(hourOn1_1)    
+    print(hourOn1_1, minOn1_1)    
 
 #convert_time(time_i_want, start_time, factor)
     conv_time_on = convert_time(datetime.datetime(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day, int(hourOn1_1), int(minOn1_1)), datetime.datetime.now(), tcyclefactor)
-    conv_time_off =  convert_time(datetime.datetime(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day, int(hourOff1_1), int(hourOff1_1)), datetime.datetime.now(), tcyclefactor)     
+    conv_time_off =  convert_time(datetime.datetime(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day, int(hourOff1_1), int(minOff1_1)), datetime.datetime.now(), tcyclefactor)     
     hourOn1_1 = time_to_str(conv_time_on.hour)
+    
+    minOn1_1 = time_to_str( conv_time_on.minute)
     print("tc factor"  +str(tcyclefactor))
     print("hour on conv")
     print(hourOn1_1, minOn1_1)  
-    minOn1_1 = time_to_str( conv_time_on.minute)
     hourOff1_1=time_to_str(conv_time_off.hour)
     minOff1_1=time_to_str(conv_time_off.minute)
 
@@ -6561,6 +6562,8 @@ def getAllBoxSchedule():
 
     global value_mat, phase_delimiters, tcyclefactor
 
+    tcyclefactor = int(tcyclelength.get())
+
     getBox1Schedule()
     getBox2Schedule()
     getBox3Schedule()
@@ -6650,7 +6653,7 @@ def getAllBoxSchedule():
     hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12,
     hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12]
 
-    tcyclefactor = int(tcyclelength.get())
+    
 
 
     value_mat = np.asarray(value_mat)
