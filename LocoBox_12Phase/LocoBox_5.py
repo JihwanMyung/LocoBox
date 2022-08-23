@@ -128,7 +128,7 @@ global value_mat, input_mat, log_mat, phase_delimiters
 global setBox1, setBox2, setBox3, setBox4, setBox5
 
 
-global display_string, display_counter, current_phase
+global display_string, display_counter, current_phase, tcyclefactor
 
 
 
@@ -142,6 +142,7 @@ global savedBoxSchedule, BoxSchedule1, BoxSchedule2, BoxSchedule3, BoxSchedule4,
 
 savedBoxSchedule = BoxSchedule()
 phase_delimiters = []
+tcyclefator = 24
 
 
 # Preset values
@@ -171,6 +172,19 @@ def create_serial_obj(portPath, baud_rate, timeout):
     and returns a pyserial object.
     '''
     return serial.Serial(portPath, baud_rate, timeout=timeout)
+
+
+def refactor_by_tcycle_factor(tcycle_factor = 24, original_time_of_day = 0): #transform current or specified time to time using the new factor
+    
+    earth = datetime.timedelta(hours=tcycle_factor/24,minutes=00,seconds=00) #new time unit    
+    #hours = int(earth.seconds/3600)
+    #minutes = int((earth.seconds-(hours*3600))/60)
+    #seconds = int(earth.seconds-(minutes*60))
+    if original_time_of_day == 0 :
+        original_time_of_day = datetime.now()
+    new_time = original_time_of_day + earth
+    return new_time
+
 
 ###Classes
 class StatusBar(Frame): # scan open serial ports
@@ -6490,7 +6504,7 @@ def getBox5Schedule():
 
 def getAllBoxSchedule(): 
 
-    global value_mat, phase_delimiters
+    global value_mat, phase_delimiters, tcyclefactor
 
     getBox1Schedule()
     getBox2Schedule()
@@ -6580,6 +6594,8 @@ def getAllBoxSchedule():
     hourOn3_12, minOn3_12, hourOff3_12, minOff3_12, dark3_12, light3_12, date3_12, month3_12, year3_12, hourFrom3_12, minuteFrom3_12,
     hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12,
     hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12]
+
+    tcyclefactor = tcyclelength.get()
 
 
     value_mat = np.asarray(value_mat)
@@ -6748,6 +6764,7 @@ if __name__ == '__main__':
     # 
     global value_mat, input_mat, log_mat      
     menu = Menu(window) #define menu    
+    tcyclefactor =24
 
     # Define Var to keep track of the schedule
                                     #1 for LD
@@ -7034,9 +7051,11 @@ if __name__ == '__main__':
     #tcycle
     Label(f3,text =  'T-cycle length').place(x = 40, y = 0)
     tcyclelength = Spinbox(f3, width=5)
-    tcyclelength.place(x = 130, y = 0)
+    tcyclelength.place(x = 150, y = 0)
     tcyclelength.delete(0,'end')
     tcyclelength.insert(0,24)
+    tcyclebtn = Button(f3, text=' Set cycle', command=save_conf, state='disabled')
+    tcyclebtn.place(x = 200, y = 0)
 
     #Entry for Port, Baud, timeout, filename to save
     Label(f3,text =  'Schedule').place(x = 363, y = yupperbtns)
@@ -7086,8 +7105,8 @@ if __name__ == '__main__':
 
     #ACTOGRAM ASCII DISPLAY
     #display as double plot using time series
-    #filename = '/home/zow/LocoBox/actogram/BOX1-3-20181018.txt'
-    filename = 'C:/Users\OWNER\Documents\GitHub\LocoBox\LocoBox_12Phase\BOX1-3-20181018.txt'
+    filename = '/home/zow/LocoBox/actogram/BOX2-COM4-20181018.txt'
+    #filename = 'C:/Users\OWNER\Documents\GitHub\LocoBox\LocoBox_12Phase\BOX1-3-20181018.txt'
 
     
 
