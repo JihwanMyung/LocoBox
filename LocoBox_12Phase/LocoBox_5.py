@@ -7559,7 +7559,7 @@ if __name__ == '__main__':
     tcyclelength.delete(0,'end')
     tcyclelength.insert(0,24)
     tcyclebtn = Button(f3, text=' Set cycle', command=save_conf, state='disabled')
-    tcyclebtn.place(x = 200, y = 0)
+    tcyclebtn.place(x = 220, y = 0)
 
     #Entry for Port, Baud, timeout, filename to save
     Label(f3,text =  'Schedule').place(x = 363, y = yupperbtns)
