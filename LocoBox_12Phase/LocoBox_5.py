@@ -5334,6 +5334,10 @@ def getBox1Schedule():
     hourOff1_2=time_to_str(conv_time_off.hour)
     minOff1_2=time_to_str(conv_time_off.minute)
 
+    date1_2 = time_to_str(conv_time_on.day)
+    month1_2 = time_to_str(conv_time_on.month)
+    year1_2 = time_to_str(conv_time_on.year)
+
     if var1_2.get()==1:
         dark1_2='0'
         light1_2='0'
@@ -5364,6 +5368,10 @@ def getBox1Schedule():
     minOn1_3 = time_to_str( conv_time_on.minute)
     hourOff1_3=time_to_str(conv_time_off.hour)
     minOff1_3=time_to_str(conv_time_off.minute)
+
+    date1_3 = time_to_str(conv_time_on.day)
+    month1_3 = time_to_str(conv_time_on.month)
+    year1_3 = time_to_str(conv_time_on.year)
 
 
     if var1_3.get()==1:
@@ -5396,6 +5404,10 @@ def getBox1Schedule():
     hourOff1_4=time_to_str(conv_time_off.hour)
     minOff1_4=time_to_str(conv_time_off.minute)
 
+    date1_4 = time_to_str(conv_time_on.day)
+    month1_4 = time_to_str(conv_time_on.month)
+    year1_4 = time_to_str(conv_time_on.year)
+
 
     if var1_4.get()==1:
         dark1_4='0'
@@ -5426,6 +5438,10 @@ def getBox1Schedule():
     hourOff1_5=time_to_str(conv_time_off.hour)
     minOff1_5=time_to_str(conv_time_off.minute)
 
+    date1_5 = time_to_str(conv_time_on.day)
+    month1_5 = time_to_str(conv_time_on.month)
+    year1_5 = time_to_str(conv_time_on.year)
+
 
     if var1_5.get()==1:
         dark1_5='0'
@@ -5454,6 +5470,10 @@ def getBox1Schedule():
     minOn1_6 = time_to_str( conv_time_on.minute)
     hourOff1_6=time_to_str(conv_time_off.hour)
     minOff1_6=time_to_str(conv_time_off.minute)
+
+    date1_6 = time_to_str(conv_time_on.day)
+    month1_6 = time_to_str(conv_time_on.month)
+    year1_6 = time_to_str(conv_time_on.year)
 
 
 
@@ -5486,6 +5506,10 @@ def getBox1Schedule():
     hourOff1_7=time_to_str(conv_time_off.hour)
     minOff1_7=time_to_str(conv_time_off.minute)
 
+    date1_7 = time_to_str(conv_time_on.day)
+    month1_7 = time_to_str(conv_time_on.month)
+    year1_7 = time_to_str(conv_time_on.year)
+
     if var1_7.get()==1:
         dark1_7='0'
         light1_7='0'
@@ -5508,12 +5532,18 @@ def getBox1Schedule():
     minOff1_8=spin1_D_8.get()  
 
 
+
+
     conv_time_on = convert_time(datetime.datetime(int(year1_8), int(month1_8), int(date1_8), int(hourOn1_8), int(minOn1_8)), datetime.datetime.now(), tcyclefactor)
     conv_time_off =  convert_time(datetime.datetime(int(year1_8), int(month1_8), int(date1_8), int(hourOff1_8), int(minOff1_8)), datetime.datetime.now(), tcyclefactor)     
     hourOn1_8 = time_to_str(conv_time_on.hour)    
     minOn1_8 = time_to_str( conv_time_on.minute)
     hourOff1_8=time_to_str(conv_time_off.hour)
     minOff1_8=time_to_str(conv_time_off.minute)
+
+    date1_8 = time_to_str(conv_time_on.day)
+    month1_8 = time_to_str(conv_time_on.month)
+    year1_8 = time_to_str(conv_time_on.year)
 
 
     if var1_8.get()==1:
@@ -5544,6 +5574,10 @@ def getBox1Schedule():
     hourOff1_9=time_to_str(conv_time_off.hour)
     minOff1_9=time_to_str(conv_time_off.minute)
 
+    date1_9 = time_to_str(conv_time_on.day)
+    month1_9 = time_to_str(conv_time_on.month)
+    year1_9 = time_to_str(conv_time_on.year)
+
 
     if var1_9.get()==1:
         dark1_9='0'
@@ -5572,6 +5606,10 @@ def getBox1Schedule():
     minOn1_10 = time_to_str( conv_time_on.minute)
     hourOff1_10=time_to_str(conv_time_off.hour)
     minOff1_10=time_to_str(conv_time_off.minute)
+
+    date1_10 = time_to_str(conv_time_on.day)
+    month1_10 = time_to_str(conv_time_on.month)
+    year1_10 = time_to_str(conv_time_on.year)
 
 
 
@@ -5603,6 +5641,10 @@ def getBox1Schedule():
     hourOff1_11=time_to_str(conv_time_off.hour)
     minOff1_11=time_to_str(conv_time_off.minute)
 
+    date1_11 = time_to_str(conv_time_on.day)
+    month1_11 = time_to_str(conv_time_on.month)
+    year1_11 = time_to_str(conv_time_on.year)
+
     if var1_11.get()==1:
         dark1_11='0'
         light1_11='0'
@@ -5630,6 +5672,10 @@ def getBox1Schedule():
     minOn1_12 = time_to_str( conv_time_on.minute)
     hourOff1_12=time_to_str(conv_time_off.hour)
     minOff1_12=time_to_str(conv_time_off.minute)
+
+    date1_12 = time_to_str(conv_time_on.day)
+    month1_12 = time_to_str(conv_time_on.month)
+    year1_12 = time_to_str(conv_time_on.year)
 
     if var1_12.get()==1:
         dark1_12='0'
@@ -5696,7 +5742,9 @@ def getBox2Schedule():
     hourOff2_2=time_to_str(conv_time_off.hour)
     minOff2_2=time_to_str(conv_time_off.minute)
 
-
+    date2_2 = time_to_str(conv_time_on.day)
+    month2_2 = time_to_str(conv_time_on.month)
+    year2_2 = time_to_str(conv_time_on.year)
 
 
     if var2_2.get()==1:
@@ -5726,6 +5774,10 @@ def getBox2Schedule():
     hourOff2_3=time_to_str(conv_time_off.hour)
     minOff2_3=time_to_str(conv_time_off.minute)
 
+    date2_3 = time_to_str(conv_time_on.day)
+    month2_3 = time_to_str(conv_time_on.month)
+    year2_3 = time_to_str(conv_time_on.year)
+
     if var2_3.get()==1:
         dark2_3='0'
         light2_3='0'
@@ -5753,6 +5805,10 @@ def getBox2Schedule():
     hourOff2_4=time_to_str(conv_time_off.hour)
     minOff2_4=time_to_str(conv_time_off.minute)
 
+
+    date2_4 = time_to_str(conv_time_on.day)
+    month2_4 = time_to_str(conv_time_on.month)
+    year2_4 = time_to_str(conv_time_on.year)
 
     if var2_4.get()==1:
         dark2_4='0'
@@ -5783,6 +5839,10 @@ def getBox2Schedule():
     minOff2_5=time_to_str(conv_time_off.minute)
 
 
+    date2_5 = time_to_str(conv_time_on.day)
+    month2_5 = time_to_str(conv_time_on.month)
+    year2_5 = time_to_str(conv_time_on.year)
+
     if var2_5.get()==1:
         dark2_5='0'
         light2_5='0'
@@ -5811,6 +5871,9 @@ def getBox2Schedule():
     hourOff2_6=time_to_str(conv_time_off.hour)
     minOff2_6=time_to_str(conv_time_off.minute)
 
+    date2_6 = time_to_str(conv_time_on.day)
+    month2_6 = time_to_str(conv_time_on.month)
+    year2_6 = time_to_str(conv_time_on.year)
 
     if var2_6.get()==1:
         dark2_6='0'
@@ -5841,6 +5904,10 @@ def getBox2Schedule():
     minOff2_7=time_to_str(conv_time_off.minute)
 
 
+    date2_7 = time_to_str(conv_time_on.day)
+    month2_7 = time_to_str(conv_time_on.month)
+    year2_7 = time_to_str(conv_time_on.year)
+
     if var2_7.get()==1:
         dark2_7='0'
         light2_7='0'
@@ -5869,6 +5936,9 @@ def getBox2Schedule():
     hourOff2_8=time_to_str(conv_time_off.hour)
     minOff2_8=time_to_str(conv_time_off.minute)
 
+    date2_8 = time_to_str(conv_time_on.day)
+    month2_8 = time_to_str(conv_time_on.month)
+    year2_8 = time_to_str(conv_time_on.year)
 
     if var2_8.get()==1:
         dark2_8='0'
@@ -5898,6 +5968,12 @@ def getBox2Schedule():
     hourOff2_9=time_to_str(conv_time_off.hour)
     minOff2_9=time_to_str(conv_time_off.minute)
 
+
+
+    date2_9 = time_to_str(conv_time_on.day)
+    month2_9 = time_to_str(conv_time_on.month)
+    year2_9 = time_to_str(conv_time_on.year)
+
     if var2_9.get()==1:
         dark2_9='0'
         light2_9='0'
@@ -5925,6 +6001,10 @@ def getBox2Schedule():
     minOn2_10 = time_to_str( conv_time_on.minute)
     hourOff2_10=time_to_str(conv_time_off.hour)
     minOff2_10=time_to_str(conv_time_off.minute)
+    
+    date2_10 = time_to_str(conv_time_on.day)
+    month2_10 = time_to_str(conv_time_on.month)
+    year2_10 = time_to_str(conv_time_on.year)
 
     if var2_10.get()==1:
         dark2_10='0'
@@ -5954,6 +6034,10 @@ def getBox2Schedule():
     hourOff2_11=time_to_str(conv_time_off.hour)
     minOff2_11=time_to_str(conv_time_off.minute)
 
+    date2_11 = time_to_str(conv_time_on.day)
+    month2_11 = time_to_str(conv_time_on.month)
+    year2_11 = time_to_str(conv_time_on.year)
+
     if var2_11.get()==1:
         dark2_11='0'
         light2_11='0'
@@ -5981,6 +6065,10 @@ def getBox2Schedule():
     minOn2_12 = time_to_str( conv_time_on.minute)
     hourOff2_12=time_to_str(conv_time_off.hour)
     minOff2_12=time_to_str(conv_time_off.minute)
+
+    date2_12 = time_to_str(conv_time_on.day)
+    month2_12 = time_to_str(conv_time_on.month)
+    year2_12 = time_to_str(conv_time_on.year)
 
     if var2_12.get()==1:
         dark2_12='0'
@@ -6045,6 +6133,10 @@ def getBox3Schedule():
     hourOff3_2=time_to_str(conv_time_off.hour)
     minOff3_2=time_to_str(conv_time_off.minute)
 
+    date3_2 = time_to_str(conv_time_on.day)
+    month3_2 = time_to_str(conv_time_on.month)
+    year3_2 = time_to_str(conv_time_on.year)
+
     if var3_2.get()==1:
         dark3_2='0'
         light3_2='0'
@@ -6071,6 +6163,10 @@ def getBox3Schedule():
     minOn3_3 = time_to_str( conv_time_on.minute)
     hourOff3_3=time_to_str(conv_time_off.hour)
     minOff3_3=time_to_str(conv_time_off.minute)
+
+    date3_3 = time_to_str(conv_time_on.day)
+    month3_3 = time_to_str(conv_time_on.month)
+    year3_3 = time_to_str(conv_time_on.year)
 
     if var3_3.get()==1:
         dark3_3='0'
@@ -6099,6 +6195,10 @@ def getBox3Schedule():
     hourOff3_4=time_to_str(conv_time_off.hour)
     minOff3_4=time_to_str(conv_time_off.minute)
 
+    date3_4 = time_to_str(conv_time_on.day)
+    month3_4 = time_to_str(conv_time_on.month)
+    year3_4 = time_to_str(conv_time_on.year)
+
     if var3_4.get()==1:
         dark3_4='0'
         light3_4='0'
@@ -6124,7 +6224,12 @@ def getBox3Schedule():
     hourOn3_5 = time_to_str(conv_time_on.hour)    
     minOn3_5 = time_to_str( conv_time_on.minute)
     hourOff3_5=time_to_str(conv_time_off.hour)
-    minOff3_5=time_to_str(conv_time_off.minute)                         
+    minOff3_5=time_to_str(conv_time_off.minute)        
+
+    date3_5 = time_to_str(conv_time_on.day)
+    month3_5 = time_to_str(conv_time_on.month)
+    year3_5 = time_to_str(conv_time_on.year)
+
     if var3_5.get()==1:
         dark3_5='0'
         light3_5='0'
@@ -6152,6 +6257,11 @@ def getBox3Schedule():
     minOn3_6 = time_to_str( conv_time_on.minute)
     hourOff3_6=time_to_str(conv_time_off.hour)
     minOff3_6=time_to_str(conv_time_off.minute)
+
+
+    date3_6 = time_to_str(conv_time_on.day)
+    month3_6 = time_to_str(conv_time_on.month)
+    year3_6 = time_to_str(conv_time_on.year)
 
     if var3_6.get()==1:
         dark3_6='0'
@@ -6182,6 +6292,10 @@ def getBox3Schedule():
     hourOff3_7=time_to_str(conv_time_off.hour)
     minOff3_7=time_to_str(conv_time_off.minute)
 
+    date3_7 = time_to_str(conv_time_on.day)
+    month3_7 = time_to_str(conv_time_on.month)
+    year3_7 = time_to_str(conv_time_on.year)
+
     if var3_7.get()==1:
         dark3_7='0'
         light3_7='0'
@@ -6209,6 +6323,10 @@ def getBox3Schedule():
     minOn3_8 = time_to_str( conv_time_on.minute)
     hourOff3_8=time_to_str(conv_time_off.hour)
     minOff3_8=time_to_str(conv_time_off.minute)
+
+    date3_8 = time_to_str(conv_time_on.day)
+    month3_8 = time_to_str(conv_time_on.month)
+    year3_8 = time_to_str(conv_time_on.year)
 
     if var3_8.get()==1:
         dark3_8='0'
@@ -6238,6 +6356,10 @@ def getBox3Schedule():
     hourOff3_9=time_to_str(conv_time_off.hour)
     minOff3_9=time_to_str(conv_time_off.minute)
 
+    date3_9 = time_to_str(conv_time_on.day)
+    month3_9 = time_to_str(conv_time_on.month)
+    year3_9 = time_to_str(conv_time_on.year)
+
     if var3_9.get()==1:
         dark3_9='0'
         light3_9='0'
@@ -6265,6 +6387,10 @@ def getBox3Schedule():
     minOn3_10 = time_to_str( conv_time_on.minute)
     hourOff3_10=time_to_str(conv_time_off.hour)
     minOff3_10=time_to_str(conv_time_off.minute)
+
+    date3_10 = time_to_str(conv_time_on.day)
+    month3_10 = time_to_str(conv_time_on.month)
+    year3_10 = time_to_str(conv_time_on.year)
 
     if var3_10.get()==1:
         dark3_10='0'
@@ -6295,6 +6421,10 @@ def getBox3Schedule():
     hourOff3_11=time_to_str(conv_time_off.hour)
     minOff3_11=time_to_str(conv_time_off.minute)
 
+    date3_11 = time_to_str(conv_time_on.day)
+    month3_11 = time_to_str(conv_time_on.month)
+    year3_11 = time_to_str(conv_time_on.year)
+
     if var3_11.get()==1:
         dark3_11='0'
         light3_11='0'
@@ -6322,6 +6452,10 @@ def getBox3Schedule():
     minOn3_12 = time_to_str( conv_time_on.minute)
     hourOff3_12=time_to_str(conv_time_off.hour)
     minOff3_12=time_to_str(conv_time_off.minute)
+
+    date3_12 = time_to_str(conv_time_on.day)
+    month3_12 = time_to_str(conv_time_on.month)
+    year3_12 = time_to_str(conv_time_on.year)
 
     if var3_12.get()==1:
         dark3_12='0'
@@ -6385,6 +6519,10 @@ def getBox4Schedule():
     hourOff4_2=time_to_str(conv_time_off.hour)
     minOff4_2=time_to_str(conv_time_off.minute)
 
+    date4_2 = time_to_str(conv_time_on.day)
+    month4_2 = time_to_str(conv_time_on.month)
+    year4_2 = time_to_str(conv_time_on.year)
+
     if var4_2.get()==1:
         dark4_2='0'
         light4_2='0'
@@ -6411,6 +6549,10 @@ def getBox4Schedule():
     minOn4_3 = time_to_str( conv_time_on.minute)
     hourOff4_3=time_to_str(conv_time_off.hour)
     minOff4_3=time_to_str(conv_time_off.minute)     
+
+    date4_3 = time_to_str(conv_time_on.day)
+    month4_3 = time_to_str(conv_time_on.month)
+    year4_3 = time_to_str(conv_time_on.year)
 
     if var4_3.get()==1:
         dark4_3='0'
@@ -6439,6 +6581,10 @@ def getBox4Schedule():
     hourOff4_4=time_to_str(conv_time_off.hour)
     minOff4_4=time_to_str(conv_time_off.minute) 
 
+    date4_4 = time_to_str(conv_time_on.day)
+    month4_4 = time_to_str(conv_time_on.month)
+    year4_4 = time_to_str(conv_time_on.year)
+
     if var4_4.get()==1:
         dark4_4='0'
         light4_4='0'
@@ -6466,6 +6612,10 @@ def getBox4Schedule():
     hourOff4_5=time_to_str(conv_time_off.hour)
     minOff4_5=time_to_str(conv_time_off.minute) 
 
+    date4_5 = time_to_str(conv_time_on.day)
+    month4_5 = time_to_str(conv_time_on.month)
+    year4_5 = time_to_str(conv_time_on.year)
+
     if var4_5.get()==1:
         dark4_5='0'
         light4_5='0'
@@ -6492,7 +6642,11 @@ def getBox4Schedule():
     hourOn4_6 = time_to_str(conv_time_on.hour)    
     minOn4_6 = time_to_str( conv_time_on.minute)
     hourOff4_6=time_to_str(conv_time_off.hour)
-    minOff4_6=time_to_str(conv_time_off.minute)      
+    minOff4_6=time_to_str(conv_time_off.minute) 
+
+    date4_6 = time_to_str(conv_time_on.day)
+    month4_6 = time_to_str(conv_time_on.month)
+    year4_6 = time_to_str(conv_time_on.year)    
 
     if var4_6.get()==1:
         dark4_6='0'
@@ -6522,6 +6676,10 @@ def getBox4Schedule():
     hourOff4_7=time_to_str(conv_time_off.hour)
     minOff4_7=time_to_str(conv_time_off.minute)  
 
+    date4_7 = time_to_str(conv_time_on.day)
+    month4_7 = time_to_str(conv_time_on.month)
+    year4_7 = time_to_str(conv_time_on.year)
+
     if var4_7.get()==1:
         dark4_7='0'
         light4_7='0'
@@ -6550,6 +6708,10 @@ def getBox4Schedule():
     hourOff4_8=time_to_str(conv_time_off.hour)
     minOff4_8=time_to_str(conv_time_off.minute)
 
+    date4_8 = time_to_str(conv_time_on.day)
+    month4_8 = time_to_str(conv_time_on.month)
+    year4_8 = time_to_str(conv_time_on.year)
+
     if var4_8.get()==1:
         dark4_8='0'
         light4_8='0'
@@ -6576,7 +6738,11 @@ def getBox4Schedule():
     hourOn4_9 = time_to_str(conv_time_on.hour)    
     minOn4_9 = time_to_str( conv_time_on.minute)
     hourOff4_9=time_to_str(conv_time_off.hour)
-    minOff4_9=time_to_str(conv_time_off.minute)                          
+    minOff4_9=time_to_str(conv_time_off.minute)     
+
+    date4_9 = time_to_str(conv_time_on.day)
+    month4_9 = time_to_str(conv_time_on.month)
+    year4_9 = time_to_str(conv_time_on.year)                     
     if var4_9.get()==1:
         dark4_9='0'
         light4_9='0'
@@ -6603,7 +6769,12 @@ def getBox4Schedule():
     hourOn4_10 = time_to_str(conv_time_on.hour)    
     minOn4_10 = time_to_str( conv_time_on.minute)
     hourOff4_10=time_to_str(conv_time_off.hour)
-    minOff4_10=time_to_str(conv_time_off.minute)                          
+    minOff4_10=time_to_str(conv_time_off.minute)      
+
+    date4_10 = time_to_str(conv_time_on.day)
+    month4_10 = time_to_str(conv_time_on.month)
+    year4_10 = time_to_str(conv_time_on.year)
+
     if var4_10.get()==1:
         dark4_10='0'
         light4_10='0'
@@ -6630,7 +6801,12 @@ def getBox4Schedule():
     hourOn4_11 = time_to_str(conv_time_on.hour)    
     minOn4_11 = time_to_str( conv_time_on.minute)
     hourOff4_11=time_to_str(conv_time_off.hour)
-    minOff4_11=time_to_str(conv_time_off.minute)                          
+    minOff4_11=time_to_str(conv_time_off.minute)     
+
+    date4_11 = time_to_str(conv_time_on.day)
+    month4_11 = time_to_str(conv_time_on.month)
+    year4_11 = time_to_str(conv_time_on.year)
+
     if var4_11.get()==1:
         dark4_11='0'
         light4_11='0'
@@ -6657,7 +6833,12 @@ def getBox4Schedule():
     hourOn4_12 = time_to_str(conv_time_on.hour)    
     minOn4_12 = time_to_str( conv_time_on.minute)
     hourOff4_12=time_to_str(conv_time_off.hour)
-    minOff4_12=time_to_str(conv_time_off.minute)                     
+    minOff4_12=time_to_str(conv_time_off.minute)     
+
+    date4_12 = time_to_str(conv_time_on.day)
+    month4_12 = time_to_str(conv_time_on.month)
+    year4_12 = time_to_str(conv_time_on.year)
+
     if var4_12.get()==1:
         dark4_12='0'
         light4_12='0'
@@ -6691,7 +6872,10 @@ def getBox5Schedule():
     hourOn5_1 = time_to_str(conv_time_on.hour)
     minOn5_1 =  time_to_str(conv_time_on.minute)
     hourOff5_1= time_to_str(conv_time_off.hour)
-    minOff5_1=  time_to_str(conv_time_off.minute)                          
+    minOff5_1=  time_to_str(conv_time_off.minute)      
+
+    
+                        
     if var5_1.get()==1:
         dark5_1='0'
         light5_1='0'
@@ -6719,6 +6903,10 @@ def getBox5Schedule():
     hourOff5_2=time_to_str(conv_time_off.hour)
     minOff5_2=time_to_str(conv_time_off.minute)
 
+    date5_2 = time_to_str(conv_time_on.day)
+    month5_2 = time_to_str(conv_time_on.month)
+    year5_2 = time_to_str(conv_time_on.year)
+
     if var5_2.get()==1:
         dark5_2='0'
         light5_2='0'
@@ -6744,7 +6932,13 @@ def getBox5Schedule():
     hourOn5_3 = time_to_str(conv_time_on.hour)    
     minOn5_3 = time_to_str( conv_time_on.minute)
     hourOff5_3=time_to_str(conv_time_off.hour)
-    minOff5_3=time_to_str(conv_time_off.minute)                         
+    minOff5_3=time_to_str(conv_time_off.minute)     
+
+
+    date5_3 = time_to_str(conv_time_on.day)
+    month5_3 = time_to_str(conv_time_on.month)
+    year5_3 = time_to_str(conv_time_on.year)
+
     if var5_3.get()==1:
         dark5_3='0'
         light5_3='0'
@@ -6770,7 +6964,12 @@ def getBox5Schedule():
     hourOn5_4 = time_to_str(conv_time_on.hour)    
     minOn5_4 = time_to_str( conv_time_on.minute)
     hourOff5_4=time_to_str(conv_time_off.hour)
-    minOff5_4=time_to_str(conv_time_off.minute)                        
+    minOff5_4=time_to_str(conv_time_off.minute)     
+
+    date5_4 = time_to_str(conv_time_on.day)
+    month5_4 = time_to_str(conv_time_on.month)
+    year5_4 = time_to_str(conv_time_on.year)
+
     if var5_4.get()==1:
         dark5_4='0'
         light5_4='0'
@@ -6796,7 +6995,12 @@ def getBox5Schedule():
     hourOn5_5 = time_to_str(conv_time_on.hour)    
     minOn5_5 = time_to_str( conv_time_on.minute)
     hourOff5_5=time_to_str(conv_time_off.hour)
-    minOff5_5=time_to_str(conv_time_off.minute)                           
+    minOff5_5=time_to_str(conv_time_off.minute)     
+
+    date5_5 = time_to_str(conv_time_on.day)
+    month5_5 = time_to_str(conv_time_on.month)
+    year5_5 = time_to_str(conv_time_on.year)
+
     if var5_5.get()==1:
         dark5_5='0'
         light5_5='0'
@@ -6816,14 +7020,20 @@ def getBox5Schedule():
     hourOn5_6=spin5_A_6.get()
     minOn5_6=spin5_B_6.get()
     hourOff5_6=spin5_C_6.get()
-    minOff5_6=spin5_D_6.get()       
+    minOff5_6=spin5_D_6.get()     
+
+
 
     conv_time_on = convert_time(datetime.datetime(int(year5_6), int(month5_6), int(date5_6), int(hourOn5_6), int(minOn5_6)), datetime.datetime.now(), tcyclefactor)
     conv_time_off =  convert_time(datetime.datetime(int(year5_6), int(month5_6), int(date5_6), int(hourOff5_6), int(minOff5_6)), datetime.datetime.now(), tcyclefactor)     
     hourOn5_6 = time_to_str(conv_time_on.hour)    
     minOn5_6 = time_to_str( conv_time_on.minute)
     hourOff5_6=time_to_str(conv_time_off.hour)
-    minOff5_6=time_to_str(conv_time_off.minute)                     
+    minOff5_6=time_to_str(conv_time_off.minute)        
+
+    date5_6 = time_to_str(conv_time_on.day)
+    month5_6 = time_to_str(conv_time_on.month)
+    year5_6 = time_to_str(conv_time_on.year)             
     if var5_6.get()==1:
         dark5_6='0'
         light5_6='0'
@@ -6850,7 +7060,12 @@ def getBox5Schedule():
     hourOn5_7 = time_to_str(conv_time_on.hour)    
     minOn5_7 = time_to_str( conv_time_on.minute)
     hourOff5_7=time_to_str(conv_time_off.hour)
-    minOff5_7=time_to_str(conv_time_off.minute)                       
+    minOff5_7=time_to_str(conv_time_off.minute)     
+
+    date5_7 = time_to_str(conv_time_on.day)
+    month5_7 = time_to_str(conv_time_on.month)
+    year5_7 = time_to_str(conv_time_on.year)
+
     if var5_7.get()==1:
         dark5_7='0'
         light5_7='0'
@@ -6877,7 +7092,12 @@ def getBox5Schedule():
     hourOn5_8 = time_to_str(conv_time_on.hour)    
     minOn5_8 = time_to_str( conv_time_on.minute)
     hourOff5_8=time_to_str(conv_time_off.hour)
-    minOff5_8=time_to_str(conv_time_off.minute)                        
+    minOff5_8=time_to_str(conv_time_off.minute)     
+
+    date5_8 = time_to_str(conv_time_on.day)
+    month5_8 = time_to_str(conv_time_on.month)
+    year5_8 = time_to_str(conv_time_on.year)
+
     if var5_8.get()==1:
         dark5_8='0'
         light5_8='0'
@@ -6904,7 +7124,12 @@ def getBox5Schedule():
     hourOn5_9 = time_to_str(conv_time_on.hour)    
     minOn5_9 = time_to_str( conv_time_on.minute)
     hourOff5_9=time_to_str(conv_time_off.hour)
-    minOff5_9=time_to_str(conv_time_off.minute)                         
+    minOff5_9=time_to_str(conv_time_off.minute)    
+
+    date5_9 = time_to_str(conv_time_on.day)
+    month5_9 = time_to_str(conv_time_on.month)
+    year5_9 = time_to_str(conv_time_on.year)
+
     if var5_9.get()==1:
         dark5_9='0'
         light5_9='0'
@@ -6931,7 +7156,12 @@ def getBox5Schedule():
     hourOn5_10 = time_to_str(conv_time_on.hour)    
     minOn5_10 = time_to_str( conv_time_on.minute)
     hourOff5_10=time_to_str(conv_time_off.hour)
-    minOff5_10=time_to_str(conv_time_off.minute)                       
+    minOff5_10=time_to_str(conv_time_off.minute)          
+
+    date5_10 = time_to_str(conv_time_on.day)
+    month5_10 = time_to_str(conv_time_on.month)
+    year5_10 = time_to_str(conv_time_on.year)
+
     if var5_10.get()==1:
         dark5_10='0'
         light5_10='0'
@@ -6958,7 +7188,12 @@ def getBox5Schedule():
     hourOn5_11 = time_to_str(conv_time_on.hour)    
     minOn5_11 = time_to_str( conv_time_on.minute)
     hourOff5_11=time_to_str(conv_time_off.hour)
-    minOff5_11=time_to_str(conv_time_off.minute)                        
+    minOff5_11=time_to_str(conv_time_off.minute)     
+
+    date5_11 = time_to_str(conv_time_on.day)
+    month5_11 = time_to_str(conv_time_on.month)
+    year5_11 = time_to_str(conv_time_on.year)
+
     if var5_11.get()==1:
         dark5_11='0'
         light5_11='0'
@@ -6985,7 +7220,11 @@ def getBox5Schedule():
     hourOn5_12 = time_to_str(conv_time_on.hour)    
     minOn5_12 = time_to_str( conv_time_on.minute)
     hourOff5_12=time_to_str(conv_time_off.hour)
-    minOff5_12=time_to_str(conv_time_off.minute)                   
+    minOff5_12=time_to_str(conv_time_off.minute)        
+
+    date5_12 = time_to_str(conv_time_on.day)
+    month5_12 = time_to_str(conv_time_on.month)
+    year5_12 = time_to_str(conv_time_on.year)           
    
     dark5_12, light5_12 = getDarkLightValue(var5_12)
 
