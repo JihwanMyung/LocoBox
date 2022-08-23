@@ -5290,8 +5290,7 @@ def getBox1Schedule():
     minOn1_1=spin1_B_1.get()
     hourOff1_1=spin1_C_1.get()
     minOff1_1=spin1_D_1.get()    
-    print("hour on")
-    print(hourOn1_1, minOn1_1)    
+        
 
 #convert_time(time_i_want, start_time, factor)
     conv_time_on = convert_time(datetime.datetime(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day, int(hourOn1_1), int(minOn1_1)), datetime.datetime.now(), tcyclefactor)
@@ -5299,9 +5298,6 @@ def getBox1Schedule():
     hourOn1_1 = time_to_str(conv_time_on.hour)
     
     minOn1_1 = time_to_str( conv_time_on.minute)
-    print("tc factor"  +str(tcyclefactor))
-    print("hour on conv")
-    print(hourOn1_1, minOn1_1)  
     hourOff1_1=time_to_str(conv_time_off.hour)
     minOff1_1=time_to_str(conv_time_off.minute)
 
