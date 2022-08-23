@@ -30,7 +30,7 @@ from matplotlib.backends.backend_tkagg import (
     NavigationToolbar2Tk
 )
 import pandas as pd
-from actogram.Actogram import plot_doubleplot
+from Actogram import plot_doubleplot
 matplotlib.use('TkAgg')
 
 
@@ -7031,6 +7031,13 @@ if __name__ == '__main__':
     ymidbtns = 30
     ylowerbtns = 60
 
+    #tcycle
+    Label(f3,text =  'T-cycle length').place(x = 40, y = 0)
+    tcyclelength = Spinbox(f3, width=5)
+    tcyclelength.place(x = 130, y = 0)
+    tcyclelength.delete(0,'end')
+    tcyclelength.insert(0,24)
+
     #Entry for Port, Baud, timeout, filename to save
     Label(f3,text =  'Schedule').place(x = 363, y = yupperbtns)
     Label(f3,text = 'Port').place(x = 40, y = ylowerbtns)
@@ -7079,7 +7086,8 @@ if __name__ == '__main__':
 
     #ACTOGRAM ASCII DISPLAY
     #display as double plot using time series
-    filename = '/home/zow/LocoBox/actogram/BOX1-3-20181018.txt'
+    #filename = '/home/zow/LocoBox/actogram/BOX1-3-20181018.txt'
+    filename = 'C:/Users\OWNER\Documents\GitHub\LocoBox\LocoBox_12Phase\BOX1-3-20181018.txt'
 
     
 
