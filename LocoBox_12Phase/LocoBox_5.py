@@ -7664,7 +7664,8 @@ def change_time_display():
     spin2_B_12.insert(0,remaining_mins)
     spin2_D_12.delete(0,'end')
     spin2_D_12.insert(0,remaining_mins)
-2    #box3
+
+    #box3
 
     spin3_A_1.config(to=tcyclefactor)
     spin3_A_2.config(to=tcyclefactor)
@@ -7740,7 +7741,7 @@ def change_time_display():
     spin3_B_12.insert(0,remaining_mins)
     spin3_D_12.delete(0,'end')
     spin3_D_12.insert(0,remaining_mins)
-3
+
 
     #box4
 
@@ -7819,7 +7820,7 @@ def change_time_display():
     spin4_B_12.insert(0,remaining_mins)
     spin4_D_12.delete(0,'end')
     spin4_D_12.insert(0,remaining_mins)
-4
+
     #box5
 
     spin5_A_1.config(to=tcyclefactor)
