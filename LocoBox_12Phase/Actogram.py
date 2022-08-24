@@ -18,8 +18,19 @@ pd.set_option("display.max_rows", None)
 def plot_doubleplot(box, pir, led, filename):
     
 
-    df = pd.read_table(filename, sep='\s+',
+    try:
+        df = pd.read_table(filename, sep='\s+',
                     skiprows=23, index_col=None)
+
+    except Exception as e:
+        #print(e)
+        fig = plt.figure()  
+        return fig 
+
+    if df.empty:
+        fig = plt.figure()  
+        return fig 
+
     df.index = pd.to_datetime(df['MO/DY/YEAR']+' ' + df['HH:MM:SS'],
                             format="%m/%d/%Y %H:%M:%S")
     df0 = pd.DataFrame(

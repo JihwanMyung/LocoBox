@@ -1,36 +1,41 @@
 
-from cmath import log, phase
-
-from faulthandler import disable
-import serial   # For Serial communication
-import time     # Required for using delay functions
-import datetime # For date-time setting and timedelta calculations
-
+import datetime  # For date-time setting and timedelta calculations
+import json
+import os
+import time  # Required for using delay functions
 import tkinter as tk
-from tkinter import DISABLED, Tk, Frame, Canvas, Scrollbar, sys, Label, SUNKEN, BOTH, W, X, Y, Menu, IntVar, VERTICAL, HORIZONTAL, BOTTOM, Spinbox, Entry, ttk, messagebox, Button, StringVar, LEFT, RIGHT, Radiobutton
 #from tkinter import * #import INIT set of tkinter library for GUI
 import tkinter.scrolledtext as tkscrolled
+from cmath import log, phase
+from faulthandler import disable
+from tkinter import (BOTH, BOTTOM, DISABLED, HORIZONTAL, LEFT, RIGHT, SUNKEN,
+                     VERTICAL, Button, Canvas, Entry, Frame, IntVar, Label,
+                     Menu, Radiobutton, Scrollbar, Spinbox, StringVar, Tk, W,
+                     X, Y, messagebox, sys, ttk)
 from tkinter.filedialog import askopenfilename
 from tkinter.messagebox import showinfo
-import json
+
+import serial  # For Serial communication
+
 try:
     from tkinter import filedialog
 except ImportError:
     fileDialog = tk.filedialog
-import threading # To run Arduino loop and tkinter loop alongside
-import serial.tools.list_ports # For identifying Arduino port
-from BoxSchedule import BoxSchedule, PhaseSchedule, getDarkLightValue, inverseDarkLightValue
-import numpy as np
-
+import threading  # To run Arduino loop and tkinter loop alongside
 import traceback
-import matplotlib.pyplot as plt
+
 import matplotlib
-from matplotlib.backends.backend_tkagg import (
-    FigureCanvasTkAgg,
-    NavigationToolbar2Tk
-)
+import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
+import serial.tools.list_ports  # For identifying Arduino port
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
+                                               NavigationToolbar2Tk)
+
 from Actogram import plot_doubleplot
+from BoxSchedule import (BoxSchedule, PhaseSchedule, getDarkLightValue,
+                         inverseDarkLightValue)
+
 matplotlib.use('TkAgg')
 
 
@@ -597,7 +602,8 @@ def get_values_for_actogram():
 
 def plot_double_acto(tab):
     #the filename has to correspond to the filename that is being saved, if not, fill in with empty DF
-    filename = '/home/zow/LocoBox/actogram/BOX1-3-20181018.txt'
+    filename = filename_entry.get()
+    #filename = '/home/zow/LocoBox/actogram/BOX1-3-20181018.txt'
 
     #plt.clf()
 
@@ -7501,6 +7507,7 @@ def copyBoxn(n, input_mat):
 def change_time_display():
 
     #doesn't accept fractions, have to transform fraction into minutes so that people choose the whole day
+    #should I recalculate the length of an hour?
     global tcyclefactor, tcyclelength
 
     tcyclefactor = float(tcyclelength.get())
@@ -8248,8 +8255,9 @@ if __name__ == '__main__':
 
     #ACTOGRAM ASCII DISPLAY
     #display as double plot using time series
-    #filename = 'BOX1-5-'+date_string+'.txt'
-    filename = '/home/zow/LocoBox/actogram/BOX2-COM4-20181018.txt'
+    working_directory = os.getcwd()
+    filename = working_directory + 'BOX1-5-'+date_string+'.txt'
+    #filename = '/home/zow/LocoBox/actogram/BOX2-COM4-20181018.txt'
     #filename = 'C:/Users\OWNER\Documents\GitHub\LocoBox\LocoBox_12Phase\BOX1-3-20181018.txt'
 
     
