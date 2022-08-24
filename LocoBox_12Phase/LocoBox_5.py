@@ -122,6 +122,7 @@ global hourOn2_12, minOn2_12, hourOff2_12, minOff2_12, dark2_12, light2_12, date
 global hourOn3_12, minOn3_12, hourOff3_12, minOff3_12, dark3_12, light3_12, date3_12, month3_12, year3_12, hourFrom3_12, minuteFrom3_12
 global hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12
 global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12
+global initLED1, initLED2, initLED3, initLED4 , initLED5
 
 
 global value_mat, input_mat, log_mat, phase_delimiters
@@ -133,7 +134,7 @@ global value_mat, input_mat, log_mat, phase_delimiters
 global setBox1, setBox2, setBox3, setBox4, setBox5
 
 
-global display_string, display_counter, current_phase, tcyclefactor, starttime
+global display_string, display_counter, current_phase, tcyclefactor, starttime, tcyclespinbox_arr
 
 
 
@@ -148,6 +149,7 @@ global savedBoxSchedule, BoxSchedule1, BoxSchedule2, BoxSchedule3, BoxSchedule4,
 savedBoxSchedule = BoxSchedule()
 phase_delimiters = []
 tcyclefactor = 24
+initLED = 0
 
 
 # Preset values
@@ -245,7 +247,7 @@ def get_data(istate=0): # Start recording
     global serial_obj
     global dead
     global value_mat
-    global display_string, display_counter, log_mat
+    global display_string, display_counter, log_mat, initLED
 
 
     try:
@@ -267,6 +269,8 @@ def get_data(istate=0): # Start recording
             if i==1:
 
                 phase_id = i-1
+
+                serial_obj.write(str.encode(str(initLED1) + str(initLED2) + str(initLED3)+ str(initLED4) + str(initLED5)))
 
                 serial_obj.write(str.encode(hourOn1_1+minOn1_1+hourOff1_1+minOff1_1+hourOn2_1+minOn2_1+hourOff2_1+minOff2_1+
                                             hourOn3_1+minOn3_1+hourOff3_1+minOff3_1+hourOn4_1+minOn4_1+hourOff4_1+minOff4_1+
@@ -586,17 +590,6 @@ def get_values_for_actogram():
         box_id = 5
     
 
-    # for counti in range(1,120):
-    #     if log_mat[counti % 120,0] == '':
-    #         indices.append(0)
-    #     else:
-    #         indices.append(int(log_mat[counti % 120,0]))
-    #     if 'PIR' in log_mat[counti % 120,box_id]:
-    #         pirs.append(0)
-    #     elif log_mat[counti % 120,box_id] == '':
-    #         pirs.append(0)
-    #     else:
-    #         pirs.append(int(log_mat[counti % 120,box_id]))
 
     plot_double_acto(box_id)
 
@@ -617,7 +610,10 @@ def plot_double_acto(tab):
     figure.canvas.draw()
     figure_canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=1)
 
- 
+def refresh_plot():
+    print("refreshing plot")
+    get_values_for_actogram()
+
 
 def set_log_text(log_text, log_mat, tab):
 
@@ -7252,6 +7248,7 @@ def getBox5Schedule():
 def getAllBoxSchedule(): 
 
     global value_mat, phase_delimiters, tcyclefactor
+    global initLED1, initLED2, initLED3, initLED4 , initLED5
 
     tcyclefactor = float(tcyclelength.get())
 
@@ -7261,8 +7258,12 @@ def getAllBoxSchedule():
     getBox4Schedule()
     getBox5Schedule()
 
-  
-
+    
+    # initLED1 = str(initLED1.get())
+    # initLED2 = str(initLED2.get())
+    # initLED3 = str(initLED3.get())
+    # initLED4 = str(initLED4.get())
+    # initLED5 = str(initLED5.get())
 
     today=datetime.date.today()
     day = today.day
@@ -7513,8 +7514,8 @@ def change_time_display():
     tcyclefactor = float(tcyclelength.get())
     float_number =tcyclefactor
     tcyclefactor = int(tcyclefactor)
-    remainder_float = float_number - tcyclefactor
-    remaining_mins = str((datetime.timedelta(hours = remainder_float).seconds //60)%60)
+    #remainder_float = float_number - tcyclefactor
+    #remaining_mins = str((datetime.timedelta(hours = remainder_float).seconds //60)%60)
 
 
     # spin1_B_1.delete(0,'end')
@@ -7905,7 +7906,7 @@ def change_time_display():
     # spin5_D_12.insert(0,remaining_mins)
 
 
-
+#START MAIN
 
 
 if __name__ == '__main__':
@@ -7915,6 +7916,7 @@ if __name__ == '__main__':
     global value_mat, input_mat, log_mat      
     menu = Menu(window) #define menu    
     tcyclefactor =24
+  
 
     # Define Var to keep track of the schedule
                                     #1 for LD
@@ -7995,6 +7997,7 @@ if __name__ == '__main__':
     var5_12 = IntVar(value=1)
 
     log_mat =np.empty((120,12), dtype="<U10")
+    tcyclespinbox_arr =  np.empty((5,12), dtype= object)
     
     #Create file menu
     filemenu = Menu(menu)
@@ -8204,6 +8207,7 @@ if __name__ == '__main__':
     tcyclelength.place(x = 150, y = 0)
     tcyclelength.delete(0,'end')
     tcyclelength.insert(0,24)
+
     tcyclebtn = Button(f3, text=' Set cycle', command=change_time_display)
     tcyclebtn.place(x = 220, y = 0)
 
@@ -8286,15 +8290,6 @@ if __name__ == '__main__':
     # axes.set_title('Actogram')
     # axes.set_ylabel('Days')
     figure_canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=1)
-   
-   
-
-    
-    
-   
-   
-
-
     
     log_display.pack(side = LEFT)
     
@@ -8304,14 +8299,12 @@ if __name__ == '__main__':
     window.update_idletasks()
 
 
-
-
     btnSave = Button(f3, text=' Save ', command=save_conf, state='disabled')
     btnRun = Button(f3, text= ' Recording Start ', command=connect, state='disabled')
     btnSetCurrent = Button(f3,text=' Set current box ', command=lambda: OnButtonClick(int(tab_control.index('current'))+1))
-    btnSetAll = Button(f3, text='Set All', command=getAllBoxSchedule)
-    
+    btnSetAll = Button(f3, text='Set All', command=getAllBoxSchedule)    
     btnReplicateToAll = Button(f3, text=' Replicate to All ', command= lambda: copyScheduletoAll(int(tab_control.index('current'))+1))
+    btnRefresh = Button(f3, text=' Refresh ', command= refresh_plot)
     
   
     # if box settings of all 5 boxes are done, activate save and run buttons
@@ -8341,18 +8334,21 @@ if __name__ == '__main__':
         btnSetCurrent.place(x=430, y=yupperbtns)       
         btnSetAll.place(x=730, y=yupperbtns)
         btnReplicateToAll.place(x=577, y=yupperbtns)
+        btnRefresh.place(x =730, y=ylowerbtns +30)
     elif sys.platform.startswith('darwin'):
         btnSave.place(x=730, y= ymidbtns)
         btnRun.place(x=730, y=ylowerbtns)
         btnSetCurrent.place(x=430, y=yupperbtns)       
         btnSetAll.place(x=730, y=yupperbtns)
         btnReplicateToAll.place(x=577, y=yupperbtns)
+        btnRefresh.place(x =730, y=ylowerbtns +30)
     elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
         btnSave.place(x=730, y= ymidbtns)
         btnRun.place(x=730, y=ylowerbtns)
         btnSetCurrent.place(x=430, y=yupperbtns)       
         btnSetAll.place(x=730, y=yupperbtns)
         btnReplicateToAll.place(x=577, y=yupperbtns)
+        btnRefresh.place(x =730, y=ylowerbtns +30)
         
     else:
         btnSave.place(x=730, y= ymidbtns)
@@ -8360,17 +8356,67 @@ if __name__ == '__main__':
         btnSetCurrent.place(x=430, y=yupperbtns)       
         btnSetAll.place(x=730, y=yupperbtns)
         btnReplicateToAll.place(x=577, y=yupperbtns)
+        btnRefresh.place(x =730, y=ylowerbtns +30)
 
     row_adj = 3  # useful when a new row is added above
     boxstatusSeparator = ttk.Separator(f2, orient='horizontal').place(x=0, y=0, relwidth=1)
     runSeparator = ttk.Separator(f3, orient='horizontal').place(x=0, y=0, relwidth=1)#ttk.Separator(window, orient='horizontal') #.place(x = 363, y = ylowerbtns + 30)
     
     #runSeparator.pack(fill='x')
+
+   #INIT LED
     
-    # Box1
+   
+
+    initLED1 = IntVar(value=0)
+    rad_ON1 = Radiobutton(tab1, text='ON', variable=initLED1, value=1)
+    rad_OFF1 = Radiobutton(tab1, text='OFF', variable=initLED1, value=0)
+    rad_ON1.grid(column=9, row=1+row_adj, padx=15, pady=5)
+    rad_OFF1.grid(column=11, row=1+row_adj, pady=5)
+
+    initLED2 = IntVar(value=0)
+    rad_ON2 = Radiobutton(tab2, text='ON', variable=initLED2, value=1)
+    rad_OFF2 = Radiobutton(tab2, text='OFF', variable=initLED2, value=0)
+    rad_ON2.grid(column=9, row=1+row_adj, padx=15, pady=5)
+    rad_OFF2.grid(column=11, row=1+row_adj, pady=5)
+
+    initLED3 = IntVar(value=0)
+    rad_ON3 = Radiobutton(tab3, text='ON', variable=initLED3, value=1)
+    rad_OFF3 = Radiobutton(tab3, text='OFF', variable=initLED3, value=0)
+    rad_ON3.grid(column=9, row=1+row_adj, padx=15, pady=5)
+    rad_OFF3.grid(column=11, row=1+row_adj, pady=5)
+
+    initLED4 = IntVar(value=0)
+    rad_ON4 = Radiobutton(tab4, text='ON', variable=initLED4, value=1)
+    rad_OFF4 = Radiobutton(tab4, text='OFF', variable=initLED4, value=0)
+    rad_ON4.grid(column=9, row=1+row_adj, padx=15, pady=5)
+    rad_OFF4.grid(column=11, row=1+row_adj, pady=5)
+
+    initLED5 = IntVar(value=0)
+    rad_ON5 = Radiobutton(tab5, text='ON', variable=initLED5, value=1)
+    rad_OFF5 = Radiobutton(tab5, text='OFF', variable=initLED5, value=0)
+    rad_ON5.grid(column=9, row=1+row_adj, padx=15, pady=5)
+    rad_OFF5.grid(column=11, row=1+row_adj, pady=5)
+
+    initLEDlabel1 = Label(tab1, text='Initial LED')
+    initLEDlabel1.grid(column=10, row=1, padx=3, pady=5)
+
+
+
+ # Box1 main
+
+    for i in range(0,12):
+        tcyclelength = Spinbox(tab1,from_=00, to=24, width=3)
+        tcyclelength.grid(column=26, row=1+i+row_adj, pady=5)
+        tcyclelength.delete(0,'end')
+        tcyclelength.insert(0,24)
+        tcyclespinbox_arr[0,i] = tcyclelength
+
+    tcyclelabel = Label(tab1, text='T-cycle length')
+    tcyclelabel.grid(column=26, row=1, padx=3, pady=5)
     
     tab1_title = Label(tab1, text= 'LED schedule', anchor='center')
-    tab1_title.grid(column=0, row= -1+row_adj, columnspan='27', sticky='we')
+    tab1_title.grid(column=12, row= 1, columnspan='27', sticky='we')
     #capSep1 = ttk.Separator(tab1, orient=HORIZONTAL)
     #capSep1.grid(column=0, row = row_adj+5, columnspan='27', sticky='we')
     box1sched_text=StringVar()
@@ -8380,7 +8426,7 @@ if __name__ == '__main__':
     phaseLabel1_1 = Label(tab1, text='Phase 1')
     dateLabel = time.strftime('%H:%M   %Y/%m/%d') # reads time for Phase 1 start-time
     fromLabel1_1 = Label(tab1, text='From:')
-    date_label1 = Label(tab1, text=dateLabel+' (HH:MN YYYY/MO/DD)')
+    date_label1 = Label(tab1, text=dateLabel)
     rad1_A_1 = Radiobutton(tab1, text='LD', variable=var1_1, value=1)
     lbl1_A_1 = Label(tab1, text= 'On:')
     spin1_A_1 = Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f')
@@ -8418,6 +8464,12 @@ if __name__ == '__main__':
     label1_m2_1.grid(column=23, row=1+row_adj, pady=5, sticky='w')
     rad1_B_1.grid(column=24, row=1+row_adj, padx=15, pady=5)
     rad1_C_1.grid(column=25, row=1+row_adj, pady=5)
+
+    tcyclelength = Spinbox(tab1,from_=00, to=24, width=3)
+    tcyclelength.grid(column=26, row=1+row_adj, pady=5)
+    tcyclelength.delete(0,'end')
+    tcyclelength.insert(0,24)
+    tcyclespinbox_arr[0,0] = tcyclelength
 
 
         # phase 2
@@ -8494,6 +8546,12 @@ if __name__ == '__main__':
     label1_m2_2.grid(column=23,row=2+row_adj, pady=5)
     rad1_B_2.grid(column=24, row=2+row_adj, padx=15, pady=5)
     rad1_C_2.grid(column=25, row=2+row_adj, pady=5)
+
+    
+
+    
+
+
         # phase 3
     phaseLabel1_3 = Label(tab1, text='Phase 3')
     fromLabel1_3 = Label(tab1, text='From:')
@@ -8541,8 +8599,7 @@ if __name__ == '__main__':
     label1_m2_3 = Label(tab1, text='')
     rad1_B_3 = Radiobutton(tab1, text='DD', variable=var1_3, value=2)
     rad1_C_3 = Radiobutton(tab1, text='LL', variable=var1_3, value=3)
-    phaseLabel1_3.grid(column=0, row=3+row_adj, padx=15, pady=5)
-    fromLabel1_3.grid(column=1,row=3+row_adj)
+    phaseLabel1_3.grid(column=0, row=3+row_adj, padx=15, pady=5)tcyclefactor
     spin1_E_3.grid(column=2,row=3+row_adj)
     label1_h0_3.grid(column=3,row=3+row_adj)
     spin1_F_3.grid(column=4,row=3+row_adj)
@@ -8567,6 +8624,10 @@ if __name__ == '__main__':
     label1_m2_3.grid(column=23,row=3+row_adj, pady=5)
     rad1_B_3.grid(column=24, row=3+row_adj, padx=15, pady=5)
     rad1_C_3.grid(column=25, row=3+row_adj, pady=5)
+
+
+   
+
 
         # phase 4
     phaseLabel1_4 = Label(tab1, text='Phase 4')
@@ -8641,6 +8702,12 @@ if __name__ == '__main__':
     label1_m2_4.grid(column=23,row=4+row_adj, pady=5)
     rad1_B_4.grid(column=24, row=4+row_adj, padx=15, pady=5)
     rad1_C_4.grid(column=25, row=4+row_adj, pady=5)
+
+   
+
+
+
+
         # Phase 5
     phaseLabel1_5 = Label(tab1, text='Phase 5')
     fromLabel1_5 = Label(tab1, text='From:')
@@ -8714,6 +8781,11 @@ if __name__ == '__main__':
     label1_m2_5.grid(column=23,row=5+row_adj, pady=5)
     rad1_B_5.grid(column=24, row=5+row_adj, padx=15, pady=5)
     rad1_C_5.grid(column=25, row=5+row_adj, pady=5)
+
+    
+
+
+
         # Phase 6
     phaseLabel1_6 = Label(tab1, text='Phase 6')
     fromLabel1_6 = Label(tab1, text='From:')
@@ -8789,6 +8861,9 @@ if __name__ == '__main__':
     label1_m2_6.grid(column=23,row=rowPhase6+row_adj, pady=5)
     rad1_B_6.grid(column=24, row=rowPhase6+row_adj, padx=15, pady=5)
     rad1_C_6.grid(column=25, row=rowPhase6+row_adj, pady=5)
+
+  
+
 
 
         # Phase 7
@@ -8867,6 +8942,10 @@ if __name__ == '__main__':
     rad1_B_7.grid(column=24, row=rowPhase7+row_adj, padx=15, pady=5)
     rad1_C_7.grid(column=25, row=rowPhase7+row_adj, pady=5)
 
+
+   
+
+
     # Phase 8
     phaseLabel1_8 = Label(tab1, text='Phase 8')
     fromLabel1_8 = Label(tab1, text='From:')
@@ -8943,6 +9022,8 @@ if __name__ == '__main__':
     rad1_B_8.grid(column=24, row=rowPhase8+row_adj, padx=15, pady=5)
     rad1_C_8.grid(column=25, row=rowPhase8+row_adj, pady=5)
 
+   
+
     # Phase 9
     phaseLabel1_9 = Label(tab1, text='Phase 9')
     fromLabel1_9 = Label(tab1, text='From:')
@@ -9018,6 +9099,8 @@ if __name__ == '__main__':
     label1_m2_9.grid(column=23,row=rowPhase9+row_adj, pady=5)
     rad1_B_9.grid(column=24, row=rowPhase9+row_adj, padx=15, pady=5)
     rad1_C_9.grid(column=25, row=rowPhase9+row_adj, pady=5)
+   
+
 
     # Phase 10
     phaseLabel1_10 = Label(tab1, text='Phase 10')
@@ -9095,6 +9178,9 @@ if __name__ == '__main__':
     rad1_B_10.grid(column=24, row=rowPhase10+row_adj, padx=15, pady=5)
     rad1_C_10.grid(column=25, row=rowPhase10+row_adj, pady=5)
 
+   
+
+
     # Phase 11
     phaseLabel1_11 = Label(tab1, text='Phase 11')
     fromLabel1_11 = Label(tab1, text='From:')
@@ -9170,6 +9256,9 @@ if __name__ == '__main__':
     label1_m2_11.grid(column=23,row=rowPhase11+row_adj, pady=5)
     rad1_B_11.grid(column=24, row=rowPhase11+row_adj, padx=15, pady=5)
     rad1_C_11.grid(column=25, row=rowPhase11+row_adj, pady=5)
+
+   
+
 
     # Phase 12
     phaseLabel1_12 = Label(tab1, text='Phase 12')
@@ -9247,12 +9336,27 @@ if __name__ == '__main__':
     rad1_B_12.grid(column=24, row=rowPhase12+row_adj, padx=15, pady=5)
     rad1_C_12.grid(column=25, row=rowPhase12+row_adj, pady=5)
 
+   
+
+
     rowsButton = 13
     
     
     
 
-    # Box2
+    # Box2 main
+    tcyclelabel2 = Label(tab2, text='T-cycle length')
+    tcyclelabel2.grid(column=26, row=1, padx=3, pady=5)
+
+    for i in range(0,12): 
+        tcyclelength = Spinbox(tab2, from_=00, to=24, width=3)    
+        tcyclelength.grid(column=26, row=i+1+row_adj, padx=3,pady=5)
+        tcyclelength.delete(0,'end')
+        tcyclelength.insert(0,24)
+        tcyclespinbox_arr[1,i] = tcyclelength
+
+
+    
     
    
     tab2_title = Label(tab2, text= 'LED schedule', anchor='center')
@@ -9266,7 +9370,7 @@ if __name__ == '__main__':
     phaseLabel2_1 = Label(tab2, text='Phase 1')
     dateLabel = time.strftime('%H:%M   %Y/%m/%d') # reads time for Phase 1 start-time
     fromLabel2_1 = Label(tab2, text='From:')
-    date_label2 = Label(tab2, text=dateLabel+' (HH:MN YYYY/MO/DD)')
+    date_label2 = Label(tab2, text=dateLabel)
     rad2_A_1 = Radiobutton(tab2, text='LD', variable=var2_1, value=1)
     lbl2_A_1 = Label(tab2, text= 'On:')
     spin2_A_1 = Spinbox(tab2, from_=00, to=24, width=3, format='%02.0f')
@@ -10123,7 +10227,18 @@ if __name__ == '__main__':
    
    
 
-    # Box3
+    # Box3 main
+
+    tcyclelabel3 = Label(tab3, text='T-cycle length')
+    tcyclelabel3.grid(column=26, row=1, padx=3, pady=5)
+
+    for i in range(0,12): 
+        tcyclespinbox_arr[2,i] = Spinbox(tab3,from_=00, to=24, width=3)    
+        tcyclespinbox_arr[2,i].grid(column=26, row=i+1+row_adj, padx=3,pady=5)
+        tcyclespinbox_arr[2,i].delete(0,'end')
+        tcyclespinbox_arr[2,i].insert(0,24)
+        
+    
    
     
     tab3_title = Label(tab3, text= 'LED schedule', anchor='center')
@@ -10137,7 +10252,7 @@ if __name__ == '__main__':
     phaseLabel3_1 = Label(tab3, text='Phase 1')
     dateLabel = time.strftime('%H:%M   %Y/%m/%d') # reads time for Phase 1 start-time
     fromLabel3_1 = Label(tab3, text='From:')
-    date_label3 = Label(tab3, text=dateLabel+' (HH:MN YYYY/MO/DD)')
+    date_label3 = Label(tab3, text=dateLabel)
     rad3_A_1 = Radiobutton(tab3, text='LD', variable=var3_1, value=1)
     lbl3_A_1 = Label(tab3, text= 'On:')
     spin3_A_1 = Spinbox(tab3, from_=00, to=24, width=3, format='%02.0f')
@@ -10999,6 +11114,18 @@ if __name__ == '__main__':
     
     
     # Box4
+
+
+    tcyclelabel4 = Label(tab4, text='T-cycle length')
+    tcyclelabel4.grid(column=26, row=1, padx=3, pady=5)
+
+    for i in range(0,12): 
+        tcyclespinbox_arr[3,i] = Spinbox(tab4,from_=00, to=24, width=3)    
+        tcyclespinbox_arr[3,i].grid(column=26, row=i+1+row_adj, padx=3,pady=5)
+        tcyclespinbox_arr[3,i].delete(0,'end')
+        tcyclespinbox_arr[3,i].insert(0,24)
+        
+    
     
     
     tab4_title = Label(tab4, text= 'LED schedule', anchor='center')
@@ -11012,7 +11139,7 @@ if __name__ == '__main__':
     phaseLabel4_1 = Label(tab4, text='Phase 1')
     dateLabel = time.strftime('%H:%M   %Y/%m/%d') # reads time for Phase 1 start-time
     fromLabel4_1 = Label(tab4, text='From:')
-    date_label4 = Label(tab4, text=dateLabel+' (HH:MN YYYY/MO/DD)')
+    date_label4 = Label(tab4, text=dateLabel)
     rad4_A_1 = Radiobutton(tab4, text='LD', variable=var4_1, value=1)
     lbl4_A_1 = Label(tab4, text= 'On:')
     spin4_A_1 = Spinbox(tab4, from_=00, to=24, width=3, format='%02.0f')
@@ -11880,6 +12007,17 @@ if __name__ == '__main__':
    
 
     # Box5
+
+    tcyclelabel5 = Label(tab5, text='T-cycle length')
+    tcyclelabel5.grid(column=26, row=1, padx=3, pady=5)
+
+    for i in range(0,12): 
+        tcyclespinbox_arr[4,i] = Spinbox(tab5,from_=00, to=24, width=3)    
+        tcyclespinbox_arr[4,i].grid(column=26, row=i+1+row_adj, padx=3,pady=5)
+        tcyclespinbox_arr[4,i].delete(0,'end')
+        tcyclespinbox_arr[4,i].insert(0,24)
+        
+    
     
     
     tab5_title = Label(tab5, text= 'LED schedule', anchor='center')
@@ -11893,7 +12031,7 @@ if __name__ == '__main__':
     phaseLabel5_1 = Label(tab5, text='Phase 1')
     dateLabel = time.strftime('%H:%M   %Y/%m/%d') # reads time for Phase 1 start-time
     fromLabel5_1 = Label(tab5, text='From:')
-    date_label5 = Label(tab5, text=dateLabel+' (HH:MN YYYY/MO/DD)')
+    date_label5 = Label(tab5, text=dateLabel)
     rad5_A_1 = Radiobutton(tab5, text='LD', variable=var5_1, value=1)
     lbl5_A_1 = Label(tab5, text= 'On:')
     spin5_A_1 = Spinbox(tab5, from_=00, to=24, width=3, format='%02.0f')
