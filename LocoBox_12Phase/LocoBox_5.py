@@ -7499,10 +7499,150 @@ def copyBoxn(n, input_mat):
         temp_savedBoxSchedule.addPhase(*input_mat[n, phase_ind])
 
 def change_time_display():
+
+    #doesn't accept fractions, have to transform fraction into minutes so that people choose the whole day
     global tcyclefactor, tcyclelength
 
-    tcyclefactor = tcyclelength.get()
-    spin5_A_4 = Spinbox(tab5, from_=00, to=24, width=3, format='%02.0f')
+    tcyclefactor = int(float(tcyclelength.get()))
+    print(tcyclefactor)
+    spin1_A_1.config(to=tcyclefactor)
+    spin1_A_2.config(to=tcyclefactor)
+    spin1_A_3.config(to=tcyclefactor)
+    spin1_A_4.config(to=tcyclefactor)
+    spin1_A_5.config(to=tcyclefactor)
+    spin1_A_6.config(to=tcyclefactor)
+    spin1_A_7.config(to=tcyclefactor)
+    spin1_A_8.config(to=tcyclefactor)
+    spin1_A_9.config(to=tcyclefactor)
+    spin1_A_10.config(to=tcyclefactor)
+    spin1_A_11.config(to=tcyclefactor)
+    spin1_A_12.config(to=tcyclefactor)
+
+    spin1_C_1.config(to=tcyclefactor)
+    spin1_C_2.config(to=tcyclefactor)
+    spin1_C_3.config(to=tcyclefactor)
+    spin1_C_4.config(to=tcyclefactor)
+    spin1_C_5.config(to=tcyclefactor)
+    spin1_C_6.config(to=tcyclefactor)
+    spin1_C_7.config(to=tcyclefactor)
+    spin1_C_8.config(to=tcyclefactor)
+    spin1_C_9.config(to=tcyclefactor)
+    spin1_C_10.config(to=tcyclefactor)
+    spin1_C_11.config(to=tcyclefactor)
+    spin1_C_12.config(to=tcyclefactor)
+
+
+    #box2
+
+    spin2_A_1.config(to=tcyclefactor)
+    spin2_A_2.config(to=tcyclefactor)
+    spin2_A_3.config(to=tcyclefactor)
+    spin2_A_4.config(to=tcyclefactor)
+    spin2_A_5.config(to=tcyclefactor)
+    spin2_A_6.config(to=tcyclefactor)
+    spin2_A_7.config(to=tcyclefactor)
+    spin2_A_8.config(to=tcyclefactor)
+    spin2_A_9.config(to=tcyclefactor)
+    spin2_A_10.config(to=tcyclefactor)
+    spin2_A_11.config(to=tcyclefactor)
+    spin2_A_12.config(to=tcyclefactor)
+    spin2_C_1.config(to=tcyclefactor)
+    spin2_C_2.config(to=tcyclefactor)
+    spin2_C_3.config(to=tcyclefactor)
+    spin2_C_4.config(to=tcyclefactor)
+    spin2_C_5.config(to=tcyclefactor)
+    spin2_C_6.config(to=tcyclefactor)
+    spin2_C_7.config(to=tcyclefactor)
+    spin2_C_8.config(to=tcyclefactor)
+    spin2_C_9.config(to=tcyclefactor)
+    spin2_C_10.config(to=tcyclefactor)
+    spin2_C_11.config(to=tcyclefactor)
+    spin2_C_12.config(to=tcyclefactor)
+
+    #box3
+
+    spin3_A_1.config(to=tcyclefactor)
+    spin3_A_2.config(to=tcyclefactor)
+    spin3_A_3.config(to=tcyclefactor)
+    spin3_A_4.config(to=tcyclefactor)
+    spin3_A_5.config(to=tcyclefactor)
+    spin3_A_6.config(to=tcyclefactor)
+    spin3_A_7.config(to=tcyclefactor)
+    spin3_A_8.config(to=tcyclefactor)
+    spin3_A_9.config(to=tcyclefactor)
+    spin3_A_10.config(to=tcyclefactor)
+    spin3_A_11.config(to=tcyclefactor)
+    spin3_A_12.config(to=tcyclefactor)
+    spin3_C_1.config(to=tcyclefactor)
+    spin3_C_2.config(to=tcyclefactor)
+    spin3_C_3.config(to=tcyclefactor)
+    spin3_C_4.config(to=tcyclefactor)
+    spin3_C_5.config(to=tcyclefactor)
+    spin3_C_6.config(to=tcyclefactor)
+    spin3_C_7.config(to=tcyclefactor)
+    spin3_C_8.config(to=tcyclefactor)
+    spin3_C_9.config(to=tcyclefactor)
+    spin3_C_10.config(to=tcyclefactor)
+    spin3_C_11.config(to=tcyclefactor)
+    spin3_C_12.config(to=tcyclefactor)
+
+    #box4
+
+    spin4_A_1.config(to=tcyclefactor)
+    spin4_A_2.config(to=tcyclefactor)
+    spin4_A_3.config(to=tcyclefactor)
+    spin4_A_4.config(to=tcyclefactor)
+    spin4_A_5.config(to=tcyclefactor)
+    spin4_A_6.config(to=tcyclefactor)
+    spin4_A_7.config(to=tcyclefactor)
+    spin4_A_8.config(to=tcyclefactor)
+    spin4_A_9.config(to=tcyclefactor)
+    spin4_A_10.config(to=tcyclefactor)
+    spin4_A_11.config(to=tcyclefactor)
+    spin4_A_12.config(to=tcyclefactor)
+    spin4_C_1.config(to=tcyclefactor)
+    spin4_C_2.config(to=tcyclefactor)
+    spin4_C_3.config(to=tcyclefactor)
+    spin4_C_4.config(to=tcyclefactor)
+    spin4_C_5.config(to=tcyclefactor)
+    spin4_C_6.config(to=tcyclefactor)
+    spin4_C_7.config(to=tcyclefactor)
+    spin4_C_8.config(to=tcyclefactor)
+    spin4_C_9.config(to=tcyclefactor)
+    spin4_C_10.config(to=tcyclefactor)
+    spin4_C_11.config(to=tcyclefactor)
+    spin4_C_12.config(to=tcyclefactor)
+
+
+    #box5
+
+    spin5_A_1.config(to=tcyclefactor)
+    spin5_A_2.config(to=tcyclefactor)
+    spin5_A_3.config(to=tcyclefactor)
+    spin5_A_4.config(to=tcyclefactor)
+    spin5_A_5.config(to=tcyclefactor)
+    spin5_A_6.config(to=tcyclefactor)
+    spin5_A_7.config(to=tcyclefactor)
+    spin5_A_8.config(to=tcyclefactor)
+    spin5_A_9.config(to=tcyclefactor)
+    spin5_A_10.config(to=tcyclefactor)
+    spin5_A_11.config(to=tcyclefactor)
+    spin5_A_12.config(to=tcyclefactor)
+    spin5_C_1.config(to=tcyclefactor)
+    spin5_C_2.config(to=tcyclefactor)
+    spin5_C_3.config(to=tcyclefactor)
+    spin5_C_4.config(to=tcyclefactor)
+    spin5_C_5.config(to=tcyclefactor)
+    spin5_C_6.config(to=tcyclefactor)
+    spin5_C_7.config(to=tcyclefactor)
+    spin5_C_8.config(to=tcyclefactor)
+    spin5_C_9.config(to=tcyclefactor)
+    spin5_C_10.config(to=tcyclefactor)
+    spin5_C_11.config(to=tcyclefactor)
+    spin5_C_12.config(to=tcyclefactor)
+
+
+
 
 
 if __name__ == '__main__':
@@ -7801,7 +7941,7 @@ if __name__ == '__main__':
     tcyclelength.place(x = 150, y = 0)
     tcyclelength.delete(0,'end')
     tcyclelength.insert(0,24)
-    tcyclebtn = Button(f3, text=' Set cycle', command=change_time_display, state='disabled')
+    tcyclebtn = Button(f3, text=' Set cycle', command=change_time_display)
     tcyclebtn.place(x = 220, y = 0)
 
     #Entry for Port, Baud, timeout, filename to save
@@ -7852,6 +7992,7 @@ if __name__ == '__main__':
 
     #ACTOGRAM ASCII DISPLAY
     #display as double plot using time series
+    #filename = 'BOX1-5-'+date_string+'.txt'
     filename = '/home/zow/LocoBox/actogram/BOX2-COM4-20181018.txt'
     #filename = 'C:/Users\OWNER\Documents\GitHub\LocoBox\LocoBox_12Phase\BOX1-3-20181018.txt'
 
@@ -7861,7 +8002,7 @@ if __name__ == '__main__':
     pir = 'PIR01'
     led = 'LED01'
 
-   
+    #if filename empty, show blank
     # create a figure
     #figure = plt.Figure(figsize=(2, 2), dpi=100)
     figure = plot_doubleplot(box, pir, led, filename)
