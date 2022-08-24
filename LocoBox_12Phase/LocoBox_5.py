@@ -8442,6 +8442,7 @@ if __name__ == '__main__':
         # phase 3
     phaseLabel1_3 = Label(tab1, text='Phase 3')
     fromLabel1_3 = Label(tab1, text='From:')
+    fromLabel1_3.grid(column=1,row=2+row_adj)
     space1_3 = Label(tab1, text=' ')
     space1_3_2 = Label(tab1, text=' ')
     spin1_E_3 = Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f')
