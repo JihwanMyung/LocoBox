@@ -16,8 +16,9 @@ pd.set_option("display.max_rows", None)
 
 
 def plot_doubleplot(box, pir, led, filename):
-    
+    plt.clf()
 
+#determine number of rows to skip
     try:
         df = pd.read_table(filename, sep='\s+',
                     skiprows=23, index_col=None)

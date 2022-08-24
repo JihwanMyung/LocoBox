@@ -125,7 +125,7 @@ global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date
 global initLED1, initLED2, initLED3, initLED4 , initLED5
 
 
-global value_mat, input_mat, log_mat, phase_delimiters
+global value_mat, input_mat, log_mat, phase_delimiters, figure_canvas, figure
 
 
 
@@ -594,19 +594,23 @@ def get_values_for_actogram():
     plot_double_acto(box_id)
 
 def plot_double_acto(tab):
+    global figure_canvas, figure
     #the filename has to correspond to the filename that is being saved, if not, fill in with empty DF
-    filename = filename_entry.get()
-    #filename = '/home/zow/LocoBox/actogram/BOX1-3-20181018.txt'
+    #filename = filename_entry.get()
+    filename = '/home/zow/LocoBox/actogram/BOX1-3-20181018.txt'
 
-    #plt.clf()
+    
 
     box = 'BOX' + str(tab)
     pir = 'PIR0'  + str(tab)
     led = 'LED0'   + str(tab)
     #graph.clear()
-    plt.clf()
+    figure.clf()
+
+    figure_canvas.get_tk_widget().pack_forget() 
     figure = plot_doubleplot(box, pir, led, filename)    
     print(str(figure))
+    
     figure_canvas = FigureCanvasTkAgg(figure, f2)   
     figure.canvas.draw_idle()
     #figure.canvas.draw()
