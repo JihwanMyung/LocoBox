@@ -8086,7 +8086,7 @@ if __name__ == '__main__':
     # tcyclelength.insert(0,24)
 
     tcyclebtn = Button(f3, text=' Set cycle', command=change_time_display)
-    tcyclebtn.place(x = 220, y = 0)
+    tcyclebtn.place(x = 40, y = 0)
 
     #Entry for Port, Baud, timeout, filename to save
     Label(f3,text =  'Schedule').place(x = 363, y = yupperbtns)
