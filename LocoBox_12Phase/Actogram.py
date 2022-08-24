@@ -25,10 +25,12 @@ def plot_doubleplot(box, pir, led, filename):
     except Exception as e:
         #print(e)
         fig = plt.figure(figsize=(2, 2))  
+        fig.suptitle("No data")
         return fig 
 
     if df.empty:
         fig = plt.figure(figsize=(2, 2))  
+        fig.suptitle("No data")
         return fig 
 
     df.index = pd.to_datetime(df['MO/DY/YEAR']+' ' + df['HH:MM:SS'],
