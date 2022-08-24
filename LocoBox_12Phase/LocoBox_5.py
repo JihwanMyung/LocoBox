@@ -604,10 +604,12 @@ def plot_double_acto(tab):
     pir = 'PIR0'  + str(tab)
     led = 'LED0'   + str(tab)
     #graph.clear()
+    plt.clf()
     figure = plot_doubleplot(box, pir, led, filename)    
+    print(str(figure))
     figure_canvas = FigureCanvasTkAgg(figure, f2)   
     figure.canvas.draw_idle()
-    figure.canvas.draw()
+    #figure.canvas.draw()
     figure_canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=1)
 
 def refresh_plot():
