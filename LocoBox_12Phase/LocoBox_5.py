@@ -597,7 +597,7 @@ def plot_double_acto(tab):
     global figure_canvas, figure
     #the filename has to correspond to the filename that is being saved, if not, fill in with empty DF
     #filename = filename_entry.get()
-    filename = '/home/zow/LocoBox/actogram/BOX1-3-20181018.txt'
+    filename = '/home/zow/LocoBox/LocoBox_12Phase/BOX1-3-20181018.txt'
 
     
 
@@ -609,7 +609,7 @@ def plot_double_acto(tab):
 
     figure_canvas.get_tk_widget().pack_forget() 
     figure = plot_doubleplot(box, pir, led, filename)    
-    print(str(figure))
+    
     
     figure_canvas = FigureCanvasTkAgg(figure, f2)   
     figure.canvas.draw_idle()

@@ -24,12 +24,14 @@ def plot_doubleplot(box, pir, led, filename):
                     skiprows=23, index_col=None)
 
     except Exception as e:
-        #print(e)
+        print(e)
+        
         fig = plt.figure(figsize=(2, 2))  
         fig.suptitle("No data")
         return fig 
 
     if df.empty:
+        print("empty table")
         fig = plt.figure(figsize=(2, 2))  
         fig.suptitle("No data")
         return fig 
