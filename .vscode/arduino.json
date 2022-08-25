@@ -1,5 +1,5 @@
 {
-    "port": "/dev/ttyACM0",
+    "port": "/dev/ttyACM1",
     "sketch": "LocoBox_12Phase/1-5_12Phase/1-5_12Phase.ino",
     "board": "arduino:avr:mega",
     "configuration": "cpu=atmega2560"
