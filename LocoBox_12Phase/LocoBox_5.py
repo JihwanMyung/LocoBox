@@ -605,7 +605,7 @@ def plot_double_acto(tab):
     box = 'BOX' + str(tab)
     pir = 'PIR0'  + str(tab)
     led = 'LED0'   + str(tab)
-    #graph.clear()
+    
     figure.clf()
 
     figure_canvas.get_tk_widget().pack_forget() 
@@ -9255,7 +9255,7 @@ if __name__ == '__main__':
     
    
     tab2_title = Label(tab2, text= 'LED schedule', anchor='center')
-    tab2_title.grid(column=0, row= -1+row_adj, columnspan='27', sticky='we')
+    tab2_title.grid(column=12, row= 1, columnspan='27', sticky='we')
     # capSep2 = ttk.Separator(tab2, orient=HORIZONTAL)
     # capSep2.grid(column=0, row = row_adj+5, columnspan='27', sticky='we')
     box2sched_text=StringVar()
@@ -10133,11 +10133,11 @@ if __name__ == '__main__':
         tcyclespinbox_arr[2,i].delete(0,'end')
         tcyclespinbox_arr[2,i].insert(0,24)
         
-    
+  
    
     
     tab3_title = Label(tab3, text= 'LED schedule', anchor='center')
-    tab3_title.grid(column=0, row= -1+row_adj, columnspan='27', sticky='we')
+    tab3_title.grid(column=12, row= 1, columnspan='27', sticky='we')
     # capSep3 = ttk.Separator(tab3, orient=HORIZONTAL)
     # capSep3.grid(column=0, row = row_adj+5, columnspan='27', sticky='we')
     box3sched_text=StringVar()
@@ -11024,7 +11024,7 @@ if __name__ == '__main__':
     
     
     tab4_title = Label(tab4, text= 'LED schedule', anchor='center')
-    tab4_title.grid(column=0, row= -1+row_adj, columnspan='27', sticky='we')
+    tab4_title.grid(column=12, row= 1, columnspan='27', sticky='we')
     # capSep4 = ttk.Separator(tab4, orient=HORIZONTAL)
     # capSep4.grid(column=0, row = row_adj+5, columnspan='27', sticky='we')
     box4sched_text=StringVar()
@@ -11916,7 +11916,7 @@ if __name__ == '__main__':
     
     
     tab5_title = Label(tab5, text= 'LED schedule', anchor='center')
-    tab5_title.grid(column=0, row= -1+row_adj, columnspan='27', sticky='we')
+    tab5_title.grid(column=12, row= 1, columnspan='27', sticky='we')
     # capSep5 = ttk.Separator(tab5, orient=HORIZONTAL)
     # capSep5.grid(column=0, row = row_adj+5, columnspan='27', sticky='we')
     box5sched_text=StringVar()

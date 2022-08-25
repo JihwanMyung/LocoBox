@@ -23,8 +23,13 @@ def plot_doubleplot(box, pir, led, filename):
 
     number_of_skipped_lines = 0
 
+    try:
+        fo = open(filename, "r")
 
-    fo = open(filename, "r")
+    except:
+        fig = plt.figure(figsize=(2, 2))  
+        fig.suptitle("No data")
+        return fig 
     for line in fo:
         
         if "HH:MM:SS" in line:
@@ -37,7 +42,7 @@ def plot_doubleplot(box, pir, led, filename):
         
     
     fo.close()
-    print(number_of_skipped_lines)
+    #print(number_of_skipped_lines)
 
 
 #determine number of rows to skip #23, 35
@@ -117,7 +122,14 @@ def plot_doubleplot(box, pir, led, filename):
         k = k+1
 
     # Remove the marginsclear
-    dategroup2 = df2.groupby(pd.Grouper(freq='D'))
+    try:
+        dategroup2 = df2.groupby(pd.Grouper(freq='D'))
+
+    except:
+        fig = plt.figure(figsize=(2, 2))  
+        fig.suptitle("Not enough data.")
+        return fig 
+
     plt.rcParams['axes.autolimit_mode'] = 'round_numbers'
     plt.rcParams['axes.xmargin'] = 0.
     plt.rcParams['axes.ymargin'] = 0.1
@@ -185,12 +197,13 @@ def plot_doubleplot(box, pir, led, filename):
 
 
 
-box = 'BOX2'
-pir = 'PIR02'
-led = 'LED02'
+# box = 'BOX2'
+# pir = 'PIR02'
+# led = 'LED02'
 
-filename = '/home/zow/LocoBox/LocoBox_12Phase/BOX1-3-20181018.txt'
+#filename = '/home/zow/LocoBox/LocoBox_12Phase/BOX1-3-20181018.txt'
+#filename = '/home/zow/LocoBox/Prev_locobox_data/BOX1-5-20220720.txt'
 
-#filename = '/home/zow/LocoBox/BOX1-5-20220825.txt'
+# filename = '/home/zow/LocoBox/BOX1-5-20220825.txt'
 
-plot_doubleplot(box, pir, led, filename)
+# plot_doubleplot(box, pir, led, filename)
