@@ -9,6 +9,7 @@ from matplotlib.colors import ListedColormap
 from matplotlib.pyplot import figure
 from matplotlib.widgets import Slider
 
+
 style.use('seaborn-colorblind')
 
 pd.set_option("display.max_rows", None)
@@ -18,10 +19,31 @@ pd.set_option("display.max_rows", None)
 def plot_doubleplot(box, pir, led, filename):
     plt.clf()
 
-#determine number of rows to skip
+    
+
+    number_of_skipped_lines = 0
+
+
+    fo = open(filename, "r")
+    for line in fo:
+        
+        if "HH:MM:SS" in line:
+            break
+        # elif len(line.strip()) == 0:
+        #     pass
+
+        else:
+            number_of_skipped_lines += 1 
+        
+    
+    fo.close()
+    print(number_of_skipped_lines)
+
+
+#determine number of rows to skip #23, 35
     try:
-        df = pd.read_table(filename, sep='\s+',
-                    skiprows=23, index_col=None)
+        df = pd.read_table(filename, sep='\s+', skip_blank_lines=True,
+                     skiprows=number_of_skipped_lines, index_col=None)
 
     except Exception as e:
         print(e)
@@ -163,10 +185,12 @@ def plot_doubleplot(box, pir, led, filename):
 
 
 
-# box = 'BOX2'
-# pir = 'PIR02'
-# led = 'LED02'
+box = 'BOX2'
+pir = 'PIR02'
+led = 'LED02'
 
-# filename = '/home/zow/LocoBox/actogram/BOX1-3-20181018.txt'
+filename = '/home/zow/LocoBox/LocoBox_12Phase/BOX1-3-20181018.txt'
 
-#plot_doubleplot(box, pir, led, filename)
+#filename = '/home/zow/LocoBox/BOX1-5-20220825.txt'
+
+plot_doubleplot(box, pir, led, filename)

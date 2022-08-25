@@ -596,8 +596,9 @@ def get_values_for_actogram():
 def plot_double_acto(tab):
     global figure_canvas, figure
     #the filename has to correspond to the filename that is being saved, if not, fill in with empty DF
-    #filename = filename_entry.get()
-    filename = '/home/zow/LocoBox/LocoBox_12Phase/BOX1-3-20181018.txt'
+    working_directory = os.getcwd()
+    filename = working_directory+ '/' + filename_entry.get()
+    #filename = '/home/zow/LocoBox/LocoBox_12Phase/BOX1-3-20181018.txt'
 
     
 
