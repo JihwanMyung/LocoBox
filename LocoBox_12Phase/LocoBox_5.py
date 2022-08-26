@@ -1,30 +1,53 @@
-from cmath import log
-from faulthandler import disable
-import serial   # For Serial communication
-import time     # Required for using delay functions
-import datetime # For date-time setting and timedelta calculations
 
+import datetime  # For date-time setting and timedelta calculations
+import json
+import os
+import time  # Required for using delay functions
 import tkinter as tk
-from tkinter import DISABLED, Tk, Frame, Canvas, Scrollbar, sys, Label, SUNKEN, BOTH, W, X, Y, Menu, IntVar, VERTICAL, HORIZONTAL, BOTTOM, Spinbox, Entry, ttk, messagebox, Button, StringVar, LEFT, RIGHT, Radiobutton
 #from tkinter import * #import INIT set of tkinter library for GUI
 import tkinter.scrolledtext as tkscrolled
+from cmath import log, phase
+from faulthandler import disable
+from tkinter import (BOTH, BOTTOM, DISABLED, HORIZONTAL, LEFT, RIGHT, SUNKEN,
+                     VERTICAL, Button, Canvas, Entry, Frame, IntVar, Label,
+                     Menu, Radiobutton, Scrollbar, Spinbox, StringVar, Tk, W,
+                     X, Y, messagebox, sys, ttk)
 from tkinter.filedialog import askopenfilename
 from tkinter.messagebox import showinfo
-import json
+
+import serial  # For Serial communication
+
 try:
     from tkinter import filedialog
 except ImportError:
     fileDialog = tk.filedialog
-import threading # To run Arduino loop and tkinter loop alongside
-import serial.tools.list_ports # For identifying Arduino port
-from BoxSchedule import BoxSchedule, PhaseSchedule, getDarkLightValue, inverseDarkLightValue
+import threading  # To run Arduino loop and tkinter loop alongside
+import traceback
+
+import matplotlib
+import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+import serial.tools.list_ports  # For identifying Arduino port
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
+                                               NavigationToolbar2Tk)
+
+from Actogram import plot_doubleplot
+from BoxSchedule import (BoxSchedule, PhaseSchedule, getDarkLightValue,
+                         inverseDarkLightValue)
+
+matplotlib.use('TkAgg')
+
 
 
 
 
 
 #sudo chmod 666 /dev/ttyACM0
+
+
+#Actogram reference: https://gist.githubusercontent.com/matham/61c45e66567b07f20840eaea0488767a/raw/04ece1483d963b0361f25959557f4a515417bb8e/actogram.py
+
 
 
 # Global variables 1_1 = Box_Phases
@@ -99,15 +122,20 @@ global hourOn2_12, minOn2_12, hourOff2_12, minOff2_12, dark2_12, light2_12, date
 global hourOn3_12, minOn3_12, hourOff3_12, minOff3_12, dark3_12, light3_12, date3_12, month3_12, year3_12, hourFrom3_12, minuteFrom3_12
 global hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12
 global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12
+global initLED1, initLED2, initLED3, initLED4 , initLED5
 
-global value_mat, input_mat, log_mat
+
+global value_mat, input_mat, log_mat, phase_delimiters, figure_canvas, figure
+
 
 
  
  
 global setBox1, setBox2, setBox3, setBox4, setBox5
 
-global display_string, display_counter
+
+global display_string, display_counter, current_phase, tcyclefactor, starttime, tcyclespinbox_arr
+
 
 
 
@@ -119,6 +147,9 @@ global display_string, display_counter
 global savedBoxSchedule, BoxSchedule1, BoxSchedule2, BoxSchedule3, BoxSchedule4, BoxSchedule5
 
 savedBoxSchedule = BoxSchedule()
+phase_delimiters = []
+tcyclefactor = 24
+initLED = 0
 
 
 # Preset values
@@ -149,6 +180,23 @@ def create_serial_obj(portPath, baud_rate, timeout):
     '''
     return serial.Serial(portPath, baud_rate, timeout=timeout)
 
+
+def refactor_by_tcycle_factor(tcycle_factor = 24, original_time_of_day = 0): #transform current or specified time to time using the new factor
+    
+    earth = datetime.timedelta(hours=abs((tcycle_factor/24)-1),minutes=00,seconds=00) #new time unit    
+    #hours = int(earth.seconds/3600)
+    #minutes = int((earth.seconds-(hours*3600))/60)
+    #seconds = int(earth.seconds-(minutes*60))
+    if original_time_of_day == 0 :
+        original_time_of_day = datetime.now()
+    new_time = original_time_of_day + earth
+    return new_time
+
+
+def convert_time(time_i_want, start_time, factor):
+    return refactor_by_tcycle_factor(factor, time_i_want- start_time) + start_time
+
+
 ###Classes
 class StatusBar(Frame): # scan open serial ports
     def __init__(self, master):
@@ -166,7 +214,7 @@ class StatusBar(Frame): # scan open serial ports
 window = Tk()
 window.title('LocoBox (1-5_box)')
 if sys.platform.startswith('win'):
-    window.geometry('870x620')
+    window.geometry('900x730')
 elif sys.platform.startswith('darwin'):
     window.geometry('1200x640')
 elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
@@ -183,7 +231,7 @@ def destruct(): # Quit the program
 def get_data(istate=0): # Start recording
     status.pack(side='bottom', fill='x')
     status.set('Starting the recording...')
-    boxrec_text.set('Preparing for recording.')
+    #boxrec_text.set('Preparing for recording.')
     
     window.update_idletasks()
     i=istate
@@ -199,7 +247,7 @@ def get_data(istate=0): # Start recording
     global serial_obj
     global dead
     global value_mat
-    global display_string, display_counter, log_mat
+    global display_string, display_counter, log_mat, initLED
 
 
     try:
@@ -210,7 +258,7 @@ def get_data(istate=0): # Start recording
                 with open(filename,'a') as w:
                     w.write(string2)
                 w.close()
-            print(string2)
+
             if i==0:
                 print('Synching time...')
                 status.pack(side='bottom', fill='x')
@@ -219,6 +267,11 @@ def get_data(istate=0): # Start recording
                 t = t + datetime.timedelta(minutes=1)
                 serial_obj.write(str.encode(t.strftime('%Y-%m-%d %H:%M:%S')))
             if i==1:
+
+                phase_id = i-1
+
+                serial_obj.write(str.encode(str(initLED1) + str(initLED2) + str(initLED3)+ str(initLED4) + str(initLED5)))
+
                 serial_obj.write(str.encode(hourOn1_1+minOn1_1+hourOff1_1+minOff1_1+hourOn2_1+minOn2_1+hourOff2_1+minOff2_1+
                                             hourOn3_1+minOn3_1+hourOff3_1+minOff3_1+hourOn4_1+minOn4_1+hourOff4_1+minOff4_1+
                                             hourOn5_1+minOn5_1+hourOff5_1+minOff5_1))
@@ -405,11 +458,18 @@ def get_data(istate=0): # Start recording
                                             dark4_11+light4_11+dark5_11+light5_11))
                 
             if i==32:
-                serial_obj.write(str.encode(date1_11+month1_11+year1_11+date2_11+month2_11+year2_11+
-                                            date3_11+month3_11+year3_11+date4_11+month4_11+year4_11+
-                                            date5_11+month5_11+year5_11+hourFrom1_11+minuteFrom1_11+
-                                            hourFrom2_11+minuteFrom2_11+hourFrom3_11+minuteFrom3_11+
-                                            hourFrom4_11+minuteFrom4_11+hourFrom5_11+minuteFrom5_11))
+
+                serial_obj.write(str.encode(date1_11+month1_11+year1_11+
+                                            date2_11+month2_11+year2_11+
+                                            date3_11+month3_11+year3_11+
+                                            date4_11+month4_11+year4_11+
+                                            date5_11+month5_11+year5_11+
+                                            hourFrom1_11+minuteFrom1_11+
+                                            hourFrom2_11+minuteFrom2_11+
+                                            hourFrom3_11+minuteFrom3_11+
+                                            hourFrom4_11+minuteFrom4_11+
+                                            hourFrom5_11+minuteFrom5_11))
+
 
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 11 schedules sent.')
@@ -434,17 +494,22 @@ def get_data(istate=0): # Start recording
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 11 schedules sent.')
                 status.set('All schedules transferred. Recording began.') 
-                boxrec_text.set('Recording on-going.')
+                
                 
                 window.update_idletasks()
             i=i+1
             
             if len(string2)>=79:     #set the id according to current tab
+
+
+                print(string2)
+
                 
                 display_string = string2
                 display_counter = counti
                 save_logs(counti, string2) 
                 on_tab_change(counti, string2)
+                #get_values_for_actogram()
                     
                        
 
@@ -455,13 +520,38 @@ def get_data(istate=0): # Start recording
 
 
                 
-    except:
+
+    except Exception:
+        traceback.print_exc() 
+
         print('Stopped recording and disconnected from the boxes.')
         status.pack(side='bottom', fill='x')
         status.set('Stopped recording and disconnected from the boxes.') 
-        boxrec_text.set('Recording stopped.')
+       
         
         window.update_idletasks()
+
+def display_as_ON_OFF(led_value):
+    led_value = str(led_value)
+    if led_value == '00000':
+        return 'OFF'
+    else:
+        return 'ON'
+
+def display_LD(box_id, phase_id):
+    global value_mat, input_mat
+    #get_var 
+    
+    var = input_mat[box_id, phase_id, 4].get()
+    if var == 2:
+        return "DD"
+    elif var == 3:
+        return "LL"
+    else:
+        return "LD"
+
+    
+
 
 
 
@@ -481,31 +571,92 @@ def save_logs( counti, string2): #max 120 timepoints
     log_mat[counti % 120, 10] = string2[68:73]
     log_mat[counti % 120, 11] = string2[74:79]
     #print(log_mat)
- 
+
+
+def get_values_for_actogram():
+    global log_mat
+    tab = int(tab_control.index('current'))+1
+    indices = []
+    pirs = []
+    box_id = 1
+    if tab == 2 or tab == 'Box2':
+        box_id = 1
+    elif tab == 3 or tab == 'Box3':
+        box_id = 1
+    elif tab == 4 or tab == 'Box4':
+
+        box_id = 1
+    elif tab == 5 or tab == 'Box5':
+        box_id = 5
+    
+
+
+    plot_double_acto(box_id)
+
+def plot_double_acto(tab):
+    global figure_canvas, figure
+    #the filename has to correspond to the filename that is being saved, if not, fill in with empty DF
+    working_directory = os.getcwd()
+    filename = working_directory+ '/' + filename_entry.get()
+    #filename = '/home/zow/LocoBox/LocoBox_12Phase/BOX1-3-20181018.txt'
+
+    
+
+    box = 'BOX' + str(tab)
+    pir = 'PIR0'  + str(tab)
+    led = 'LED0'   + str(tab)
+    
+    figure.clf()
+
+    figure_canvas.get_tk_widget().pack_forget() 
+    figure = plot_doubleplot(box, pir, led, filename)    
+    
+    
+    figure_canvas = FigureCanvasTkAgg(figure, f2)   
+    figure.canvas.draw_idle()
+    #figure.canvas.draw()
+    figure_canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=1)
+
+def refresh_plot():
+    print("refreshing plot")
+    get_values_for_actogram()
+
 
 def set_log_text(log_text, log_mat, tab):
+
+
+    phase_id = 0
+
     
     history_str = ''
-    for counti in range(0,120):
+    for counti in range(0,120): #check if I can get rid of the loop
         
         if tab == 1 or tab == 'Box1' :
+
+            phase_id = get_phase(1)
             
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str =  '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
+                history_str =  '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+ display_as_ON_OFF(str(log_mat[counti % 120,2]))+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
         elif tab == 2 or tab == 'Box2':
+            phase_id = get_phase(2)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str = '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
+                history_str = '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) + '   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,4]))+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
 
         elif tab == 3 or tab == 'Box3':
+            phase_id = get_phase(3)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str =  '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,6])+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
+                history_str =  '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) + '   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,6]))+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
                 
         elif tab == 4 or tab == 'Box4':
+            phase_id = get_phase(4)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str = '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
+                history_str = '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) + '   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,8]))+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
         elif tab == 5 or tab == 'Box5':
+            phase_id = get_phase(5)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str =  '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
+                history_str =  '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,10]))+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
+
+
 
     #print(history_str)
     log_text.set(history_str)
@@ -519,23 +670,30 @@ def restore_history(log_text, log_mat, tab):
     for counti in range(0,120):
         
         if tab == 1 or tab == 'Box1' :
+
+            phase_id = get_phase(1)
             
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str =  history_str + '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
+                history_str =  history_str + '# '+str(log_mat[counti % 120,0])+ '   ' + display_LD(0, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,2]))+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
         elif tab == 2 or tab == 'Box2':
+            phase_id = get_phase(2)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str = history_str +'# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
+                history_str = history_str +'# '+str(log_mat[counti % 120,0])+'   ' +display_LD(1, phase_id-1) +'  Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,4]))+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
 
         elif tab == 3 or tab == 'Box3':
+            phase_id = get_phase(3)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,6])+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
+                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'   ' +display_LD(2, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,6]))+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
                 
         elif tab == 4 or tab == 'Box4':
+            phase_id = get_phase(4)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
+                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'   ' +display_LD(3, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,8]))+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
         elif tab == 5 or tab == 'Box5':
+            phase_id = get_phase(5)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
+                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'   ' +display_LD(4, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,10]))+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
+
     log_text.set(history_str)
     log_display.config(state="normal")
     #log_display.delete('1.0','end')
@@ -550,22 +708,28 @@ def on_tab_change( counti, string2):
     tab = int(tab_control.index('current'))+1
     #tab = event.widget.tab('current')['text']
     if tab == 1:
-        
-        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
+
+        phase_id = get_phase(1)
+        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) +'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]))
     elif tab == 2:
-        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
+        phase_id = get_phase(2)
+        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]))
 
     elif tab == 3:
-        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
+        phase_id = get_phase(3)
+        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,6])+'    '+'PIR: '+str(log_mat[counti % 120,7]))
                
     elif tab == 4:
-        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
+        phase_id = get_phase(4)
+        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]))
     elif tab == 5:
-        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+        phase_id = get_phase(5)
+        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]))
     #log_display.config(state="normal")
     #log_display.delete('1.0','end')
@@ -578,32 +742,87 @@ def on_tab_change_trigger( event):
     counti = display_counter
     string2 = display_string
     
+
+    
     tab = event.widget.tab('current')['text']
     
     if tab == 'Box1':
-        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
+        phase_id = get_phase(1)
+        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]))
         
     elif tab == 'Box2':
-        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
+        phase_id = get_phase(2)
+        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
+
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]))
         
 
     elif tab == 'Box3':
-        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
-        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,6])+'    '+'PIR: '+str(log_mat[counti % 120,7]))
-               
-               
+
+        phase_id = get_phase(3)
+        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
+
     elif tab == 'Box4':
-        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
+
+        phase_id = get_phase(4)
+        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]))
     elif tab == 'Box5':
-        boxrec_text.set('# '+str(counti)+'    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+        phase_id = get_phase(5)
+        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+
         #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]))
     log_display.config(state="normal")
     log_display.delete('1.0','end')
     restore_history(log_text, log_mat, tab)
+    #get_values_for_actogram()
+
+
+
+def time_in_range(start, end, current):
+    """Returns whether current is in the range [start, end]"""
+    return start <= current <= end
+
+def DarkenLabel(label):
+    label.config(bg="darkgray")
+
+def get_phase(box_id):
+    global value_mat, phase_delimiters
+
+    box_id = box_id-1
+    #print(value_mat)
+    if len(phase_delimiters) == 0:
+        
+        return 1
     
+    for phase_id in range(0,12):
+        #start = datetime.datetime(year=int(value_mat[box_id, phase_id, 8]), month=int(value_mat[box_id, phase_id, 7]), day=int(value_mat[box_id, phase_id, 6]), hour=int(value_mat[box_id, phase_id, 9]), minute= int(value_mat[box_id, phase_id, 10]))
+        #end = datetime.datetime(year=int(value_mat[box_id, phase_id +1, 8]), month=int(value_mat[box_id, phase_id+1, 7]), day=int(value_mat[box_id, phase_id+1, 6]), hour=int(value_mat[box_id, phase_id+1, 9]), minute= int(value_mat[box_id, phase_id+1, 10]))
+        start = phase_delimiters[phase_id]
+        end = phase_delimiters[phase_id +1]
+        current = datetime.datetime.now()
+        
+        #print(start)
+        #print(current)
+        #print(end)
+
+        if start >= current:
+            print(phase_id)
+            return 1
+            
+            
+        if current < end:
+            return phase_id + 1
+
+        if current > end:
+            continue
+
+        
+        if phase_id == 11:
+            return 11 +1
+
+
 
 
 
@@ -1325,7 +1544,7 @@ def read_conf(): # Read schedule configuration
     configfilename = filedialog.askopenfilename()
     with open(configfilename) as data_file:
         config = json.load(data_file)
-        #print(config)
+
 
     global hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, hourOn2_1, minOn2_1, hourOff2_1, minOff2_1 
     global hourOn3_1, minOn3_1, hourOff3_1, minOff3_1, hourOn4_1, minOn4_1, hourOff4_1, minOff4_1 
@@ -3624,17 +3843,12 @@ def read_conf(): # Read schedule configuration
     btnRun['state']='normal'
     recordingmenu.entryconfig('Start new', state='normal')
     show_conf()
-    window.update_idletasks()
+    
 
     status.pack(side='bottom', fill='x')
     status.set('The schedule configuration is loaded.')
 
-    boxsched_text.set('Schedules loaded.')
-    box1sched_text.set('Box1 schedule loaded.')
-    box2sched_text.set('Box2 schedule loaded.')
-    box3sched_text.set('Box3 schedule loaded.')
-    box4sched_text.set('Box4 schedule loaded.')
-    box5sched_text.set('Box5 schedule loaded.')
+ 
     
     window.update_idletasks()
 
@@ -3725,6 +3939,7 @@ def show_conf(): # Show schedule configuration
     col11_10 = Label(tab11, text='Phase 10')
     col11_11 = Label(tab11, text='Phase 11')
     col11_12 = Label(tab11, text='Phase 12')
+
 
     row11_1 = Label(tab11, text='Box1')
     row11_2 = Label(tab11, text='Box2')
@@ -3829,7 +4044,7 @@ def show_conf(): # Show schedule configuration
     box1pha12_LD=Label(tab11, textvariable=box1pha12text, width=40, anchor=W, justify=LEFT)
     box1pha12_LD.grid(column=24,row=2,padx=2,pady=0)
 
-    window.update_idletasks()
+    
 
     box2pha1text=StringVar()
     box2pha1text.set('                                ')
@@ -3880,7 +4095,7 @@ def show_conf(): # Show schedule configuration
     box2pha12_LD=Label(tab11, textvariable=box2pha12text, width=40, anchor=W, justify=LEFT)
     box2pha12_LD.grid(column=24,row=3,padx=2,pady=0)
 
-    window.update_idletasks()
+    
 
     box3pha1text=StringVar()
     box3pha1text.set('                                ')
@@ -3931,7 +4146,7 @@ def show_conf(): # Show schedule configuration
     box3pha12_LD=Label(tab11, textvariable=box3pha12text, width=40, anchor=W, justify=LEFT)
     box3pha12_LD.grid(column=24,row=4,padx=2,pady=0)
     
-    window.update_idletasks()
+    
 
     box4pha1text=StringVar()
     box4pha1text.set('                                ')
@@ -3982,7 +4197,7 @@ def show_conf(): # Show schedule configuration
     box4pha12_LD=Label(tab11, textvariable=box4pha12text, width=40, anchor=W, justify=LEFT)
     box4pha12_LD.grid(column=24,row=5,padx=2,pady=0)
 
-    window.update_idletasks()
+   
 
     box5pha1text=StringVar()
     box5pha1text.set('                                ')
@@ -4033,331 +4248,331 @@ def show_conf(): # Show schedule configuration
     box5pha12_LD=Label(tab11, textvariable=box5pha12text, width=40, anchor=W, justify=LEFT)
     box5pha12_LD.grid(column=24,row=6,padx=2,pady=0)
 
-    window.update_idletasks()
+   
 
     #1 Phase
     if light1_1=='0' and dark1_1=='0':
         box1pha1text.set('                                ')
-        window.update_idletasks()
+        
         box1pha1text.set('From record onset'+' | '+hourOn1_1+':'+minOn1_1+' on>'+hourOff1_1+':'+minOff1_1+' off')
-        window.update_idletasks()
+       
     if light1_1=='0' and dark1_1=='1':
         box1pha1text.set('                                ')
-        window.update_idletasks()
+        
         box1pha1text.set('From record onset'+' | '+'DD')
-        window.update_idletasks()
+       
     if light1_1=='1' and dark1_1=='0':
         box1pha1text.set('                                ')
-        window.update_idletasks()
+        
         box1pha1text.set('From record onset'+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light2_1=='0' and dark2_1=='0':
         box2pha1text.set('                                ')
-        window.update_idletasks()
+        
         box2pha1text.set('From record onset'+' | '+hourOn2_1+':'+minOn2_1+' on>'+hourOff2_1+':'+minOff2_1+' off')
-        window.update_idletasks()
+       
     if light2_1=='0' and dark2_1=='1':
         box2pha1text.set('                                ')
-        window.update_idletasks()
+       
         box2pha1text.set('From record onset'+' | '+'DD')
-        window.update_idletasks()
+        
     if light2_1=='1' and dark2_1=='0':
         box2pha1text.set('                                ')
-        window.update_idletasks()
+       
         box2pha1text.set('From record onset'+' | '+'LL')
-        window.update_idletasks()
+       
 
     if light3_1=='0' and dark3_1=='0':
         box3pha1text.set('                                ')
-        window.update_idletasks()
+       
         box3pha1text.set('From record onset'+' | '+hourOn3_1+':'+minOn3_1+' on>'+hourOff3_1+':'+minOff3_1+' off')
-        window.update_idletasks()
+        
     if light3_1=='0' and dark3_1=='1':
         box3pha1text.set('                                ')
-        window.update_idletasks()
+       
         box3pha1text.set('From record onset'+' | '+'DD')
-        window.update_idletasks()
+        
     if light3_1=='1' and dark3_1=='0':
         box3pha1text.set('                                ')
-        window.update_idletasks()
+        
         box3pha1text.set('From record onset'+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light4_1=='0' and dark4_1=='0':
         box4pha1text.set('                                ')
-        window.update_idletasks()
+        
         box4pha1text.set('From record onset'+' | '+hourOn4_1+':'+minOn4_1+' on>'+hourOff4_1+':'+minOff4_1+' off')
-        window.update_idletasks()
+        
     if light4_1=='0' and dark4_1=='1':
         box4pha1text.set('                                ')
-        window.update_idletasks()
+        
         box4pha1text.set('From record onset'+' | '+'DD')
-        window.update_idletasks()
+        
     if light4_1=='1' and dark4_1=='0':
         box4pha1text.set('                                ')
-        window.update_idletasks()
+        
         box4pha1text.set('From record onset'+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light5_1=='0' and dark5_1=='0':
         box5pha1text.set('                                ')
-        window.update_idletasks()
+        
         box5pha1text.set('From record onset'+' | '+hourOn5_1+':'+minOn5_1+' on>'+hourOff5_1+':'+minOff5_1+' off')
-        window.update_idletasks()
+        
     if light5_1=='0' and dark5_1=='1':
         box5pha1text.set('                                ')
-        window.update_idletasks()
+        
         box5pha1text.set('From record onset'+' | '+'DD')
-        window.update_idletasks()
+        
     if light5_1=='1' and dark5_1=='0':
         box5pha1text.set('                                ')
-        window.update_idletasks()
+        
         box5pha1text.set('From record onset'+' | '+'LL')
-        window.update_idletasks()
+        
 
     #2 Phase
     if light1_2=='0' and dark1_2=='0':
         box1pha2text.set('                                ')
-        window.update_idletasks()
+        
         box1pha2text.set(year1_2+'/'+month1_2+'/'+date1_2+' '+hourFrom2_2+':'+minuteFrom1_2+' | '+hourOn1_2+':'+minOn1_2+' on>'+hourOff1_2+':'+minOff1_2+' off')
-        window.update_idletasks()
+        
     if light1_2=='0' and dark1_2=='1':
         box1pha2text.set('                                ')
-        window.update_idletasks()
+        
         box1pha2text.set(year1_2+'/'+month1_2+'/'+date1_2+' '+hourFrom2_2+':'+minuteFrom1_2+' | '+'DD')
-        window.update_idletasks()
+        
     if light1_2=='1' and dark1_2=='0':
         box1pha2text.set('                                ')
-        window.update_idletasks()
+        
         box1pha2text.set(year1_2+'/'+month1_2+'/'+date1_2+' '+hourFrom2_2+':'+minuteFrom1_2+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light2_2=='0' and dark2_2=='0':
         box2pha2text.set('                                ')
-        window.update_idletasks()
+        
         box2pha2text.set(year2_2+'/'+month2_2+'/'+date2_2+' '+hourFrom2_2+':'+minuteFrom2_2+' | '+hourOn2_2+':'+minOn2_2+' on>'+hourOff2_2+':'+minOff2_2+' off')
-        window.update_idletasks()
+        
     if light2_2=='0' and dark2_2=='1':
         box2pha2text.set('                                ')
-        window.update_idletasks()
+        
         box2pha2text.set(year2_2+'/'+month2_2+'/'+date2_2+' '+hourFrom2_2+':'+minuteFrom2_2+' | '+'DD')
-        window.update_idletasks()
+        
     if light2_2=='1' and dark2_2=='0':
         box2pha2text.set('                                ')
-        window.update_idletasks()
+        
         box2pha2text.set(year2_2+'/'+month2_2+'/'+date2_2+' '+hourFrom2_2+':'+minuteFrom2_2+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light3_2=='0' and dark3_2=='0':
         box3pha2text.set('                                ')
-        window.update_idletasks()
+        
         box3pha2text.set(year3_2+'/'+month3_2+'/'+date3_2+' '+hourFrom3_2+':'+minuteFrom3_2+' | '+hourOn3_2+':'+minOn3_2+' on>'+hourOff3_2+':'+minOff3_2+' off')
-        window.update_idletasks()
+        
     if light3_2=='0' and dark3_2=='1':
         box3pha2text.set('                                ')
-        window.update_idletasks()
+        
         box3pha2text.set(year3_2+'/'+month3_2+'/'+date3_2+' '+hourFrom3_2+':'+minuteFrom3_2+' | '+'DD')
-        window.update_idletasks()
+        
     if light3_2=='1' and dark3_2=='0':
         box3pha2text.set('                                ')
-        window.update_idletasks()
+        
         box3pha2text.set(year3_2+'/'+month3_2+'/'+date3_2+' '+hourFrom3_2+':'+minuteFrom3_2+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light4_2=='0' and dark4_2=='0':
         box4pha2text.set('                                ')
-        window.update_idletasks()
+        
         box4pha2text.set(year4_2+'/'+month4_2+'/'+date4_2+' '+hourFrom4_2+':'+minuteFrom4_2+' | '+hourOn4_2+':'+minOn4_2+' on>'+hourOff4_2+':'+minOff4_2+' off')
-        window.update_idletasks()
+        
     if light4_2=='0' and dark4_2=='1':
         box4pha2text.set('                                ')
-        window.update_idletasks()
+        
         box4pha2text.set(year4_2+'/'+month4_2+'/'+date4_2+' '+hourFrom4_2+':'+minuteFrom4_2+' | '+'DD')
-        window.update_idletasks()
+        
     if light4_2=='1' and dark4_2=='0':
         box4pha2text.set('                                ')
-        window.update_idletasks()
+        
         box4pha2text.set(year4_2+'/'+month4_2+'/'+date4_2+' '+hourFrom4_2+':'+minuteFrom4_2+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light5_2=='0' and dark5_2=='0':
         box5pha2text.set('                                ')
-        window.update_idletasks()
+        
         box5pha2text.set(year5_2+'/'+month5_2+'/'+date5_2+' '+hourFrom5_2+':'+minuteFrom5_2+' | '+hourOn5_2+':'+minOn5_2+' on>'+hourOff5_2+':'+minOff5_2+' off')
-        window.update_idletasks()
+        
     if light5_2=='0' and dark5_2=='1':
         box5pha2text.set('                                ')
-        window.update_idletasks()
+        
         box5pha2text.set(year5_2+'/'+month5_2+'/'+date5_2+' '+hourFrom5_2+':'+minuteFrom5_2+' | '+'DD')
-        window.update_idletasks()
+        
     if light5_2=='1' and dark5_2=='0':
         box5pha2text.set('                                ')
-        window.update_idletasks()
+        
         box5pha2text.set(year5_2+'/'+month5_2+'/'+date5_2+' '+hourFrom5_2+':'+minuteFrom5_2+' | '+'LL')
-        window.update_idletasks()
+        
 
     #3 Phase
     if light1_3=='0' and dark1_3=='0':
         box1pha3text.set('                                ')
-        window.update_idletasks()
+        
         box1pha3text.set(year1_3+'/'+month1_3+'/'+date1_3+' '+hourFrom2_3+':'+minuteFrom1_3+' | '+hourOn1_3+':'+minOn1_3+' on>'+hourOff1_3+':'+minOff1_3+' off')
-        window.update_idletasks()
+        
     if light1_3=='0' and dark1_3=='1':
         box1pha3text.set('                                ')
-        window.update_idletasks()
+        
         box1pha3text.set(year1_3+'/'+month1_3+'/'+date1_3+' '+hourFrom2_3+':'+minuteFrom1_3+' | '+'DD')
-        window.update_idletasks()
+        
     if light1_3=='1' and dark1_3=='0':
         box1pha3text.set('                                 ')
-        window.update_idletasks()
+        
         box1pha3text.set(year1_3+'/'+month1_3+'/'+date1_3+' '+hourFrom2_3+':'+minuteFrom1_3+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light2_3=='0' and dark2_3=='0':
         box2pha3text.set('                                ')
-        window.update_idletasks()
+        
         box2pha3text.set(year2_3+'/'+month2_3+'/'+date2_3+' '+hourFrom2_3+':'+minuteFrom2_3+' | '+hourOn2_3+':'+minOn2_3+' on>'+hourOff2_3+':'+minOff2_3+' off')
-        window.update_idletasks()
+        
     if light2_3=='0' and dark2_3=='1':
         box2pha3text.set('                                ')
-        window.update_idletasks()
+        
         box2pha3text.set(year2_3+'/'+month2_3+'/'+date2_3+' '+hourFrom2_3+':'+minuteFrom2_3+' | '+'DD')
-        window.update_idletasks()
+        
     if light2_3=='1' and dark2_3=='0':
         box2pha3text.set('                                 ')
-        window.update_idletasks()
+        
         box2pha3text.set(year2_3+'/'+month2_3+'/'+date2_3+' '+hourFrom2_3+':'+minuteFrom2_3+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light3_3=='0' and dark3_3=='0':
         box3pha3text.set('                                ')
-        window.update_idletasks()
+        
         box3pha3text.set(year3_3+'/'+month3_3+'/'+date3_3+' '+hourFrom3_3+':'+minuteFrom3_3+' | '+hourOn3_3+':'+minOn3_3+' on>'+hourOff3_3+':'+minOff3_3+' off')
-        window.update_idletasks()
+        
     if light3_3=='0' and dark3_3=='1':
         box3pha3text.set('                                ')
-        window.update_idletasks()
+        
         box3pha3text.set(year3_3+'/'+month3_3+'/'+date3_3+' '+hourFrom3_3+':'+minuteFrom3_3+' | '+'DD')
-        window.update_idletasks()
+        
     if light3_3=='1' and dark3_3=='0':
         box3pha3text.set('                                 ')
-        window.update_idletasks()
+        
         box3pha3text.set(year3_3+'/'+month3_3+'/'+date3_3+' '+hourFrom3_3+':'+minuteFrom3_3+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light4_3=='0' and dark4_3=='0':
         box4pha3text.set('                                ')
-        window.update_idletasks()
+        
         box4pha3text.set(year4_3+'/'+month4_3+'/'+date4_3+' '+hourFrom4_3+':'+minuteFrom4_3+' | '+hourOn4_3+':'+minOn4_3+' on>'+hourOff4_3+':'+minOff4_3+' off')
-        window.update_idletasks()
+        
     if light4_3=='0' and dark4_3=='1':
         box4pha3text.set('                                ')
-        window.update_idletasks()
+        
         box4pha3text.set(year4_3+'/'+month4_3+'/'+date4_3+' '+hourFrom4_3+':'+minuteFrom4_3+' | '+'DD')
-        window.update_idletasks()
+        
     if light4_3=='1' and dark4_3=='0':
         box4pha3text.set('                                 ')
-        window.update_idletasks()
+        
         box4pha3text.set(year4_3+'/'+month4_3+'/'+date4_3+' '+hourFrom4_3+':'+minuteFrom4_3+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light5_3=='0' and dark5_3=='0':
         box5pha3text.set('                                ')
-        window.update_idletasks()
+        
         box5pha3text.set(year5_3+'/'+month5_3+'/'+date5_3+' '+hourFrom5_3+':'+minuteFrom5_3+' | '+hourOn5_3+':'+minOn5_3+' on>'+hourOff5_3+':'+minOff5_3+' off')
-        window.update_idletasks()
+        
     if light5_3=='0' and dark5_3=='1':
         box5pha3text.set('                                ')
-        window.update_idletasks()
+        
         box5pha3text.set(year5_3+'/'+month5_3+'/'+date5_3+' '+hourFrom5_3+':'+minuteFrom5_3+' | '+'DD')
-        window.update_idletasks()
+        
     if light5_3=='1' and dark5_3=='0':
         box5pha3text.set('                                 ')
-        window.update_idletasks()
+        
         box5pha3text.set(year5_3+'/'+month5_3+'/'+date5_3+' '+hourFrom5_3+':'+minuteFrom5_3+' | '+'LL')
-        window.update_idletasks()
+        
 
     # 4 Phase
     if light1_4=='0' and dark1_4=='0':
         box1pha4text.set('                                ')
-        window.update_idletasks()
+        
         box1pha4text.set(year1_4+'/'+month1_4+'/'+date1_4+' '+hourFrom2_4+':'+minuteFrom1_4+' | '+hourOn1_4+':'+minOn1_4+' on>'+hourOff1_4+':'+minOff1_4+' off')
-        window.update_idletasks()
+        
     if light1_4=='0' and dark1_4=='1':
         box1pha4text.set('                                ')
-        window.update_idletasks()
+        
         box1pha4text.set(year1_4+'/'+month1_4+'/'+date1_4+' '+hourFrom2_4+':'+minuteFrom1_4+' | '+'DD')
-        window.update_idletasks()
+        
     if light1_4=='1' and dark1_4=='0':
         box1pha4text.set('                                 ')
-        window.update_idletasks()
+        
         box1pha4text.set(year1_4+'/'+month1_4+'/'+date1_4+' '+hourFrom2_4+':'+minuteFrom1_4+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light2_4=='0' and dark2_4=='0':
         box2pha4text.set('                                ')
-        window.update_idletasks()
+        
         box2pha4text.set(year2_4+'/'+month2_4+'/'+date2_4+' '+hourFrom2_4+':'+minuteFrom2_4+' | '+hourOn2_4+':'+minOn2_4+' on>'+hourOff2_4+':'+minOff2_4+' off')
-        window.update_idletasks()
+        
     if light2_4=='0' and dark2_4=='1':
         box2pha4text.set('                                ')
-        window.update_idletasks()
+        
         box2pha4text.set(year2_4+'/'+month2_4+'/'+date2_4+' '+hourFrom2_4+':'+minuteFrom2_4+' | '+'DD')
-        window.update_idletasks()
+        
     if light2_4=='1' and dark2_4=='0':
         box2pha4text.set('                                 ')
-        window.update_idletasks()
+        
         box2pha4text.set(year2_4+'/'+month2_4+'/'+date2_4+' '+hourFrom2_4+':'+minuteFrom2_4+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light3_4=='0' and dark3_4=='0':
         box3pha4text.set('                                ')
-        window.update_idletasks()
+        
         box3pha4text.set(year3_4+'/'+month3_4+'/'+date3_4+' '+hourFrom3_4+':'+minuteFrom3_4+' | '+hourOn3_4+':'+minOn3_4+' on>'+hourOff3_4+':'+minOff3_4+' off')
-        window.update_idletasks()
+        
     if light3_4=='0' and dark3_4=='1':
         box3pha4text.set('                                ')
-        window.update_idletasks()
+        
         box3pha4text.set(year3_4+'/'+month3_4+'/'+date3_4+' '+hourFrom3_4+':'+minuteFrom3_4+' | '+'DD')
-        window.update_idletasks()
+        
     if light3_4=='1' and dark3_4=='0':
         box3pha4text.set('                                 ')
-        window.update_idletasks()
+        
         box3pha4text.set(year3_4+'/'+month3_4+'/'+date3_4+' '+hourFrom3_4+':'+minuteFrom3_4+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light4_4=='0' and dark4_4=='0':
         box4pha4text.set('                                ')
-        window.update_idletasks()
+        
         box4pha4text.set(year4_4+'/'+month4_4+'/'+date4_4+' '+hourFrom4_4+':'+minuteFrom4_4+' | '+hourOn4_4+':'+minOn4_4+' on>'+hourOff4_4+':'+minOff4_4+' off')
-        window.update_idletasks()
+        
     if light4_4=='0' and dark4_4=='1':
         box4pha4text.set('                                ')
-        window.update_idletasks()
+        
         box4pha4text.set(year4_4+'/'+month4_4+'/'+date4_4+' '+hourFrom4_4+':'+minuteFrom4_4+' | '+'DD')
-        window.update_idletasks()
+        
     if light4_4=='1' and dark4_4=='0':
         box4pha4text.set('                                 ')
-        window.update_idletasks()
+        
         box4pha4text.set(year4_4+'/'+month4_4+'/'+date4_4+' '+hourFrom4_4+':'+minuteFrom4_4+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light5_4=='0' and dark5_4=='0':
         box5pha4text.set('                                ')
-        window.update_idletasks()
+        
         box5pha4text.set(year5_4+'/'+month5_4+'/'+date5_4+' '+hourFrom5_4+':'+minuteFrom5_4+' | '+hourOn5_4+':'+minOn5_4+' on>'+hourOff5_4+':'+minOff5_4+' off')
-        window.update_idletasks()
+        
     if light5_4=='0' and dark5_4=='1':
         box5pha4text.set('                                ')
-        window.update_idletasks()
+        
         box5pha4text.set(year5_4+'/'+month5_4+'/'+date5_4+' '+hourFrom5_4+':'+minuteFrom5_4+' | '+'DD')
-        window.update_idletasks()
+        
     if light5_4=='1' and dark5_4=='0':
         box5pha4text.set('                                 ')
-        window.update_idletasks()
+        
         box5pha4text.set(year5_4+'/'+month5_4+'/'+date5_4+' '+hourFrom5_4+':'+minuteFrom5_4+' | '+'LL')
-        window.update_idletasks()
+        
 
     
 
@@ -4365,651 +4580,651 @@ def show_conf(): # Show schedule configuration
     
     if light1_5=='0' and dark1_5=='0':
         box1pha5text.set('                                ')
-        window.update_idletasks()
+        
         box1pha5text.set(year1_5+'/'+month1_5+'/'+date1_5+' '+hourFrom2_5+':'+minuteFrom1_5+' | '+hourOn1_5+':'+minOn1_5+' on>'+hourOff1_5+':'+minOff1_5+' off')
-        window.update_idletasks()
+        
     if light1_5=='0' and dark1_5=='1':
         box1pha5text.set('                                ')
-        window.update_idletasks()
+        
         box1pha5text.set(year1_5+'/'+month1_5+'/'+date1_5+' '+hourFrom2_5+':'+minuteFrom1_5+' | '+'DD')
-        window.update_idletasks()
+        
     if light1_5=='1' and dark1_5=='0':
         box1pha5text.set('                                 ')
-        window.update_idletasks()
+        
         box1pha5text.set(year1_5+'/'+month1_5+'/'+date1_5+' '+hourFrom2_5+':'+minuteFrom1_5+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light2_5=='0' and dark2_5=='0':
         box2pha5text.set('                                ')
-        window.update_idletasks()
+        
         box2pha5text.set(year2_5+'/'+month2_5+'/'+date2_5+' '+hourFrom2_5+':'+minuteFrom2_5+' | '+hourOn2_5+':'+minOn2_5+' on>'+hourOff2_5+':'+minOff2_5+' off')
-        window.update_idletasks()
+        
     if light2_5=='0' and dark2_5=='1':
         box2pha5text.set('                                ')
-        window.update_idletasks()
+        
         box2pha5text.set(year2_5+'/'+month2_5+'/'+date2_5+' '+hourFrom2_5+':'+minuteFrom2_5+' | '+'DD')
-        window.update_idletasks()
+        
     if light2_5=='1' and dark2_5=='0':
         box2pha5text.set('                                 ')
-        window.update_idletasks()
+        
         box2pha5text.set(year2_5+'/'+month2_5+'/'+date2_5+' '+hourFrom2_5+':'+minuteFrom2_5+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light3_5=='0' and dark3_5=='0':
         box3pha5text.set('                                ')
-        window.update_idletasks()
+        
         box3pha5text.set(year3_5+'/'+month3_5+'/'+date3_5+' '+hourFrom3_5+':'+minuteFrom3_5+' | '+hourOn3_5+':'+minOn3_5+' on>'+hourOff3_5+':'+minOff3_5+' off')
-        window.update_idletasks()
+        
     if light3_5=='0' and dark3_5=='1':
         box3pha5text.set('                                ')
-        window.update_idletasks()
+        
         box3pha5text.set(year3_5+'/'+month3_5+'/'+date3_5+' '+hourFrom3_5+':'+minuteFrom3_5+' | '+'DD')
-        window.update_idletasks()
+        
     if light3_5=='1' and dark3_5=='0':
         box3pha5text.set('                                 ')
-        window.update_idletasks()
+        
         box3pha5text.set(year3_5+'/'+month3_5+'/'+date3_5+' '+hourFrom3_5+':'+minuteFrom3_5+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light4_5=='0' and dark4_5=='0':
         box4pha5text.set('                                ')
-        window.update_idletasks()
+        
         box4pha5text.set(year4_5+'/'+month4_5+'/'+date4_5+' '+hourFrom4_5+':'+minuteFrom4_5+' | '+hourOn4_5+':'+minOn4_5+' on>'+hourOff4_5+':'+minOff4_5+' off')
-        window.update_idletasks()
+        
     if light4_5=='0' and dark4_5=='1':
         box4pha5text.set('                                ')
-        window.update_idletasks()
+        
         box4pha5text.set(year4_5+'/'+month4_5+'/'+date4_5+' '+hourFrom4_5+':'+minuteFrom4_5+' | '+'DD')
-        window.update_idletasks()
+        
     if light4_5=='1' and dark4_5=='0':
         box4pha5text.set('                                 ')
-        window.update_idletasks()
+        
         box4pha5text.set(year4_5+'/'+month4_5+'/'+date4_5+' '+hourFrom4_5+':'+minuteFrom4_5+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light5_5=='0' and dark5_5=='0':
         box5pha5text.set('                                ')
-        window.update_idletasks()
+        
         box5pha5text.set(year5_5+'/'+month5_5+'/'+date5_5+' '+hourFrom5_5+':'+minuteFrom5_5+' | '+hourOn5_5+':'+minOn5_5+' on>'+hourOff5_5+':'+minOff5_5+' off')
-        window.update_idletasks()
+        
     if light5_5=='0' and dark5_5=='1':
         box5pha5text.set('                                ')
-        window.update_idletasks()
+        
         box5pha5text.set(year5_5+'/'+month5_5+'/'+date5_5+' '+hourFrom5_5+':'+minuteFrom5_5+' | '+'DD')
-        window.update_idletasks()
+        
     if light5_5=='1' and dark5_5=='0':
         box5pha5text.set('                                 ')
-        window.update_idletasks()
+        
         box5pha5text.set(year5_5+'/'+month5_5+'/'+date5_5+' '+hourFrom5_5+':'+minuteFrom5_5+' | '+'LL')
-        window.update_idletasks()
+        
 
     #6 Phase
     if light1_6=='0' and dark1_6=='0':
         box1pha6text.set('                                ')
-        window.update_idletasks()
+        
         box1pha6text.set(year1_6+'/'+month1_6+'/'+date1_6+' '+hourFrom2_6+':'+minuteFrom1_6+' | '+hourOn1_6+':'+minOn1_6+' on>'+hourOff1_6+':'+minOff1_6+' off')
-        window.update_idletasks()
+        
     if light1_6=='0' and dark1_6=='1':
         box1pha6text.set('                                ')
-        window.update_idletasks()
+        
         box1pha6text.set(year1_6+'/'+month1_6+'/'+date1_6+' '+hourFrom2_6+':'+minuteFrom1_6+' | '+'DD')
-        window.update_idletasks()
+        
     if light1_6=='1' and dark1_6=='0':
         box1pha6text.set('                                 ')
-        window.update_idletasks()
+        
         box1pha6text.set(year1_6+'/'+month1_6+'/'+date1_6+' '+hourFrom2_6+':'+minuteFrom1_6+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light2_6=='0' and dark2_6=='0':
         box2pha6text.set('                                ')
-        window.update_idletasks()
+        
         box2pha6text.set(year2_6+'/'+month2_6+'/'+date2_6+' '+hourFrom2_6+':'+minuteFrom2_6+' | '+hourOn2_6+':'+minOn2_6+' on>'+hourOff2_6+':'+minOff2_6+' off')
-        window.update_idletasks()
+        
     if light2_6=='0' and dark2_6=='1':
         box2pha6text.set('                                ')
-        window.update_idletasks()
+        
         box2pha6text.set(year2_6+'/'+month2_6+'/'+date2_6+' '+hourFrom2_6+':'+minuteFrom2_6+' | '+'DD')
-        window.update_idletasks()
+        
     if light2_6=='1' and dark2_6=='0':
         box2pha6text.set('                                 ')
-        window.update_idletasks()
+        
         box2pha6text.set(year2_6+'/'+month2_6+'/'+date2_6+' '+hourFrom2_6+':'+minuteFrom2_6+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light3_6=='0' and dark3_6=='0':
         box3pha6text.set('                                ')
-        window.update_idletasks()
+        
         box3pha6text.set(year3_6+'/'+month3_6+'/'+date3_6+' '+hourFrom3_6+':'+minuteFrom3_6+' | '+hourOn3_6+':'+minOn3_6+' on>'+hourOff3_6+':'+minOff3_6+' off')
-        window.update_idletasks()
+        
     if light3_6=='0' and dark3_6=='1':
         box3pha6text.set('                                ')
-        window.update_idletasks()
+        
         box3pha6text.set(year3_6+'/'+month3_6+'/'+date3_6+' '+hourFrom3_6+':'+minuteFrom3_6+' | '+'DD')
-        window.update_idletasks()
+        
     if light3_6=='1' and dark3_6=='0':
         box3pha6text.set('                                 ')
-        window.update_idletasks()
+        
         box3pha6text.set(year3_6+'/'+month3_6+'/'+date3_6+' '+hourFrom3_6+':'+minuteFrom3_6+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light4_6=='0' and dark4_6=='0':
         box4pha6text.set('                                ')
-        window.update_idletasks()
+        
         box4pha6text.set(year4_6+'/'+month4_6+'/'+date4_6+' '+hourFrom4_6+':'+minuteFrom4_6+' | '+hourOn4_6+':'+minOn4_6+' on>'+hourOff4_6+':'+minOff4_6+' off')
-        window.update_idletasks()
+        
     if light4_6=='0' and dark4_6=='1':
         box4pha6text.set('                                ')
-        window.update_idletasks()
+        
         box4pha6text.set(year4_6+'/'+month4_6+'/'+date4_6+' '+hourFrom4_6+':'+minuteFrom4_6+' | '+'DD')
-        window.update_idletasks()
+        
     if light4_6=='1' and dark4_6=='0':
         box4pha6text.set('                                 ')
-        window.update_idletasks()
+        
         box4pha6text.set(year4_6+'/'+month4_6+'/'+date4_6+' '+hourFrom4_6+':'+minuteFrom4_6+' | '+'LL')
-        window.update_idletasks()
+        
 
     if light5_6=='0' and dark5_6=='0':
         box5pha6text.set('                                ')
-        window.update_idletasks()
+        
         box5pha6text.set(year5_6+'/'+month5_6+'/'+date5_6+' '+hourFrom5_6+':'+minuteFrom5_6+' | '+hourOn5_6+':'+minOn5_6+' on>'+hourOff5_6+':'+minOff5_6+' off')
-        window.update_idletasks()
+        
     if light5_6=='0' and dark5_6=='1':
         box5pha6text.set('                                ')
-        window.update_idletasks()
+        
         box5pha6text.set(year5_6+'/'+month5_6+'/'+date5_6+' '+hourFrom5_6+':'+minuteFrom5_6+' | '+'DD')
-        window.update_idletasks()
+        
     if light5_6=='1' and dark5_6=='0':
         box5pha6text.set('                                 ')
-        window.update_idletasks()
+        
         box5pha6text.set(year5_6+'/'+month5_6+'/'+date5_6+' '+hourFrom5_6+':'+minuteFrom5_6+' | '+'LL')
-        window.update_idletasks()
+        
 
     #7 Phase
     if light1_7=='0' and dark1_7=='0':
         box1pha7text.set('                                ')
-        window.update_idletasks()
+        
         box1pha7text.set(year1_7+'/'+month1_7+'/'+date1_7+' '+hourFrom2_7+':'+minuteFrom1_7+' | '+hourOn1_7+':'+minOn1_7+' on>'+hourOff1_7+':'+minOff1_7+' off')
-        window.update_idletasks()
+        
     if light1_7=='0' and dark1_7=='1':
         box1pha7text.set('                                ')
-        window.update_idletasks()
+        
         box1pha7text.set(year1_7+'/'+month1_7+'/'+date1_7+' '+hourFrom2_7+':'+minuteFrom1_7+' | '+'DD')
-        window.update_idletasks()
+        
     if light1_7=='1' and dark1_7=='0':
         box1pha7text.set('                                 ')
-        window.update_idletasks()
+        
         box1pha7text.set(year1_7+'/'+month1_7+'/'+date1_7+' '+hourFrom2_7+':'+minuteFrom1_7+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light2_7=='0' and dark2_7=='0':
         box2pha7text.set('                                ')
-        window.update_idletasks()
+        
         box2pha7text.set(year2_7+'/'+month2_7+'/'+date2_7+' '+hourFrom2_7+':'+minuteFrom2_7+' | '+hourOn2_7+':'+minOn2_7+' on>'+hourOff2_7+':'+minOff2_7+' off')
-        window.update_idletasks()
+        
     if light2_7=='0' and dark2_7=='1':
         box2pha7text.set('                                ')
-        window.update_idletasks()
+        
         box2pha7text.set(year2_7+'/'+month2_7+'/'+date2_7+' '+hourFrom2_7+':'+minuteFrom2_7+' | '+'DD')
-        window.update_idletasks()
+        
     if light2_7=='1' and dark2_7=='0':
         box2pha7text.set('                                 ')
-        window.update_idletasks()
+        
         box2pha7text.set(year2_7+'/'+month2_7+'/'+date2_7+' '+hourFrom2_7+':'+minuteFrom2_7+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light3_7=='0' and dark3_7=='0':
         box3pha7text.set('                                ')
-        window.update_idletasks()
+        
         box3pha7text.set(year3_7+'/'+month3_7+'/'+date3_7+' '+hourFrom3_7+':'+minuteFrom3_7+' | '+hourOn3_7+':'+minOn3_6+' on>'+hourOff3_7+':'+minOff3_7+' off')
-        window.update_idletasks() 
+         
     if light3_7=='0' and dark3_7=='1':
         box3pha7text.set('                                ')
-        window.update_idletasks()
+        
         box3pha7text.set(year3_7+'/'+month3_7+'/'+date3_7+' '+hourFrom3_7+':'+minuteFrom3_7+' | '+'DD')
-        window.update_idletasks()
+        
     if light3_7=='1' and dark3_7=='0':
         box3pha7text.set('                                 ')
-        window.update_idletasks()
+        
         box3pha7text.set(year3_7+'/'+month3_7+'/'+date3_7+' '+hourFrom3_7+':'+minuteFrom3_7+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light4_7=='0' and dark4_7=='0':
         box4pha7text.set('                                ')
-        window.update_idletasks()
+        
         box4pha7text.set(year4_7+'/'+month4_7+'/'+date4_7+' '+hourFrom4_7+':'+minuteFrom4_7+' | '+hourOn4_7+':'+minOn4_7+' on>'+hourOff4_7+':'+minOff4_7+' off')
-        window.update_idletasks()
+        
     if light4_7=='0' and dark4_7=='1':
         box4pha7text.set('                                ')
-        window.update_idletasks()
+        
         box4pha7text.set(year4_7+'/'+month4_7+'/'+date4_7+' '+hourFrom4_7+':'+minuteFrom4_7+' | '+'DD')
-        window.update_idletasks()
+        
     if light4_7=='1' and dark4_7=='0':
         box4pha7text.set('                                 ')
-        window.update_idletasks()
+        
         box4pha7text.set(year4_7+'/'+month4_7+'/'+date4_7+' '+hourFrom4_7+':'+minuteFrom4_7+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light5_7=='0' and dark5_7=='0':
         box5pha7text.set('                                ')
-        window.update_idletasks()
+        
         box5pha7text.set(year5_7+'/'+month5_7+'/'+date5_7+' '+hourFrom5_7+':'+minuteFrom5_7+' | '+hourOn5_7+':'+minOn5_7+' on>'+hourOff5_7+':'+minOff5_7+' off')
-        window.update_idletasks()
+        
     if light5_7=='0' and dark5_7=='1':
         box5pha7text.set('                                ')
-        window.update_idletasks()
+        
         box5pha7text.set(year5_7+'/'+month5_7+'/'+date5_7+' '+hourFrom5_7+':'+minuteFrom5_7+' | '+'DD')
-        window.update_idletasks()
+        
     if light5_7=='1' and dark5_7=='0':
         box5pha7text.set('                                 ')
-        window.update_idletasks()
+        
         box5pha7text.set(year5_7+'/'+month5_7+'/'+date5_7+' '+hourFrom5_7+':'+minuteFrom5_7+' | '+'LL')
-        window.update_idletasks()   
+           
 
     #8 Phase
     if light1_8=='0' and dark1_8=='0':
         box1pha8text.set('                                ')
-        window.update_idletasks()
+        
         box1pha8text.set(year1_8+'/'+month1_8+'/'+date1_8+' '+hourFrom2_8+':'+minuteFrom1_8+' | '+hourOn1_8+':'+minOn1_8+' on>'+hourOff1_8+':'+minOff1_8+' off')
-        window.update_idletasks()
+        
     if light1_8=='0' and dark1_8=='1':
         box1pha8text.set('                                ')
-        window.update_idletasks()
+        
         box1pha8text.set(year1_8+'/'+month1_8+'/'+date1_8+' '+hourFrom2_8+':'+minuteFrom1_8+' | '+'DD')
-        window.update_idletasks()
+        
     if light1_8=='1' and dark1_8=='0':
         box1pha8text.set('                                 ')
-        window.update_idletasks()
+        
         box1pha8text.set(year1_8+'/'+month1_8+'/'+date1_8+' '+hourFrom2_8+':'+minuteFrom1_8+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light2_8=='0' and dark2_8=='0':
         box2pha8text.set('                                ')
-        window.update_idletasks()
+        
         box2pha8text.set(year2_8+'/'+month2_8+'/'+date2_8+' '+hourFrom2_8+':'+minuteFrom2_8+' | '+hourOn2_8+':'+minOn2_8+' on>'+hourOff2_8+':'+minOff2_8+' off')
-        window.update_idletasks()
+        
     if light2_8=='0' and dark2_8=='1':
         box2pha8text.set('                                ')
-        window.update_idletasks()
+        
         box2pha8text.set(year2_8+'/'+month2_8+'/'+date2_8+' '+hourFrom2_8+':'+minuteFrom2_8+' | '+'DD')
-        window.update_idletasks()
+        
     if light2_8=='1' and dark2_8=='0':
         box2pha8text.set('                                 ')
-        window.update_idletasks()
+        
         box2pha8text.set(year2_8+'/'+month2_8+'/'+date2_8+' '+hourFrom2_8+':'+minuteFrom2_8+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light3_8=='0' and dark3_8=='0':
         box3pha8text.set('                                ')
-        window.update_idletasks()
+        
         box3pha8text.set(year3_8+'/'+month3_8+'/'+date3_8+' '+hourFrom3_8+':'+minuteFrom3_8+' | '+hourOn3_8+':'+minOn3_6+' on>'+hourOff3_8+':'+minOff3_8+' off')
-        window.update_idletasks() 
+         
     if light3_8=='0' and dark3_8=='1':
         box3pha8text.set('                                ')
-        window.update_idletasks()
+        
         box3pha8text.set(year3_8+'/'+month3_8+'/'+date3_8+' '+hourFrom3_8+':'+minuteFrom3_8+' | '+'DD')
-        window.update_idletasks()
+        
     if light3_8=='1' and dark3_8=='0':
         box3pha8text.set('                                 ')
-        window.update_idletasks()
+        
         box3pha8text.set(year3_8+'/'+month3_8+'/'+date3_8+' '+hourFrom3_8+':'+minuteFrom3_8+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light4_8=='0' and dark4_8=='0':
         box4pha8text.set('                                ')
-        window.update_idletasks()
+        
         box4pha8text.set(year4_8+'/'+month4_8+'/'+date4_8+' '+hourFrom4_8+':'+minuteFrom4_8+' | '+hourOn4_8+':'+minOn4_8+' on>'+hourOff4_8+':'+minOff4_8+' off')
-        window.update_idletasks()
+        
     if light4_8=='0' and dark4_8=='1':
         box4pha8text.set('                                ')
-        window.update_idletasks()
+        
         box4pha8text.set(year4_8+'/'+month4_8+'/'+date4_8+' '+hourFrom4_8+':'+minuteFrom4_8+' | '+'DD')
-        window.update_idletasks()
+        
     if light4_8=='1' and dark4_8=='0':
         box4pha8text.set('                                 ')
-        window.update_idletasks()
+        
         box4pha8text.set(year4_8+'/'+month4_8+'/'+date4_8+' '+hourFrom4_8+':'+minuteFrom4_8+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light5_8=='0' and dark5_8=='0':
         box5pha8text.set('                                ')
-        window.update_idletasks()
+        
         box5pha8text.set(year5_8+'/'+month5_8+'/'+date5_8+' '+hourFrom5_8+':'+minuteFrom5_8+' | '+hourOn5_8+':'+minOn5_8+' on>'+hourOff5_8+':'+minOff5_8+' off')
-        window.update_idletasks()
+        
     if light5_8=='0' and dark5_8=='1':
         box5pha8text.set('                                ')
-        window.update_idletasks()
+        
         box5pha8text.set(year5_8+'/'+month5_8+'/'+date5_8+' '+hourFrom5_8+':'+minuteFrom5_8+' | '+'DD')
-        window.update_idletasks()
+        
     if light5_8=='1' and dark5_8=='0':
         box5pha8text.set('                                 ')
-        window.update_idletasks()
+        
         box5pha8text.set(year5_8+'/'+month5_8+'/'+date5_8+' '+hourFrom5_8+':'+minuteFrom5_8+' | '+'LL')
-        window.update_idletasks()    
+            
       
     #9 Phase
     if light1_9=='0' and dark1_9=='0':
         box1pha9text.set('                                ')
-        window.update_idletasks()
+        
         box1pha9text.set(year1_9+'/'+month1_9+'/'+date1_9+' '+hourFrom2_9+':'+minuteFrom1_9+' | '+hourOn1_9+':'+minOn1_9+' on>'+hourOff1_9+':'+minOff1_9+' off')
-        window.update_idletasks()
+        
     if light1_9=='0' and dark1_9=='1':
         box1pha9text.set('                                ')
-        window.update_idletasks()
+        
         box1pha9text.set(year1_9+'/'+month1_9+'/'+date1_9+' '+hourFrom2_9+':'+minuteFrom1_9+' | '+'DD')
-        window.update_idletasks()
+        
     if light1_9=='1' and dark1_9=='0':
         box1pha9text.set('                                 ')
-        window.update_idletasks()
+        
         box1pha9text.set(year1_9+'/'+month1_9+'/'+date1_9+' '+hourFrom2_9+':'+minuteFrom1_9+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light2_9=='0' and dark2_9=='0':
         box2pha9text.set('                                ')
-        window.update_idletasks()
+        
         box2pha9text.set(year2_9+'/'+month2_9+'/'+date2_9+' '+hourFrom2_9+':'+minuteFrom2_9+' | '+hourOn2_9+':'+minOn2_9+' on>'+hourOff2_9+':'+minOff2_9+' off')
-        window.update_idletasks()
+        
     if light2_9=='0' and dark2_9=='1':
         box2pha9text.set('                                ')
-        window.update_idletasks()
+        
         box2pha9text.set(year2_9+'/'+month2_9+'/'+date2_9+' '+hourFrom2_9+':'+minuteFrom2_9+' | '+'DD')
-        window.update_idletasks()
+        
     if light2_9=='1' and dark2_9=='0':
         box2pha9text.set('                                 ')
-        window.update_idletasks()
+        
         box2pha9text.set(year2_9+'/'+month2_9+'/'+date2_9+' '+hourFrom2_9+':'+minuteFrom2_9+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light3_9=='0' and dark3_9=='0':
         box3pha9text.set('                                ')
-        window.update_idletasks()
+        
         box3pha9text.set(year3_9+'/'+month3_9+'/'+date3_9+' '+hourFrom3_9+':'+minuteFrom3_9+' | '+hourOn3_9+':'+minOn3_6+' on>'+hourOff3_9+':'+minOff3_9+' off')
-        window.update_idletasks() 
+         
     if light3_9=='0' and dark3_9=='1':
         box3pha9text.set('                                ')
-        window.update_idletasks()
+        
         box3pha9text.set(year3_9+'/'+month3_9+'/'+date3_9+' '+hourFrom3_9+':'+minuteFrom3_9+' | '+'DD')
-        window.update_idletasks()
+        
     if light3_9=='1' and dark3_9=='0':
         box3pha9text.set('                                 ')
-        window.update_idletasks()
+        
         box3pha9text.set(year3_9+'/'+month3_9+'/'+date3_9+' '+hourFrom3_9+':'+minuteFrom3_9+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light4_9=='0' and dark4_9=='0':
         box4pha9text.set('                                ')
-        window.update_idletasks()
+        
         box4pha9text.set(year4_9+'/'+month4_9+'/'+date4_9+' '+hourFrom4_9+':'+minuteFrom4_9+' | '+hourOn4_9+':'+minOn4_9+' on>'+hourOff4_9+':'+minOff4_9+' off')
-        window.update_idletasks()
+        
     if light4_9=='0' and dark4_9=='1':
         box4pha9text.set('                                ')
-        window.update_idletasks()
+        
         box4pha9text.set(year4_9+'/'+month4_9+'/'+date4_9+' '+hourFrom4_9+':'+minuteFrom4_9+' | '+'DD')
-        window.update_idletasks()
+        
     if light4_9=='1' and dark4_9=='0':
         box4pha9text.set('                                 ')
-        window.update_idletasks()
+        
         box4pha9text.set(year4_9+'/'+month4_9+'/'+date4_9+' '+hourFrom4_9+':'+minuteFrom4_9+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light5_9=='0' and dark5_9=='0':
         box5pha9text.set('                                ')
-        window.update_idletasks()
+        
         box5pha9text.set(year5_9+'/'+month5_9+'/'+date5_9+' '+hourFrom5_9+':'+minuteFrom5_9+' | '+hourOn5_9+':'+minOn5_9+' on>'+hourOff5_9+':'+minOff5_9+' off')
-        window.update_idletasks()
+        
     if light5_9=='0' and dark5_9=='1':
         box5pha9text.set('                                ')
-        window.update_idletasks()
+        
         box5pha9text.set(year5_9+'/'+month5_9+'/'+date5_9+' '+hourFrom5_9+':'+minuteFrom5_9+' | '+'DD')
-        window.update_idletasks()
+        
     if light5_9=='1' and dark5_9=='0':
         box5pha9text.set('                                 ')
-        window.update_idletasks()
+        
         box5pha9text.set(year5_9+'/'+month5_9+'/'+date5_9+' '+hourFrom5_9+':'+minuteFrom5_9+' | '+'LL')
-        window.update_idletasks()   
+           
 
     #10 Phase
     if light1_10=='0' and dark1_10=='0':
         box1pha10text.set('                                ')
-        window.update_idletasks()
+        
         box1pha10text.set(year1_10+'/'+month1_10+'/'+date1_10+' '+hourFrom2_10+':'+minuteFrom1_10+' | '+hourOn1_10+':'+minOn1_10+' on>'+hourOff1_10+':'+minOff1_10+' off')
-        window.update_idletasks()
+        
     if light1_10=='0' and dark1_10=='1':
         box1pha10text.set('                                ')
-        window.update_idletasks()
+        
         box1pha10text.set(year1_10+'/'+month1_10+'/'+date1_10+' '+hourFrom2_10+':'+minuteFrom1_10+' | '+'DD')
-        window.update_idletasks()
+        
     if light1_10=='1' and dark1_10=='0':
         box1pha10text.set('                                 ')
-        window.update_idletasks()
+        
         box1pha10text.set(year1_10+'/'+month1_10+'/'+date1_10+' '+hourFrom2_10+':'+minuteFrom1_10+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light2_10=='0' and dark2_10=='0':
         box2pha10text.set('                                ')
-        window.update_idletasks()
+        
         box2pha10text.set(year2_10+'/'+month2_10+'/'+date2_10+' '+hourFrom2_10+':'+minuteFrom2_10+' | '+hourOn2_10+':'+minOn2_10+' on>'+hourOff2_10+':'+minOff2_10+' off')
-        window.update_idletasks()
+        
     if light2_10=='0' and dark2_10=='1':
         box2pha10text.set('                                ')
-        window.update_idletasks()
+        
         box2pha10text.set(year2_10+'/'+month2_10+'/'+date2_10+' '+hourFrom2_10+':'+minuteFrom2_10+' | '+'DD')
-        window.update_idletasks()
+        
     if light2_10=='1' and dark2_10=='0':
         box2pha10text.set('                                 ')
-        window.update_idletasks()
+        
         box2pha10text.set(year2_10+'/'+month2_10+'/'+date2_10+' '+hourFrom2_10+':'+minuteFrom2_10+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light3_10=='0' and dark3_10=='0':
         box3pha10text.set('                                ')
-        window.update_idletasks()
+        
         box3pha10text.set(year3_10+'/'+month3_10+'/'+date3_10+' '+hourFrom3_10+':'+minuteFrom3_10+' | '+hourOn3_10+':'+minOn3_6+' on>'+hourOff3_10+':'+minOff3_10+' off')
-        window.update_idletasks() 
+         
     if light3_10=='0' and dark3_10=='1':
         box3pha10text.set('                                ')
-        window.update_idletasks()
+        
         box3pha10text.set(year3_10+'/'+month3_10+'/'+date3_10+' '+hourFrom3_10+':'+minuteFrom3_10+' | '+'DD')
-        window.update_idletasks()
+        
     if light3_10=='1' and dark3_10=='0':
         box3pha10text.set('                                 ')
-        window.update_idletasks()
+        
         box3pha10text.set(year3_10+'/'+month3_10+'/'+date3_10+' '+hourFrom3_10+':'+minuteFrom3_10+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light4_10=='0' and dark4_10=='0':
         box4pha10text.set('                                ')
-        window.update_idletasks()
+        
         box4pha10text.set(year4_10+'/'+month4_10+'/'+date4_10+' '+hourFrom4_10+':'+minuteFrom4_10+' | '+hourOn4_10+':'+minOn4_10+' on>'+hourOff4_10+':'+minOff4_10+' off')
-        window.update_idletasks()
+        
     if light4_10=='0' and dark4_10=='1':
         box4pha10text.set('                                ')
-        window.update_idletasks()
+        
         box4pha10text.set(year4_10+'/'+month4_10+'/'+date4_10+' '+hourFrom4_10+':'+minuteFrom4_10+' | '+'DD')
-        window.update_idletasks()
+        
     if light4_10=='1' and dark4_10=='0':
         box4pha10text.set('                                 ')
-        window.update_idletasks()
+        
         box4pha10text.set(year4_10+'/'+month4_10+'/'+date4_10+' '+hourFrom4_10+':'+minuteFrom4_10+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light5_10=='0' and dark5_10=='0':
         box5pha10text.set('                                ')
-        window.update_idletasks()
+        
         box5pha10text.set(year5_10+'/'+month5_10+'/'+date5_10+' '+hourFrom5_10+':'+minuteFrom5_10+' | '+hourOn5_10+':'+minOn5_10+' on>'+hourOff5_10+':'+minOff5_10+' off')
-        window.update_idletasks()
+        
     if light5_10=='0' and dark5_10=='1':
         box5pha10text.set('                                ')
-        window.update_idletasks()
+        
         box5pha10text.set(year5_10+'/'+month5_10+'/'+date5_10+' '+hourFrom5_10+':'+minuteFrom5_10+' | '+'DD')
-        window.update_idletasks()
+        
     if light5_10=='1' and dark5_10=='0':
         box5pha10text.set('                                 ')
-        window.update_idletasks()
+        
         box5pha10text.set(year5_10+'/'+month5_10+'/'+date5_10+' '+hourFrom5_10+':'+minuteFrom5_10+' | '+'LL')
-        window.update_idletasks()  
+          
 
     #11 Phase
     if light1_11=='0' and dark1_11=='0':
         box1pha11text.set('                                ')
-        window.update_idletasks()
+        
         box1pha11text.set(year1_11+'/'+month1_11+'/'+date1_11+' '+hourFrom2_11+':'+minuteFrom1_11+' | '+hourOn1_11+':'+minOn1_11+' on>'+hourOff1_11+':'+minOff1_11+' off')
-        window.update_idletasks()
+        
     if light1_11=='0' and dark1_11=='1':
         box1pha11text.set('                                ')
-        window.update_idletasks()
+        
         box1pha11text.set(year1_11+'/'+month1_11+'/'+date1_11+' '+hourFrom2_11+':'+minuteFrom1_11+' | '+'DD')
-        window.update_idletasks()
+        
     if light1_11=='1' and dark1_11=='0':
         box1pha11text.set('                                 ')
-        window.update_idletasks()
+        
         box1pha11text.set(year1_11+'/'+month1_11+'/'+date1_11+' '+hourFrom2_11+':'+minuteFrom1_11+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light2_11=='0' and dark2_11=='0':
         box2pha11text.set('                                ')
-        window.update_idletasks()
+        
         box2pha11text.set(year2_11+'/'+month2_11+'/'+date2_11+' '+hourFrom2_11+':'+minuteFrom2_11+' | '+hourOn2_11+':'+minOn2_11+' on>'+hourOff2_11+':'+minOff2_11+' off')
-        window.update_idletasks()
+        
     if light2_11=='0' and dark2_11=='1':
         box2pha11text.set('                                ')
-        window.update_idletasks()
+        
         box2pha11text.set(year2_11+'/'+month2_11+'/'+date2_11+' '+hourFrom2_11+':'+minuteFrom2_11+' | '+'DD')
-        window.update_idletasks()
+        
     if light2_11=='1' and dark2_11=='0':
         box2pha11text.set('                                 ')
-        window.update_idletasks()
+        
         box2pha11text.set(year2_11+'/'+month2_11+'/'+date2_11+' '+hourFrom2_11+':'+minuteFrom2_11+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light3_11=='0' and dark3_11=='0':
         box3pha11text.set('                                ')
-        window.update_idletasks()
+        
         box3pha11text.set(year3_11+'/'+month3_11+'/'+date3_11+' '+hourFrom3_11+':'+minuteFrom3_11+' | '+hourOn3_11+':'+minOn3_6+' on>'+hourOff3_11+':'+minOff3_11+' off')
-        window.update_idletasks() 
+         
     if light3_11=='0' and dark3_11=='1':
         box3pha11text.set('                                ')
-        window.update_idletasks()
+        
         box3pha11text.set(year3_11+'/'+month3_11+'/'+date3_11+' '+hourFrom3_11+':'+minuteFrom3_11+' | '+'DD')
-        window.update_idletasks()
+        
     if light3_11=='1' and dark3_11=='0':
         box3pha11text.set('                                 ')
-        window.update_idletasks()
+        
         box3pha11text.set(year3_11+'/'+month3_11+'/'+date3_11+' '+hourFrom3_11+':'+minuteFrom3_11+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light4_11=='0' and dark4_11=='0':
         box4pha11text.set('                                ')
-        window.update_idletasks()
+        
         box4pha11text.set(year4_11+'/'+month4_11+'/'+date4_11+' '+hourFrom4_11+':'+minuteFrom4_11+' | '+hourOn4_11+':'+minOn4_11+' on>'+hourOff4_11+':'+minOff4_11+' off')
-        window.update_idletasks()
+        
     if light4_11=='0' and dark4_11=='1':
         box4pha11text.set('                                ')
-        window.update_idletasks()
+        
         box4pha11text.set(year4_11+'/'+month4_11+'/'+date4_11+' '+hourFrom4_11+':'+minuteFrom4_11+' | '+'DD')
-        window.update_idletasks()
+        
     if light4_11=='1' and dark4_11=='0':
         box4pha11text.set('                                 ')
-        window.update_idletasks()
+        
         box4pha11text.set(year4_11+'/'+month4_11+'/'+date4_11+' '+hourFrom4_11+':'+minuteFrom4_11+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light5_11=='0' and dark5_11=='0':
         box5pha11text.set('                                ')
-        window.update_idletasks()
+        
         box5pha11text.set(year5_11+'/'+month5_11+'/'+date5_11+' '+hourFrom5_11+':'+minuteFrom5_11+' | '+hourOn5_11+':'+minOn5_11+' on>'+hourOff5_11+':'+minOff5_11+' off')
-        window.update_idletasks()
+        
     if light5_11=='0' and dark5_11=='1':
         box5pha11text.set('                                ')
-        window.update_idletasks()
+        
         box5pha11text.set(year5_11+'/'+month5_11+'/'+date5_11+' '+hourFrom5_11+':'+minuteFrom5_11+' | '+'DD')
-        window.update_idletasks()
+        
     if light5_11=='1' and dark5_11=='0':
         box5pha11text.set('                                 ')
-        window.update_idletasks()
+        
         box5pha11text.set(year5_11+'/'+month5_11+'/'+date5_11+' '+hourFrom5_11+':'+minuteFrom5_11+' | '+'LL')
-        window.update_idletasks()  
+          
 
     #12 Phase
     if light1_12=='0' and dark1_12=='0':
         box1pha12text.set('                                ')
-        window.update_idletasks()
+        
         box1pha12text.set(year1_12+'/'+month1_12+'/'+date1_12+' '+hourFrom2_12+':'+minuteFrom1_12+' | '+hourOn1_12+':'+minOn1_12+' on>'+hourOff1_12+':'+minOff1_12+' off')
-        window.update_idletasks()
+        
     if light1_12=='0' and dark1_12=='1':
         box1pha12text.set('                                ')
-        window.update_idletasks()
+        
         box1pha12text.set(year1_12+'/'+month1_12+'/'+date1_12+' '+hourFrom2_12+':'+minuteFrom1_12+' | '+'DD')
-        window.update_idletasks()
+        
     if light1_12=='1' and dark1_12=='0':
         box1pha12text.set('                                 ')
-        window.update_idletasks()
+        
         box1pha12text.set(year1_12+'/'+month1_12+'/'+date1_12+' '+hourFrom2_12+':'+minuteFrom1_12+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light2_12=='0' and dark2_12=='0':
         box2pha12text.set('                                ')
-        window.update_idletasks()
+        
         box2pha12text.set(year2_12+'/'+month2_12+'/'+date2_12+' '+hourFrom2_12+':'+minuteFrom2_12+' | '+hourOn2_12+':'+minOn2_12+' on>'+hourOff2_12+':'+minOff2_12+' off')
-        window.update_idletasks()
+        
     if light2_12=='0' and dark2_12=='1':
         box2pha12text.set('                                ')
-        window.update_idletasks()
+        
         box2pha12text.set(year2_12+'/'+month2_12+'/'+date2_12+' '+hourFrom2_12+':'+minuteFrom2_12+' | '+'DD')
-        window.update_idletasks()
+        
     if light2_12=='1' and dark2_12=='0':
         box2pha12text.set('                                 ')
-        window.update_idletasks()
+        
         box2pha12text.set(year2_12+'/'+month2_12+'/'+date2_12+' '+hourFrom2_12+':'+minuteFrom2_12+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light3_12=='0' and dark3_12=='0':
         box3pha12text.set('                                ')
-        window.update_idletasks()
+        
         box3pha12text.set(year3_12+'/'+month3_12+'/'+date3_12+' '+hourFrom3_12+':'+minuteFrom3_12+' | '+hourOn3_12+':'+minOn3_6+' on>'+hourOff3_12+':'+minOff3_12+' off')
-        window.update_idletasks() 
+         
     if light3_12=='0' and dark3_12=='1':
         box3pha12text.set('                                ')
-        window.update_idletasks()
+        
         box3pha12text.set(year3_12+'/'+month3_12+'/'+date3_12+' '+hourFrom3_12+':'+minuteFrom3_12+' | '+'DD')
-        window.update_idletasks()
+        
     if light3_12=='1' and dark3_12=='0':
         box3pha12text.set('                                 ')
-        window.update_idletasks()
+        
         box3pha12text.set(year3_12+'/'+month3_12+'/'+date3_12+' '+hourFrom3_12+':'+minuteFrom3_12+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light4_12=='0' and dark4_12=='0':
         box4pha12text.set('                                ')
-        window.update_idletasks()
+        
         box4pha12text.set(year4_12+'/'+month4_12+'/'+date4_12+' '+hourFrom4_12+':'+minuteFrom4_12+' | '+hourOn4_12+':'+minOn4_12+' on>'+hourOff4_12+':'+minOff4_12+' off')
-        window.update_idletasks()
+        
     if light4_12=='0' and dark4_12=='1':
         box4pha12text.set('                                ')
-        window.update_idletasks()
+        
         box4pha12text.set(year4_12+'/'+month4_12+'/'+date4_12+' '+hourFrom4_12+':'+minuteFrom4_12+' | '+'DD')
-        window.update_idletasks()
+        
     if light4_12=='1' and dark4_12=='0':
         box4pha12text.set('                                 ')
-        window.update_idletasks()
+        
         box4pha12text.set(year4_12+'/'+month4_12+'/'+date4_12+' '+hourFrom4_12+':'+minuteFrom4_12+' | '+'LL')
-        window.update_idletasks()
+        
     
     if light5_12=='0' and dark5_12=='0':
         box5pha12text.set('                                ')
-        window.update_idletasks()
+        
         box5pha12text.set(year5_12+'/'+month5_12+'/'+date5_12+' '+hourFrom5_12+':'+minuteFrom5_12+' | '+hourOn5_12+':'+minOn5_12+' on>'+hourOff5_12+':'+minOff5_12+' off')
-        window.update_idletasks()
+        
     if light5_12=='0' and dark5_12=='1':
         box5pha12text.set('                                ')
-        window.update_idletasks()
+        
         box5pha12text.set(year5_12+'/'+month5_12+'/'+date5_12+' '+hourFrom5_12+':'+minuteFrom5_12+' | '+'DD')
-        window.update_idletasks()
+        
     if light5_12=='1' and dark5_12=='0':
         box5pha12text.set('                                 ')
-        window.update_idletasks()
+        
         box5pha12text.set(year5_12+'/'+month5_12+'/'+date5_12+' '+hourFrom5_12+':'+minuteFrom5_12+' | '+'LL')
-        window.update_idletasks()  
-     
+        
+    window.update_idletasks()   
 
     
 
@@ -5046,7 +5261,7 @@ def disconnect():  # close the serial_obj thread
     print(threading.enumerate())
     status.pack(side='bottom', fill='x')
     status.set('Stopped recording and disconnected from the boxes.')
-    boxrec_text.set('Recording stopped.')
+   
     
     
     window.update_idletasks()
@@ -5068,15 +5283,35 @@ def OnButtonClick(button_id):
     elif button_id == 5:
         getBox5Schedule()
         setBox5=1
+
+def time_to_str(time_int):
+    time_int = str(time_int)
+    if len(time_int) == 1:
+        return '0'+ time_int
+    else:
+        return time_int
                 
 def getBox1Schedule(): 
-    global setBox1
+    global setBox1, tcyclespinbox_arr
     setBox1=1
     global hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, dark1_1, light1_1
     hourOn1_1=spin1_A_1.get()
     minOn1_1=spin1_B_1.get()
     hourOff1_1=spin1_C_1.get()
-    minOff1_1=spin1_D_1.get()                            
+    minOff1_1=spin1_D_1.get()    
+        
+    tcyclefactor = float(tcyclespinbox_arr[0,0].get())
+
+#convert_time(time_i_want, start_time, factor)
+    conv_time_on = convert_time(datetime.datetime(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day, int(hourOn1_1), int(minOn1_1)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day, int(hourOff1_1), int(minOff1_1)), datetime.datetime.now(), tcyclefactor)     
+    hourOn1_1 = time_to_str(conv_time_on.hour)
+    
+    minOn1_1 = time_to_str( conv_time_on.minute)
+    hourOff1_1=time_to_str(conv_time_off.hour)
+    minOff1_1=time_to_str(conv_time_off.minute)
+
+
     if var1_1.get()==1:
         dark1_1='0'
         light1_1='0'
@@ -5088,6 +5323,7 @@ def getBox1Schedule():
         light1_1='1'
 
     phase1 = PhaseSchedule(hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, dark1_1, light1_1)
+
     #Phase2
     global date1_2, month1_2, year1_2, hourFrom1_2, minuteFrom1_2, hourOn1_2, minOn1_2, hourOff1_2, minOff1_2, dark1_2, light1_2
     date1_2 = date1_2_entry.get()
@@ -5099,7 +5335,21 @@ def getBox1Schedule():
     hourOff1_2=spin1_C_2.get()
     minOff1_2=spin1_D_2.get()     
     hourFrom1_2= spin1_E_2.get()
-    minuteFrom1_2= spin1_F_2.get()                       
+    minuteFrom1_2= spin1_F_2.get()
+
+    tcyclefactor = float(tcyclespinbox_arr[0,2].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year1_2), int(month1_2), int(date1_2), int(hourOn1_2), int(minOn1_2)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year1_2), int(month1_2), int(date1_2), int(hourOff1_2), int(minOff1_2)), datetime.datetime.now(), tcyclefactor)     
+    hourOn1_2 = time_to_str(conv_time_on.hour)    
+    minOn1_2 = time_to_str( conv_time_on.minute)
+    hourOff1_2=time_to_str(conv_time_off.hour)
+    minOff1_2=time_to_str(conv_time_off.minute)
+
+    date1_2 = time_to_str(conv_time_on.day)
+    month1_2 = time_to_str(conv_time_on.month)
+    year1_2 = time_to_str(conv_time_on.year)
+
     if var1_2.get()==1:
         dark1_2='0'
         light1_2='0'
@@ -5121,7 +5371,23 @@ def getBox1Schedule():
     hourOn1_3=spin1_A_3.get()
     minOn1_3=spin1_B_3.get()
     hourOff1_3=spin1_C_3.get()
-    minOff1_3=spin1_D_3.get()                            
+    minOff1_3=spin1_D_3.get()   
+
+    tcyclefactor = float(tcyclespinbox_arr[0,2].get())
+
+
+    conv_time_on = convert_time(datetime.datetime(int(year1_3), int(month1_3), int(date1_3), int(hourOn1_3), int(minOn1_3)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year1_3), int(month1_3), int(date1_3), int(hourOff1_3), int(minOff1_3)), datetime.datetime.now(), tcyclefactor)     
+    hourOn1_3 = time_to_str(conv_time_on.hour)    
+    minOn1_3 = time_to_str( conv_time_on.minute)
+    hourOff1_3=time_to_str(conv_time_off.hour)
+    minOff1_3=time_to_str(conv_time_off.minute)
+
+    date1_3 = time_to_str(conv_time_on.day)
+    month1_3 = time_to_str(conv_time_on.month)
+    year1_3 = time_to_str(conv_time_on.year)
+
+
     if var1_3.get()==1:
         dark1_3='0'
         light1_3='0'
@@ -5143,7 +5409,21 @@ def getBox1Schedule():
     hourOn1_4=spin1_A_4.get()
     minOn1_4=spin1_B_4.get()
     hourOff1_4=spin1_C_4.get()
-    minOff1_4=spin1_D_4.get()                            
+    minOff1_4=spin1_D_4.get() 
+
+    tcyclefactor = float(tcyclespinbox_arr[0,3].get())
+    conv_time_on = convert_time(datetime.datetime(int(year1_4), int(month1_4), int(date1_4), int(hourOn1_4), int(minOn1_4)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year1_4), int(month1_4), int(date1_4), int(hourOff1_4), int(minOff1_4)), datetime.datetime.now(), tcyclefactor)     
+    hourOn1_4 = time_to_str(conv_time_on.hour)    
+    minOn1_4 = time_to_str( conv_time_on.minute)
+    hourOff1_4=time_to_str(conv_time_off.hour)
+    minOff1_4=time_to_str(conv_time_off.minute)
+
+    date1_4 = time_to_str(conv_time_on.day)
+    month1_4 = time_to_str(conv_time_on.month)
+    year1_4 = time_to_str(conv_time_on.year)
+
+
     if var1_4.get()==1:
         dark1_4='0'
         light1_4='0'
@@ -5163,7 +5443,21 @@ def getBox1Schedule():
     hourOn1_5=spin1_A_5.get()
     minOn1_5=spin1_B_5.get()
     hourOff1_5=spin1_C_5.get()
-    minOff1_5=spin1_D_5.get()                            
+    minOff1_5=spin1_D_5.get()  
+
+    tcyclefactor = float(tcyclespinbox_arr[0,4].get())
+    conv_time_on = convert_time(datetime.datetime(int(year1_5), int(month1_5), int(date1_5), int(hourOn1_5), int(minOn1_5)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year1_5), int(month1_5), int(date1_5), int(hourOff1_5), int(minOff1_5)), datetime.datetime.now(), tcyclefactor)     
+    hourOn1_5 = time_to_str(conv_time_on.hour)    
+    minOn1_5 = time_to_str( conv_time_on.minute)
+    hourOff1_5=time_to_str(conv_time_off.hour)
+    minOff1_5=time_to_str(conv_time_off.minute)
+
+    date1_5 = time_to_str(conv_time_on.day)
+    month1_5 = time_to_str(conv_time_on.month)
+    year1_5 = time_to_str(conv_time_on.year)
+
+
     if var1_5.get()==1:
         dark1_5='0'
         light1_5='0'
@@ -5183,7 +5477,23 @@ def getBox1Schedule():
     hourOn1_6=spin1_A_6.get()
     minOn1_6=spin1_B_6.get()
     hourOff1_6=spin1_C_6.get()
-    minOff1_6=spin1_D_6.get()                            
+    minOff1_6=spin1_D_6.get()  
+
+    tcyclefactor = float(tcyclespinbox_arr[0,5].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year1_6), int(month1_6), int(date1_6), int(hourOn1_6), int(minOn1_6)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year1_6), int(month1_6), int(date1_6), int(hourOff1_6), int(minOff1_6)), datetime.datetime.now(), tcyclefactor)     
+    hourOn1_6 = time_to_str(conv_time_on.hour)    
+    minOn1_6 = time_to_str( conv_time_on.minute)
+    hourOff1_6=time_to_str(conv_time_off.hour)
+    minOff1_6=time_to_str(conv_time_off.minute)
+
+    date1_6 = time_to_str(conv_time_on.day)
+    month1_6 = time_to_str(conv_time_on.month)
+    year1_6 = time_to_str(conv_time_on.year)
+
+
+
     if var1_6.get()==1:
         dark1_6='0'
         light1_6='0'
@@ -5203,7 +5513,21 @@ def getBox1Schedule():
     hourOn1_7=spin1_A_7.get()
     minOn1_7=spin1_B_7.get()
     hourOff1_7=spin1_C_7.get()
-    minOff1_7=spin1_D_7.get()                            
+    minOff1_7=spin1_D_7.get()
+
+    tcyclefactor = float(tcyclespinbox_arr[0,7].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year1_7), int(month1_7), int(date1_7), int(hourOn1_7), int(minOn1_7)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year1_7), int(month1_7), int(date1_7), int(hourOff1_7), int(minOff1_7)), datetime.datetime.now(), tcyclefactor)     
+    hourOn1_7 = time_to_str(conv_time_on.hour)    
+    minOn1_7 = time_to_str( conv_time_on.minute)
+    hourOff1_7=time_to_str(conv_time_off.hour)
+    minOff1_7=time_to_str(conv_time_off.minute)
+
+    date1_7 = time_to_str(conv_time_on.day)
+    month1_7 = time_to_str(conv_time_on.month)
+    year1_7 = time_to_str(conv_time_on.year)
+
     if var1_7.get()==1:
         dark1_7='0'
         light1_7='0'
@@ -5223,7 +5547,23 @@ def getBox1Schedule():
     hourOn1_8=spin1_A_8.get()
     minOn1_8=spin1_B_8.get()
     hourOff1_8=spin1_C_8.get()
-    minOff1_8=spin1_D_8.get()                            
+    minOff1_8=spin1_D_8.get()  
+
+
+
+    tcyclefactor = float(tcyclespinbox_arr[0,7].get())
+    conv_time_on = convert_time(datetime.datetime(int(year1_8), int(month1_8), int(date1_8), int(hourOn1_8), int(minOn1_8)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year1_8), int(month1_8), int(date1_8), int(hourOff1_8), int(minOff1_8)), datetime.datetime.now(), tcyclefactor)     
+    hourOn1_8 = time_to_str(conv_time_on.hour)    
+    minOn1_8 = time_to_str( conv_time_on.minute)
+    hourOff1_8=time_to_str(conv_time_off.hour)
+    minOff1_8=time_to_str(conv_time_off.minute)
+
+    date1_8 = time_to_str(conv_time_on.day)
+    month1_8 = time_to_str(conv_time_on.month)
+    year1_8 = time_to_str(conv_time_on.year)
+
+
     if var1_8.get()==1:
         dark1_8='0'
         light1_8='0'
@@ -5243,7 +5583,22 @@ def getBox1Schedule():
     hourOn1_9=spin1_A_9.get()
     minOn1_9=spin1_B_9.get()
     hourOff1_9=spin1_C_9.get()
-    minOff1_9=spin1_D_9.get()                            
+    minOff1_9=spin1_D_9.get()    
+
+    tcyclefactor = float(tcyclespinbox_arr[0,8].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year1_9), int(month1_9), int(date1_9), int(hourOn1_9), int(minOn1_9)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year1_9), int(month1_9), int(date1_9), int(hourOff1_9), int(minOff1_9)), datetime.datetime.now(), tcyclefactor)     
+    hourOn1_9 = time_to_str(conv_time_on.hour)    
+    minOn1_9 = time_to_str( conv_time_on.minute)
+    hourOff1_9=time_to_str(conv_time_off.hour)
+    minOff1_9=time_to_str(conv_time_off.minute)
+
+    date1_9 = time_to_str(conv_time_on.day)
+    month1_9 = time_to_str(conv_time_on.month)
+    year1_9 = time_to_str(conv_time_on.year)
+
+
     if var1_9.get()==1:
         dark1_9='0'
         light1_9='0'
@@ -5263,7 +5618,23 @@ def getBox1Schedule():
     hourOn1_10=spin1_A_10.get()
     minOn1_10=spin1_B_10.get()
     hourOff1_10=spin1_C_10.get()
-    minOff1_10=spin1_D_10.get()                            
+    minOff1_10=spin1_D_10.get()   
+
+    tcyclefactor = float(tcyclespinbox_arr[0,9].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year1_10), int(month1_10), int(date1_10), int(hourOn1_10), int(minOn1_10)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year1_10), int(month1_10), int(date1_10), int(hourOff1_10), int(minOff1_10)), datetime.datetime.now(), tcyclefactor)     
+    hourOn1_10 = time_to_str(conv_time_on.hour)    
+    minOn1_10 = time_to_str( conv_time_on.minute)
+    hourOff1_10=time_to_str(conv_time_off.hour)
+    minOff1_10=time_to_str(conv_time_off.minute)
+
+    date1_10 = time_to_str(conv_time_on.day)
+    month1_10 = time_to_str(conv_time_on.month)
+    year1_10 = time_to_str(conv_time_on.year)
+
+
+
     if var1_10.get()==1:
         dark1_10='0'
         light1_10='0'
@@ -5283,7 +5654,21 @@ def getBox1Schedule():
     hourOn1_11=spin1_A_11.get()
     minOn1_11=spin1_B_11.get()
     hourOff1_11=spin1_C_11.get()
-    minOff1_11=spin1_D_11.get()                            
+    minOff1_11=spin1_D_11.get() 
+
+    tcyclefactor = float(tcyclespinbox_arr[0,10].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year1_11), int(month1_11), int(date1_11), int(hourOn1_11), int(minOn1_11)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year1_11), int(month1_11), int(date1_11), int(hourOff1_11), int(minOff1_11)), datetime.datetime.now(), tcyclefactor)     
+    hourOn1_11 = time_to_str(conv_time_on.hour)    
+    minOn1_11 = time_to_str( conv_time_on.minute)
+    hourOff1_11=time_to_str(conv_time_off.hour)
+    minOff1_11=time_to_str(conv_time_off.minute)
+
+    date1_11 = time_to_str(conv_time_on.day)
+    month1_11 = time_to_str(conv_time_on.month)
+    year1_11 = time_to_str(conv_time_on.year)
+
     if var1_11.get()==1:
         dark1_11='0'
         light1_11='0'
@@ -5303,7 +5688,21 @@ def getBox1Schedule():
     hourOn1_12=spin1_A_12.get()
     minOn1_12=spin1_B_12.get()
     hourOff1_12=spin1_C_12.get()
-    minOff1_12=spin1_D_12.get()                            
+    minOff1_12=spin1_D_12.get()
+
+    tcyclefactor = float(tcyclespinbox_arr[0,11].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year1_12), int(month1_12), int(date1_12), int(hourOn1_12), int(minOn1_12)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year1_12), int(month1_12), int(date1_12), int(hourOff1_12), int(minOff1_12)), datetime.datetime.now(), tcyclefactor)     
+    hourOn1_12 = time_to_str(conv_time_on.hour)    
+    minOn1_12 = time_to_str( conv_time_on.minute)
+    hourOff1_12=time_to_str(conv_time_off.hour)
+    minOff1_12=time_to_str(conv_time_off.minute)
+
+    date1_12 = time_to_str(conv_time_on.day)
+    month1_12 = time_to_str(conv_time_on.month)
+    year1_12 = time_to_str(conv_time_on.year)
+
     if var1_12.get()==1:
         dark1_12='0'
         light1_12='0'
@@ -5316,8 +5715,7 @@ def getBox1Schedule():
 
     status.pack(side='bottom', fill='x')
     status.set('Box1 schedule is set.')
-    boxsched_text.set('Box1 schedule set.')
-    box1sched_text.set('Box1 schedule set.')
+    
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
         btnRun['state']='normal'  
@@ -5326,13 +5724,25 @@ def getBox1Schedule():
     window.update_idletasks()
 
 def getBox2Schedule(): 
-    global setBox2
+    global setBox2, tcyclefactor
     setBox2=1
     global hourOn2_1, minOn2_1, hourOff2_1, minOff2_1, dark2_1, light2_1
     hourOn2_1=spin2_A_1.get()
     minOn2_1=spin2_B_1.get()
     hourOff2_1=spin2_C_1.get()
-    minOff2_1=spin2_D_1.get()                            
+    minOff2_1=spin2_D_1.get()  
+
+    tcyclefactor = float(tcyclespinbox_arr[1,0].get())
+
+    conv_time_on = convert_time(datetime.datetime(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day, int(hourOn2_1), int(minOn2_1)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day, int(hourOff2_1), int(hourOff2_1)), datetime.datetime.now(), tcyclefactor)     
+    hourOn2_1 = time_to_str(conv_time_on.hour)
+    minOn2_1 =  time_to_str(conv_time_on.minute)
+    hourOff2_1= time_to_str(conv_time_off.hour)
+    minOff2_1=  time_to_str(conv_time_off.minute)
+
+
+
     if var2_1.get()==1:
         dark2_1='0'
         light2_1='0'
@@ -5351,7 +5761,22 @@ def getBox2Schedule():
     hourOn2_2=spin2_A_2.get()
     minOn2_2=spin2_B_2.get()
     hourOff2_2=spin2_C_2.get()
-    minOff2_2=spin2_D_2.get()                            
+    minOff2_2=spin2_D_2.get()  
+
+    tcyclefactor = float(tcyclespinbox_arr[1,1].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year2_2), int(month2_2), int(date2_2), int(hourOn2_2), int(minOn2_2)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year2_2), int(month2_2), int(date2_2), int(hourOff2_2), int(minOff2_2)), datetime.datetime.now(), tcyclefactor)     
+    hourOn2_2 = time_to_str(conv_time_on.hour)    
+    minOn2_2 = time_to_str( conv_time_on.minute)
+    hourOff2_2=time_to_str(conv_time_off.hour)
+    minOff2_2=time_to_str(conv_time_off.minute)
+
+    date2_2 = time_to_str(conv_time_on.day)
+    month2_2 = time_to_str(conv_time_on.month)
+    year2_2 = time_to_str(conv_time_on.year)
+
+
     if var2_2.get()==1:
         dark2_2='0'
         light2_2='0'
@@ -5370,7 +5795,21 @@ def getBox2Schedule():
     hourOn2_3=spin2_A_3.get()
     minOn2_3=spin2_B_3.get()
     hourOff2_3=spin2_C_3.get()
-    minOff2_3=spin2_D_3.get()                            
+    minOff2_3=spin2_D_3.get()
+
+    tcyclefactor = float(tcyclespinbox_arr[1,2].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year2_3), int(month2_3), int(date2_3), int(hourOn2_3), int(minOn2_3)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year2_3), int(month2_3), int(date2_3), int(hourOff2_3), int(minOff2_3)), datetime.datetime.now(), tcyclefactor)     
+    hourOn2_3 = time_to_str(conv_time_on.hour)    
+    minOn2_3 = time_to_str( conv_time_on.minute)
+    hourOff2_3=time_to_str(conv_time_off.hour)
+    minOff2_3=time_to_str(conv_time_off.minute)
+
+    date2_3 = time_to_str(conv_time_on.day)
+    month2_3 = time_to_str(conv_time_on.month)
+    year2_3 = time_to_str(conv_time_on.year)
+
     if var2_3.get()==1:
         dark2_3='0'
         light2_3='0'
@@ -5389,7 +5828,21 @@ def getBox2Schedule():
     hourOn2_4=spin2_A_4.get()
     minOn2_4=spin2_B_4.get()
     hourOff2_4=spin2_C_4.get()
-    minOff2_4=spin2_D_4.get()                            
+    minOff2_4=spin2_D_4.get()  
+
+    tcyclefactor = float(tcyclespinbox_arr[1,3].get())
+    conv_time_on = convert_time(datetime.datetime(int(year2_4), int(month2_4), int(date2_4), int(hourOn2_4), int(minOn2_4)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year2_4), int(month2_4), int(date2_4), int(hourOff2_4), int(minOff2_4)), datetime.datetime.now(), tcyclefactor)     
+    hourOn2_4 = time_to_str(conv_time_on.hour)    
+    minOn2_4 = time_to_str( conv_time_on.minute)
+    hourOff2_4=time_to_str(conv_time_off.hour)
+    minOff2_4=time_to_str(conv_time_off.minute)
+
+
+    date2_4 = time_to_str(conv_time_on.day)
+    month2_4 = time_to_str(conv_time_on.month)
+    year2_4 = time_to_str(conv_time_on.year)
+
     if var2_4.get()==1:
         dark2_4='0'
         light2_4='0'
@@ -5408,7 +5861,23 @@ def getBox2Schedule():
     hourOn2_5=spin2_A_5.get()
     minOn2_5=spin2_B_5.get()
     hourOff2_5=spin2_C_5.get()
-    minOff2_5=spin2_D_5.get()                            
+    minOff2_5=spin2_D_5.get() 
+
+    tcyclefactor = float(tcyclespinbox_arr[1,4].get())
+
+
+    conv_time_on = convert_time(datetime.datetime(int(year2_5), int(month2_5), int(date2_5), int(hourOn2_5), int(minOn2_5)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year2_5), int(month2_5), int(date2_5), int(hourOff2_5), int(minOff2_5)), datetime.datetime.now(), tcyclefactor)     
+    hourOn2_5 = time_to_str(conv_time_on.hour)    
+    minOn2_5 = time_to_str( conv_time_on.minute)
+    hourOff2_5=time_to_str(conv_time_off.hour)
+    minOff2_5=time_to_str(conv_time_off.minute)
+
+
+    date2_5 = time_to_str(conv_time_on.day)
+    month2_5 = time_to_str(conv_time_on.month)
+    year2_5 = time_to_str(conv_time_on.year)
+
     if var2_5.get()==1:
         dark2_5='0'
         light2_5='0'
@@ -5428,7 +5897,21 @@ def getBox2Schedule():
     hourOn2_6=spin2_A_6.get()
     minOn2_6=spin2_B_6.get()
     hourOff2_6=spin2_C_6.get()
-    minOff2_6=spin2_D_6.get()                            
+    minOff2_6=spin2_D_6.get()  
+
+    tcyclefactor = float(tcyclespinbox_arr[1,5].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year2_6), int(month2_6), int(date2_6), int(hourOn2_6), int(minOn2_6)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year2_6), int(month2_6), int(date2_6), int(hourOff2_6), int(minOff2_6)), datetime.datetime.now(), tcyclefactor)     
+    hourOn2_6 = time_to_str(conv_time_on.hour)    
+    minOn2_6 = time_to_str( conv_time_on.minute)
+    hourOff2_6=time_to_str(conv_time_off.hour)
+    minOff2_6=time_to_str(conv_time_off.minute)
+
+    date2_6 = time_to_str(conv_time_on.day)
+    month2_6 = time_to_str(conv_time_on.month)
+    year2_6 = time_to_str(conv_time_on.year)
+
     if var2_6.get()==1:
         dark2_6='0'
         light2_6='0'
@@ -5448,7 +5931,22 @@ def getBox2Schedule():
     hourOn2_7=spin2_A_7.get()
     minOn2_7=spin2_B_7.get()
     hourOff2_7=spin2_C_7.get()
-    minOff2_7=spin2_D_7.get()                            
+    minOff2_7=spin2_D_7.get()    
+
+    tcyclefactor = float(tcyclespinbox_arr[1,6].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year2_7), int(month2_7), int(date2_7), int(hourOn2_7), int(minOn2_7)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year2_7), int(month2_7), int(date2_7), int(hourOff2_7), int(minOff2_7)), datetime.datetime.now(), tcyclefactor)     
+    hourOn2_7 = time_to_str(conv_time_on.hour)    
+    minOn2_7 = time_to_str( conv_time_on.minute)
+    hourOff2_7=time_to_str(conv_time_off.hour)
+    minOff2_7=time_to_str(conv_time_off.minute)
+
+
+    date2_7 = time_to_str(conv_time_on.day)
+    month2_7 = time_to_str(conv_time_on.month)
+    year2_7 = time_to_str(conv_time_on.year)
+
     if var2_7.get()==1:
         dark2_7='0'
         light2_7='0'
@@ -5468,7 +5966,21 @@ def getBox2Schedule():
     hourOn2_8=spin2_A_8.get()
     minOn2_8=spin2_B_8.get()
     hourOff2_8=spin2_C_8.get()
-    minOff2_8=spin2_D_8.get()                            
+    minOff2_8=spin2_D_8.get()  
+
+    tcyclefactor = float(tcyclespinbox_arr[1,7].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year2_8), int(month2_8), int(date2_8), int(hourOn2_8), int(minOn2_8)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year2_8), int(month2_8), int(date2_8), int(hourOff2_8), int(minOff2_8)), datetime.datetime.now(), tcyclefactor)     
+    hourOn2_8 = time_to_str(conv_time_on.hour)    
+    minOn2_8 = time_to_str( conv_time_on.minute)
+    hourOff2_8=time_to_str(conv_time_off.hour)
+    minOff2_8=time_to_str(conv_time_off.minute)
+
+    date2_8 = time_to_str(conv_time_on.day)
+    month2_8 = time_to_str(conv_time_on.month)
+    year2_8 = time_to_str(conv_time_on.year)
+
     if var2_8.get()==1:
         dark2_8='0'
         light2_8='0'
@@ -5488,7 +6000,23 @@ def getBox2Schedule():
     hourOn2_9=spin2_A_9.get()
     minOn2_9=spin2_B_9.get()
     hourOff2_9=spin2_C_9.get()
-    minOff2_9=spin2_D_9.get()                            
+    minOff2_9=spin2_D_9.get()  
+
+    tcyclefactor = float(tcyclespinbox_arr[1,8].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year2_9), int(month2_9), int(date2_9), int(hourOn2_9), int(minOn2_9)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year2_9), int(month2_9), int(date2_9), int(hourOff2_9), int(minOff2_9)), datetime.datetime.now(), tcyclefactor)     
+    hourOn2_9 = time_to_str(conv_time_on.hour)    
+    minOn2_9 = time_to_str( conv_time_on.minute)
+    hourOff2_9=time_to_str(conv_time_off.hour)
+    minOff2_9=time_to_str(conv_time_off.minute)
+
+
+
+    date2_9 = time_to_str(conv_time_on.day)
+    month2_9 = time_to_str(conv_time_on.month)
+    year2_9 = time_to_str(conv_time_on.year)
+
     if var2_9.get()==1:
         dark2_9='0'
         light2_9='0'
@@ -5508,7 +6036,21 @@ def getBox2Schedule():
     hourOn2_10=spin2_A_10.get()
     minOn2_10=spin2_B_10.get()
     hourOff2_10=spin2_C_10.get()
-    minOff2_10=spin2_D_10.get()                            
+    minOff2_10=spin2_D_10.get()     
+
+    tcyclefactor = float(tcyclespinbox_arr[1,9].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year2_10), int(month2_10), int(date2_10), int(hourOn2_10), int(minOn2_10)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year2_10), int(month2_10), int(date2_10), int(hourOff2_10), int(minOff2_10)), datetime.datetime.now(), tcyclefactor)     
+    hourOn2_10 = time_to_str(conv_time_on.hour)    
+    minOn2_10 = time_to_str( conv_time_on.minute)
+    hourOff2_10=time_to_str(conv_time_off.hour)
+    minOff2_10=time_to_str(conv_time_off.minute)
+    
+    date2_10 = time_to_str(conv_time_on.day)
+    month2_10 = time_to_str(conv_time_on.month)
+    year2_10 = time_to_str(conv_time_on.year)
+
     if var2_10.get()==1:
         dark2_10='0'
         light2_10='0'
@@ -5528,7 +6070,21 @@ def getBox2Schedule():
     hourOn2_11=spin2_A_11.get()
     minOn2_11=spin2_B_11.get()
     hourOff2_11=spin2_C_11.get()
-    minOff2_11=spin2_D_11.get()                            
+    minOff2_11=spin2_D_11.get()  
+
+    tcyclefactor = float(tcyclespinbox_arr[1,10].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year2_11), int(month2_11), int(date2_11), int(hourOn2_11), int(minOn2_11)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year2_11), int(month2_11), int(date2_11), int(hourOff2_11), int(minOff2_11)), datetime.datetime.now(), tcyclefactor)     
+    hourOn2_11 = time_to_str(conv_time_on.hour)    
+    minOn2_11 = time_to_str( conv_time_on.minute)
+    hourOff2_11=time_to_str(conv_time_off.hour)
+    minOff2_11=time_to_str(conv_time_off.minute)
+
+    date2_11 = time_to_str(conv_time_on.day)
+    month2_11 = time_to_str(conv_time_on.month)
+    year2_11 = time_to_str(conv_time_on.year)
+
     if var2_11.get()==1:
         dark2_11='0'
         light2_11='0'
@@ -5548,7 +6104,21 @@ def getBox2Schedule():
     hourOn2_12=spin2_A_12.get()
     minOn2_12=spin2_B_12.get()
     hourOff2_12=spin2_C_12.get()
-    minOff2_12=spin2_D_12.get()                            
+    minOff2_12=spin2_D_12.get()    
+
+    tcyclefactor = float(tcyclespinbox_arr[1,11].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year2_12), int(month2_12), int(date2_12), int(hourOn2_12), int(minOn2_12)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year2_12), int(month2_12), int(date2_12), int(hourOff2_12), int(minOff2_12)), datetime.datetime.now(), tcyclefactor)     
+    hourOn2_12 = time_to_str(conv_time_on.hour)    
+    minOn2_12 = time_to_str( conv_time_on.minute)
+    hourOff2_12=time_to_str(conv_time_off.hour)
+    minOff2_12=time_to_str(conv_time_off.minute)
+
+    date2_12 = time_to_str(conv_time_on.day)
+    month2_12 = time_to_str(conv_time_on.month)
+    year2_12 = time_to_str(conv_time_on.year)
+
     if var2_12.get()==1:
         dark2_12='0'
         light2_12='0'
@@ -5571,13 +6141,22 @@ def getBox2Schedule():
     window.update_idletasks()
 
 def getBox3Schedule(): 
-    global setBox3
+    global setBox3, tcyclefactor
     setBox3=1
     global hourOn3_1, minOn3_1, hourOff3_1, minOff3_1, dark3_1, light3_1
     hourOn3_1=spin3_A_1.get()
     minOn3_1=spin3_B_1.get()
     hourOff3_1=spin3_C_1.get()
-    minOff3_1=spin3_D_1.get()                            
+    minOff3_1=spin3_D_1.get() 
+
+    tcyclefactor = float(tcyclespinbox_arr[2,0].get())
+
+    conv_time_on = convert_time(datetime.datetime(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day, int(hourOn3_1), int(minOn3_1)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day, int(hourOff3_1), int(hourOff3_1)), datetime.datetime.now(), tcyclefactor)     
+    hourOn3_1 = time_to_str(conv_time_on.hour)
+    minOn3_1 =  time_to_str(conv_time_on.minute)
+    hourOff3_1= time_to_str(conv_time_off.hour)
+    minOff3_1=  time_to_str(conv_time_off.minute)                           
     if var3_1.get()==1:
         dark3_1='0'
         light3_1='0'
@@ -5596,7 +6175,22 @@ def getBox3Schedule():
     hourOn3_2=spin3_A_2.get()
     minOn3_2=spin3_B_2.get()
     hourOff3_2=spin3_C_2.get()
-    minOff3_2=spin3_D_2.get()                            
+    minOff3_2=spin3_D_2.get() 
+
+    tcyclefactor = float(tcyclespinbox_arr[2,1].get())
+
+
+    conv_time_on = convert_time(datetime.datetime(int(year3_2), int(month3_2), int(date3_2), int(hourOn3_2), int(minOn3_2)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year3_2), int(month3_2), int(date3_2), int(hourOff3_2), int(minOff3_2)), datetime.datetime.now(), tcyclefactor)     
+    hourOn3_2 = time_to_str(conv_time_on.hour)    
+    minOn3_2 = time_to_str( conv_time_on.minute)
+    hourOff3_2=time_to_str(conv_time_off.hour)
+    minOff3_2=time_to_str(conv_time_off.minute)
+
+    date3_2 = time_to_str(conv_time_on.day)
+    month3_2 = time_to_str(conv_time_on.month)
+    year3_2 = time_to_str(conv_time_on.year)
+
     if var3_2.get()==1:
         dark3_2='0'
         light3_2='0'
@@ -5615,7 +6209,22 @@ def getBox3Schedule():
     hourOn3_3=spin3_A_3.get()
     minOn3_3=spin3_B_3.get()
     hourOff3_3=spin3_C_3.get()
-    minOff3_3=spin3_D_3.get()                            
+    minOff3_3=spin3_D_3.get()   
+
+    tcyclefactor = float(tcyclespinbox_arr[2,2].get())
+
+
+    conv_time_on = convert_time(datetime.datetime(int(year3_3), int(month3_3), int(date3_3), int(hourOn3_3), int(minOn3_3)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year3_3), int(month3_3), int(date3_3), int(hourOff3_3), int(minOff3_3)), datetime.datetime.now(), tcyclefactor)     
+    hourOn3_3 = time_to_str(conv_time_on.hour)    
+    minOn3_3 = time_to_str( conv_time_on.minute)
+    hourOff3_3=time_to_str(conv_time_off.hour)
+    minOff3_3=time_to_str(conv_time_off.minute)
+
+    date3_3 = time_to_str(conv_time_on.day)
+    month3_3 = time_to_str(conv_time_on.month)
+    year3_3 = time_to_str(conv_time_on.year)
+
     if var3_3.get()==1:
         dark3_3='0'
         light3_3='0'
@@ -5634,7 +6243,22 @@ def getBox3Schedule():
     hourOn3_4=spin3_A_4.get()
     minOn3_4=spin3_B_4.get()
     hourOff3_4=spin3_C_4.get()
-    minOff3_4=spin3_D_4.get()                            
+    minOff3_4=spin3_D_4.get()   
+
+    tcyclefactor = float(tcyclespinbox_arr[2,3].get())
+
+
+    conv_time_on = convert_time(datetime.datetime(int(year3_4), int(month3_4), int(date3_4), int(hourOn3_4), int(minOn3_4)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year3_4), int(month3_4), int(date3_4), int(hourOff3_4), int(minOff3_4)), datetime.datetime.now(), tcyclefactor)     
+    hourOn3_4 = time_to_str(conv_time_on.hour)    
+    minOn3_4 = time_to_str( conv_time_on.minute)
+    hourOff3_4=time_to_str(conv_time_off.hour)
+    minOff3_4=time_to_str(conv_time_off.minute)
+
+    date3_4 = time_to_str(conv_time_on.day)
+    month3_4 = time_to_str(conv_time_on.month)
+    year3_4 = time_to_str(conv_time_on.year)
+
     if var3_4.get()==1:
         dark3_4='0'
         light3_4='0'
@@ -5653,7 +6277,22 @@ def getBox3Schedule():
     hourOn3_5=spin3_A_5.get()
     minOn3_5=spin3_B_5.get()
     hourOff3_5=spin3_C_5.get()
-    minOff3_5=spin3_D_5.get()                            
+    minOff3_5=spin3_D_5.get()   
+
+    tcyclefactor = float(tcyclespinbox_arr[2,4].get())
+
+
+    conv_time_on = convert_time(datetime.datetime(int(year3_5), int(month3_5), int(date3_5), int(hourOn3_5), int(minOn3_5)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year3_5), int(month3_5), int(date3_5), int(hourOff3_5), int(minOff3_5)), datetime.datetime.now(), tcyclefactor)     
+    hourOn3_5 = time_to_str(conv_time_on.hour)    
+    minOn3_5 = time_to_str( conv_time_on.minute)
+    hourOff3_5=time_to_str(conv_time_off.hour)
+    minOff3_5=time_to_str(conv_time_off.minute)        
+
+    date3_5 = time_to_str(conv_time_on.day)
+    month3_5 = time_to_str(conv_time_on.month)
+    year3_5 = time_to_str(conv_time_on.year)
+
     if var3_5.get()==1:
         dark3_5='0'
         light3_5='0'
@@ -5673,7 +6312,23 @@ def getBox3Schedule():
     hourOn3_6=spin3_A_6.get()
     minOn3_6=spin3_B_6.get()
     hourOff3_6=spin3_C_6.get()
-    minOff3_6=spin3_D_6.get()                            
+    minOff3_6=spin3_D_6.get() 
+
+    tcyclefactor = float(tcyclespinbox_arr[2,5].get())
+
+
+    conv_time_on = convert_time(datetime.datetime(int(year3_6), int(month3_6), int(date3_6), int(hourOn3_6), int(minOn3_6)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year3_6), int(month3_6), int(date3_6), int(hourOff3_6), int(minOff3_6)), datetime.datetime.now(), tcyclefactor)     
+    hourOn3_6 = time_to_str(conv_time_on.hour)    
+    minOn3_6 = time_to_str( conv_time_on.minute)
+    hourOff3_6=time_to_str(conv_time_off.hour)
+    minOff3_6=time_to_str(conv_time_off.minute)
+
+
+    date3_6 = time_to_str(conv_time_on.day)
+    month3_6 = time_to_str(conv_time_on.month)
+    year3_6 = time_to_str(conv_time_on.year)
+
     if var3_6.get()==1:
         dark3_6='0'
         light3_6='0'
@@ -5693,7 +6348,23 @@ def getBox3Schedule():
     hourOn3_7=spin3_A_7.get()
     minOn3_7=spin3_B_7.get()
     hourOff3_7=spin3_C_7.get()
-    minOff3_7=spin3_D_7.get()                            
+    minOff3_7=spin3_D_7.get()   
+
+    tcyclefactor = float(tcyclespinbox_arr[2,6].get())
+
+
+
+    conv_time_on = convert_time(datetime.datetime(int(year3_7), int(month3_7), int(date3_7), int(hourOn3_7), int(minOn3_7)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year3_7), int(month3_7), int(date3_7), int(hourOff3_7), int(minOff3_7)), datetime.datetime.now(), tcyclefactor)     
+    hourOn3_7 = time_to_str(conv_time_on.hour)    
+    minOn3_7 = time_to_str( conv_time_on.minute)
+    hourOff3_7=time_to_str(conv_time_off.hour)
+    minOff3_7=time_to_str(conv_time_off.minute)
+
+    date3_7 = time_to_str(conv_time_on.day)
+    month3_7 = time_to_str(conv_time_on.month)
+    year3_7 = time_to_str(conv_time_on.year)
+
     if var3_7.get()==1:
         dark3_7='0'
         light3_7='0'
@@ -5713,7 +6384,22 @@ def getBox3Schedule():
     hourOn3_8=spin3_A_8.get()
     minOn3_8=spin3_B_8.get()
     hourOff3_8=spin3_C_8.get()
-    minOff3_8=spin3_D_8.get()                            
+    minOff3_8=spin3_D_8.get() 
+
+    tcyclefactor = float(tcyclespinbox_arr[2,7].get())
+  
+
+    conv_time_on = convert_time(datetime.datetime(int(year3_8), int(month3_8), int(date3_8), int(hourOn3_8), int(minOn3_8)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year3_8), int(month3_8), int(date3_8), int(hourOff3_8), int(minOff3_8)), datetime.datetime.now(), tcyclefactor)     
+    hourOn3_8 = time_to_str(conv_time_on.hour)    
+    minOn3_8 = time_to_str( conv_time_on.minute)
+    hourOff3_8=time_to_str(conv_time_off.hour)
+    minOff3_8=time_to_str(conv_time_off.minute)
+
+    date3_8 = time_to_str(conv_time_on.day)
+    month3_8 = time_to_str(conv_time_on.month)
+    year3_8 = time_to_str(conv_time_on.year)
+
     if var3_8.get()==1:
         dark3_8='0'
         light3_8='0'
@@ -5733,7 +6419,22 @@ def getBox3Schedule():
     hourOn3_9=spin3_A_9.get()
     minOn3_9=spin3_B_9.get()
     hourOff3_9=spin3_C_9.get()
-    minOff3_9=spin3_D_9.get()                            
+    minOff3_9=spin3_D_9.get()  
+
+    tcyclefactor = float(tcyclespinbox_arr[2,8].get())
+
+
+    conv_time_on = convert_time(datetime.datetime(int(year3_9), int(month3_9), int(date3_9), int(hourOn3_9), int(minOn3_9)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year3_9), int(month3_9), int(date3_9), int(hourOff3_9), int(minOff3_9)), datetime.datetime.now(), tcyclefactor)     
+    hourOn3_9 = time_to_str(conv_time_on.hour)    
+    minOn3_9 = time_to_str( conv_time_on.minute)
+    hourOff3_9=time_to_str(conv_time_off.hour)
+    minOff3_9=time_to_str(conv_time_off.minute)
+
+    date3_9 = time_to_str(conv_time_on.day)
+    month3_9 = time_to_str(conv_time_on.month)
+    year3_9 = time_to_str(conv_time_on.year)
+
     if var3_9.get()==1:
         dark3_9='0'
         light3_9='0'
@@ -5753,7 +6454,22 @@ def getBox3Schedule():
     hourOn3_10=spin3_A_10.get()
     minOn3_10=spin3_B_10.get()
     hourOff3_10=spin3_C_10.get()
-    minOff3_10=spin3_D_10.get()                            
+    minOff3_10=spin3_D_10.get()  
+
+    tcyclefactor = float(tcyclespinbox_arr[2,9].get())
+
+
+    conv_time_on = convert_time(datetime.datetime(int(year3_10), int(month3_10), int(date3_10), int(hourOn3_10), int(minOn3_10)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year3_10), int(month3_10), int(date3_10), int(hourOff3_10), int(minOff3_10)), datetime.datetime.now(), tcyclefactor)     
+    hourOn3_10 = time_to_str(conv_time_on.hour)    
+    minOn3_10 = time_to_str( conv_time_on.minute)
+    hourOff3_10=time_to_str(conv_time_off.hour)
+    minOff3_10=time_to_str(conv_time_off.minute)
+
+    date3_10 = time_to_str(conv_time_on.day)
+    month3_10 = time_to_str(conv_time_on.month)
+    year3_10 = time_to_str(conv_time_on.year)
+
     if var3_10.get()==1:
         dark3_10='0'
         light3_10='0'
@@ -5773,7 +6489,23 @@ def getBox3Schedule():
     hourOn3_11=spin3_A_11.get()
     minOn3_11=spin3_B_11.get()
     hourOff3_11=spin3_C_11.get()
-    minOff3_11=spin3_D_11.get()                            
+    minOff3_11=spin3_D_11.get() 
+
+    tcyclefactor = float(tcyclespinbox_arr[2,10].get())
+
+
+
+    conv_time_on = convert_time(datetime.datetime(int(year3_11), int(month3_11), int(date3_11), int(hourOn3_11), int(minOn3_11)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year3_11), int(month3_11), int(date3_11), int(hourOff3_11), int(minOff3_11)), datetime.datetime.now(), tcyclefactor)     
+    hourOn3_11 = time_to_str(conv_time_on.hour)    
+    minOn3_11 = time_to_str( conv_time_on.minute)
+    hourOff3_11=time_to_str(conv_time_off.hour)
+    minOff3_11=time_to_str(conv_time_off.minute)
+
+    date3_11 = time_to_str(conv_time_on.day)
+    month3_11 = time_to_str(conv_time_on.month)
+    year3_11 = time_to_str(conv_time_on.year)
+
     if var3_11.get()==1:
         dark3_11='0'
         light3_11='0'
@@ -5793,7 +6525,22 @@ def getBox3Schedule():
     hourOn3_12=spin3_A_12.get()
     minOn3_12=spin3_B_12.get()
     hourOff3_12=spin3_C_12.get()
-    minOff3_12=spin3_D_12.get()                            
+    minOff3_12=spin3_D_12.get()  
+
+    tcyclefactor = float(tcyclespinbox_arr[2,11].get())
+  
+
+    conv_time_on = convert_time(datetime.datetime(int(year3_12), int(month3_12), int(date3_12), int(hourOn3_12), int(minOn3_12)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year3_12), int(month3_12), int(date3_12), int(hourOff3_12), int(minOff3_12)), datetime.datetime.now(), tcyclefactor)     
+    hourOn3_12 = time_to_str(conv_time_on.hour)    
+    minOn3_12 = time_to_str( conv_time_on.minute)
+    hourOff3_12=time_to_str(conv_time_off.hour)
+    minOff3_12=time_to_str(conv_time_off.minute)
+
+    date3_12 = time_to_str(conv_time_on.day)
+    month3_12 = time_to_str(conv_time_on.month)
+    year3_12 = time_to_str(conv_time_on.year)
+
     if var3_12.get()==1:
         dark3_12='0'
         light3_12='0'
@@ -5807,8 +6554,7 @@ def getBox3Schedule():
     status.pack(side='bottom', fill='x')
     status.set('Box3 schedule is set.')
     
-    boxsched_text.set('Box3 schedule set.')
-    box3sched_text.set('Box3 schedule set.')
+    
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
         btnRun['state']='normal'
@@ -5823,7 +6569,16 @@ def getBox4Schedule():
     hourOn4_1=spin4_A_1.get()
     minOn4_1=spin4_B_1.get()
     hourOff4_1=spin4_C_1.get()
-    minOff4_1=spin4_D_1.get()                            
+    minOff4_1=spin4_D_1.get()   
+
+    tcyclefactor = float(tcyclespinbox_arr[3,0].get())
+
+    conv_time_on = convert_time(datetime.datetime(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day, int(hourOn4_1), int(minOn4_1)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day, int(hourOff4_1), int(hourOff4_1)), datetime.datetime.now(), tcyclefactor)     
+    hourOn4_1 = time_to_str(conv_time_on.hour)
+    minOn4_1 =  time_to_str(conv_time_on.minute)
+    hourOff4_1= time_to_str(conv_time_off.hour)
+    minOff4_1=  time_to_str(conv_time_off.minute)                         
     if var4_1.get()==1:
         dark4_1='0'
         light4_1='0'
@@ -5842,7 +6597,21 @@ def getBox4Schedule():
     hourOn4_2=spin4_A_2.get()
     minOn4_2=spin4_B_2.get()
     hourOff4_2=spin4_C_2.get()
-    minOff4_2=spin4_D_2.get()                            
+    minOff4_2=spin4_D_2.get()  
+
+    tcyclefactor = float(tcyclespinbox_arr[3,1].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year4_2), int(month4_2), int(date4_2), int(hourOn4_2), int(minOn4_2)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year4_2), int(month4_2), int(date4_2), int(hourOff4_2), int(minOff4_2)), datetime.datetime.now(), tcyclefactor)     
+    hourOn4_2 = time_to_str(conv_time_on.hour)    
+    minOn4_2 = time_to_str( conv_time_on.minute)
+    hourOff4_2=time_to_str(conv_time_off.hour)
+    minOff4_2=time_to_str(conv_time_off.minute)
+
+    date4_2 = time_to_str(conv_time_on.day)
+    month4_2 = time_to_str(conv_time_on.month)
+    year4_2 = time_to_str(conv_time_on.year)
+
     if var4_2.get()==1:
         dark4_2='0'
         light4_2='0'
@@ -5861,7 +6630,21 @@ def getBox4Schedule():
     hourOn4_3=spin4_A_3.get()
     minOn4_3=spin4_B_3.get()
     hourOff4_3=spin4_C_3.get()
-    minOff4_3=spin4_D_3.get()                            
+    minOff4_3=spin4_D_3.get()    
+
+    tcyclefactor = float(tcyclespinbox_arr[3,2].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year4_3), int(month4_3), int(date4_3), int(hourOn4_3), int(minOn4_3)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year4_3), int(month4_3), int(date4_3), int(hourOff4_3), int(minOff4_3)), datetime.datetime.now(), tcyclefactor)     
+    hourOn4_3 = time_to_str(conv_time_on.hour)    
+    minOn4_3 = time_to_str( conv_time_on.minute)
+    hourOff4_3=time_to_str(conv_time_off.hour)
+    minOff4_3=time_to_str(conv_time_off.minute)     
+
+    date4_3 = time_to_str(conv_time_on.day)
+    month4_3 = time_to_str(conv_time_on.month)
+    year4_3 = time_to_str(conv_time_on.year)
+
     if var4_3.get()==1:
         dark4_3='0'
         light4_3='0'
@@ -5880,7 +6663,21 @@ def getBox4Schedule():
     hourOn4_4=spin4_A_4.get()
     minOn4_4=spin4_B_4.get()
     hourOff4_4=spin4_C_4.get()
-    minOff4_4=spin4_D_4.get()                            
+    minOff4_4=spin4_D_4.get() 
+
+    tcyclefactor = float(tcyclespinbox_arr[3,3].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year4_4), int(month4_4), int(date4_4), int(hourOn4_4), int(minOn4_4)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year4_4), int(month4_4), int(date4_4), int(hourOff4_4), int(minOff4_4)), datetime.datetime.now(), tcyclefactor)     
+    hourOn4_4 = time_to_str(conv_time_on.hour)    
+    minOn4_4 = time_to_str( conv_time_on.minute)
+    hourOff4_4=time_to_str(conv_time_off.hour)
+    minOff4_4=time_to_str(conv_time_off.minute) 
+
+    date4_4 = time_to_str(conv_time_on.day)
+    month4_4 = time_to_str(conv_time_on.month)
+    year4_4 = time_to_str(conv_time_on.year)
+
     if var4_4.get()==1:
         dark4_4='0'
         light4_4='0'
@@ -5899,7 +6696,21 @@ def getBox4Schedule():
     hourOn4_5=spin4_A_5.get()
     minOn4_5=spin4_B_5.get()
     hourOff4_5=spin4_C_5.get()
-    minOff4_5=spin4_D_5.get()                            
+    minOff4_5=spin4_D_5.get()  
+
+    tcyclefactor = float(tcyclespinbox_arr[3,4].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year4_5), int(month4_5), int(date4_5), int(hourOn4_5), int(minOn4_5)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year4_5), int(month4_5), int(date4_5), int(hourOff4_5), int(minOff4_5)), datetime.datetime.now(), tcyclefactor)     
+    hourOn4_5 = time_to_str(conv_time_on.hour)    
+    minOn4_5 = time_to_str( conv_time_on.minute)
+    hourOff4_5=time_to_str(conv_time_off.hour)
+    minOff4_5=time_to_str(conv_time_off.minute) 
+
+    date4_5 = time_to_str(conv_time_on.day)
+    month4_5 = time_to_str(conv_time_on.month)
+    year4_5 = time_to_str(conv_time_on.year)
+
     if var4_5.get()==1:
         dark4_5='0'
         light4_5='0'
@@ -5919,7 +6730,21 @@ def getBox4Schedule():
     hourOn4_6=spin4_A_6.get()
     minOn4_6=spin4_B_6.get()
     hourOff4_6=spin4_C_6.get()
-    minOff4_6=spin4_D_6.get()                            
+    minOff4_6=spin4_D_6.get()  
+
+    tcyclefactor = float(tcyclespinbox_arr[3,5].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year4_6), int(month4_6), int(date4_6), int(hourOn4_6), int(minOn4_6)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year4_6), int(month4_6), int(date4_6), int(hourOff4_6), int(minOff4_6)), datetime.datetime.now(), tcyclefactor)     
+    hourOn4_6 = time_to_str(conv_time_on.hour)    
+    minOn4_6 = time_to_str( conv_time_on.minute)
+    hourOff4_6=time_to_str(conv_time_off.hour)
+    minOff4_6=time_to_str(conv_time_off.minute) 
+
+    date4_6 = time_to_str(conv_time_on.day)
+    month4_6 = time_to_str(conv_time_on.month)
+    year4_6 = time_to_str(conv_time_on.year)    
+
     if var4_6.get()==1:
         dark4_6='0'
         light4_6='0'
@@ -5939,7 +6764,21 @@ def getBox4Schedule():
     hourOn4_7=spin4_A_7.get()
     minOn4_7=spin4_B_7.get()
     hourOff4_7=spin4_C_7.get()
-    minOff4_7=spin4_D_7.get()                            
+    minOff4_7=spin4_D_7.get()  
+
+    tcyclefactor = float(tcyclespinbox_arr[3,6].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year4_7), int(month4_7), int(date4_7), int(hourOn4_7), int(minOn4_7)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year4_7), int(month4_7), int(date4_7), int(hourOff4_7), int(minOff4_7)), datetime.datetime.now(), tcyclefactor)     
+    hourOn4_7 = time_to_str(conv_time_on.hour)    
+    minOn4_7 = time_to_str( conv_time_on.minute)
+    hourOff4_7=time_to_str(conv_time_off.hour)
+    minOff4_7=time_to_str(conv_time_off.minute)  
+
+    date4_7 = time_to_str(conv_time_on.day)
+    month4_7 = time_to_str(conv_time_on.month)
+    year4_7 = time_to_str(conv_time_on.year)
+
     if var4_7.get()==1:
         dark4_7='0'
         light4_7='0'
@@ -5959,7 +6798,20 @@ def getBox4Schedule():
     hourOn4_8=spin4_A_8.get()
     minOn4_8=spin4_B_8.get()
     hourOff4_8=spin4_C_8.get()
-    minOff4_8=spin4_D_8.get()                            
+    minOff4_8=spin4_D_8.get()    
+    tcyclefactor = float(tcyclespinbox_arr[3,7].get())  
+
+    conv_time_on = convert_time(datetime.datetime(int(year4_8), int(month4_8), int(date4_8), int(hourOn4_8), int(minOn4_8)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year4_8), int(month4_8), int(date4_8), int(hourOff4_8), int(minOff4_8)), datetime.datetime.now(), tcyclefactor)     
+    hourOn4_8 = time_to_str(conv_time_on.hour)    
+    minOn4_8 = time_to_str( conv_time_on.minute)
+    hourOff4_8=time_to_str(conv_time_off.hour)
+    minOff4_8=time_to_str(conv_time_off.minute)
+
+    date4_8 = time_to_str(conv_time_on.day)
+    month4_8 = time_to_str(conv_time_on.month)
+    year4_8 = time_to_str(conv_time_on.year)
+
     if var4_8.get()==1:
         dark4_8='0'
         light4_8='0'
@@ -5979,7 +6831,20 @@ def getBox4Schedule():
     hourOn4_9=spin4_A_9.get()
     minOn4_9=spin4_B_9.get()
     hourOff4_9=spin4_C_9.get()
-    minOff4_9=spin4_D_9.get()                            
+    minOff4_9=spin4_D_9.get()  
+
+    tcyclefactor = float(tcyclespinbox_arr[3,8].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year4_9), int(month4_9), int(date4_9), int(hourOn4_9), int(minOn4_9)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year4_9), int(month4_9), int(date4_9), int(hourOff4_9), int(minOff4_9)), datetime.datetime.now(), tcyclefactor)     
+    hourOn4_9 = time_to_str(conv_time_on.hour)    
+    minOn4_9 = time_to_str( conv_time_on.minute)
+    hourOff4_9=time_to_str(conv_time_off.hour)
+    minOff4_9=time_to_str(conv_time_off.minute)     
+
+    date4_9 = time_to_str(conv_time_on.day)
+    month4_9 = time_to_str(conv_time_on.month)
+    year4_9 = time_to_str(conv_time_on.year)                     
     if var4_9.get()==1:
         dark4_9='0'
         light4_9='0'
@@ -5999,7 +6864,21 @@ def getBox4Schedule():
     hourOn4_10=spin4_A_10.get()
     minOn4_10=spin4_B_10.get()
     hourOff4_10=spin4_C_10.get()
-    minOff4_10=spin4_D_10.get()                            
+    minOff4_10=spin4_D_10.get()  
+
+    tcyclefactor = float(tcyclespinbox_arr[3,9].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year4_10), int(month4_10), int(date4_10), int(hourOn4_10), int(minOn4_10)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year4_10), int(month4_10), int(date4_10), int(hourOff4_10), int(minOff4_10)), datetime.datetime.now(), tcyclefactor)     
+    hourOn4_10 = time_to_str(conv_time_on.hour)    
+    minOn4_10 = time_to_str( conv_time_on.minute)
+    hourOff4_10=time_to_str(conv_time_off.hour)
+    minOff4_10=time_to_str(conv_time_off.minute)      
+
+    date4_10 = time_to_str(conv_time_on.day)
+    month4_10 = time_to_str(conv_time_on.month)
+    year4_10 = time_to_str(conv_time_on.year)
+
     if var4_10.get()==1:
         dark4_10='0'
         light4_10='0'
@@ -6019,7 +6898,21 @@ def getBox4Schedule():
     hourOn4_11=spin4_A_11.get()
     minOn4_11=spin4_B_11.get()
     hourOff4_11=spin4_C_11.get()
-    minOff4_11=spin4_D_11.get()                            
+    minOff4_11=spin4_D_11.get()  
+
+    tcyclefactor = float(tcyclespinbox_arr[3,10].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year4_11), int(month4_11), int(date4_11), int(hourOn4_11), int(minOn4_11)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year4_11), int(month4_11), int(date4_11), int(hourOff4_11), int(minOff4_11)), datetime.datetime.now(), tcyclefactor)     
+    hourOn4_11 = time_to_str(conv_time_on.hour)    
+    minOn4_11 = time_to_str( conv_time_on.minute)
+    hourOff4_11=time_to_str(conv_time_off.hour)
+    minOff4_11=time_to_str(conv_time_off.minute)     
+
+    date4_11 = time_to_str(conv_time_on.day)
+    month4_11 = time_to_str(conv_time_on.month)
+    year4_11 = time_to_str(conv_time_on.year)
+
     if var4_11.get()==1:
         dark4_11='0'
         light4_11='0'
@@ -6039,7 +6932,21 @@ def getBox4Schedule():
     hourOn4_12=spin4_A_12.get()
     minOn4_12=spin4_B_12.get()
     hourOff4_12=spin4_C_12.get()
-    minOff4_12=spin4_D_12.get()                            
+    minOff4_12=spin4_D_12.get() 
+
+    tcyclefactor = float(tcyclespinbox_arr[3,11].get())      
+
+    conv_time_on = convert_time(datetime.datetime(int(year4_12), int(month4_12), int(date4_12), int(hourOn4_12), int(minOn4_12)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year4_12), int(month4_12), int(date4_12), int(hourOff4_12), int(minOff4_12)), datetime.datetime.now(), tcyclefactor)     
+    hourOn4_12 = time_to_str(conv_time_on.hour)    
+    minOn4_12 = time_to_str( conv_time_on.minute)
+    hourOff4_12=time_to_str(conv_time_off.hour)
+    minOff4_12=time_to_str(conv_time_off.minute)     
+
+    date4_12 = time_to_str(conv_time_on.day)
+    month4_12 = time_to_str(conv_time_on.month)
+    year4_12 = time_to_str(conv_time_on.year)
+
     if var4_12.get()==1:
         dark4_12='0'
         light4_12='0'
@@ -6052,8 +6959,7 @@ def getBox4Schedule():
 
     status.pack(side='bottom', fill='x')
     status.set('Box4 schedule is set.')
-    boxsched_text.set('Box4 schedule set.')
-    box4sched_text.set('Box4 schedule set.')
+    
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
         btnRun['state']='normal'
@@ -6068,7 +6974,18 @@ def getBox5Schedule():
     hourOn5_1=spin5_A_1.get()
     minOn5_1=spin5_B_1.get()
     hourOff5_1=spin5_C_1.get()
-    minOff5_1=spin5_D_1.get()                            
+    minOff5_1=spin5_D_1.get()  
+
+    tcyclefactor = float(tcyclespinbox_arr[4,0].get())
+    conv_time_on = convert_time(datetime.datetime(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day, int(hourOn5_1), int(minOn5_1)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day, int(hourOff5_1), int(hourOff5_1)), datetime.datetime.now(), tcyclefactor)     
+    hourOn5_1 = time_to_str(conv_time_on.hour)
+    minOn5_1 =  time_to_str(conv_time_on.minute)
+    hourOff5_1= time_to_str(conv_time_off.hour)
+    minOff5_1=  time_to_str(conv_time_off.minute)      
+
+    
+                        
     if var5_1.get()==1:
         dark5_1='0'
         light5_1='0'
@@ -6087,7 +7004,21 @@ def getBox5Schedule():
     hourOn5_2=spin5_A_2.get()
     minOn5_2=spin5_B_2.get()
     hourOff5_2=spin5_C_2.get()
-    minOff5_2=spin5_D_2.get()                            
+    minOff5_2=spin5_D_2.get()   
+
+    tcyclefactor = float(tcyclespinbox_arr[4,1].get()) 
+
+    conv_time_on = convert_time(datetime.datetime(int(year5_2), int(month5_2), int(date5_2), int(hourOn5_2), int(minOn5_2)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year5_2), int(month5_2), int(date5_2), int(hourOff5_2), int(minOff5_2)), datetime.datetime.now(), tcyclefactor)     
+    hourOn5_2 = time_to_str(conv_time_on.hour)    
+    minOn5_2 = time_to_str( conv_time_on.minute)
+    hourOff5_2=time_to_str(conv_time_off.hour)
+    minOff5_2=time_to_str(conv_time_off.minute)
+
+    date5_2 = time_to_str(conv_time_on.day)
+    month5_2 = time_to_str(conv_time_on.month)
+    year5_2 = time_to_str(conv_time_on.year)
+
     if var5_2.get()==1:
         dark5_2='0'
         light5_2='0'
@@ -6106,7 +7037,22 @@ def getBox5Schedule():
     hourOn5_3=spin5_A_3.get()
     minOn5_3=spin5_B_3.get()
     hourOff5_3=spin5_C_3.get()
-    minOff5_3=spin5_D_3.get()                            
+    minOff5_3=spin5_D_3.get()   
+
+    tcyclefactor = float(tcyclespinbox_arr[4,2].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year5_3), int(month5_3), int(date5_3), int(hourOn5_3), int(minOn5_3)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year5_3), int(month5_3), int(date5_3), int(hourOff5_3), int(minOff5_3)), datetime.datetime.now(), tcyclefactor)     
+    hourOn5_3 = time_to_str(conv_time_on.hour)    
+    minOn5_3 = time_to_str( conv_time_on.minute)
+    hourOff5_3=time_to_str(conv_time_off.hour)
+    minOff5_3=time_to_str(conv_time_off.minute)     
+
+
+    date5_3 = time_to_str(conv_time_on.day)
+    month5_3 = time_to_str(conv_time_on.month)
+    year5_3 = time_to_str(conv_time_on.year)
+
     if var5_3.get()==1:
         dark5_3='0'
         light5_3='0'
@@ -6125,7 +7071,21 @@ def getBox5Schedule():
     hourOn5_4=spin5_A_4.get()
     minOn5_4=spin5_B_4.get()
     hourOff5_4=spin5_C_4.get()
-    minOff5_4=spin5_D_4.get()                            
+    minOff5_4=spin5_D_4.get()    
+
+    tcyclefactor = float(tcyclespinbox_arr[4,3].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year5_4), int(month5_4), int(date5_4), int(hourOn5_4), int(minOn5_4)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year5_4), int(month5_4), int(date5_4), int(hourOff5_4), int(minOff5_4)), datetime.datetime.now(), tcyclefactor)     
+    hourOn5_4 = time_to_str(conv_time_on.hour)    
+    minOn5_4 = time_to_str( conv_time_on.minute)
+    hourOff5_4=time_to_str(conv_time_off.hour)
+    minOff5_4=time_to_str(conv_time_off.minute)     
+
+    date5_4 = time_to_str(conv_time_on.day)
+    month5_4 = time_to_str(conv_time_on.month)
+    year5_4 = time_to_str(conv_time_on.year)
+
     if var5_4.get()==1:
         dark5_4='0'
         light5_4='0'
@@ -6144,7 +7104,21 @@ def getBox5Schedule():
     hourOn5_5=spin5_A_5.get()
     minOn5_5=spin5_B_5.get()
     hourOff5_5=spin5_C_5.get()
-    minOff5_5=spin5_D_5.get()                            
+    minOff5_5=spin5_D_5.get()
+
+    tcyclefactor = float(tcyclespinbox_arr[4,4].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year5_5), int(month5_5), int(date5_5), int(hourOn5_5), int(minOn5_5)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year5_5), int(month5_5), int(date5_5), int(hourOff5_5), int(minOff5_5)), datetime.datetime.now(), tcyclefactor)     
+    hourOn5_5 = time_to_str(conv_time_on.hour)    
+    minOn5_5 = time_to_str( conv_time_on.minute)
+    hourOff5_5=time_to_str(conv_time_off.hour)
+    minOff5_5=time_to_str(conv_time_off.minute)     
+
+    date5_5 = time_to_str(conv_time_on.day)
+    month5_5 = time_to_str(conv_time_on.month)
+    year5_5 = time_to_str(conv_time_on.year)
+
     if var5_5.get()==1:
         dark5_5='0'
         light5_5='0'
@@ -6164,7 +7138,22 @@ def getBox5Schedule():
     hourOn5_6=spin5_A_6.get()
     minOn5_6=spin5_B_6.get()
     hourOff5_6=spin5_C_6.get()
-    minOff5_6=spin5_D_6.get()                            
+    minOff5_6=spin5_D_6.get()     
+
+    tcyclefactor = float(tcyclespinbox_arr[4,5].get())
+
+
+
+    conv_time_on = convert_time(datetime.datetime(int(year5_6), int(month5_6), int(date5_6), int(hourOn5_6), int(minOn5_6)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year5_6), int(month5_6), int(date5_6), int(hourOff5_6), int(minOff5_6)), datetime.datetime.now(), tcyclefactor)     
+    hourOn5_6 = time_to_str(conv_time_on.hour)    
+    minOn5_6 = time_to_str( conv_time_on.minute)
+    hourOff5_6=time_to_str(conv_time_off.hour)
+    minOff5_6=time_to_str(conv_time_off.minute)        
+
+    date5_6 = time_to_str(conv_time_on.day)
+    month5_6 = time_to_str(conv_time_on.month)
+    year5_6 = time_to_str(conv_time_on.year)             
     if var5_6.get()==1:
         dark5_6='0'
         light5_6='0'
@@ -6184,7 +7173,21 @@ def getBox5Schedule():
     hourOn5_7=spin5_A_7.get()
     minOn5_7=spin5_B_7.get()
     hourOff5_7=spin5_C_7.get()
-    minOff5_7=spin5_D_7.get()                            
+    minOff5_7=spin5_D_7.get()     
+
+    tcyclefactor = float(tcyclespinbox_arr[4,6].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year5_7), int(month5_7), int(date5_7), int(hourOn5_7), int(minOn5_7)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year5_7), int(month5_7), int(date5_7), int(hourOff5_7), int(minOff5_7)), datetime.datetime.now(), tcyclefactor)     
+    hourOn5_7 = time_to_str(conv_time_on.hour)    
+    minOn5_7 = time_to_str( conv_time_on.minute)
+    hourOff5_7=time_to_str(conv_time_off.hour)
+    minOff5_7=time_to_str(conv_time_off.minute)     
+
+    date5_7 = time_to_str(conv_time_on.day)
+    month5_7 = time_to_str(conv_time_on.month)
+    year5_7 = time_to_str(conv_time_on.year)
+
     if var5_7.get()==1:
         dark5_7='0'
         light5_7='0'
@@ -6204,7 +7207,21 @@ def getBox5Schedule():
     hourOn5_8=spin5_A_8.get()
     minOn5_8=spin5_B_8.get()
     hourOff5_8=spin5_C_8.get()
-    minOff5_8=spin5_D_8.get()                            
+    minOff5_8=spin5_D_8.get()    
+
+    tcyclefactor = float(tcyclespinbox_arr[4,7].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year5_8), int(month5_8), int(date5_8), int(hourOn5_8), int(minOn5_8)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year5_8), int(month5_8), int(date5_8), int(hourOff5_8), int(minOff5_8)), datetime.datetime.now(), tcyclefactor)     
+    hourOn5_8 = time_to_str(conv_time_on.hour)    
+    minOn5_8 = time_to_str( conv_time_on.minute)
+    hourOff5_8=time_to_str(conv_time_off.hour)
+    minOff5_8=time_to_str(conv_time_off.minute)     
+
+    date5_8 = time_to_str(conv_time_on.day)
+    month5_8 = time_to_str(conv_time_on.month)
+    year5_8 = time_to_str(conv_time_on.year)
+
     if var5_8.get()==1:
         dark5_8='0'
         light5_8='0'
@@ -6224,7 +7241,21 @@ def getBox5Schedule():
     hourOn5_9=spin5_A_9.get()
     minOn5_9=spin5_B_9.get()
     hourOff5_9=spin5_C_9.get()
-    minOff5_9=spin5_D_9.get()                            
+    minOff5_9=spin5_D_9.get()   
+
+    tcyclefactor = float(tcyclespinbox_arr[4,8].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year5_9), int(month5_9), int(date5_9), int(hourOn5_9), int(minOn5_9)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year5_9), int(month5_9), int(date5_9), int(hourOff5_9), int(minOff5_9)), datetime.datetime.now(), tcyclefactor)     
+    hourOn5_9 = time_to_str(conv_time_on.hour)    
+    minOn5_9 = time_to_str( conv_time_on.minute)
+    hourOff5_9=time_to_str(conv_time_off.hour)
+    minOff5_9=time_to_str(conv_time_off.minute)    
+
+    date5_9 = time_to_str(conv_time_on.day)
+    month5_9 = time_to_str(conv_time_on.month)
+    year5_9 = time_to_str(conv_time_on.year)
+
     if var5_9.get()==1:
         dark5_9='0'
         light5_9='0'
@@ -6244,7 +7275,21 @@ def getBox5Schedule():
     hourOn5_10=spin5_A_10.get()
     minOn5_10=spin5_B_10.get()
     hourOff5_10=spin5_C_10.get()
-    minOff5_10=spin5_D_10.get()                            
+    minOff5_10=spin5_D_10.get()   
+
+    tcyclefactor = float(tcyclespinbox_arr[4,9].get())  
+
+    conv_time_on = convert_time(datetime.datetime(int(year5_10), int(month5_10), int(date5_10), int(hourOn5_10), int(minOn5_10)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year5_10), int(month5_10), int(date5_10), int(hourOff5_10), int(minOff5_10)), datetime.datetime.now(), tcyclefactor)     
+    hourOn5_10 = time_to_str(conv_time_on.hour)    
+    minOn5_10 = time_to_str( conv_time_on.minute)
+    hourOff5_10=time_to_str(conv_time_off.hour)
+    minOff5_10=time_to_str(conv_time_off.minute)          
+
+    date5_10 = time_to_str(conv_time_on.day)
+    month5_10 = time_to_str(conv_time_on.month)
+    year5_10 = time_to_str(conv_time_on.year)
+
     if var5_10.get()==1:
         dark5_10='0'
         light5_10='0'
@@ -6264,7 +7309,21 @@ def getBox5Schedule():
     hourOn5_11=spin5_A_11.get()
     minOn5_11=spin5_B_11.get()
     hourOff5_11=spin5_C_11.get()
-    minOff5_11=spin5_D_11.get()                            
+    minOff5_11=spin5_D_11.get()    
+
+    tcyclefactor = float(tcyclespinbox_arr[4,10].get())
+
+    conv_time_on = convert_time(datetime.datetime(int(year5_11), int(month5_11), int(date5_11), int(hourOn5_11), int(minOn5_11)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year5_11), int(month5_11), int(date5_11), int(hourOff5_11), int(minOff5_11)), datetime.datetime.now(), tcyclefactor)     
+    hourOn5_11 = time_to_str(conv_time_on.hour)    
+    minOn5_11 = time_to_str( conv_time_on.minute)
+    hourOff5_11=time_to_str(conv_time_off.hour)
+    minOff5_11=time_to_str(conv_time_off.minute)     
+
+    date5_11 = time_to_str(conv_time_on.day)
+    month5_11 = time_to_str(conv_time_on.month)
+    year5_11 = time_to_str(conv_time_on.year)
+
     if var5_11.get()==1:
         dark5_11='0'
         light5_11='0'
@@ -6284,7 +7343,19 @@ def getBox5Schedule():
     hourOn5_12=spin5_A_12.get()
     minOn5_12=spin5_B_12.get()
     hourOff5_12=spin5_C_12.get()
-    minOff5_12=spin5_D_12.get()                            
+    minOff5_12=spin5_D_12.get()        
+    tcyclefactor = float(tcyclespinbox_arr[4,11].get()) 
+
+    conv_time_on = convert_time(datetime.datetime(int(year5_12), int(month5_12), int(date5_12), int(hourOn5_12), int(minOn5_12)), datetime.datetime.now(), tcyclefactor)
+    conv_time_off =  convert_time(datetime.datetime(int(year5_12), int(month5_12), int(date5_12), int(hourOff5_12), int(minOff5_12)), datetime.datetime.now(), tcyclefactor)     
+    hourOn5_12 = time_to_str(conv_time_on.hour)    
+    minOn5_12 = time_to_str( conv_time_on.minute)
+    hourOff5_12=time_to_str(conv_time_off.hour)
+    minOff5_12=time_to_str(conv_time_off.minute)        
+
+    date5_12 = time_to_str(conv_time_on.day)
+    month5_12 = time_to_str(conv_time_on.month)
+    year5_12 = time_to_str(conv_time_on.year)           
    
     dark5_12, light5_12 = getDarkLightValue(var5_12)
 
@@ -6294,8 +7365,7 @@ def getBox5Schedule():
 
     status.pack(side='bottom', fill='x')
     status.set('Box5 schedule is set.')
-    boxsched_text.set('Box5 schedule set.')
-    box5sched_text.set('Box5 schedule set.')
+    
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
         btnRun['state']='normal'
@@ -6305,19 +7375,49 @@ def getBox5Schedule():
 
 
 def getAllBoxSchedule(): 
+
+    global value_mat, phase_delimiters, tcyclefactor
+    global initLED1, initLED2, initLED3, initLED4 , initLED5
+
+    tcyclefactor = float(tcyclelength.get())
+
     getBox1Schedule()
     getBox2Schedule()
     getBox3Schedule()
     getBox4Schedule()
     getBox5Schedule()
 
-    boxsched_text.set('All schedules set.')
+    
+    # initLED1 = str(initLED1.get())
+    # initLED2 = str(initLED2.get())
+    # initLED3 = str(initLED3.get())
+    # initLED4 = str(initLED4.get())
+    # initLED5 = str(initLED5.get())
 
-    value_mat = [hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, dark1_1, light1_1, 0,0,0, 0, 0,
-    hourOn2_1, minOn2_1, hourOff2_1, minOff2_1, dark2_1, light2_1, 0,0,0, 0, 0,
-    hourOn3_1, minOn3_1, hourOff3_1, minOff3_1, dark3_1, light3_1,0,0,0, 0, 0,
-    hourOn4_1, minOn4_1, hourOff4_1, minOff4_1, dark4_1, light4_1,0,0,0, 0, 0,
-    hourOn5_1, minOn5_1, hourOff5_1, minOff5_1, dark5_1, light5_1, 0,0,0, 0, 0,
+    today=datetime.date.today()
+    day = today.day
+    thismonth = today.month
+    thisyear = today.year
+    thishour = datetime.datetime.now().hour
+    thismin = datetime.datetime.now().minute
+    date_p2 = datetime.datetime(int(year1_2), int(month1_2), int(date1_2), int(hourFrom1_2), int(minuteFrom1_2))
+    date_p3 = datetime.datetime(int(year1_3), int(month1_3), int(date1_3), int(hourFrom1_3), int(minuteFrom1_3))
+    date_p4 = datetime.datetime(int(year1_4), int(month1_4), int(date1_4), int(hourFrom1_4), int(minuteFrom1_4))
+    date_p5 = datetime.datetime(int(year1_5), int(month1_5), int(date1_5), int(hourFrom1_5), int(minuteFrom1_5))
+    date_p6 = datetime.datetime(int(year1_6), int(month1_6), int(date1_6), int(hourFrom1_6), int(minuteFrom1_6))
+    date_p7 = datetime.datetime(int(year1_7), int(month1_7), int(date1_7), int(hourFrom1_7), int(minuteFrom1_7))
+    date_p8 = datetime.datetime(int(year1_8), int(month1_8), int(date1_8), int(hourFrom1_8), int(minuteFrom1_8))
+    date_p9 = datetime.datetime(int(year1_9), int(month1_9), int(date1_9), int(hourFrom1_9), int(minuteFrom1_9))
+    date_p10 = datetime.datetime(int(year1_10), int(month1_10), int(date1_10), int(hourFrom1_10), int(minuteFrom1_10))
+    date_p11 = datetime.datetime(int(year1_11), int(month1_11), int(date1_11), int(hourFrom1_11), int(minuteFrom1_11))
+    date_p12 = datetime.datetime(int(year1_12), int(month1_12), int(date1_12), int(hourFrom1_12), int(minuteFrom1_12))
+    phase_delimiters = [datetime.datetime.now(), date_p2, date_p3, date_p4, date_p5, date_p6, date_p7, date_p8, date_p9, date_p10, date_p11, date_p12 ]
+
+    value_mat = [hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, dark1_1, light1_1, day,thismonth, thisyear, thishour, thismin,
+    hourOn2_1, minOn2_1, hourOff2_1, minOff2_1, dark2_1, light2_1, day,thismonth, thisyear, thishour, thismin,
+    hourOn3_1, minOn3_1, hourOff3_1, minOff3_1, dark3_1, light3_1,day,thismonth, thisyear, thishour, thismin,
+    hourOn4_1, minOn4_1, hourOff4_1, minOff4_1, dark4_1, light4_1,day,thismonth, thisyear, thishour, thismin,
+    hourOn5_1, minOn5_1, hourOff5_1, minOff5_1, dark5_1, light5_1, day,thismonth, thisyear, thishour, thismin,
     hourOn1_2, minOn1_2, hourOff1_2, minOff1_2, dark1_2, light1_2, date1_2, month1_2, year1_2, hourFrom1_2, minuteFrom1_2,
     hourOn2_2, minOn2_2, hourOff2_2, minOff2_2, dark2_2, light2_2, date2_2, month2_2, year2_2, hourFrom2_2, minuteFrom2_2,
     hourOn3_2, minOn3_2, hourOff3_2, minOff3_2, dark3_2, light3_2, date3_2, month3_2, year3_2, hourFrom3_2, minuteFrom3_2,
@@ -6374,12 +7474,15 @@ def getAllBoxSchedule():
     hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12,
     hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12]
 
+    
 
 
     value_mat = np.asarray(value_mat)
-
     
     value_mat = value_mat.reshape(5,12,11)
+
+    #np.save("value_mat.npy", value_mat)
+
     
     
    
@@ -6531,7 +7634,163 @@ def copyBoxn(n, input_mat):
     for phase_ind in range(1,12):
         temp_savedBoxSchedule.addPhase(*input_mat[n, phase_ind])
 
+def change_time_display():
 
+    #doesn't accept fractions, have to transform fraction into minutes so that people choose the whole day
+    #should I recalculate the length of an hour?
+    global tcyclefactor, tcyclelength
+
+   
+    
+    spin1_A_1.config(to=float(tcyclespinbox_arr[0,0].get()))
+    spin1_A_2.config(to=float(tcyclespinbox_arr[0,1].get()))
+    spin1_A_3.config(to=float(tcyclespinbox_arr[0,2].get()))
+    spin1_A_4.config(to=float(tcyclespinbox_arr[0,3].get()))
+    spin1_A_5.config(to=float(tcyclespinbox_arr[0,4].get()))
+    spin1_A_6.config(to=float(tcyclespinbox_arr[0,5].get()))
+    spin1_A_7.config(to=float(tcyclespinbox_arr[0,6].get()))
+    spin1_A_8.config(to=float(tcyclespinbox_arr[0,7].get()))
+    spin1_A_9.config(to=float(tcyclespinbox_arr[0,8].get()))
+    spin1_A_10.config(to=float(tcyclespinbox_arr[0,9].get()))
+    spin1_A_11.config(to=float(tcyclespinbox_arr[0,10].get()))
+    spin1_A_12.config(to=float(tcyclespinbox_arr[0,11].get()))
+
+    spin1_C_1.config(to=float(tcyclespinbox_arr[0,0].get()))
+    spin1_C_2.config(to=float(tcyclespinbox_arr[0,1].get()))
+    spin1_C_3.config(to=float(tcyclespinbox_arr[0,2].get()))
+    spin1_C_4.config(to=float(tcyclespinbox_arr[0,3].get()))
+    spin1_C_5.config(to=float(tcyclespinbox_arr[0,4].get()))
+    spin1_C_6.config(to=float(tcyclespinbox_arr[0,5].get()))
+    spin1_C_7.config(to=float(tcyclespinbox_arr[0,6].get()))
+    spin1_C_8.config(to=float(tcyclespinbox_arr[0,7].get()))
+    spin1_C_9.config(to=float(tcyclespinbox_arr[0,8].get()))
+    spin1_C_10.config(to=float(tcyclespinbox_arr[0,9].get()))
+    spin1_C_11.config(to=float(tcyclespinbox_arr[0,10].get()))
+    spin1_C_12.config(to=float(tcyclespinbox_arr[0,11].get()))
+
+
+    #box2
+
+    spin2_A_1.config(to=float(tcyclespinbox_arr[1,0].get()))
+    spin2_A_2.config(to=float(tcyclespinbox_arr[1,1].get()))
+    spin2_A_3.config(to=float(tcyclespinbox_arr[1,2].get()))
+    spin2_A_4.config(to=float(tcyclespinbox_arr[1,3].get()))
+    spin2_A_5.config(to=float(tcyclespinbox_arr[1,4].get()))
+    spin2_A_6.config(to=float(tcyclespinbox_arr[1,5].get()))
+    spin2_A_7.config(to=float(tcyclespinbox_arr[1,6].get()))
+    spin2_A_8.config(to=float(tcyclespinbox_arr[1,7].get()))
+    spin2_A_9.config(to=float(tcyclespinbox_arr[1,8].get()))
+    spin2_A_10.config(to=float(tcyclespinbox_arr[0,9].get()))
+    spin2_A_11.config(to=float(tcyclespinbox_arr[0,10].get()))
+    spin2_A_12.config(to=float(tcyclespinbox_arr[0,11].get()))
+    spin2_C_1.config(to=float(tcyclespinbox_arr[1,0].get()))
+    spin2_C_2.config(to=float(tcyclespinbox_arr[1,1].get()))
+    spin2_C_3.config(to=float(tcyclespinbox_arr[1,2].get()))
+    spin2_C_4.config(to=float(tcyclespinbox_arr[1,3].get()))
+    spin2_C_5.config(to=float(tcyclespinbox_arr[1,4].get()))
+    spin2_C_6.config(to=float(tcyclespinbox_arr[1,5].get()))
+    spin2_C_7.config(to=float(tcyclespinbox_arr[1,6].get()))
+    spin2_C_8.config(to=float(tcyclespinbox_arr[1,7].get()))
+    spin2_C_9.config(to=float(tcyclespinbox_arr[1,8].get()))
+    spin2_C_10.config(to=float(tcyclespinbox_arr[1,9].get()))
+    spin2_C_11.config(to=float(tcyclespinbox_arr[1,10].get()))
+    spin2_C_12.config(to=float(tcyclespinbox_arr[1,11].get()))
+
+
+    
+
+    #box3
+
+    spin3_A_1.config(to=float(tcyclespinbox_arr[2,0].get()))
+    spin3_A_2.config(to=float(tcyclespinbox_arr[2,1].get()))
+    spin3_A_3.config(to=float(tcyclespinbox_arr[2,2].get()))
+    spin3_A_4.config(to=float(tcyclespinbox_arr[2,3].get()))
+    spin3_A_5.config(to=float(tcyclespinbox_arr[2,4].get()))
+    spin3_A_6.config(to=float(tcyclespinbox_arr[2,5].get()))
+    spin3_A_7.config(to=float(tcyclespinbox_arr[2,6].get()))
+    spin3_A_8.config(to=float(tcyclespinbox_arr[2,7].get()))
+    spin3_A_9.config(to=float(tcyclespinbox_arr[2,8].get()))
+    spin3_A_10.config(to=float(tcyclespinbox_arr[2,9].get()))
+    spin3_A_11.config(to=float(tcyclespinbox_arr[2,10].get()))
+    spin3_A_12.config(to=float(tcyclespinbox_arr[2,11].get()))
+    spin3_C_1.config(to=float(tcyclespinbox_arr[2,0].get()))
+    spin3_C_2.config(to=float(tcyclespinbox_arr[2,1].get()))
+    spin3_C_3.config(to=float(tcyclespinbox_arr[2,2].get()))
+    spin3_C_4.config(to=float(tcyclespinbox_arr[2,3].get()))
+    spin3_C_5.config(to=float(tcyclespinbox_arr[2,4].get()))
+    spin3_C_6.config(to=float(tcyclespinbox_arr[2,5].get()))
+    spin3_C_7.config(to=float(tcyclespinbox_arr[2,6].get()))
+    spin3_C_8.config(to=float(tcyclespinbox_arr[2,7].get()))
+    spin3_C_9.config(to=float(tcyclespinbox_arr[2,8].get()))
+    spin3_C_10.config(to=float(tcyclespinbox_arr[2,9].get()))
+    spin3_C_11.config(to=float(tcyclespinbox_arr[2,10].get()))
+    spin3_C_12.config(to=float(tcyclespinbox_arr[2,11].get()))
+
+
+   
+
+    #box4
+
+    spin4_A_1.config(to=float(tcyclespinbox_arr[3,0].get()))
+    spin4_A_2.config(to=float(tcyclespinbox_arr[3,1].get()))
+    spin4_A_3.config(to=float(tcyclespinbox_arr[3,2].get()))
+    spin4_A_4.config(to=float(tcyclespinbox_arr[3,3].get()))
+    spin4_A_5.config(to=float(tcyclespinbox_arr[3,4].get()))
+    spin4_A_6.config(to=float(tcyclespinbox_arr[3,5].get()))
+    spin4_A_7.config(to=float(tcyclespinbox_arr[3,6].get()))
+    spin4_A_8.config(to=float(tcyclespinbox_arr[3,7].get()))
+    spin4_A_9.config(to=float(tcyclespinbox_arr[3,8].get()))
+    spin4_A_10.config(to=float(tcyclespinbox_arr[3,9].get()))
+    spin4_A_11.config(to=float(tcyclespinbox_arr[3,10].get()))
+    spin4_A_12.config(to=float(tcyclespinbox_arr[3,11].get()))
+    spin4_C_1.config(to=float(tcyclespinbox_arr[3,0].get()))
+    spin4_C_2.config(to=float(tcyclespinbox_arr[3,1].get()))
+    spin4_C_3.config(to=float(tcyclespinbox_arr[3,2].get()))
+    spin4_C_4.config(to=float(tcyclespinbox_arr[3,3].get()))
+    spin4_C_5.config(to=float(tcyclespinbox_arr[3,4].get()))
+    spin4_C_6.config(to=float(tcyclespinbox_arr[3,5].get()))
+    spin4_C_7.config(to=float(tcyclespinbox_arr[3,6].get()))
+    spin4_C_8.config(to=float(tcyclespinbox_arr[3,7].get()))
+    spin4_C_9.config(to=float(tcyclespinbox_arr[3,8].get()))
+    spin4_C_10.config(to=float(tcyclespinbox_arr[3,9].get()))
+    spin4_C_11.config(to=float(tcyclespinbox_arr[3,10].get()))
+    spin4_C_12.config(to=float(tcyclespinbox_arr[3,11].get()))
+
+
+
+   
+
+    #box5
+
+    spin5_A_1.config(to=float(tcyclespinbox_arr[4,0].get()))
+    spin5_A_2.config(to=float(tcyclespinbox_arr[4,1].get()))
+    spin5_A_3.config(to=float(tcyclespinbox_arr[4,2].get()))
+    spin5_A_4.config(to=float(tcyclespinbox_arr[4,3].get()))
+    spin5_A_5.config(to=float(tcyclespinbox_arr[4,4].get()))
+    spin5_A_6.config(to=float(tcyclespinbox_arr[4,5].get()))
+    spin5_A_7.config(to=float(tcyclespinbox_arr[4,6].get()))
+    spin5_A_8.config(to=float(tcyclespinbox_arr[4,7].get()))
+    spin5_A_9.config(to=float(tcyclespinbox_arr[4,8].get()))
+    spin5_A_10.config(to=float(tcyclespinbox_arr[4,9].get()))
+    spin5_A_11.config(to=float(tcyclespinbox_arr[4,10].get()))
+    spin5_A_12.config(to=float(tcyclespinbox_arr[4,11].get()))
+    spin5_C_1.config(to=float(tcyclespinbox_arr[4,0].get()))
+    spin5_C_2.config(to=float(tcyclespinbox_arr[4,1].get()))
+    spin5_C_3.config(to=float(tcyclespinbox_arr[4,2].get()))
+    spin5_C_4.config(to=float(tcyclespinbox_arr[4,3].get()))
+    spin5_C_5.config(to=float(tcyclespinbox_arr[4,4].get()))
+    spin5_C_6.config(to=float(tcyclespinbox_arr[4,5].get()))
+    spin5_C_7.config(to=float(tcyclespinbox_arr[4,6].get()))
+    spin5_C_8.config(to=float(tcyclespinbox_arr[4,7].get()))
+    spin5_C_9.config(to=float(tcyclespinbox_arr[4,8].get()))
+    spin5_C_10.config(to=float(tcyclespinbox_arr[4,9].get()))
+    spin5_C_11.config(to=float(tcyclespinbox_arr[4,10].get()))
+    spin5_C_12.config(to=float(tcyclespinbox_arr[4,11].get()))
+
+    
+
+
+#START MAIN
 
 
 if __name__ == '__main__':
@@ -6540,6 +7799,8 @@ if __name__ == '__main__':
     # 
     global value_mat, input_mat, log_mat      
     menu = Menu(window) #define menu    
+    tcyclefactor =24
+  
 
     # Define Var to keep track of the schedule
                                     #1 for LD
@@ -6620,6 +7881,7 @@ if __name__ == '__main__':
     var5_12 = IntVar(value=1)
 
     log_mat =np.empty((120,12), dtype="<U10")
+    tcyclespinbox_arr =  np.empty((5,12), dtype= object)
     
     #Create file menu
     filemenu = Menu(menu)
@@ -6647,7 +7909,7 @@ if __name__ == '__main__':
     menu.add_cascade(label='Help', menu=aboutmenu)
     window.config(menu=menu)
     #Window 900x550
-    f1 = tk.Frame(window,  width=900,height=270)
+    f1 = tk.Frame(window,  width=900,height=160)
     f2 = tk.Frame(window,  width=900, height=250)
     f3 = tk.Frame(window, width=900, height=70)
     canvas_status = Canvas(f2, width=900, height=250)
@@ -6686,7 +7948,7 @@ if __name__ == '__main__':
 
     #tab1
 
-    canvas1 = Canvas(ParentFrame1, width=850, height=300, scrollregion=(0,0,850,300)) #, highlightbackground="red", highlightthickness=2
+    canvas1 = Canvas(ParentFrame1, width=850, height=150, scrollregion=(0,0,850,300)) #, highlightbackground="red", highlightthickness=2
     scroll1 = Scrollbar(ParentFrame1, orient=VERTICAL, command=canvas1.yview)
     scrollx1 = Scrollbar(ParentFrame1, orient=HORIZONTAL, command=canvas1.xview)
     scrollx1.grid(row=1, column=0, sticky=tk.EW)    
@@ -6697,17 +7959,17 @@ if __name__ == '__main__':
     # canvas1.pack(side=LEFT,expand=True,fill=BOTH)
     canvas1.config(yscrollcommand=scroll1.set, xscrollcommand=scrollx1.set)
     
-    tab1 = Frame(canvas1, width=200, height=300)#, highlightbackground="black", highlightthickness=1
+    tab1 = Frame(canvas1, width=200, height=150)#, highlightbackground="black", highlightthickness=1
     tab1.bind(
     "<Configure>",
     lambda e: canvas1.configure(
         scrollregion=canvas1.bbox("all")
         )
     )
-    canvas1.create_window(400, 175, window=tab1)
+    canvas1.create_window(400, 155, window=tab1)
 
 #tab2
-    canvas2 = Canvas(ParentFrame2, width=850, height=300)
+    canvas2 = Canvas(ParentFrame2, width=850, height=150)
     canvas2.grid(row=0, column=0)
     scroll2 = Scrollbar(ParentFrame2, orient=VERTICAL, command=canvas2.yview)
     
@@ -6718,7 +7980,7 @@ if __name__ == '__main__':
     # scrollx2.pack(expand=1, fill=X, side=BOTTOM)
     # scroll2.pack(side = RIGHT, fill = Y, expand=1)
     # canvas2.pack(side=LEFT,expand=True,fill=BOTH)
-    tab2 = Frame(canvas2, width=200, height=300)
+    tab2 = Frame(canvas2, width=200, height=150)
     tab2.bind(
     "<Configure>",
     lambda e: canvas2.configure(
@@ -6729,7 +7991,7 @@ if __name__ == '__main__':
     canvas2.create_window(400, 175, window=tab2)
 
 #tab3
-    canvas3 = Canvas(ParentFrame3, width=850, height=300)
+    canvas3 = Canvas(ParentFrame3, width=850, height=150)
     scroll3 = Scrollbar(ParentFrame3, orient=VERTICAL, command=canvas3.yview)
     canvas3.grid(row=0, column=0)
     scroll3.grid(row=0, column=1, sticky='ns')
@@ -6739,7 +8001,7 @@ if __name__ == '__main__':
     # canvas3.pack(side=LEFT,expand=True,fill=BOTH)
     scrollx3.grid(row=1, column=0, sticky='ew')
     canvas3.config(yscrollcommand=scroll3.set, xscrollcommand=scrollx3.set)
-    tab3 = Frame(canvas3, width=200, height=300)
+    tab3 = Frame(canvas3, width=200, height=150)
     tab3.bind(
     "<Configure>",
     lambda e: canvas3.configure(
@@ -6750,7 +8012,7 @@ if __name__ == '__main__':
 
 
 #tab 4 
-    canvas4 = Canvas(ParentFrame4, width=850, height=300)
+    canvas4 = Canvas(ParentFrame4, width=850, height=150)
     scroll4 = Scrollbar(ParentFrame4, orient=VERTICAL, command=canvas4.yview)
     canvas4.grid(row=0, column=0)
     scroll4.grid(row=0, column=1, sticky='ns')
@@ -6760,7 +8022,7 @@ if __name__ == '__main__':
     #scrollx4.pack(expand=1, fill=X, side=BOTTOM)
     #scroll4.pack(side = RIGHT, fill = Y, expand=1)
     #canvas4.pack(side=LEFT,expand=True,fill=BOTH)
-    tab4 = Frame(canvas4, width=200, height=300)
+    tab4 = Frame(canvas4, width=200, height=150)
     tab4.bind(
     "<Configure>",
     lambda e: canvas4.configure(
@@ -6771,7 +8033,7 @@ if __name__ == '__main__':
 
 
 #tab 5
-    canvas5 = Canvas(ParentFrame5, width=850, height=300)
+    canvas5 = Canvas(ParentFrame5, width=850, height=150)
     scroll5 = Scrollbar(ParentFrame5, orient=VERTICAL, command=canvas5.yview)
     canvas5.grid(row=0, column=0)
     scroll5.grid(row=0, column=1, sticky='ns')
@@ -6781,7 +8043,7 @@ if __name__ == '__main__':
     # scroll5.pack(side = RIGHT, fill = Y, expand=1)
     # canvas5.pack(side=LEFT,expand=True,fill=BOTH)
     canvas5.config(yscrollcommand=scroll5.set, xscrollcommand=scrollx5.set)
-    tab5 = Frame(canvas5, width=200, height=300)
+    tab5 = Frame(canvas5, width=200, height=150)
     tab5.bind(
     "<Configure>",
     lambda e: canvas5.configure(
@@ -6790,14 +8052,14 @@ if __name__ == '__main__':
     )
     canvas5.create_window(400, 175, window=tab5)
     
-    canvas11 = Canvas(ParentFrame11, width=850, height=300) #, highlightbackground="red", highlightthickness=2
+    canvas11 = Canvas(ParentFrame11, width=850, height=150) #, highlightbackground="red", highlightthickness=2
     scroll11 = Scrollbar(ParentFrame11, orient=HORIZONTAL, command=canvas11.xview)
     canvas11.grid(row=0, column=0)
     scroll11.grid(row=1, column=0, sticky='ew')
     
    
     canvas11.config(xscrollcommand=scroll11.set )
-    tab11 = Frame(canvas11, width=200, height=300)#, highlightbackground="black", highlightthickness=1
+    tab11 = Frame(canvas11, width=200, height=150)#, highlightbackground="black", highlightthickness=1
     tab11.bind(
     "<Configure>",
     lambda e: canvas11.configure(
@@ -6822,6 +8084,16 @@ if __name__ == '__main__':
     yupperbtns = 2
     ymidbtns = 30
     ylowerbtns = 60
+
+    #tcycle
+    # Label(f3,text =  'T-cycle length').place(x = 40, y = 0)
+    # tcyclelength = Spinbox(f3, width=5)
+    # tcyclelength.place(x = 150, y = 0)
+    # tcyclelength.delete(0,'end')
+    # tcyclelength.insert(0,24)
+
+    tcyclebtn = Button(f3, text=' Set cycle', command=change_time_display)
+    tcyclebtn.place(x = 40, y = 0)
 
     #Entry for Port, Baud, timeout, filename to save
     Label(f3,text =  'Schedule').place(x = 363, y = yupperbtns)
@@ -6852,47 +8124,71 @@ if __name__ == '__main__':
     configfilename_entry.insert(0,'BOX1-5-sched-'+date_string+'.json')
 
     #SHOW STATUS
-    tab1_title2 = Label(f2, text= 'Recording status', anchor='center')    
-    boxsched_text=StringVar()
-    boxsched_text.set('Schedule not set.')
-    boxsched_stat=Label(f2, textvariable=boxsched_text, anchor=W, justify=LEFT)    
     
-    boxrec_text=StringVar()
-    boxrec_text.set('Recording not started yet.')
+    
+    #boxsched_stat=Label(f2, textvariable=boxsched_text, anchor=W, justify=LEFT)    
+    
+   
 
     log_text = StringVar()
     first_log = ''
     log_text.set(first_log)
     
     #log_display=Label(f2, textvariable=log_text, anchor='center', justify=LEFT)
-    log_display = tkscrolled.ScrolledText(f2, height=10, width=100, bg = 'grey')
+    log_display = tkscrolled.ScrolledText(f2, height=20, width=70, bg = 'grey')
     log_display.config(state="normal")
     log_display.insert(tk.END, first_log)
     log_display.config(state="disabled")
 
-    #f2scrollbar=Scrollbar(log_display,orient="vertical", command=log_display.yview)
-    #f2scrollbar.pack(side="right",fill="y")
-    #log_display.config(yscrollcommand=f2scrollbar.set)
 
-    boxrec_stat=Label(f2, textvariable=boxrec_text, anchor='center', justify=LEFT)
+    #ACTOGRAM ASCII DISPLAY
+    #display as double plot using time series
+    working_directory = os.getcwd()
+    filename = working_directory + 'BOX1-5-'+date_string+'.txt'
+    #filename = '/home/zow/LocoBox/actogram/BOX2-COM4-20181018.txt'
+    #filename = 'C:/Users\OWNER\Documents\GitHub\LocoBox\LocoBox_12Phase\BOX1-3-20181018.txt'
+
     
-    tab1_title2.pack()#place(x=40, y=yupperbtns )
-    boxsched_stat.pack()#.place(x=40, y=yupperbtns+20)        
-    log_display.pack()
-    boxrec_stat.pack()#.place(x=40, y=yupperbtns+40)
+
+    box = 'BOX1'
+    pir = 'PIR01'
+    led = 'LED01'
+
+    #if filename empty, show blank
+    # create a figure
+    #figure = plt.Figure(figsize=(2, 2), dpi=100)
+    figure = plot_doubleplot(box, pir, led, filename)
+
+    # create FigureCanvasTkAgg object
+    figure_canvas = FigureCanvasTkAgg(figure, f2)
+
+    # create the toolbar
+    #NavigationToolbar2Tk(figure_canvas,f2)
+
+    # create axes
+    #axes = figure.add_subplot()
+    figure.canvas.draw_idle()
+
+    
+    # axes.bar(x,y)
+    # axes.set_title('Actogram')
+    # axes.set_ylabel('Days')
+    figure_canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=1)
+    
+    log_display.pack(side = LEFT)
+    
+    #boxrec_stat.pack()#.place(x=40, y=yupperbtns+40)
     #log_stream.getvalue()
 
     window.update_idletasks()
 
 
-
-
     btnSave = Button(f3, text=' Save ', command=save_conf, state='disabled')
     btnRun = Button(f3, text= ' Recording Start ', command=connect, state='disabled')
     btnSetCurrent = Button(f3,text=' Set current box ', command=lambda: OnButtonClick(int(tab_control.index('current'))+1))
-    btnSetAll = Button(f3, text='Set All', command=getAllBoxSchedule)
-    
+    btnSetAll = Button(f3, text='Set All', command=getAllBoxSchedule)    
     btnReplicateToAll = Button(f3, text=' Replicate to All ', command= lambda: copyScheduletoAll(int(tab_control.index('current'))+1))
+    btnRefresh = Button(f3, text=' Refresh ', command= refresh_plot)
     
   
     # if box settings of all 5 boxes are done, activate save and run buttons
@@ -6922,18 +8218,21 @@ if __name__ == '__main__':
         btnSetCurrent.place(x=430, y=yupperbtns)       
         btnSetAll.place(x=730, y=yupperbtns)
         btnReplicateToAll.place(x=577, y=yupperbtns)
+        btnRefresh.place(x =730, y=ylowerbtns +30)
     elif sys.platform.startswith('darwin'):
         btnSave.place(x=730, y= ymidbtns)
         btnRun.place(x=730, y=ylowerbtns)
         btnSetCurrent.place(x=430, y=yupperbtns)       
         btnSetAll.place(x=730, y=yupperbtns)
         btnReplicateToAll.place(x=577, y=yupperbtns)
+        btnRefresh.place(x =730, y=ylowerbtns +30)
     elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
         btnSave.place(x=730, y= ymidbtns)
         btnRun.place(x=730, y=ylowerbtns)
         btnSetCurrent.place(x=430, y=yupperbtns)       
         btnSetAll.place(x=730, y=yupperbtns)
         btnReplicateToAll.place(x=577, y=yupperbtns)
+        btnRefresh.place(x =730, y=ylowerbtns +30)
         
     else:
         btnSave.place(x=730, y= ymidbtns)
@@ -6941,17 +8240,77 @@ if __name__ == '__main__':
         btnSetCurrent.place(x=430, y=yupperbtns)       
         btnSetAll.place(x=730, y=yupperbtns)
         btnReplicateToAll.place(x=577, y=yupperbtns)
+        btnRefresh.place(x =730, y=ylowerbtns +30)
 
     row_adj = 3  # useful when a new row is added above
     boxstatusSeparator = ttk.Separator(f2, orient='horizontal').place(x=0, y=0, relwidth=1)
     runSeparator = ttk.Separator(f3, orient='horizontal').place(x=0, y=0, relwidth=1)#ttk.Separator(window, orient='horizontal') #.place(x = 363, y = ylowerbtns + 30)
     
     #runSeparator.pack(fill='x')
+
+   #INIT LED
     
-    # Box1
+   
+
+    initLED1 = IntVar(value=0)
+    rad_ON1 = Radiobutton(tab1, text='ON', variable=initLED1, value=1)
+    rad_OFF1 = Radiobutton(tab1, text='OFF', variable=initLED1, value=0)
+    rad_ON1.grid(column=9, row=1+row_adj, padx=15, pady=5)
+    rad_OFF1.grid(column=11, row=1+row_adj, pady=5)
+
+    initLED2 = IntVar(value=0)
+    rad_ON2 = Radiobutton(tab2, text='ON', variable=initLED2, value=1)
+    rad_OFF2 = Radiobutton(tab2, text='OFF', variable=initLED2, value=0)
+    rad_ON2.grid(column=9, row=1+row_adj, padx=15, pady=5)
+    rad_OFF2.grid(column=11, row=1+row_adj, pady=5)
+
+    initLED3 = IntVar(value=0)
+    rad_ON3 = Radiobutton(tab3, text='ON', variable=initLED3, value=1)
+    rad_OFF3 = Radiobutton(tab3, text='OFF', variable=initLED3, value=0)
+    rad_ON3.grid(column=9, row=1+row_adj, padx=15, pady=5)
+    rad_OFF3.grid(column=11, row=1+row_adj, pady=5)
+
+    initLED4 = IntVar(value=0)
+    rad_ON4 = Radiobutton(tab4, text='ON', variable=initLED4, value=1)
+    rad_OFF4 = Radiobutton(tab4, text='OFF', variable=initLED4, value=0)
+    rad_ON4.grid(column=9, row=1+row_adj, padx=15, pady=5)
+    rad_OFF4.grid(column=11, row=1+row_adj, pady=5)
+
+    initLED5 = IntVar(value=0)
+    rad_ON5 = Radiobutton(tab5, text='ON', variable=initLED5, value=1)
+    rad_OFF5 = Radiobutton(tab5, text='OFF', variable=initLED5, value=0)
+    rad_ON5.grid(column=9, row=1+row_adj, padx=15, pady=5)
+    rad_OFF5.grid(column=11, row=1+row_adj, pady=5)
+
+    initLEDlabel1 = Label(tab1, text='Initial LED')
+    initLEDlabel1.grid(column=9, row=1, padx=3, pady=5)
+
+    initLEDlabel2 = Label(tab2, text='Initial LED')
+    initLEDlabel2.grid(column=9, row=1, padx=3, pady=5)
+
+    initLEDlabel3 = Label(tab3, text='Initial LED')
+    initLEDlabel3.grid(column=9, row=1, padx=3, pady=5)
+
+    initLEDlabel4 = Label(tab4, text='Initial LED')
+    initLEDlabel4.grid(column=9, row=1, padx=3, pady=5)
+
+    initLEDlabel5 = Label(tab5, text='Initial LED')
+    initLEDlabel5.grid(column=9, row=1, padx=3, pady=5)
+
+ # Box1 main
+
+    for i in range(0,12):
+        tcyclelength = Spinbox(tab1,from_=00, to=24, width=3)
+        tcyclelength.grid(column=26, row=1+i+row_adj, pady=5)
+        tcyclelength.delete(0,'end')
+        tcyclelength.insert(0,24)
+        tcyclespinbox_arr[0,i] = tcyclelength
+
+    tcyclelabel = Label(tab1, text='T-cycle length')
+    tcyclelabel.grid(column=26, row=1, padx=3, pady=5)
     
     tab1_title = Label(tab1, text= 'LED schedule', anchor='center')
-    tab1_title.grid(column=0, row= -1+row_adj, columnspan='27', sticky='we')
+    tab1_title.grid(column=12, row= 1, columnspan='27', sticky='we')
     #capSep1 = ttk.Separator(tab1, orient=HORIZONTAL)
     #capSep1.grid(column=0, row = row_adj+5, columnspan='27', sticky='we')
     box1sched_text=StringVar()
@@ -6961,7 +8320,7 @@ if __name__ == '__main__':
     phaseLabel1_1 = Label(tab1, text='Phase 1')
     dateLabel = time.strftime('%H:%M   %Y/%m/%d') # reads time for Phase 1 start-time
     fromLabel1_1 = Label(tab1, text='From:')
-    date_label1 = Label(tab1, text=dateLabel+' (HH:MN YYYY/MO/DD)')
+    date_label1 = Label(tab1, text=dateLabel)
     rad1_A_1 = Radiobutton(tab1, text='LD', variable=var1_1, value=1)
     lbl1_A_1 = Label(tab1, text= 'On:')
     spin1_A_1 = Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f')
@@ -6999,6 +8358,12 @@ if __name__ == '__main__':
     label1_m2_1.grid(column=23, row=1+row_adj, pady=5, sticky='w')
     rad1_B_1.grid(column=24, row=1+row_adj, padx=15, pady=5)
     rad1_C_1.grid(column=25, row=1+row_adj, pady=5)
+
+    tcyclelength = Spinbox(tab1,from_=00, to=24, width=3)
+    tcyclelength.grid(column=26, row=1+row_adj, pady=5)
+    tcyclelength.delete(0,'end')
+    tcyclelength.insert(0,24)
+    tcyclespinbox_arr[0,0] = tcyclelength
 
 
         # phase 2
@@ -7075,9 +8440,16 @@ if __name__ == '__main__':
     label1_m2_2.grid(column=23,row=2+row_adj, pady=5)
     rad1_B_2.grid(column=24, row=2+row_adj, padx=15, pady=5)
     rad1_C_2.grid(column=25, row=2+row_adj, pady=5)
+
+    
+
+    
+
+
         # phase 3
     phaseLabel1_3 = Label(tab1, text='Phase 3')
     fromLabel1_3 = Label(tab1, text='From:')
+    fromLabel1_3.grid(column=1,row=2+row_adj)
     space1_3 = Label(tab1, text=' ')
     space1_3_2 = Label(tab1, text=' ')
     spin1_E_3 = Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f')
@@ -7123,7 +8495,6 @@ if __name__ == '__main__':
     rad1_B_3 = Radiobutton(tab1, text='DD', variable=var1_3, value=2)
     rad1_C_3 = Radiobutton(tab1, text='LL', variable=var1_3, value=3)
     phaseLabel1_3.grid(column=0, row=3+row_adj, padx=15, pady=5)
-    fromLabel1_3.grid(column=1,row=3+row_adj)
     spin1_E_3.grid(column=2,row=3+row_adj)
     label1_h0_3.grid(column=3,row=3+row_adj)
     spin1_F_3.grid(column=4,row=3+row_adj)
@@ -7148,6 +8519,10 @@ if __name__ == '__main__':
     label1_m2_3.grid(column=23,row=3+row_adj, pady=5)
     rad1_B_3.grid(column=24, row=3+row_adj, padx=15, pady=5)
     rad1_C_3.grid(column=25, row=3+row_adj, pady=5)
+
+
+   
+
 
         # phase 4
     phaseLabel1_4 = Label(tab1, text='Phase 4')
@@ -7222,6 +8597,12 @@ if __name__ == '__main__':
     label1_m2_4.grid(column=23,row=4+row_adj, pady=5)
     rad1_B_4.grid(column=24, row=4+row_adj, padx=15, pady=5)
     rad1_C_4.grid(column=25, row=4+row_adj, pady=5)
+
+   
+
+
+
+
         # Phase 5
     phaseLabel1_5 = Label(tab1, text='Phase 5')
     fromLabel1_5 = Label(tab1, text='From:')
@@ -7295,6 +8676,11 @@ if __name__ == '__main__':
     label1_m2_5.grid(column=23,row=5+row_adj, pady=5)
     rad1_B_5.grid(column=24, row=5+row_adj, padx=15, pady=5)
     rad1_C_5.grid(column=25, row=5+row_adj, pady=5)
+
+    
+
+
+
         # Phase 6
     phaseLabel1_6 = Label(tab1, text='Phase 6')
     fromLabel1_6 = Label(tab1, text='From:')
@@ -7370,6 +8756,9 @@ if __name__ == '__main__':
     label1_m2_6.grid(column=23,row=rowPhase6+row_adj, pady=5)
     rad1_B_6.grid(column=24, row=rowPhase6+row_adj, padx=15, pady=5)
     rad1_C_6.grid(column=25, row=rowPhase6+row_adj, pady=5)
+
+  
+
 
 
         # Phase 7
@@ -7448,6 +8837,10 @@ if __name__ == '__main__':
     rad1_B_7.grid(column=24, row=rowPhase7+row_adj, padx=15, pady=5)
     rad1_C_7.grid(column=25, row=rowPhase7+row_adj, pady=5)
 
+
+   
+
+
     # Phase 8
     phaseLabel1_8 = Label(tab1, text='Phase 8')
     fromLabel1_8 = Label(tab1, text='From:')
@@ -7524,6 +8917,8 @@ if __name__ == '__main__':
     rad1_B_8.grid(column=24, row=rowPhase8+row_adj, padx=15, pady=5)
     rad1_C_8.grid(column=25, row=rowPhase8+row_adj, pady=5)
 
+   
+
     # Phase 9
     phaseLabel1_9 = Label(tab1, text='Phase 9')
     fromLabel1_9 = Label(tab1, text='From:')
@@ -7599,6 +8994,8 @@ if __name__ == '__main__':
     label1_m2_9.grid(column=23,row=rowPhase9+row_adj, pady=5)
     rad1_B_9.grid(column=24, row=rowPhase9+row_adj, padx=15, pady=5)
     rad1_C_9.grid(column=25, row=rowPhase9+row_adj, pady=5)
+   
+
 
     # Phase 10
     phaseLabel1_10 = Label(tab1, text='Phase 10')
@@ -7676,6 +9073,9 @@ if __name__ == '__main__':
     rad1_B_10.grid(column=24, row=rowPhase10+row_adj, padx=15, pady=5)
     rad1_C_10.grid(column=25, row=rowPhase10+row_adj, pady=5)
 
+   
+
+
     # Phase 11
     phaseLabel1_11 = Label(tab1, text='Phase 11')
     fromLabel1_11 = Label(tab1, text='From:')
@@ -7751,6 +9151,9 @@ if __name__ == '__main__':
     label1_m2_11.grid(column=23,row=rowPhase11+row_adj, pady=5)
     rad1_B_11.grid(column=24, row=rowPhase11+row_adj, padx=15, pady=5)
     rad1_C_11.grid(column=25, row=rowPhase11+row_adj, pady=5)
+
+   
+
 
     # Phase 12
     phaseLabel1_12 = Label(tab1, text='Phase 12')
@@ -7828,16 +9231,31 @@ if __name__ == '__main__':
     rad1_B_12.grid(column=24, row=rowPhase12+row_adj, padx=15, pady=5)
     rad1_C_12.grid(column=25, row=rowPhase12+row_adj, pady=5)
 
+   
+
+
     rowsButton = 13
     
     
     
 
-    # Box2
+    # Box2 main
+    tcyclelabel2 = Label(tab2, text='T-cycle length')
+    tcyclelabel2.grid(column=26, row=1, padx=3, pady=5)
+
+    for i in range(0,12): 
+        tcyclelength = Spinbox(tab2, from_=00, to=24, width=3)    
+        tcyclelength.grid(column=26, row=i+1+row_adj, padx=3,pady=5)
+        tcyclelength.delete(0,'end')
+        tcyclelength.insert(0,24)
+        tcyclespinbox_arr[1,i] = tcyclelength
+
+
+    
     
    
     tab2_title = Label(tab2, text= 'LED schedule', anchor='center')
-    tab2_title.grid(column=0, row= -1+row_adj, columnspan='27', sticky='we')
+    tab2_title.grid(column=12, row= 1, columnspan='27', sticky='we')
     # capSep2 = ttk.Separator(tab2, orient=HORIZONTAL)
     # capSep2.grid(column=0, row = row_adj+5, columnspan='27', sticky='we')
     box2sched_text=StringVar()
@@ -7847,7 +9265,7 @@ if __name__ == '__main__':
     phaseLabel2_1 = Label(tab2, text='Phase 1')
     dateLabel = time.strftime('%H:%M   %Y/%m/%d') # reads time for Phase 1 start-time
     fromLabel2_1 = Label(tab2, text='From:')
-    date_label2 = Label(tab2, text=dateLabel+' (HH:MN YYYY/MO/DD)')
+    date_label2 = Label(tab2, text=dateLabel)
     rad2_A_1 = Radiobutton(tab2, text='LD', variable=var2_1, value=1)
     lbl2_A_1 = Label(tab2, text= 'On:')
     spin2_A_1 = Spinbox(tab2, from_=00, to=24, width=3, format='%02.0f')
@@ -8704,11 +10122,22 @@ if __name__ == '__main__':
    
    
 
-    # Box3
+    # Box3 main
+
+    tcyclelabel3 = Label(tab3, text='T-cycle length')
+    tcyclelabel3.grid(column=26, row=1, padx=3, pady=5)
+
+    for i in range(0,12): 
+        tcyclespinbox_arr[2,i] = Spinbox(tab3,from_=00, to=24, width=3)    
+        tcyclespinbox_arr[2,i].grid(column=26, row=i+1+row_adj, padx=3,pady=5)
+        tcyclespinbox_arr[2,i].delete(0,'end')
+        tcyclespinbox_arr[2,i].insert(0,24)
+        
+  
    
     
     tab3_title = Label(tab3, text= 'LED schedule', anchor='center')
-    tab3_title.grid(column=0, row= -1+row_adj, columnspan='27', sticky='we')
+    tab3_title.grid(column=12, row= 1, columnspan='27', sticky='we')
     # capSep3 = ttk.Separator(tab3, orient=HORIZONTAL)
     # capSep3.grid(column=0, row = row_adj+5, columnspan='27', sticky='we')
     box3sched_text=StringVar()
@@ -8718,7 +10147,7 @@ if __name__ == '__main__':
     phaseLabel3_1 = Label(tab3, text='Phase 1')
     dateLabel = time.strftime('%H:%M   %Y/%m/%d') # reads time for Phase 1 start-time
     fromLabel3_1 = Label(tab3, text='From:')
-    date_label3 = Label(tab3, text=dateLabel+' (HH:MN YYYY/MO/DD)')
+    date_label3 = Label(tab3, text=dateLabel)
     rad3_A_1 = Radiobutton(tab3, text='LD', variable=var3_1, value=1)
     lbl3_A_1 = Label(tab3, text= 'On:')
     spin3_A_1 = Spinbox(tab3, from_=00, to=24, width=3, format='%02.0f')
@@ -9580,10 +11009,22 @@ if __name__ == '__main__':
     
     
     # Box4
+
+
+    tcyclelabel4 = Label(tab4, text='T-cycle length')
+    tcyclelabel4.grid(column=26, row=1, padx=3, pady=5)
+
+    for i in range(0,12): 
+        tcyclespinbox_arr[3,i] = Spinbox(tab4,from_=00, to=24, width=3)    
+        tcyclespinbox_arr[3,i].grid(column=26, row=i+1+row_adj, padx=3,pady=5)
+        tcyclespinbox_arr[3,i].delete(0,'end')
+        tcyclespinbox_arr[3,i].insert(0,24)
+        
+    
     
     
     tab4_title = Label(tab4, text= 'LED schedule', anchor='center')
-    tab4_title.grid(column=0, row= -1+row_adj, columnspan='27', sticky='we')
+    tab4_title.grid(column=12, row= 1, columnspan='27', sticky='we')
     # capSep4 = ttk.Separator(tab4, orient=HORIZONTAL)
     # capSep4.grid(column=0, row = row_adj+5, columnspan='27', sticky='we')
     box4sched_text=StringVar()
@@ -9593,7 +11034,7 @@ if __name__ == '__main__':
     phaseLabel4_1 = Label(tab4, text='Phase 1')
     dateLabel = time.strftime('%H:%M   %Y/%m/%d') # reads time for Phase 1 start-time
     fromLabel4_1 = Label(tab4, text='From:')
-    date_label4 = Label(tab4, text=dateLabel+' (HH:MN YYYY/MO/DD)')
+    date_label4 = Label(tab4, text=dateLabel)
     rad4_A_1 = Radiobutton(tab4, text='LD', variable=var4_1, value=1)
     lbl4_A_1 = Label(tab4, text= 'On:')
     spin4_A_1 = Spinbox(tab4, from_=00, to=24, width=3, format='%02.0f')
@@ -10461,10 +11902,21 @@ if __name__ == '__main__':
    
 
     # Box5
+
+    tcyclelabel5 = Label(tab5, text='T-cycle length')
+    tcyclelabel5.grid(column=26, row=1, padx=3, pady=5)
+
+    for i in range(0,12): 
+        tcyclespinbox_arr[4,i] = Spinbox(tab5,from_=00, to=24, width=3)    
+        tcyclespinbox_arr[4,i].grid(column=26, row=i+1+row_adj, padx=3,pady=5)
+        tcyclespinbox_arr[4,i].delete(0,'end')
+        tcyclespinbox_arr[4,i].insert(0,24)
+        
+    
     
     
     tab5_title = Label(tab5, text= 'LED schedule', anchor='center')
-    tab5_title.grid(column=0, row= -1+row_adj, columnspan='27', sticky='we')
+    tab5_title.grid(column=12, row= 1, columnspan='27', sticky='we')
     # capSep5 = ttk.Separator(tab5, orient=HORIZONTAL)
     # capSep5.grid(column=0, row = row_adj+5, columnspan='27', sticky='we')
     box5sched_text=StringVar()
@@ -10474,7 +11926,7 @@ if __name__ == '__main__':
     phaseLabel5_1 = Label(tab5, text='Phase 1')
     dateLabel = time.strftime('%H:%M   %Y/%m/%d') # reads time for Phase 1 start-time
     fromLabel5_1 = Label(tab5, text='From:')
-    date_label5 = Label(tab5, text=dateLabel+' (HH:MN YYYY/MO/DD)')
+    date_label5 = Label(tab5, text=dateLabel)
     rad5_A_1 = Radiobutton(tab5, text='LD', variable=var5_1, value=1)
     lbl5_A_1 = Label(tab5, text= 'On:')
     spin5_A_1 = Spinbox(tab5, from_=00, to=24, width=3, format='%02.0f')
@@ -11402,12 +12854,15 @@ if __name__ == '__main__':
     input_mat = np.asarray(input_mat)
 
     input_mat = input_mat.reshape(5,12,10)
-    
 
+    #phaseLabels1
+    #phaseLabel1_6
 
+    phase_delimiters = [datetime.datetime.now()]
 
    
-    
+    getAllBoxSchedule()
+
     
     
     tab_control.pack(expand=1, fill='both')
