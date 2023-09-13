@@ -14,12 +14,8 @@ style.use('seaborn-colorblind')
 
 pd.set_option("display.max_rows", None)
 
-
-
 def plot_doubleplot(box, pir, led, filename):
     plt.clf()
-
-    
 
     number_of_skipped_lines = 0
 
@@ -62,6 +58,8 @@ def plot_doubleplot(box, pir, led, filename):
         fig = plt.figure(figsize=(2, 2))  
         fig.suptitle("No data")
         return fig 
+
+    df = df.iloc[-10080:]
 
     df.index = pd.to_datetime(df['MO/DY/YEAR']+' ' + df['HH:MM:SS'],
                             format="%m/%d/%Y %H:%M:%S")
@@ -108,11 +106,10 @@ def plot_doubleplot(box, pir, led, filename):
     #df3 = df3.groupby(np.arange(len(df3))//60).mean() 
 
     df2 = df.groupby(pd.Grouper(freq='H')).mean() 
-    df = pd.concat([df0, df1, df, df3, df2])
+    df = pd.concat([df0,df1,  df, df3, df2])
     #df = df.groupby(np.arange(len(df))//60).mean() 
     dategroup = df.groupby(pd.Grouper(freq='D'))
     
-
     k = 0
     df2 = pd.DataFrame()
     for name, group in dategroup:
@@ -155,6 +152,7 @@ def plot_doubleplot(box, pir, led, filename):
     # Double-plot actogram
     # Plot the 1st column
     j = 0
+
     for name, group in dategroup:
        
         labels = [0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 39, 42, 45, 48]
@@ -190,20 +188,16 @@ def plot_doubleplot(box, pir, led, filename):
     fig.subplots_adjust(left=0.12, right=0.9, bottom=0.3, wspace=0, hspace=0)
     plt.axis('off')
     plt.suptitle(box, size=9)
-    #plt.savefig(box+'.png')
+    plt.tight_layout()
+    plt.savefig('./temp/' + box+'.png')
+    print("finished " +box)
     #plt.show()
-    return fig 
-
-
-
+    # return fig 
 
 # box = 'BOX2'
 # pir = 'PIR02'
 # led = 'LED02'
 
-#filename = '/home/zow/LocoBox/LocoBox_12Phase/BOX1-3-20181018.txt'
-#filename = '/home/zow/LocoBox/Prev_locobox_data/BOX1-5-20220720.txt'
-
-# filename = '/home/zow/LocoBox/BOX1-5-20220825.txt'
+# filename = './BOX1-3-20181018.txt'
 
 # plot_doubleplot(box, pir, led, filename)

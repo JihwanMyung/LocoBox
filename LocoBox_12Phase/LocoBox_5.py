@@ -15,7 +15,9 @@ from tkinter import (BOTH, BOTTOM, DISABLED, HORIZONTAL, LEFT, RIGHT, SUNKEN,
 from tkinter.filedialog import askopenfilename
 from tkinter.messagebox import showinfo
 
+
 import serial  # For Serial communication
+import sys
 
 try:
     from tkinter import filedialog
@@ -37,10 +39,6 @@ from BoxSchedule import (BoxSchedule, PhaseSchedule, getDarkLightValue,
                          inverseDarkLightValue)
 
 matplotlib.use('TkAgg')
-
-
-
-
 
 
 #sudo chmod 666 /dev/ttyACM0
@@ -135,12 +133,6 @@ global setBox1, setBox2, setBox3, setBox4, setBox5
 
 
 global display_string, display_counter, current_phase, tcyclefactor, starttime, tcyclespinbox_arr
-
-
-
-
-
-
 
 
 
@@ -263,35 +255,38 @@ def get_data(istate=0): # Start recording
                 print('Synching time...')
                 status.pack(side='bottom', fill='x')
                 status.set('Synching time...')
-                t= datetime.datetime.now()
+                t = datetime.datetime.now()
                 t = t + datetime.timedelta(minutes=1)
                 serial_obj.write(str.encode(t.strftime('%Y-%m-%d %H:%M:%S')))
+
             if i==1:
 
                 phase_id = i-1
 
                 serial_obj.write(str.encode(str(initLED1) + str(initLED2) + str(initLED3)+ str(initLED4) + str(initLED5)))
 
+            if i==2:
+
                 serial_obj.write(str.encode(hourOn1_1+minOn1_1+hourOff1_1+minOff1_1+hourOn2_1+minOn2_1+hourOff2_1+minOff2_1+
                                             hourOn3_1+minOn3_1+hourOff3_1+minOff3_1+hourOn4_1+minOn4_1+hourOff4_1+minOff4_1+
                                             hourOn5_1+minOn5_1+hourOff5_1+minOff5_1))
                 
-            if i==2:    
+            if i==3:    
                 serial_obj.write(str.encode(dark1_1+light1_1+dark2_1+light2_1+dark3_1+light3_1+dark4_1+light4_1+
                                             dark5_1+light5_1))
                 
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 1 schedules sent.')                              
-            if i==3:
+            if i==4:
                 serial_obj.write(str.encode(hourOn1_2+minOn1_2+hourOff1_2+minOff1_2+hourOn2_2+minOn2_2+hourOff2_2+minOff2_2+
                                             hourOn3_2+minOn3_2+hourOff3_2+minOff3_2+hourOn4_2+minOn4_2+hourOff4_2+minOff4_2+
                                             hourOn5_2+minOn5_2+hourOff5_2+minOff5_2))
                 
-            if i==4:
+            if i==5:
                 serial_obj.write(str.encode(dark1_2+light1_2+dark2_2+light2_2+dark3_2+light3_2+dark4_2+light4_2+
                                             dark5_2+light5_2))
                 
-            if i==5:
+            if i==6:
                 serial_obj.write(str.encode(date1_2+month1_2+year1_2+date2_2+month2_2+year2_2+
                                             date3_2+month3_2+year3_2+date4_2+month4_2+year4_2+
                                             date5_2+month5_2+year5_2+hourFrom1_2+minuteFrom1_2+
@@ -300,16 +295,16 @@ def get_data(istate=0): # Start recording
                
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 2 schedules sent.')    
-            if i==6:
+            if i==7:
                 serial_obj.write(str.encode(hourOn1_3+minOn1_3+hourOff1_3+minOff1_3+hourOn2_3+minOn2_3+hourOff2_3+minOff2_3+
                                             hourOn3_3+minOn3_3+hourOff3_3+minOff3_3+hourOn4_3+minOn4_3+hourOff4_3+minOff4_3+
                                             hourOn5_3+minOn5_3+hourOff5_3+minOff5_3))
                 
-            if i==7:
+            if i==8:
                 serial_obj.write(str.encode(dark1_3+light1_3+dark2_3+light2_3+dark3_3+light3_3+
                                             dark4_3+light4_3+dark5_3+light5_3))
                 
-            if i==8:
+            if i==9:
                 serial_obj.write(str.encode(date1_3+month1_3+year1_3+date2_3+month2_3+year2_3+
                                             date3_3+month3_3+year3_3+date4_3+month4_3+year4_3+
                                             date5_3+month5_3+year5_3+hourFrom1_3+minuteFrom1_3+
@@ -318,16 +313,16 @@ def get_data(istate=0): # Start recording
                 
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 3 schedules sent.')
-            if i==9:
+            if i==10:
                 serial_obj.write(str.encode(hourOn1_4+minOn1_4+hourOff1_4+minOff1_4+hourOn2_4+minOn2_4+hourOff2_4+minOff2_4+
                                             hourOn3_4+minOn3_4+hourOff3_4+minOff3_4+hourOn4_4+minOn4_4+hourOff4_4+minOff4_4+
                                             hourOn5_4+minOn5_4+hourOff5_4+minOff5_4))
                 
-            if i==10:
+            if i==11:
                 serial_obj.write(str.encode(dark1_4+light1_4+dark2_4+light2_4+dark3_4+light3_4+
                                             dark4_4+light4_4+dark5_4+light5_4))
                 
-            if i==11:
+            if i==12:
                 serial_obj.write(str.encode(date1_4+month1_4+year1_4+date2_4+month2_4+year2_4+
                                             date3_4+month3_4+year3_4+date4_4+month4_4+year4_4+
                                             date5_4+month5_4+year5_4+hourFrom1_4+minuteFrom1_4+
@@ -336,16 +331,16 @@ def get_data(istate=0): # Start recording
                 
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 4 schedules sent.')
-            if i==12:
+            if i==13:
                 serial_obj.write(str.encode(hourOn1_5+minOn1_5+hourOff1_5+minOff1_5+hourOn2_5+minOn2_5+hourOff2_5+minOff2_5+
                                             hourOn3_5+minOn3_5+hourOff3_5+minOff3_5+hourOn4_5+minOn4_5+hourOff4_5+minOff4_5+
                                             hourOn5_5+minOn5_5+hourOff5_5+minOff5_5))
                
-            if i==13: 
+            if i==14: 
                 serial_obj.write(str.encode(dark1_5+light1_5+dark2_5+light2_5+dark3_5+light3_5+
                                             dark4_5+light4_5+dark5_5+light5_5))
                
-            if i==14:
+            if i==15:
                 serial_obj.write(str.encode(date1_5+month1_5+year1_5+date2_5+month2_5+year2_5+
                                             date3_5+month3_5+year3_5+date4_5+month4_5+year4_5+
                                             date5_5+month5_5+year5_5+hourFrom1_5+minuteFrom1_5+
@@ -355,16 +350,16 @@ def get_data(istate=0): # Start recording
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 5 schedules sent.')
             #Phase 6
-            if i==15:
+            if i==16:
                 serial_obj.write(str.encode(hourOn1_6+minOn1_6+hourOff1_6+minOff1_6+hourOn2_6+minOn2_6+hourOff2_6+minOff2_6+
                                             hourOn3_6+minOn3_6+hourOff3_6+minOff3_6+hourOn4_6+minOn4_6+hourOff4_6+minOff4_6+
                                             hourOn5_6+minOn5_6+hourOff5_6+minOff5_6))
                 
-            if i==16: 
+            if i==17: 
                 serial_obj.write(str.encode(dark1_6+light1_6+dark2_6+light2_6+dark3_6+light3_6+
                                             dark4_6+light4_6+dark5_6+light5_6))
                 
-            if i==17:
+            if i==18:
                 serial_obj.write(str.encode(date1_6+month1_6+year1_6+date2_6+month2_6+year2_6+
                                             date3_6+month3_6+year3_6+date4_6+month4_6+year4_6+
                                             date5_6+month5_6+year5_6+hourFrom1_6+minuteFrom1_6+
@@ -373,16 +368,16 @@ def get_data(istate=0): # Start recording
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 6 schedules sent.')
             #Phase 7
-            if i==18:
+            if i==19:
                 serial_obj.write(str.encode(hourOn1_7+minOn1_7+hourOff1_7+minOff1_7+hourOn2_7+minOn2_7+hourOff2_7+minOff2_7+
                                             hourOn3_7+minOn3_7+hourOff3_7+minOff3_7+hourOn4_7+minOn4_7+hourOff4_7+minOff4_7+
                                             hourOn5_7+minOn5_7+hourOff5_7+minOff5_7))
                 
-            if i==19: 
+            if i==20: 
                 serial_obj.write(str.encode(dark1_7+light1_7+dark2_7+light2_7+dark3_7+light3_7+
                                             dark4_7+light4_7+dark5_7+light5_7))
                 
-            if i==20:
+            if i==21:
                 serial_obj.write(str.encode(date1_7+month1_7+year1_7+date2_7+month2_7+year2_7+
                                             date3_7+month3_7+year3_7+date4_7+month4_7+year4_7+
                                             date5_7+month5_7+year5_7+hourFrom1_7+minuteFrom1_7+
@@ -391,16 +386,16 @@ def get_data(istate=0): # Start recording
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 7 schedules sent.')
             #Phase 8
-            if i==21:
+            if i==22:
                 serial_obj.write(str.encode(hourOn1_8+minOn1_8+hourOff1_8+minOff1_8+hourOn2_8+minOn2_8+hourOff2_8+minOff2_8+
                                             hourOn3_8+minOn3_8+hourOff3_8+minOff3_8+hourOn4_8+minOn4_8+hourOff4_8+minOff4_8+
                                             hourOn5_8+minOn5_8+hourOff5_8+minOff5_8))
                 
-            if i==22: 
+            if i==23: 
                 serial_obj.write(str.encode(dark1_8+light1_8+dark2_8+light2_8+dark3_8+light3_8+
                                             dark4_8+light4_8+dark5_8+light5_8))
                 
-            if i==23:
+            if i==24:
                 serial_obj.write(str.encode(date1_8+month1_8+year1_8+date2_8+month2_8+year2_8+
                                             date3_8+month3_8+year3_8+date4_8+month4_8+year4_8+
                                             date5_8+month5_8+year5_8+hourFrom1_8+minuteFrom1_8+
@@ -410,16 +405,16 @@ def get_data(istate=0): # Start recording
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 8 schedules sent.')
             #Phase 9
-            if i==24:
+            if i==25:
                 serial_obj.write(str.encode(hourOn1_9+minOn1_9+hourOff1_9+minOff1_9+hourOn2_9+minOn2_9+hourOff2_9+minOff2_9+
                                             hourOn3_9+minOn3_9+hourOff3_9+minOff3_9+hourOn4_9+minOn4_9+hourOff4_9+minOff4_9+
                                             hourOn5_9+minOn5_9+hourOff5_9+minOff5_9))
                 
-            if i==25: 
+            if i==26: 
                 serial_obj.write(str.encode(dark1_9+light1_9+dark2_9+light2_9+dark3_9+light3_9+
                                             dark4_9+light4_9+dark5_9+light5_9))
                 
-            if i==26:
+            if i==27:
                 serial_obj.write(str.encode(date1_9+month1_9+year1_9+date2_9+month2_9+year2_9+
                                             date3_9+month3_9+year3_9+date4_9+month4_9+year4_9+
                                             date5_9+month5_9+year5_9+hourFrom1_9+minuteFrom1_9+
@@ -429,16 +424,16 @@ def get_data(istate=0): # Start recording
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 9 schedules sent.')
             #Phase 10
-            if i==27:
+            if i==28:
                 serial_obj.write(str.encode(hourOn1_10+minOn1_10+hourOff1_10+minOff1_10+hourOn2_10+minOn2_10+hourOff2_10+minOff2_10+
                                             hourOn3_10+minOn3_10+hourOff3_10+minOff3_10+hourOn4_10+minOn4_10+hourOff4_10+minOff4_10+
                                             hourOn5_10+minOn5_10+hourOff5_10+minOff5_10))
                 
-            if i==28: 
+            if i==29: 
                 serial_obj.write(str.encode(dark1_10+light1_10+dark2_10+light2_10+dark3_10+light3_10+
                                             dark4_10+light4_10+dark5_10+light5_10))
                 
-            if i==29:
+            if i==30:
                 serial_obj.write(str.encode(date1_10+month1_10+year1_10+date2_10+month2_10+year2_10+
                                             date3_10+month3_10+year3_10+date4_10+month4_10+year4_10+
                                             date5_10+month5_10+year5_10+hourFrom1_10+minuteFrom1_10+
@@ -448,16 +443,16 @@ def get_data(istate=0): # Start recording
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 10 schedules sent.')
             #Phase 11
-            if i==30:
+            if i==31:
                 serial_obj.write(str.encode(hourOn1_11+minOn1_11+hourOff1_11+minOff1_11+hourOn2_11+minOn2_11+hourOff2_11+minOff2_11+
                                             hourOn3_11+minOn3_11+hourOff3_11+minOff3_11+hourOn4_11+minOn4_11+hourOff4_11+minOff4_11+
                                             hourOn5_11+minOn5_11+hourOff5_11+minOff5_11))
                 
-            if i==31: 
+            if i==32: 
                 serial_obj.write(str.encode(dark1_11+light1_11+dark2_11+light2_11+dark3_11+light3_11+
                                             dark4_11+light4_11+dark5_11+light5_11))
                 
-            if i==32:
+            if i==33:
 
                 serial_obj.write(str.encode(date1_11+month1_11+year1_11+
                                             date2_11+month2_11+year2_11+
@@ -475,16 +470,16 @@ def get_data(istate=0): # Start recording
                 status.set('Phase 11 schedules sent.')
 
             #Phase 12
-            if i==33:
+            if i==34:
                 serial_obj.write(str.encode(hourOn1_12+minOn1_12+hourOff1_12+minOff1_12+hourOn2_12+minOn2_12+hourOff2_12+minOff2_12+
                                             hourOn3_12+minOn3_12+hourOff3_12+minOff3_12+hourOn4_12+minOn4_12+hourOff4_12+minOff4_12+
                                             hourOn5_12+minOn5_12+hourOff5_12+minOff5_12))
                 
-            if i==34: 
+            if i==35: 
                 serial_obj.write(str.encode(dark1_12+light1_12+dark2_12+light2_12+dark3_12+light3_12+
                                             dark4_12+light4_12+dark5_12+light5_12))
                 
-            if i==35:
+            if i==36:
                 serial_obj.write(str.encode(date1_12+month1_12+year1_12+date2_12+month2_12+year2_12+
                                             date3_12+month3_12+year3_12+date4_12+month4_12+year4_12+
                                             date5_12+month5_12+year5_12+hourFrom1_12+minuteFrom1_12+
@@ -5301,6 +5296,9 @@ def getBox1Schedule():
     minOff1_1=spin1_D_1.get()    
         
     tcyclefactor = float(tcyclespinbox_arr[0,0].get())
+    
+    
+
 
 #convert_time(time_i_want, start_time, factor)
     conv_time_on = convert_time(datetime.datetime(datetime.datetime.now().year, datetime.datetime.now().month, datetime.datetime.now().day, int(hourOn1_1), int(minOn1_1)), datetime.datetime.now(), tcyclefactor)
@@ -8148,8 +8146,6 @@ if __name__ == '__main__':
     #filename = '/home/zow/LocoBox/actogram/BOX2-COM4-20181018.txt'
     #filename = 'C:/Users\OWNER\Documents\GitHub\LocoBox\LocoBox_12Phase\BOX1-3-20181018.txt'
 
-    
-
     box = 'BOX1'
     pir = 'PIR01'
     led = 'LED01'
@@ -8168,7 +8164,6 @@ if __name__ == '__main__':
     # create axes
     #axes = figure.add_subplot()
     figure.canvas.draw_idle()
-
     
     # axes.bar(x,y)
     # axes.set_title('Actogram')
@@ -12863,7 +12858,6 @@ if __name__ == '__main__':
    
     getAllBoxSchedule()
 
-    
     
     tab_control.pack(expand=1, fill='both')
 

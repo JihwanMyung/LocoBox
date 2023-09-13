@@ -217,6 +217,7 @@ int ASensi[10] = {990, 990, 990, 990, 990, 990, 990, 990, 990, 990};
 // Light flags
 int LightFlag[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 int TimeSet = 0;
+int initSet = 0;
 int LightSet[47] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; // add/subtract(4) for phase checkpoints
 int InitialFlag = 0;
 
@@ -264,18 +265,6 @@ void count_delay2()
   }
 }
 
-void rtc_delay()
-{
-  DateTime now = rtc.now();
-  unsigned long currents = now.second();
-
-  if (currents - previoussecs > 0)
-  {
-
-    previousMillis = currents;
-  }
-}
-
 //////////////////////////////////////////////////////////////////////////////////////// Set up run
 void setup()
 {
@@ -316,8 +305,8 @@ void setup()
 void loop()
 {
 
-  DateTime now = rtc.now(); // reads the time every second
-  // Serial.println("Now");
+  DateTime timenow = rtc.now(); // reads the time every second
+  //Serial.println(timenow.second(), DEC);
   // String str = String(now.year(), DEC) + '/' + String(now.month(), DEC) + '/' + String(now.day(), DEC) + " " + String(now.hour(), DEC) + ':' + String(now.minute(), DEC) + ':' + String(now.second(), DEC);
   // Serial.println(str);
 
@@ -343,21 +332,22 @@ void loop()
   }
 
 // Read initLEDs
-  if (Serial.available() == 40 && InitialFlag == 0 && TimeSet == 1)
+  if (Serial.available() == 5 && InitialFlag == 0 && TimeSet == 1 && LightSet[1] == 0 && initSet == 0)
   {
     initLEDs = Serial.readString();
     
     initLED[0] = getInt(initLEDs.substring(0, 1));
     initLED[1] = getInt(initLEDs.substring(1, 2));
-    initLED[2] = getInt(initLEDs.substring(3, 4));
-    initLED[3] = getInt(initLEDs.substring(5, 6));
-    initLED[4] = getInt(initLEDs.substring(7, 8));
+    initLED[2] = getInt(initLEDs.substring(2, 3));
+    initLED[3] = getInt(initLEDs.substring(3, 4));
+    initLED[4] = getInt(initLEDs.substring(4, 5));
+    initSet = 1;
   }
 
   ////////////////////// Light Schedule (Get the input from Python interface)
 
   // Phase1
-  if (Serial.available() == 40 && InitialFlag == 0 && TimeSet == 1 && LightSet[1] == 0)
+  if (Serial.available() == 40 && InitialFlag == 0 && TimeSet == 1 && LightSet[1] == 0 && initSet == 1)
   {
     lightIn1 = Serial.readString(); // Serial.readString() its command for getting number from Python interface
     
@@ -1475,12 +1465,12 @@ void loop()
   }
   // Only start recording when the now.second()=0, otherwise stay in the (delay 1 sec) loop
 
-  // now = rtc.now();
+  DateTime now = rtc.now();
   if (InitialFlag == 1)
   {
-    while ((now.second() == 0) == false) // now.second() == 0
-    {
-
+    while (now.second() != 0) // now.second() == 0
+    { 
+      // millis_delay(1);
       now = rtc.now();
     }
 
@@ -2634,11 +2624,10 @@ void loop()
 
     // hh2 +=1;
     //    printMeasurementExpan();
-    printMeasurement();
+    printMeasurement(now);
     //    timeExpansion();
     Serial.println(" ");
 
-    rtc_delay();
 
     // if (Serial.read() == 0)
     // {
@@ -2652,7 +2641,7 @@ void loop()
 }
 
 // Define a function to print measurement
-void printMeasurement()
+void printMeasurement(DateTime now)
 {
   // mean values over 1-min
   for (int i = 0; i < 5; i++)
@@ -2671,7 +2660,7 @@ void printMeasurement()
   }
 
   // sensor value sampling for 1-min
-  for (int i = 0; i < 299; ++i)
+  for (int i = 0; i < 299; i++)
   {
     for (int j = 0; j < 5; j++)
     {
@@ -2702,7 +2691,7 @@ void printMeasurement()
 
   // Outputs
 
-  printTime();
+  printTime(now);
   Serial.print(" ");
 
   for (int i = 0; i < 5; i++)
@@ -2775,9 +2764,9 @@ void printMeasurement()
 }
 
 // Define a function to print time
-void printTime()
+void printTime(DateTime now)
 {
-  DateTime now = rtc.now();
+  //DateTime now = rtc.now();
   if (now.hour() < 10)
   {
     Serial.print("0");

@@ -8,6 +8,7 @@ from tkinter import * #import INIT set of tkinter library for GUI
 from tkinter import ttk
 from tkinter import messagebox
 from tkinter.filedialog import askopenfilename
+import sys
 import json
 try:
     from tkinter import filedialog
