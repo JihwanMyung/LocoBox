@@ -1,4 +1,3 @@
-
 import datetime  # For date-time setting and timedelta calculations
 import json
 import os
@@ -14,8 +13,9 @@ from tkinter import (BOTH, BOTTOM, DISABLED, HORIZONTAL, LEFT, RIGHT, SUNKEN,
                      X, Y, messagebox, sys, ttk)
 from tkinter.filedialog import askopenfilename
 from tkinter.messagebox import showinfo
+from PIL import Image, ImageTk
 
-
+import matplotlib 
 import serial  # For Serial communication
 import sys
 
@@ -26,26 +26,25 @@ except ImportError:
 import threading  # To run Arduino loop and tkinter loop alongside
 import traceback
 
-import matplotlib
-import matplotlib.pyplot as plt
+
 import numpy as np
 import pandas as pd
 import serial.tools.list_ports  # For identifying Arduino port
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
                                                NavigationToolbar2Tk)
 
-from Actogram import plot_doubleplot
+
+from Actogram import init_plot, plot_doubleplot
 from BoxSchedule import (BoxSchedule, PhaseSchedule, getDarkLightValue,
                          inverseDarkLightValue)
 
 matplotlib.use('TkAgg')
-
+import matplotlib.pyplot as plt
 
 #sudo chmod 666 /dev/ttyACM0
 
 
 #Actogram reference: https://gist.githubusercontent.com/matham/61c45e66567b07f20840eaea0488767a/raw/04ece1483d963b0361f25959557f4a515417bb8e/actogram.py
-
 
 
 # Global variables 1_1 = Box_Phases
@@ -125,8 +124,6 @@ global initLED1, initLED2, initLED3, initLED4 , initLED5
 
 global value_mat, input_mat, log_mat, phase_delimiters, figure_canvas, figure
 
-
-
  
  
 global setBox1, setBox2, setBox3, setBox4, setBox5
@@ -137,6 +134,8 @@ global display_string, display_counter, current_phase, tcyclefactor, starttime, 
 
 
 global savedBoxSchedule, BoxSchedule1, BoxSchedule2, BoxSchedule3, BoxSchedule4, BoxSchedule5
+
+
 
 savedBoxSchedule = BoxSchedule()
 phase_delimiters = []
@@ -512,10 +511,6 @@ def get_data(istate=0): # Start recording
              
                 counti = counti+1
 
-
-
-                
-
     except Exception:
         traceback.print_exc() 
 
@@ -545,11 +540,6 @@ def display_LD(box_id, phase_id):
     else:
         return "LD"
 
-    
-
-
-
-
 def save_logs( counti, string2): #max 120 timepoints 
     global log_mat
     
@@ -569,56 +559,34 @@ def save_logs( counti, string2): #max 120 timepoints
 
 
 def get_values_for_actogram():
-    global log_mat
     tab = int(tab_control.index('current'))+1
-    indices = []
-    pirs = []
-    box_id = 1
-    if tab == 2 or tab == 'Box2':
-        box_id = 1
-    elif tab == 3 or tab == 'Box3':
-        box_id = 1
-    elif tab == 4 or tab == 'Box4':
-
-        box_id = 1
-    elif tab == 5 or tab == 'Box5':
-        box_id = 5
-    
-
-
-    plot_double_acto(box_id)
-
-def plot_double_acto(tab):
-    global figure_canvas, figure
-    #the filename has to correspond to the filename that is being saved, if not, fill in with empty DF
-    working_directory = os.getcwd()
-    filename = working_directory+ '/' + filename_entry.get()
-    #filename = '/home/zow/LocoBox/LocoBox_12Phase/BOX1-3-20181018.txt'
-
-    
-
+    filename = './' + filename_entry.get()
     box = 'BOX' + str(tab)
     pir = 'PIR0'  + str(tab)
     led = 'LED0'   + str(tab)
-    
-    figure.clf()
+    plot_doubleplot(box, pir, led, filename)
+    # print(filename)
+    # print(pir)
+    plot_double_acto(tab)
 
-    figure_canvas.get_tk_widget().pack_forget() 
-    figure = plot_doubleplot(box, pir, led, filename)    
+def plot_double_acto(tab):
     
-    
-    figure_canvas = FigureCanvasTkAgg(figure, f2)   
-    figure.canvas.draw_idle()
-    #figure.canvas.draw()
-    figure_canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=1)
+    global label_acto
+    # Create an object of tkinter ImageTk
+    img = ImageTk.PhotoImage(Image.open("./BOX" + str(tab) + ".png"))
+    label_acto.configure(image=img)
+    label_acto.image = img
 
 def refresh_plot():
+    global t_acto
     print("refreshing plot")
-    get_values_for_actogram()
+    t_acto = threading.Thread(target=get_values_for_actogram())
+    t_acto.daemon = True
+    t_acto.start()
+    t_acto.join()
 
 
 def set_log_text(log_text, log_mat, tab):
-
 
     phase_id = 0
 
@@ -736,8 +704,6 @@ def on_tab_change_trigger( event):
     #tab = int(tab_control.index('current'))+1
     counti = display_counter
     string2 = display_string
-    
-
     
     tab = event.widget.tab('current')['text']
     
@@ -7792,6 +7758,8 @@ def change_time_display():
 
 
 if __name__ == '__main__':
+    
+    init_plot()
     #### All of the components and their positions in the GUI ####
     # You can change the design from here # 
     # 
@@ -8139,36 +8107,16 @@ if __name__ == '__main__':
     log_display.config(state="disabled")
 
 
-    #ACTOGRAM ASCII DISPLAY
-    #display as double plot using time series
-    working_directory = os.getcwd()
-    filename = working_directory + 'BOX1-5-'+date_string+'.txt'
-    #filename = '/home/zow/LocoBox/actogram/BOX2-COM4-20181018.txt'
-    #filename = 'C:/Users\OWNER\Documents\GitHub\LocoBox\LocoBox_12Phase\BOX1-3-20181018.txt'
+    frame_acto = Frame(window, width=300, height=700)
+    frame_acto.pack()
+    frame_acto.place(anchor='center', relx=0.81, rely=0.55)
 
-    box = 'BOX1'
-    pir = 'PIR01'
-    led = 'LED01'
+    # Create an object of tkinter ImageTk
+    img_acto = ImageTk.PhotoImage(Image.open("./init.png"))
 
-    #if filename empty, show blank
-    # create a figure
-    #figure = plt.Figure(figsize=(2, 2), dpi=100)
-    figure = plot_doubleplot(box, pir, led, filename)
-
-    # create FigureCanvasTkAgg object
-    figure_canvas = FigureCanvasTkAgg(figure, f2)
-
-    # create the toolbar
-    #NavigationToolbar2Tk(figure_canvas,f2)
-
-    # create axes
-    #axes = figure.add_subplot()
-    figure.canvas.draw_idle()
-    
-    # axes.bar(x,y)
-    # axes.set_title('Actogram')
-    # axes.set_ylabel('Days')
-    figure_canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=1)
+    # Create a Label Widget to display the text or Image
+    label_acto = Label(frame_acto, image = img_acto)
+    label_acto.pack(side=tk.RIGHT, fill=tk.BOTH, expand=1)
     
     log_display.pack(side = LEFT)
     
@@ -12862,4 +12810,5 @@ if __name__ == '__main__':
     tab_control.pack(expand=1, fill='both')
 
     ### Main loop
+
     window.mainloop()
