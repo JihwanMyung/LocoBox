@@ -1,6 +1,6 @@
 import datetime  # For date-time setting and timedelta calculations
 import json
-import os
+#import os
 import time  # Required for using delay functions
 import tkinter as tk
 #from tkinter import * #import INIT set of tkinter library for GUI
@@ -10,7 +10,7 @@ from faulthandler import disable
 from tkinter import (BOTH, BOTTOM, DISABLED, HORIZONTAL, LEFT, RIGHT, SUNKEN,
                      VERTICAL, Button, Canvas, Entry, Frame, IntVar, Label,
                      Menu, Radiobutton, Scrollbar, Spinbox, StringVar, Tk, W,
-                     X, Y, messagebox, sys, ttk)
+                     X, Y, messagebox, ttk)
 from tkinter.filedialog import askopenfilename
 from tkinter.messagebox import showinfo
 from PIL import Image, ImageTk
@@ -39,7 +39,7 @@ from BoxSchedule import (BoxSchedule, PhaseSchedule, getDarkLightValue,
                          inverseDarkLightValue)
 
 matplotlib.use('TkAgg')
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 #sudo chmod 666 /dev/ttyACM0
 
@@ -119,25 +119,25 @@ global hourOn2_12, minOn2_12, hourOff2_12, minOff2_12, dark2_12, light2_12, date
 global hourOn3_12, minOn3_12, hourOff3_12, minOff3_12, dark3_12, light3_12, date3_12, month3_12, year3_12, hourFrom3_12, minuteFrom3_12
 global hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12
 global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12
-global initLED1, initLED2, initLED3, initLED4 , initLED5
+#global initLED1, initLED2, initLED3, initLED4 , initLED5
 
 
-global value_mat, input_mat, log_mat, phase_delimiters, figure_canvas, figure
+global value_mat, phase_delimiters
 
  
  
 global setBox1, setBox2, setBox3, setBox4, setBox5
 
 
-global display_string, display_counter, current_phase, tcyclefactor, starttime, tcyclespinbox_arr
+global display_string, display_counter, tcyclefactor
 
 
 
-global savedBoxSchedule, BoxSchedule1, BoxSchedule2, BoxSchedule3, BoxSchedule4, BoxSchedule5
+#global savedBoxSchedule, BoxSchedule1, BoxSchedule2, BoxSchedule3, BoxSchedule4, BoxSchedule5
 
 
 
-savedBoxSchedule = BoxSchedule()
+#savedBoxSchedule = BoxSchedule()
 phase_delimiters = []
 tcyclefactor = 24
 initLED = 0
@@ -234,12 +234,10 @@ def get_data(istate=0): # Start recording
                 w.write(headers+'\n')
     w.close()
 
-    
     global serial_obj
     global dead
     global value_mat
     global display_string, display_counter, log_mat, initLED
-
 
     try:
         while True:
@@ -530,8 +528,6 @@ def display_as_ON_OFF(led_value):
 
 def display_LD(box_id, phase_id):
     global value_mat, input_mat
-    #get_var 
-    
     var = input_mat[box_id, phase_id, 4].get()
     if var == 2:
         return "DD"
@@ -664,76 +660,74 @@ def restore_history(log_text, log_mat, tab):
     log_display.config(state="disabled")
 
 
-    
-
 
 def on_tab_change( counti, string2):
     tab = int(tab_control.index('current'))+1
     #tab = event.widget.tab('current')['text']
-    if tab == 1:
+    # if tab == 1:
 
-        phase_id = get_phase(1)
-        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) +'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
-        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]))
-    elif tab == 2:
-        phase_id = get_phase(2)
-        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
-        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]))
+    #     phase_id = get_phase(1)
+    #     #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) +'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
+    #     #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]))
+    # elif tab == 2:
+    #     phase_id = get_phase(2)
+    #     #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
+    #     #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]))
 
-    elif tab == 3:
-        phase_id = get_phase(3)
-        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
-        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,6])+'    '+'PIR: '+str(log_mat[counti % 120,7]))
+    # elif tab == 3:
+    #     phase_id = get_phase(3)
+    #     #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
+    #     #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,6])+'    '+'PIR: '+str(log_mat[counti % 120,7]))
                
-    elif tab == 4:
-        phase_id = get_phase(4)
-        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
-        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]))
-    elif tab == 5:
-        phase_id = get_phase(5)
-        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+    # elif tab == 4:
+    #     phase_id = get_phase(4)
+    #     #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
+    #     #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]))
+    # elif tab == 5:
+    #     phase_id = get_phase(5)
+    #     #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
 
-        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]))
-    #log_display.config(state="normal")
-    #log_display.delete('1.0','end')
+    #     #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]))
+    # #log_display.config(state="normal")
+    # #log_display.delete('1.0','end')
     set_log_text(log_text, log_mat, tab)
 
 
 def on_tab_change_trigger( event):
     global display_counter, display_string
     #tab = int(tab_control.index('current'))+1
-    counti = display_counter
-    string2 = display_string
+    # counti = display_counter
+    # string2 = display_string
     
     tab = event.widget.tab('current')['text']
     
-    if tab == 'Box1':
-        phase_id = get_phase(1)
-        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
-        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]))
+    # if tab == 'Box1':
+    #     phase_id = get_phase(1)
+    #     #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
+    #     #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]))
         
-    elif tab == 'Box2':
-        phase_id = get_phase(2)
-        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
+    # elif tab == 'Box2':
+    #     phase_id = get_phase(2)
+    #     #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
 
-        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]))
+    #     #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]))
         
 
-    elif tab == 'Box3':
+    # elif tab == 'Box3':
 
-        phase_id = get_phase(3)
-        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
+    #     phase_id = get_phase(3)
+    #     #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
 
-    elif tab == 'Box4':
+    # elif tab == 'Box4':
 
-        phase_id = get_phase(4)
-        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
-        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]))
-    elif tab == 'Box5':
-        phase_id = get_phase(5)
-        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+    #     phase_id = get_phase(4)
+    #     #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
+    #     #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]))
+    # elif tab == 'Box5':
+    #     phase_id = get_phase(5)
+    #     #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
 
-        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]))
+    #     #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]))
     log_display.config(state="normal")
     log_display.delete('1.0','end')
     restore_history(log_text, log_mat, tab)
@@ -782,9 +776,6 @@ def get_phase(box_id):
         
         if phase_id == 11:
             return 11 +1
-
-
-
 
 
 def writeToJSONFile(filename, data):

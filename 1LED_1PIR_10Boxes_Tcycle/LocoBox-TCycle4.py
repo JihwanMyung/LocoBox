@@ -1601,7 +1601,7 @@ if __name__ == '__main__':
 
         print(p)
 
-    openPorts = p.device
+    openPorts = "ACM"
 
     #if len(np.shape(openPorts)) == 0:
 
