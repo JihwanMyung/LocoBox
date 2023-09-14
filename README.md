@@ -27,14 +27,14 @@ Online actogram plotting (data from 5 latest days) was included in this release.
 
 ### Current GUI
 
-This is the GUI when you start the python program.
+1. This is the GUI when you start the python program.
 
 
 <img width="451" alt="init" src="https://github.com/JihwanMyung/LocoBox/assets/98081367/eae3cb5b-87e0-49f1-a758-6893ccc00228">
 
 
 
-To start recording:
+2. To start recording:
 * Select the Port (e.g., COM1) that is connected to the Arduino
 * Set the suitable initial LED conditions and LED schedule for your experiment
 * The Schedule can be set for specific Box (Set current box) or replicated to all boxes (Replicate to All)
@@ -51,7 +51,7 @@ While doing recording, you might want to press "Refresh actogram" button on the 
 
 
 
-Besides, the GUI can also be used for just visualization (while not doing recording). To visualize specific datafile, please change the filename in the lower left, and press "Refresh actogram"
+3. Besides, the GUI can also be used for just visualization (while not doing recording). To visualize specific datafile, please change the filename in the lower left, and press "Refresh actogram"
 
 
 <img width="452" alt="visualization" src="https://github.com/JihwanMyung/LocoBox/assets/98081367/c922aaf8-6b89-4c51-b631-452f7496e979">
