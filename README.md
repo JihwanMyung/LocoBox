@@ -14,24 +14,22 @@ RTC library:
 
 (1) Legacy version: RTC library 'DS1307' (https://github.com/Seeed-Studio/RTC_DS1307/archive/master.zip).
 
-(2) Revision: RTCLib for Adafruit DS3231 Precision RTC
+(2) Revision: RTCLib for Adafruit DS3231 Precision RTC (https://github.com/adafruit/RTClib)
 
 The LocomotorBox (LocoBox) GUI interface has been optimized for Windows, macOS, and Linux (tested on Ubuntu).
 
 
-2. Current release (post-2022):
+2. Current release (2023):
 
 Development was performed on Ubuntu Linux. Some testes were done on virtual Windows environment.
 Arduino, python3, and libraries (numpy, pyserial, and RTC) were the most current ones (to be specified with the release).
 
+Online actogram plotting (data from 5 latest days) was included in this release. 
 
 ### Current GUI
-![image](https://user-images.githubusercontent.com/7980453/185054205-f0ec948b-6690-40d6-b44a-fe41aef7d195.png)
-
-
+<img width="451" alt="init" src="https://github.com/JihwanMyung/LocoBox/assets/98081367/eae3cb5b-87e0-49f1-a758-6893ccc00228">
 
 ### Installation
-
 Download Arduino .ino file and Python3 .py file. 
 Upload .ino to Arduino microcontroller using Arduino software. Be sure to install the appropriate RTC library.
 (In the old version (pre-2022), Grove - DS1307 RTC library (https://wiki.seeedstudio.com/Grove-RTC/) was used.)
@@ -43,11 +41,18 @@ Run Python GUI interface by double-clicking the .py file or on command-line usin
 
 This software system requires Arduino Mega 2560 for controlling either 5 (main release) or 10 boxes (optional) and a digital slot extension (custom-made). Each box requires 1 PIR sensor (digital input) and 1 relay switch.
 
+## On-going developments
+
+| Functionality | Status | Quality Control |
+|:----------|:-------------|:-------------|
+| Online actogram plotting| ✔️ | ✔️ |
+| T-cycle| X | X |
+
 
 ## Authors
 
 * Jihwan Myung - initial work and further development
-* Vuong Truong - further development on Python GUI interface
+* Vuong Truong - further development on Python GUI interface & online actogram plotting
 * Firdani Rianda Putra - reduction to 5-box and extension to 12 phases
 * Zow Ormazabal - stabilization and GUI improvement
 
