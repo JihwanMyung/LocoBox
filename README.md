@@ -36,6 +36,7 @@ Upload .ino to Arduino microcontroller using Arduino software. Be sure to instal
 
 Run Python GUI interface by double-clicking the .py file or on command-line using python3.
 
+Note: For a specific version of the software, the neccesarry .ino and .py files should have matching nomenclature, e.g., BTLocoBox_0001_v1.ino and BTLocoBox_0001_v1.py
 
 ## Deployment
 
@@ -43,11 +44,11 @@ This software system requires Arduino Mega 2560 for controlling either 5 (main r
 
 ## On-going developments
 
-| Functionality | Status | Quality Control |
-|:----------|:-------------|:-------------|
-| Online actogram plotting| ✔️ | ✔️ |
-| T-cycle| X | X |
-
+| Version | New features | Status | Quality Control |
+|:----------|:----------|:-------------|:-------------|
+|BTLocoBox_0001_v1| (see our publication) | ✔️ | ✔️ |
+|BTLocoBox_0002_v2| Online actogram plotting| ✔️ | ✔️ |
+|BTLocoBox_0003_v3| T_cycle| X | X |
 
 ## Authors
 
