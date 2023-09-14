@@ -34,6 +34,13 @@ This is the GUI when you start the python program.
 
 
 
+To start recording:
+* Select the Port (e.g., COM1) that is connected to the Arduino
+* Set the suitable initial LED conditions and LED schedule for your experiment
+* The Schedule can be set for specific Box (Set current box) or replicated to all boxes (Replicate to All)
+* Set All (Now the Schedules tab will be updated with your latest settings)
+* Save the current schedule to a json file
+* Recording start 
 
 While doing recording, you might want to press "Refresh actogram" button on the lower right to plot the data from 5 latest days (note that in this figure the plot was incomplete as there were only 4 data points)
 
