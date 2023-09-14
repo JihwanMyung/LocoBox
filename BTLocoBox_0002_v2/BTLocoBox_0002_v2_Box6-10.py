@@ -203,7 +203,7 @@ class StatusBar(Frame): # scan open serial ports
 
 #Initialize the windows size and name
 window = Tk()
-window.title('LocoBox (1-5_box)')
+window.title('LocoBox (6-10_box)')
 if sys.platform.startswith('win'):
     window.geometry('900x780')
 elif sys.platform.startswith('darwin'):
@@ -555,7 +555,7 @@ def save_logs( counti, string2): #max 120 timepoints
 
 
 def get_values_for_actogram():
-    tab = int(tab_control.index('current'))+1
+    tab = int(tab_control.index('current'))+6
     filename = './' + filename_entry.get()
     box = 'BOX' + str(tab)
     pir = 'PIR0'  + str(tab)
@@ -662,7 +662,7 @@ def restore_history(log_text, log_mat, tab):
 
 
 def on_tab_change( counti, string2):
-    tab = int(tab_control.index('current'))+1
+    tab = int(tab_control.index('current'))+6
     #tab = event.widget.tab('current')['text']
     # if tab == 1:
 
@@ -7895,12 +7895,14 @@ if __name__ == '__main__':
 
     #tab1
 
-    canvas1 = Canvas(ParentFrame1, width=850, height=150, scrollregion=(0,0,850,300)) #, highlightbackground="red", highlightthickness=2
+    canvas1 = Canvas(ParentFrame1, width=850, height=220) #, highlightbackground="red", highlightthickness=2
     scroll1 = Scrollbar(ParentFrame1, orient=VERTICAL, command=canvas1.yview)
     scrollx1 = Scrollbar(ParentFrame1, orient=HORIZONTAL, command=canvas1.xview)
+   
     scrollx1.grid(row=1, column=0, sticky=tk.EW)    
     canvas1.grid(row=0, column=0)
     scroll1.grid(row=0, column=1, sticky='ns')
+
     # scrollx1.pack(expand=1, fill=X, side=BOTTOM)window
     # scroll1.pack(side = RIGHT, fill = Y, expand=1)
     # canvas1.pack(side=LEFT,expand=True,fill=BOTH)
@@ -7913,10 +7915,10 @@ if __name__ == '__main__':
         scrollregion=canvas1.bbox("all")
         )
     )
-    canvas1.create_window(400, 155, window=tab1)
+    canvas1.create_window(400, 175, window=tab1)
 
 #tab2
-    canvas2 = Canvas(ParentFrame2, width=850, height=150)
+    canvas2 = Canvas(ParentFrame2, width=850, height=220, scrollregion=(0,0,850,300))
     canvas2.grid(row=0, column=0)
     scroll2 = Scrollbar(ParentFrame2, orient=VERTICAL, command=canvas2.yview)
     
@@ -7938,7 +7940,7 @@ if __name__ == '__main__':
     canvas2.create_window(400, 175, window=tab2)
 
 #tab3
-    canvas3 = Canvas(ParentFrame3, width=850, height=150)
+    canvas3 = Canvas(ParentFrame3, width=850, height=220, scrollregion=(0,0,850,300))
     scroll3 = Scrollbar(ParentFrame3, orient=VERTICAL, command=canvas3.yview)
     canvas3.grid(row=0, column=0)
     scroll3.grid(row=0, column=1, sticky='ns')
@@ -7959,7 +7961,7 @@ if __name__ == '__main__':
 
 
 #tab 4 
-    canvas4 = Canvas(ParentFrame4, width=850, height=150)
+    canvas4 = Canvas(ParentFrame4, width=850, height=220, scrollregion=(0,0,850,300))
     scroll4 = Scrollbar(ParentFrame4, orient=VERTICAL, command=canvas4.yview)
     canvas4.grid(row=0, column=0)
     scroll4.grid(row=0, column=1, sticky='ns')
@@ -7980,7 +7982,7 @@ if __name__ == '__main__':
 
 
 #tab 5
-    canvas5 = Canvas(ParentFrame5, width=850, height=150)
+    canvas5 = Canvas(ParentFrame5, width=850, height=220, scrollregion=(0,0,850,300))
     scroll5 = Scrollbar(ParentFrame5, orient=VERTICAL, command=canvas5.yview)
     canvas5.grid(row=0, column=0)
     scroll5.grid(row=0, column=1, sticky='ns')
@@ -7999,7 +8001,7 @@ if __name__ == '__main__':
     )
     canvas5.create_window(400, 175, window=tab5)
     
-    canvas11 = Canvas(ParentFrame11, width=850, height=150) #, highlightbackground="red", highlightthickness=2
+    canvas11 = Canvas(ParentFrame11, width=850, height=220) #, highlightbackground="red", highlightthickness=2
     scroll11 = Scrollbar(ParentFrame11, orient=HORIZONTAL, command=canvas11.xview)
     canvas11.grid(row=0, column=0)
     scroll11.grid(row=1, column=0, sticky='ew')
@@ -8014,7 +8016,6 @@ if __name__ == '__main__':
         )
     )
     canvas11.create_window(400, 175, window=tab11)
-    
    
 
     #Display all available serial ports
@@ -8087,10 +8088,10 @@ if __name__ == '__main__':
     log_display.insert(tk.END, first_log)
     log_display.config(state="disabled")
 
-
-    frame_acto = Frame(window, width=300, height=700)
+    # Packing the actogram
+    frame_acto = Frame(f2, width=300, height=500)
     frame_acto.pack()
-    frame_acto.place(anchor='center', relx=0.81, rely=0.55)
+    frame_acto.place(anchor='center', relx=0.81, rely=0.4)
 
     # Create an object of tkinter ImageTk
     img_acto = ImageTk.PhotoImage(Image.open("./init.png"))
@@ -8098,12 +8099,7 @@ if __name__ == '__main__':
     # Create a Label Widget to display the text or Image
     label_acto = Label(frame_acto, image = img_acto)
     label_acto.pack(side=tk.RIGHT, fill=tk.BOTH, expand=1)
-    
     log_display.pack(side = LEFT)
-    
-    #boxrec_stat.pack()#.place(x=40, y=yupperbtns+40)
-    #log_stream.getvalue()
-
     window.update_idletasks()
 
 
@@ -8112,7 +8108,7 @@ if __name__ == '__main__':
     btnSetCurrent = Button(f3,text=' Set current box ', command=lambda: OnButtonClick(int(tab_control.index('current'))+1))
     btnSetAll = Button(f3, text='Set All', command=getAllBoxSchedule)    
     btnReplicateToAll = Button(f3, text=' Replicate to All ', command= lambda: copyScheduletoAll(int(tab_control.index('current'))+1))
-    btnRefresh = Button(f3, text=' Refresh actogram', command= refresh_plot)
+    btnRefresh = Button(f2, text=' Refresh actogram', command= refresh_plot)
     
   
     # if box settings of all 5 boxes are done, activate save and run buttons
@@ -8132,7 +8128,10 @@ if __name__ == '__main__':
         window.update_idletasks()
 
     # button positions change depending on OS
-    
+
+
+    btnRefresh.place(anchor='se', relx=0.86, rely=0.85)
+    window.update_idletasks()
 
 
     if sys.platform.startswith('win'):
@@ -8141,7 +8140,10 @@ if __name__ == '__main__':
         btnSetCurrent.place(x=430, y=yupperbtns)       
         btnSetAll.place(x=730, y=yupperbtns)
         btnReplicateToAll.place(x=577, y=yupperbtns)
-        btnRefresh.place(x =730, y=ylowerbtns +30)
+        #btnRefresh.place(x =730, y=yupperbtns+500)
+
+        window.update_idletasks()
+
     elif sys.platform.startswith('darwin'):
         btnSave.place(x=730, y= ymidbtns)
         btnRun.place(x=730, y=ylowerbtns)
