@@ -28,6 +28,7 @@ RTC_DS3231 rtc; // define a object of RTClib class, DS3231
 // using https://learn.adafruit.com/adafruit-ds3231-precision-rtc-breakout/arduino-usage
 
 String dateIn;
+String initLEDs;
 String lightIn1;
 String lightIn2;
 String lightIn3;
@@ -47,18 +48,23 @@ int mPIR[5] = {0, 0, 0, 0, 0};
 int ANALOG[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 int mANALOG[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; // analog Values
 
+
+// Default initial LED state (off) and applies for each box individually
+int initLED[5] = {0, 0, 0, 0, 0};  // 0 off and 1 on
+
+// Default light-on and off times for LD cycle
 int phase1[5] = {0, 0, 0, 0, 0};
-int HourOn1[5] = {8, 8, 8, 8, 8}; // phase 1
+int HourOn1[5] = {7, 7, 7, 7, 7}; // phase 1
 int MinuteOn1[5] = {0, 0, 0, 0, 0};
-int HourOff1[5] = {20, 20, 20, 20, 20};
+int HourOff1[5] = {19, 19, 19, 19, 19};
 int MinuteOff1[5] = {0, 0, 0, 0, 0};
 int light1[5] = {0, 0, 0, 0, 0}; // phase 1
 int dark1[5] = {0, 0, 0, 0, 0};  // phase 1
 
 int phase2[5] = {0, 0, 0, 0, 0};
-int HourOn2[5] = {8, 8, 8, 8, 8}; // phase 2
+int HourOn2[5] = {7, 7, 7, 7, 7}; // phase 2
 int MinuteOn2[5] = {0, 0, 0, 0, 0};
-int HourOff2[5] = {20, 20, 20, 20, 20};
+int HourOff2[5] = {19, 19, 19, 19, 19};
 int MinuteOff2[5] = {0, 0, 0, 0, 0};
 int HourFrom2[5] = {0, 0, 0, 0, 0};            // phase 2
 int MinuteFrom2[5] = {0, 0, 0, 0, 0};          // phase 2
@@ -69,9 +75,9 @@ int light2[5] = {0, 0, 0, 0, 0};               // phase 2
 int dark2[5] = {0, 0, 0, 0, 0};                // phase 2
 
 int phase3[5] = {0, 0, 0, 0, 0};
-int HourOn3[5] = {8, 8, 8, 8, 8}; // phase 3
+int HourOn3[5] = {7, 7, 7, 7, 7}; // phase 3
 int MinuteOn3[5] = {0, 0, 0, 0, 0};
-int HourOff3[5] = {20, 20, 20, 20, 20};
+int HourOff3[5] = {19, 19, 19, 19, 19};
 int MinuteOff3[5] = {0, 0, 0, 0, 0};
 int HourFrom3[5] = {0, 0, 0, 0, 0};            // phase 3
 int MinuteFrom3[5] = {0, 0, 0, 0, 0};          // phase 3
@@ -82,9 +88,9 @@ int light3[5] = {0, 0, 0, 0, 0};               // phase 3
 int dark3[5] = {0, 0, 0, 0, 0};                // phase 3
 
 int phase4[5] = {0, 0, 0, 0, 0};
-int HourOn4[5] = {8, 8, 8, 8, 8}; // phase 4
+int HourOn4[5] = {7, 7, 7, 7, 7}; // phase 4
 int MinuteOn4[5] = {0, 0, 0, 0, 0};
-int HourOff4[5] = {20, 20, 20, 20, 20};
+int HourOff4[5] = {19, 19, 19, 19, 19};
 int MinuteOff4[5] = {0, 0, 0, 0, 0};
 int HourFrom4[5] = {0, 0, 0, 0, 0};            // phase 4
 int MinuteFrom4[5] = {0, 0, 0, 0, 0};          // phase 4
@@ -95,9 +101,9 @@ int light4[5] = {0, 0, 0, 0, 0};               // phase 4
 int dark4[5] = {0, 0, 0, 0, 0};                // phase 4
 
 int phase5[5] = {0, 0, 0, 0, 0};
-int HourOn5[5] = {8, 8, 8, 8, 8}; // phase 5
+int HourOn5[5] = {7, 7, 7, 7, 7}; // phase 5
 int MinuteOn5[5] = {0, 0, 0, 0, 0};
-int HourOff5[5] = {20, 20, 20, 20, 20};
+int HourOff5[5] = {19, 19, 19, 19, 19};
 int MinuteOff5[5] = {0, 0, 0, 0, 0};
 int HourFrom5[5] = {0, 0, 0, 0, 0};            // phase 5
 int MinuteFrom5[5] = {0, 0, 0, 0, 0};          // phase 5
@@ -108,9 +114,9 @@ int light5[5] = {0, 0, 0, 0, 0};               // phase 5
 int dark5[5] = {0, 0, 0, 0, 0};                // phase 5
 
 int phase6[5] = {0, 0, 0, 0, 0};
-int HourOn6[5] = {8, 8, 8, 8, 8}; // phase 6
+int HourOn6[5] = {7, 7, 7, 7, 7}; // phase 6
 int MinuteOn6[5] = {0, 0, 0, 0, 0};
-int HourOff6[5] = {20, 20, 20, 20, 20};
+int HourOff6[5] = {19, 19, 19, 19, 19};
 int MinuteOff6[5] = {0, 0, 0, 0, 0};
 int HourFrom6[5] = {0, 0, 0, 0, 0};            // phase 6
 int MinuteFrom6[5] = {0, 0, 0, 0, 0};          // phase 6
@@ -121,9 +127,9 @@ int light6[5] = {0, 0, 0, 0, 0};               // phase 6
 int dark6[5] = {0, 0, 0, 0, 0};                // phase 6
 
 int phase7[5] = {0, 0, 0, 0, 0};
-int HourOn7[5] = {8, 8, 8, 8, 8}; // phase 7
+int HourOn7[5] = {7, 7, 7, 7, 7}; // phase 7
 int MinuteOn7[5] = {0, 0, 0, 0, 0};
-int HourOff7[5] = {20, 20, 20, 20, 20};
+int HourOff7[5] = {19, 19, 19, 19, 19};
 int MinuteOff7[5] = {0, 0, 0, 0, 0};
 int HourFrom7[5] = {0, 0, 0, 0, 0};            // phase 7
 int MinuteFrom7[5] = {0, 0, 0, 0, 0};          // phase 7
@@ -134,9 +140,9 @@ int light7[5] = {0, 0, 0, 0, 0};               // phase 7
 int dark7[5] = {0, 0, 0, 0, 0};                // phase 7
 
 int phase8[5] = {0, 0, 0, 0, 0};
-int HourOn8[5] = {8, 8, 8, 8, 8}; // phase 8
+int HourOn8[5] = {7, 7, 7, 7, 7}; // phase 8
 int MinuteOn8[5] = {0, 0, 0, 0, 0};
-int HourOff8[5] = {20, 20, 20, 20, 20};
+int HourOff8[5] = {19, 19, 19, 19, 19};
 int MinuteOff8[5] = {0, 0, 0, 0, 0};
 int HourFrom8[5] = {0, 0, 0, 0, 0};            // phase 8
 int MinuteFrom8[5] = {0, 0, 0, 0, 0};          // phase 8
@@ -147,9 +153,9 @@ int light8[5] = {0, 0, 0, 0, 0};               // phase 8
 int dark8[5] = {0, 0, 0, 0, 0};                // phase 8
 
 int phase9[5] = {0, 0, 0, 0, 0};
-int HourOn9[5] = {8, 8, 8, 8, 8}; // phase 9
+int HourOn9[5] = {7, 7, 7, 7, 7}; // phase 9
 int MinuteOn9[5] = {0, 0, 0, 0, 0};
-int HourOff9[5] = {20, 20, 20, 20, 20};
+int HourOff9[5] = {19, 19, 19, 19, 19};
 int MinuteOff9[5] = {0, 0, 0, 0, 0};
 int HourFrom9[5] = {0, 0, 0, 0, 0};            // phase 9
 int MinuteFrom9[5] = {0, 0, 0, 0, 0};          // phase 9
@@ -160,9 +166,9 @@ int light9[5] = {0, 0, 0, 0, 0};               // phase 9
 int dark9[5] = {0, 0, 0, 0, 0};                // phase 9
 
 int phase10[5] = {0, 0, 0, 0, 0};
-int HourOn10[5] = {8, 8, 8, 8, 8}; // phase 10
+int HourOn10[5] = {7, 7, 7, 7, 7}; // phase 10
 int MinuteOn10[5] = {0, 0, 0, 0, 0};
-int HourOff10[5] = {20, 20, 20, 20, 20};
+int HourOff10[5] = {19, 19, 19, 19, 19};
 int MinuteOff10[5] = {0, 0, 0, 0, 0};
 int HourFrom10[5] = {0, 0, 0, 0, 0};            // phase 10
 int MinuteFrom10[5] = {0, 0, 0, 0, 0};          // phase 10
@@ -173,9 +179,9 @@ int light10[5] = {0, 0, 0, 0, 0};               // phase 10
 int dark10[5] = {0, 0, 0, 0, 0};                // phase 10
 
 int phase11[5] = {0, 0, 0, 0, 0};
-int HourOn11[5] = {8, 8, 8, 8, 8}; // phase 11
+int HourOn11[5] = {7, 7, 7, 7, 7}; // phase 11
 int MinuteOn11[5] = {0, 0, 0, 0, 0};
-int HourOff11[5] = {20, 20, 20, 20, 20};
+int HourOff11[5] = {19, 19, 19, 19, 19};
 int MinuteOff11[5] = {0, 0, 0, 0, 0};
 int HourFrom11[5] = {0, 0, 0, 0, 0};            // phase 11
 int MinuteFrom11[5] = {0, 0, 0, 0, 0};          // phase 11
@@ -186,9 +192,9 @@ int light11[5] = {0, 0, 0, 0, 0};               // phase 11
 int dark11[5] = {0, 0, 0, 0, 0};                // phase 11
 
 int phase12[5] = {0, 0, 0, 0, 0};
-int HourOn12[5] = {8, 8, 8, 8, 8}; // phase 12
+int HourOn12[5] = {7, 7, 7, 7, 7}; // phase 12
 int MinuteOn12[5] = {0, 0, 0, 0, 0};
-int HourOff12[5] = {20, 20, 20, 20, 20};
+int HourOff12[5] = {19, 19, 19, 19, 19};
 int MinuteOff12[5] = {0, 0, 0, 0, 0};
 int HourFrom12[5] = {0, 0, 0, 0, 0};            // phase 12
 int MinuteFrom12[5] = {0, 0, 0, 0, 0};          // phase 12
@@ -197,6 +203,7 @@ int month12[5] = {12, 12, 12, 12, 12};          // phase 12
 int year12[5] = {2018, 2018, 2018, 2018, 2018}; // phase 12
 int light12[5] = {0, 0, 0, 0, 0};               // phase 12
 int dark12[5] = {0, 0, 0, 0, 0};                // phase 12
+
 
 // Digital In-Out
 int DIn[5] = {2, 4, 6, 8, 10};  // PIR evens number digital use pinMode
@@ -210,10 +217,11 @@ int ASensi[10] = {990, 990, 990, 990, 990, 990, 990, 990, 990, 990};
 // Light flags
 int LightFlag[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 int TimeSet = 0;
+int initSet = 0;
 int LightSet[47] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; // add/subtract(4) for phase checkpoints
 int InitialFlag = 0;
 
-// interval
+// Interval (note the use of long)
 unsigned long previousMillis = 0UL;
 unsigned long interval1 = 1000UL;
 unsigned long interval90 = 90UL;
@@ -257,18 +265,6 @@ void count_delay2()
   }
 }
 
-void rtc_delay()
-{
-  DateTime now = rtc.now();
-  unsigned long currents = now.second();
-
-  if (currents - previoussecs > 0)
-  {
-
-    previousMillis = currents;
-  }
-}
-
 //////////////////////////////////////////////////////////////////////////////////////// Set up run
 void setup()
 {
@@ -309,8 +305,8 @@ void setup()
 void loop()
 {
 
-  DateTime now = rtc.now(); // reads the time every second
-  // Serial.println("Now");
+  DateTime timenow = rtc.now(); // reads the time every second
+  //Serial.println(timenow.second(), DEC);
   // String str = String(now.year(), DEC) + '/' + String(now.month(), DEC) + '/' + String(now.day(), DEC) + " " + String(now.hour(), DEC) + ':' + String(now.minute(), DEC) + ':' + String(now.second(), DEC);
   // Serial.println(str);
 
@@ -335,13 +331,26 @@ void loop()
     TimeSet = 1;
   }
 
+// Read initLEDs
+  if (Serial.available() == 5 && InitialFlag == 0 && TimeSet == 1 && LightSet[1] == 0 && initSet == 0)
+  {
+    initLEDs = Serial.readString();
+    
+    initLED[0] = getInt(initLEDs.substring(0, 1));
+    initLED[1] = getInt(initLEDs.substring(1, 2));
+    initLED[2] = getInt(initLEDs.substring(2, 3));
+    initLED[3] = getInt(initLEDs.substring(3, 4));
+    initLED[4] = getInt(initLEDs.substring(4, 5));
+    initSet = 1;
+  }
+
   ////////////////////// Light Schedule (Get the input from Python interface)
 
   // Phase1
-  if (Serial.available() == 40 && InitialFlag == 0 && TimeSet == 1 && LightSet[1] == 0)
+  if (Serial.available() == 40 && InitialFlag == 0 && TimeSet == 1 && LightSet[1] == 0 && initSet == 1)
   {
     lightIn1 = Serial.readString(); // Serial.readString() its command for getting number from Python interface
-
+    
     //    Serial.print("-");Serial.print("Phase 1");
     // Box1
     HourOn1[0] = getInt(lightIn1.substring(0, 2));
@@ -1456,12 +1465,12 @@ void loop()
   }
   // Only start recording when the now.second()=0, otherwise stay in the (delay 1 sec) loop
 
-  // now = rtc.now();
+  DateTime now = rtc.now();
   if (InitialFlag == 1)
   {
-    while ((now.second() == 0) == false) // now.second() == 0
-    {
-
+    while (now.second() != 0) // now.second() == 0
+    { 
+      // millis_delay(1);
       now = rtc.now();
     }
 
@@ -1555,14 +1564,17 @@ void loop()
       }
     }
 
+    //-----------------------
+    // LED CONTROL
+    //-----------------------
     // Phase 1 Logic Schedule
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 5; i++) // loop for 5 boxes
     {
       if (phase1[i] == 0)                                                      //&& (int)dd2 <= date2 && (int)mo2 == month2 && (int)yy2 <= year2
       {                                                                        // Serial.print("Phase1 HourOn1: "); Serial.print(HourOn1[0]); Serial.print(" "); Serial.print(MinuteOn1[0]); Serial.print("-Phase1HourOff");Serial.print(HourOff1[0]);Serial.print(" ");Serial.print(MinuteOff1[0]);
         if (HourOn1[i] * 60 + MinuteOn1[i] < HourOff1[i] * 60 + MinuteOff1[i]) // 0-24 condition Turn On
         {
-          if (HourOn1[i] * 60 + MinuteOn1[i] <= now.hour() * 60 + now.minute() && now.hour() * 60 + now.minute() < HourOff1[i] * 60 + MinuteOff1[i])
+          if (HourOn1[i] * 60 + MinuteOn1[i] <= now.hour() * 60 + now.minute() && now.hour() * 60 + now.minute() < HourOff1[i] * 60 + MinuteOff1[i]) // after ON and before OFF
           {
             if (light1[i] == 0 && dark1[i] == 0)
             {
@@ -1582,10 +1594,20 @@ void loop()
           }
           else
           {
-            if (light1[i] == 0 && dark1[i] == 0)
+            if (HourOff1[i] * 60 + MinuteOff1[i] <= now.hour() * 60 + now.minute() && light1[i] == 0 && dark1[i] == 0)
             {
               digitalWrite(DOut[i], LOW);
               LightFlag[i] = 0;
+            }
+            if (now.hour() * 60 + now.minute() < HourOn1[i] * 60 + MinuteOn1[i] && light1[i] == 0 && dark1[i] == 0 && initLED[i] == 0)
+            {
+              digitalWrite(DOut[i], LOW);
+              LightFlag[i] = 0;
+            }
+            if (now.hour() * 60 + now.minute() < HourOn1[i] * 60 + MinuteOn1[i] && light1[i] == 0 && dark1[i] == 0 && initLED[i] == 1)
+            {
+              digitalWrite(DOut[i], LOW);
+              LightFlag[i] = 1;
             }
             if (light1[i] == 0 && dark1[i] == 1)
             {
@@ -1601,13 +1623,24 @@ void loop()
         }
         else if (HourOn1[i] * 60 + MinuteOn1[i] > HourOff1[i] * 60 + MinuteOff1[i]) // 19-07 condition Turn On
         {
-          if (HourOn1[i] * 60 + MinuteOn1[i] <= now.hour() * 60 + now.minute() || now.hour() * 60 + now.minute() < HourOff1[i] * 60 + MinuteOff1[i])
+          if (HourOn1[i] * 60 + MinuteOn1[i] <= now.hour() * 60 + now.minute() || now.hour() * 60 + now.minute() < HourOff1[i] * 60 + MinuteOff1[i]) // after ON or before OFF (DL cycle)
           {
-            if (light1[i] == 0 && dark1[i] == 0)
+            if (HourOn1[i] * 60 + MinuteOn1[i] <= now.hour() * 60 + now.minute() && light1[i] == 0 && dark1[i] == 0)
             {
               digitalWrite(DOut[i], HIGH);
               LightFlag[i] = 1;
             }
+            if (now.hour() * 60 + now.minute() < HourOff1[i] * 60 + MinuteOff1[i] && light1[i] == 0 && dark1[i] == 0 && initLED[i] == 0)
+            {
+              digitalWrite(DOut[i], HIGH);
+              LightFlag[i] = 0;
+            }
+            if (now.hour() * 60 + now.minute() < HourOff1[i] * 60 + MinuteOff1[i] && light1[i] == 0 && dark1[i] == 0 && initLED[i] == 1)
+            {
+              digitalWrite(DOut[i], HIGH);
+              LightFlag[i] = 1;
+            }
+
             if (light1[i] == 0 && dark1[i] == 1)
             {
               digitalWrite(DOut[i], LOW);
@@ -2591,11 +2624,10 @@ void loop()
 
     // hh2 +=1;
     //    printMeasurementExpan();
-    printMeasurement();
+    printMeasurement(now);
     //    timeExpansion();
     Serial.println(" ");
 
-    rtc_delay();
 
     // if (Serial.read() == 0)
     // {
@@ -2609,7 +2641,7 @@ void loop()
 }
 
 // Define a function to print measurement
-void printMeasurement()
+void printMeasurement(DateTime now)
 {
   // mean values over 1-min
   for (int i = 0; i < 5; i++)
@@ -2628,7 +2660,7 @@ void printMeasurement()
   }
 
   // sensor value sampling for 1-min
-  for (int i = 0; i < 299; ++i)
+  for (int i = 0; i < 299; i++)
   {
     for (int j = 0; j < 5; j++)
     {
@@ -2659,7 +2691,7 @@ void printMeasurement()
 
   // Outputs
 
-  printTime();
+  printTime(now);
   Serial.print(" ");
 
   for (int i = 0; i < 5; i++)
@@ -2732,9 +2764,9 @@ void printMeasurement()
 }
 
 // Define a function to print time
-void printTime()
+void printTime(DateTime now)
 {
-  DateTime now = rtc.now();
+  //DateTime now = rtc.now();
   if (now.hour() < 10)
   {
     Serial.print("0");

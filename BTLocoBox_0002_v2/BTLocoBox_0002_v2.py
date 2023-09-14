@@ -1,7 +1,6 @@
-
 import datetime  # For date-time setting and timedelta calculations
 import json
-import os
+#import os
 import time  # Required for using delay functions
 import tkinter as tk
 #from tkinter import * #import INIT set of tkinter library for GUI
@@ -11,11 +10,12 @@ from faulthandler import disable
 from tkinter import (BOTH, BOTTOM, DISABLED, HORIZONTAL, LEFT, RIGHT, SUNKEN,
                      VERTICAL, Button, Canvas, Entry, Frame, IntVar, Label,
                      Menu, Radiobutton, Scrollbar, Spinbox, StringVar, Tk, W,
-                     X, Y, messagebox, sys, ttk)
+                     X, Y, messagebox, ttk)
 from tkinter.filedialog import askopenfilename
 from tkinter.messagebox import showinfo
+from PIL import Image, ImageTk
 
-
+import matplotlib 
 import serial  # For Serial communication
 import sys
 
@@ -26,26 +26,25 @@ except ImportError:
 import threading  # To run Arduino loop and tkinter loop alongside
 import traceback
 
-import matplotlib
-import matplotlib.pyplot as plt
+
 import numpy as np
 import pandas as pd
 import serial.tools.list_ports  # For identifying Arduino port
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
                                                NavigationToolbar2Tk)
 
-from Actogram import plot_doubleplot
+
+from Actogram import init_plot, plot_doubleplot
 from BoxSchedule import (BoxSchedule, PhaseSchedule, getDarkLightValue,
                          inverseDarkLightValue)
 
 matplotlib.use('TkAgg')
-
+#import matplotlib.pyplot as plt
 
 #sudo chmod 666 /dev/ttyACM0
 
 
 #Actogram reference: https://gist.githubusercontent.com/matham/61c45e66567b07f20840eaea0488767a/raw/04ece1483d963b0361f25959557f4a515417bb8e/actogram.py
-
 
 
 # Global variables 1_1 = Box_Phases
@@ -120,25 +119,25 @@ global hourOn2_12, minOn2_12, hourOff2_12, minOff2_12, dark2_12, light2_12, date
 global hourOn3_12, minOn3_12, hourOff3_12, minOff3_12, dark3_12, light3_12, date3_12, month3_12, year3_12, hourFrom3_12, minuteFrom3_12
 global hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12
 global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12
-global initLED1, initLED2, initLED3, initLED4 , initLED5
+#global initLED1, initLED2, initLED3, initLED4 , initLED5
 
 
-global value_mat, input_mat, log_mat, phase_delimiters, figure_canvas, figure
-
-
+global value_mat, phase_delimiters
 
  
  
 global setBox1, setBox2, setBox3, setBox4, setBox5
 
 
-global display_string, display_counter, current_phase, tcyclefactor, starttime, tcyclespinbox_arr
+global display_string, display_counter, tcyclefactor
 
 
 
-global savedBoxSchedule, BoxSchedule1, BoxSchedule2, BoxSchedule3, BoxSchedule4, BoxSchedule5
+#global savedBoxSchedule, BoxSchedule1, BoxSchedule2, BoxSchedule3, BoxSchedule4, BoxSchedule5
 
-savedBoxSchedule = BoxSchedule()
+
+
+#savedBoxSchedule = BoxSchedule()
 phase_delimiters = []
 tcyclefactor = 24
 initLED = 0
@@ -206,7 +205,7 @@ class StatusBar(Frame): # scan open serial ports
 window = Tk()
 window.title('LocoBox (1-5_box)')
 if sys.platform.startswith('win'):
-    window.geometry('900x730')
+    window.geometry('900x780')
 elif sys.platform.startswith('darwin'):
     window.geometry('1200x640')
 elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
@@ -235,12 +234,10 @@ def get_data(istate=0): # Start recording
                 w.write(headers+'\n')
     w.close()
 
-    
     global serial_obj
     global dead
     global value_mat
     global display_string, display_counter, log_mat, initLED
-
 
     try:
         while True:
@@ -512,10 +509,6 @@ def get_data(istate=0): # Start recording
              
                 counti = counti+1
 
-
-
-                
-
     except Exception:
         traceback.print_exc() 
 
@@ -535,8 +528,6 @@ def display_as_ON_OFF(led_value):
 
 def display_LD(box_id, phase_id):
     global value_mat, input_mat
-    #get_var 
-    
     var = input_mat[box_id, phase_id, 4].get()
     if var == 2:
         return "DD"
@@ -544,11 +535,6 @@ def display_LD(box_id, phase_id):
         return "LL"
     else:
         return "LD"
-
-    
-
-
-
 
 def save_logs( counti, string2): #max 120 timepoints 
     global log_mat
@@ -569,56 +555,34 @@ def save_logs( counti, string2): #max 120 timepoints
 
 
 def get_values_for_actogram():
-    global log_mat
     tab = int(tab_control.index('current'))+1
-    indices = []
-    pirs = []
-    box_id = 1
-    if tab == 2 or tab == 'Box2':
-        box_id = 1
-    elif tab == 3 or tab == 'Box3':
-        box_id = 1
-    elif tab == 4 or tab == 'Box4':
-
-        box_id = 1
-    elif tab == 5 or tab == 'Box5':
-        box_id = 5
-    
-
-
-    plot_double_acto(box_id)
-
-def plot_double_acto(tab):
-    global figure_canvas, figure
-    #the filename has to correspond to the filename that is being saved, if not, fill in with empty DF
-    working_directory = os.getcwd()
-    filename = working_directory+ '/' + filename_entry.get()
-    #filename = '/home/zow/LocoBox/LocoBox_12Phase/BOX1-3-20181018.txt'
-
-    
-
+    filename = './' + filename_entry.get()
     box = 'BOX' + str(tab)
     pir = 'PIR0'  + str(tab)
     led = 'LED0'   + str(tab)
-    
-    figure.clf()
+    plot_doubleplot(box, pir, led, filename)
+    # print(filename)
+    # print(pir)
+    plot_double_acto(tab)
 
-    figure_canvas.get_tk_widget().pack_forget() 
-    figure = plot_doubleplot(box, pir, led, filename)    
+def plot_double_acto(tab):
     
-    
-    figure_canvas = FigureCanvasTkAgg(figure, f2)   
-    figure.canvas.draw_idle()
-    #figure.canvas.draw()
-    figure_canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=1)
+    global label_acto
+    # Create an object of tkinter ImageTk
+    img = ImageTk.PhotoImage(Image.open("./BOX" + str(tab) + ".png"))
+    label_acto.configure(image=img)
+    label_acto.image = img
 
 def refresh_plot():
+    global t_acto
     print("refreshing plot")
-    get_values_for_actogram()
+    t_acto = threading.Thread(target=get_values_for_actogram())
+    t_acto.daemon = True
+    t_acto.start()
+    t_acto.join()
 
 
 def set_log_text(log_text, log_mat, tab):
-
 
     phase_id = 0
 
@@ -696,83 +660,77 @@ def restore_history(log_text, log_mat, tab):
     log_display.config(state="disabled")
 
 
-    
-
 
 def on_tab_change( counti, string2):
     tab = int(tab_control.index('current'))+1
     #tab = event.widget.tab('current')['text']
-    if tab == 1:
+    # if tab == 1:
 
-        phase_id = get_phase(1)
-        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) +'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
-        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]))
-    elif tab == 2:
-        phase_id = get_phase(2)
-        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
-        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]))
+    #     phase_id = get_phase(1)
+    #     #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) +'    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
+    #     #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]))
+    # elif tab == 2:
+    #     phase_id = get_phase(2)
+    #     #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
+    #     #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]))
 
-    elif tab == 3:
-        phase_id = get_phase(3)
-        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
-        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,6])+'    '+'PIR: '+str(log_mat[counti % 120,7]))
+    # elif tab == 3:
+    #     phase_id = get_phase(3)
+    #     #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
+    #     #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,6])+'    '+'PIR: '+str(log_mat[counti % 120,7]))
                
-    elif tab == 4:
-        phase_id = get_phase(4)
-        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
-        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]))
-    elif tab == 5:
-        phase_id = get_phase(5)
-        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+    # elif tab == 4:
+    #     phase_id = get_phase(4)
+    #     #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
+    #     #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]))
+    # elif tab == 5:
+    #     phase_id = get_phase(5)
+    #     #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
 
-        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]))
-    #log_display.config(state="normal")
-    #log_display.delete('1.0','end')
+    #     #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]))
+    # #log_display.config(state="normal")
+    # #log_display.delete('1.0','end')
     set_log_text(log_text, log_mat, tab)
-
 
 def on_tab_change_trigger( event):
     global display_counter, display_string
     #tab = int(tab_control.index('current'))+1
-    counti = display_counter
-    string2 = display_string
-    
-
+    # counti = display_counter
+    # string2 = display_string
     
     tab = event.widget.tab('current')['text']
     
-    if tab == 'Box1':
-        phase_id = get_phase(1)
-        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
-        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]))
+    # if tab == 'Box1':
+    #     phase_id = get_phase(1)
+    #     #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED1: '+string2[20:25]+'    '+'PIR1: '+string2[26:31])
+    #     #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,2])+'    '+'PIR: '+str(log_mat[counti % 120,3]))
         
-    elif tab == 'Box2':
-        phase_id = get_phase(2)
-        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
+    # elif tab == 'Box2':
+    #     phase_id = get_phase(2)
+    #     #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED2: '+string2[32:37]+'    '+'PIR2: '+string2[38:43])
 
-        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]))
+    #     #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,4])+'    '+'PIR: '+str(log_mat[counti % 120,5]))
         
 
-    elif tab == 'Box3':
+    # elif tab == 'Box3':
 
-        phase_id = get_phase(3)
-        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
+    #     phase_id = get_phase(3)
+    #     #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED3: '+string2[44:49]+'    '+'PIR3: '+string2[50:55])
 
-    elif tab == 'Box4':
+    # elif tab == 'Box4':
 
-        phase_id = get_phase(4)
-        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
-        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]))
-    elif tab == 'Box5':
-        phase_id = get_phase(5)
-        #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
+    #     phase_id = get_phase(4)
+    #     #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED4: '+string2[56:61]+'    '+'PIR4: '+string2[62:67])
+    #     #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,8])+'    '+'PIR: '+str(log_mat[counti % 120,9]))
+    # elif tab == 'Box5':
+    #     phase_id = get_phase(5)
+    #     #boxrec_text.set('# '+str(counti)+'     Phase: ' + str(phase_id) + '    Time: '+string2[0:8]+'    LED5: '+string2[68:73]+'    '+'PIR5: '+string2[74:79])
 
-        #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]))
+    #     #log_text.set('# '+str(log_mat[counti % 120,0])+'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+str(log_mat[counti % 120,10])+'    '+'PIR: '+str(log_mat[counti % 120,11]))
     log_display.config(state="normal")
     log_display.delete('1.0','end')
     restore_history(log_text, log_mat, tab)
     #get_values_for_actogram()
-
 
 
 def time_in_range(start, end, current):
@@ -813,12 +771,8 @@ def get_phase(box_id):
         if current > end:
             continue
 
-        
         if phase_id == 11:
             return 11 +1
-
-
-
 
 
 def writeToJSONFile(filename, data):
@@ -1515,13 +1469,10 @@ def save_conf(): # Save schedule configuration
     config['hourFrom5_12'] = hourFrom5_12
     config['minuteFrom5_12'] = minuteFrom5_12
 
-
-
     configfilename = configfilename_entry.get()
     writeToJSONFile(configfilename, config)
     status.pack(side='bottom', fill='x')
     status.set('Schedule configuration saved.')
-
 
 
 def read_data(): # Read data from file for plotting
@@ -1638,8 +1589,6 @@ def read_conf(): # Read schedule configuration
         minuteFrom5_12 = config['minuteFrom5_12'] 
     except KeyError:
         getAllBoxSchedule() #set default values using the ones displayed and then load the JSON values on top
-
-
     
     
     hourOn1_1 = config['hourOn1_1'] 
@@ -1674,7 +1623,6 @@ def read_conf(): # Read schedule configuration
     dark5_1 = config['dark5_1'] 
     light5_1 = config['light5_1'] 
      
-
 
     try:
         hourOn1_2 = config['hourOn1_2'] 
@@ -2063,7 +2011,6 @@ def read_conf(): # Read schedule configuration
 
     #Phase 8
     
-
         hourOn1_8 =config['hourOn1_8']  
         minOn1_8 = config['minOn1_8'] 
         hourOff1_8 = config['hourOff1_8'] 
@@ -7792,6 +7739,8 @@ def change_time_display():
 
 
 if __name__ == '__main__':
+    
+    init_plot()
     #### All of the components and their positions in the GUI ####
     # You can change the design from here # 
     # 
@@ -8139,36 +8088,16 @@ if __name__ == '__main__':
     log_display.config(state="disabled")
 
 
-    #ACTOGRAM ASCII DISPLAY
-    #display as double plot using time series
-    working_directory = os.getcwd()
-    filename = working_directory + 'BOX1-5-'+date_string+'.txt'
-    #filename = '/home/zow/LocoBox/actogram/BOX2-COM4-20181018.txt'
-    #filename = 'C:/Users\OWNER\Documents\GitHub\LocoBox\LocoBox_12Phase\BOX1-3-20181018.txt'
+    frame_acto = Frame(window, width=300, height=700)
+    frame_acto.pack()
+    frame_acto.place(anchor='center', relx=0.81, rely=0.55)
 
-    box = 'BOX1'
-    pir = 'PIR01'
-    led = 'LED01'
+    # Create an object of tkinter ImageTk
+    img_acto = ImageTk.PhotoImage(Image.open("./init.png"))
 
-    #if filename empty, show blank
-    # create a figure
-    #figure = plt.Figure(figsize=(2, 2), dpi=100)
-    figure = plot_doubleplot(box, pir, led, filename)
-
-    # create FigureCanvasTkAgg object
-    figure_canvas = FigureCanvasTkAgg(figure, f2)
-
-    # create the toolbar
-    #NavigationToolbar2Tk(figure_canvas,f2)
-
-    # create axes
-    #axes = figure.add_subplot()
-    figure.canvas.draw_idle()
-    
-    # axes.bar(x,y)
-    # axes.set_title('Actogram')
-    # axes.set_ylabel('Days')
-    figure_canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=1)
+    # Create a Label Widget to display the text or Image
+    label_acto = Label(frame_acto, image = img_acto)
+    label_acto.pack(side=tk.RIGHT, fill=tk.BOTH, expand=1)
     
     log_display.pack(side = LEFT)
     
@@ -8183,7 +8112,7 @@ if __name__ == '__main__':
     btnSetCurrent = Button(f3,text=' Set current box ', command=lambda: OnButtonClick(int(tab_control.index('current'))+1))
     btnSetAll = Button(f3, text='Set All', command=getAllBoxSchedule)    
     btnReplicateToAll = Button(f3, text=' Replicate to All ', command= lambda: copyScheduletoAll(int(tab_control.index('current'))+1))
-    btnRefresh = Button(f3, text=' Refresh ', command= refresh_plot)
+    btnRefresh = Button(f3, text=' Refresh actogram', command= refresh_plot)
     
   
     # if box settings of all 5 boxes are done, activate save and run buttons
@@ -8203,7 +8132,6 @@ if __name__ == '__main__':
         window.update_idletasks()
 
     # button positions change depending on OS
-    
     
 
 
@@ -8227,8 +8155,7 @@ if __name__ == '__main__':
         btnSetCurrent.place(x=430, y=yupperbtns)       
         btnSetAll.place(x=730, y=yupperbtns)
         btnReplicateToAll.place(x=577, y=yupperbtns)
-        btnRefresh.place(x =730, y=ylowerbtns +30)
-        
+        btnRefresh.place(x =730, y=ylowerbtns +30)    
     else:
         btnSave.place(x=730, y= ymidbtns)
         btnRun.place(x=730, y=ylowerbtns)
@@ -11908,8 +11835,6 @@ if __name__ == '__main__':
         tcyclespinbox_arr[4,i].insert(0,24)
         
     
-    
-    
     tab5_title = Label(tab5, text= 'LED schedule', anchor='center')
     tab5_title.grid(column=12, row= 1, columnspan='27', sticky='we')
     # capSep5 = ttk.Separator(tab5, orient=HORIZONTAL)
@@ -12862,4 +12787,5 @@ if __name__ == '__main__':
     tab_control.pack(expand=1, fill='both')
 
     ### Main loop
+
     window.mainloop()
