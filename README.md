@@ -67,7 +67,7 @@ Note: For a specific version of the software, the neccesarry .ino and .py files 
 
 ## Deployment
 
-This software system requires Arduino Mega 2560 for controlling either 5 (main release) or 10 boxes (optional) and a digital slot extension (custom-made). Each box requires 1 PIR sensor (digital input) and 1 relay switch.
+This software system requires Arduino Mega 2560 for controlling either 5 (main release) or 10 boxes (optional with a custom-made digital slot extension). Each box requires 1 PIR sensor (digital input) and 1 relay switch.
 
 ## On-going developments
 
