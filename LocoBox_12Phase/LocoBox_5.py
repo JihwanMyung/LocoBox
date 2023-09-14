@@ -205,7 +205,7 @@ class StatusBar(Frame): # scan open serial ports
 window = Tk()
 window.title('LocoBox (1-5_box)')
 if sys.platform.startswith('win'):
-    window.geometry('900x730')
+    window.geometry('900x780')
 elif sys.platform.startswith('darwin'):
     window.geometry('1200x640')
 elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
@@ -692,7 +692,6 @@ def on_tab_change( counti, string2):
     # #log_display.delete('1.0','end')
     set_log_text(log_text, log_mat, tab)
 
-
 def on_tab_change_trigger( event):
     global display_counter, display_string
     #tab = int(tab_control.index('current'))+1
@@ -734,7 +733,6 @@ def on_tab_change_trigger( event):
     #get_values_for_actogram()
 
 
-
 def time_in_range(start, end, current):
     """Returns whether current is in the range [start, end]"""
     return start <= current <= end
@@ -773,7 +771,6 @@ def get_phase(box_id):
         if current > end:
             continue
 
-        
         if phase_id == 11:
             return 11 +1
 
@@ -1472,13 +1469,10 @@ def save_conf(): # Save schedule configuration
     config['hourFrom5_12'] = hourFrom5_12
     config['minuteFrom5_12'] = minuteFrom5_12
 
-
-
     configfilename = configfilename_entry.get()
     writeToJSONFile(configfilename, config)
     status.pack(side='bottom', fill='x')
     status.set('Schedule configuration saved.')
-
 
 
 def read_data(): # Read data from file for plotting
@@ -1595,8 +1589,6 @@ def read_conf(): # Read schedule configuration
         minuteFrom5_12 = config['minuteFrom5_12'] 
     except KeyError:
         getAllBoxSchedule() #set default values using the ones displayed and then load the JSON values on top
-
-
     
     
     hourOn1_1 = config['hourOn1_1'] 
@@ -1631,7 +1623,6 @@ def read_conf(): # Read schedule configuration
     dark5_1 = config['dark5_1'] 
     light5_1 = config['light5_1'] 
      
-
 
     try:
         hourOn1_2 = config['hourOn1_2'] 
@@ -2020,7 +2011,6 @@ def read_conf(): # Read schedule configuration
 
     #Phase 8
     
-
         hourOn1_8 =config['hourOn1_8']  
         minOn1_8 = config['minOn1_8'] 
         hourOff1_8 = config['hourOff1_8'] 
@@ -8122,7 +8112,7 @@ if __name__ == '__main__':
     btnSetCurrent = Button(f3,text=' Set current box ', command=lambda: OnButtonClick(int(tab_control.index('current'))+1))
     btnSetAll = Button(f3, text='Set All', command=getAllBoxSchedule)    
     btnReplicateToAll = Button(f3, text=' Replicate to All ', command= lambda: copyScheduletoAll(int(tab_control.index('current'))+1))
-    btnRefresh = Button(f3, text=' Refresh ', command= refresh_plot)
+    btnRefresh = Button(f3, text=' Refresh actogram', command= refresh_plot)
     
   
     # if box settings of all 5 boxes are done, activate save and run buttons
@@ -8142,7 +8132,6 @@ if __name__ == '__main__':
         window.update_idletasks()
 
     # button positions change depending on OS
-    
     
 
 
@@ -8166,8 +8155,7 @@ if __name__ == '__main__':
         btnSetCurrent.place(x=430, y=yupperbtns)       
         btnSetAll.place(x=730, y=yupperbtns)
         btnReplicateToAll.place(x=577, y=yupperbtns)
-        btnRefresh.place(x =730, y=ylowerbtns +30)
-        
+        btnRefresh.place(x =730, y=ylowerbtns +30)    
     else:
         btnSave.place(x=730, y= ymidbtns)
         btnRun.place(x=730, y=ylowerbtns)
@@ -11846,8 +11834,6 @@ if __name__ == '__main__':
         tcyclespinbox_arr[4,i].delete(0,'end')
         tcyclespinbox_arr[4,i].insert(0,24)
         
-    
-    
     
     tab5_title = Label(tab5, text= 'LED schedule', anchor='center')
     tab5_title.grid(column=12, row= 1, columnspan='27', sticky='we')
