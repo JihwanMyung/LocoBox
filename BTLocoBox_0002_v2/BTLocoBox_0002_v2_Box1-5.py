@@ -34,7 +34,7 @@ from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
                                                NavigationToolbar2Tk)
 
 
-from Actogram import init_plot, plot_doubleplot
+from Actogram_1_5 import init_plot, plot_doubleplot
 from BoxSchedule import (BoxSchedule, PhaseSchedule, getDarkLightValue,
                          inverseDarkLightValue)
 
@@ -6076,8 +6076,7 @@ def getBox2Schedule():
     
     status.pack(side='bottom', fill='x')
     status.set('Box2 schedule is set.')
-    box2sched_text.set('Box2 schedule set.')
-    box2sched_text.set('Box2 schedule set.')
+
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
         btnRun['state']='normal'
@@ -8373,7 +8372,7 @@ if __name__ == '__main__':
         # phase 3
     phaseLabel1_3 = Label(tab1, text='Phase 3')
     fromLabel1_3 = Label(tab1, text='From:')
-    fromLabel1_3.grid(column=1,row=2+row_adj)
+    fromLabel1_3.grid(column=1,row=3+row_adj)
     space1_3 = Label(tab1, text=' ')
     space1_3_2 = Label(tab1, text=' ')
     spin1_E_3 = Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f')

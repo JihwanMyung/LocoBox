@@ -34,7 +34,7 @@ from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
                                                NavigationToolbar2Tk)
 
 
-from Actogram import init_plot, plot_doubleplot
+from Actogram_6_10 import init_plot, plot_doubleplot
 from BoxSchedule import (BoxSchedule, PhaseSchedule, getDarkLightValue,
                          inverseDarkLightValue)
 
@@ -555,9 +555,9 @@ def save_logs( counti, string2): #max 120 timepoints
 
 
 def get_values_for_actogram():
-    tab = int(tab_control.index('current'))+6
+    tab = int(tab_control.index('current'))+1
     filename = './' + filename_entry.get()
-    box = 'BOX' + str(tab)
+    box = 'BOX' + str(tab + 5)
     pir = 'PIR0'  + str(tab)
     led = 'LED0'   + str(tab)
     plot_doubleplot(box, pir, led, filename)
@@ -569,7 +569,7 @@ def plot_double_acto(tab):
     
     global label_acto
     # Create an object of tkinter ImageTk
-    img = ImageTk.PhotoImage(Image.open("./BOX" + str(tab) + ".png"))
+    img = ImageTk.PhotoImage(Image.open("./BOX" + str(tab+5) + ".png"))
     label_acto.configure(image=img)
     label_acto.image = img
 
@@ -590,27 +590,27 @@ def set_log_text(log_text, log_mat, tab):
     history_str = ''
     for counti in range(0,120): #check if I can get rid of the loop
         
-        if tab == 1 or tab == 'Box1' :
+        if tab == 1 or tab == 'Box6' :
 
             phase_id = get_phase(1)
             
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str =  '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+ display_as_ON_OFF(str(log_mat[counti % 120,2]))+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
-        elif tab == 2 or tab == 'Box2':
+        elif tab == 2 or tab == 'Box7':
             phase_id = get_phase(2)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) + '   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,4]))+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
 
-        elif tab == 3 or tab == 'Box3':
+        elif tab == 3 or tab == 'Box8':
             phase_id = get_phase(3)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str =  '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) + '   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,6]))+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
                 
-        elif tab == 4 or tab == 'Box4':
+        elif tab == 4 or tab == 'Box9':
             phase_id = get_phase(4)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) + '   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,8]))+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
-        elif tab == 5 or tab == 'Box5':
+        elif tab == 5 or tab == 'Box10':
             phase_id = get_phase(5)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str =  '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,10]))+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
@@ -628,27 +628,27 @@ def restore_history(log_text, log_mat, tab):
     history_str = ''
     for counti in range(0,120):
         
-        if tab == 1 or tab == 'Box1' :
+        if tab == 1 or tab == 'Box6' :
 
             phase_id = get_phase(1)
             
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str =  history_str + '# '+str(log_mat[counti % 120,0])+ '   ' + display_LD(0, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,2]))+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
-        elif tab == 2 or tab == 'Box2':
+        elif tab == 2 or tab == 'Box7':
             phase_id = get_phase(2)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = history_str +'# '+str(log_mat[counti % 120,0])+'   ' +display_LD(1, phase_id-1) +'  Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,4]))+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
 
-        elif tab == 3 or tab == 'Box3':
+        elif tab == 3 or tab == 'Box8':
             phase_id = get_phase(3)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = history_str + '# '+str(log_mat[counti % 120,0])+'   ' +display_LD(2, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,6]))+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
                 
-        elif tab == 4 or tab == 'Box4':
+        elif tab == 4 or tab == 'Box9':
             phase_id = get_phase(4)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = history_str + '# '+str(log_mat[counti % 120,0])+'   ' +display_LD(3, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,8]))+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
-        elif tab == 5 or tab == 'Box5':
+        elif tab == 5 or tab == 'Box10':
             phase_id = get_phase(5)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = history_str + '# '+str(log_mat[counti % 120,0])+'   ' +display_LD(4, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,10]))+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
@@ -662,7 +662,7 @@ def restore_history(log_text, log_mat, tab):
 
 
 def on_tab_change( counti, string2):
-    tab = int(tab_control.index('current'))+6
+    tab = int(tab_control.index('current'))+1
     #tab = event.widget.tab('current')['text']
     # if tab == 1:
 
@@ -3883,11 +3883,11 @@ def show_conf(): # Show schedule configuration
     col11_12 = Label(tab11, text='Phase 12')
 
 
-    row11_1 = Label(tab11, text='Box1')
-    row11_2 = Label(tab11, text='Box2')
-    row11_3 = Label(tab11, text='Box3')
-    row11_4 = Label(tab11, text='Box4')
-    row11_5 = Label(tab11, text='Box5')
+    row11_1 = Label(tab11, text='Box6')
+    row11_2 = Label(tab11, text='Box7')
+    row11_3 = Label(tab11, text='Box8')
+    row11_4 = Label(tab11, text='Box9')
+    row11_5 = Label(tab11, text='Box10')
 
     col11_1.grid(column=2,row=0,padx=5)
     col11_2.grid(column=4,row=0,padx=5)
@@ -5659,7 +5659,7 @@ def getBox1Schedule():
         light1_12='1'
 
     status.pack(side='bottom', fill='x')
-    status.set('Box1 schedule is set.')
+    status.set('Box6 schedule is set.')
     
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
@@ -6075,9 +6075,8 @@ def getBox2Schedule():
         light2_12='1'
     
     status.pack(side='bottom', fill='x')
-    status.set('Box2 schedule is set.')
-    box2sched_text.set('Box2 schedule set.')
-    box2sched_text.set('Box2 schedule set.')
+    status.set('Box7 schedule is set.')
+
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
         btnRun['state']='normal'
@@ -6497,7 +6496,7 @@ def getBox3Schedule():
         light3_12='1'
 
     status.pack(side='bottom', fill='x')
-    status.set('Box3 schedule is set.')
+    status.set('Box8 schedule is set.')
     
     
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
@@ -6903,7 +6902,7 @@ def getBox4Schedule():
         light4_12='1'
 
     status.pack(side='bottom', fill='x')
-    status.set('Box4 schedule is set.')
+    status.set('Box9 schedule is set.')
     
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
@@ -7305,11 +7304,8 @@ def getBox5Schedule():
     dark5_12, light5_12 = getDarkLightValue(var5_12)
 
 
-
-
-
     status.pack(side='bottom', fill='x')
-    status.set('Box5 schedule is set.')
+    status.set('Box10 schedule is set.')
     
     if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
         btnSave['state']='normal'
@@ -7885,11 +7881,11 @@ if __name__ == '__main__':
     ParentFrame4 = ttk.Frame(tab_control)
     ParentFrame5 = ttk.Frame(tab_control)
     ParentFrame11 = ttk.Frame(tab_control)
-    tab_control.add(ParentFrame1, text='Box1')
-    tab_control.add(ParentFrame2, text='Box2')
-    tab_control.add(ParentFrame3, text='Box3')
-    tab_control.add(ParentFrame4, text='Box4')
-    tab_control.add(ParentFrame5, text='Box5')
+    tab_control.add(ParentFrame1, text='Box6')
+    tab_control.add(ParentFrame2, text='Box7')
+    tab_control.add(ParentFrame3, text='Box8')
+    tab_control.add(ParentFrame4, text='Box9')
+    tab_control.add(ParentFrame5, text='Box10')
     tab_control.add(ParentFrame11, text='Schedules')
     
 
@@ -8066,10 +8062,10 @@ if __name__ == '__main__':
     filename_entry = Entry(f3, width = 25)
     filename_entry.place(x=80, y=ymidbtns)
     date_string = time.strftime('%Y%m%d') # predefine a default filename with ISO date    
-    filename_entry.insert(0,'BOX1-5-'+date_string+'.txt')
+    filename_entry.insert(0,'BOX6-10-'+date_string+'.txt')
     configfilename_entry = Entry(f3,width = 30)
     configfilename_entry.place(x=470, y=ymidbtns)
-    configfilename_entry.insert(0,'BOX1-5-sched-'+date_string+'.json')
+    configfilename_entry.insert(0,'BOX6-10-sched-'+date_string+'.json')
 
     #SHOW STATUS
     
@@ -8373,7 +8369,7 @@ if __name__ == '__main__':
         # phase 3
     phaseLabel1_3 = Label(tab1, text='Phase 3')
     fromLabel1_3 = Label(tab1, text='From:')
-    fromLabel1_3.grid(column=1,row=2+row_adj)
+    
     space1_3 = Label(tab1, text=' ')
     space1_3_2 = Label(tab1, text=' ')
     spin1_E_3 = Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f')
@@ -8384,6 +8380,7 @@ if __name__ == '__main__':
     spin1_F_3.insert(0,'00')
     label1_h0_3 = Label(tab1, text=':')
     label1_m0_3 = Label(tab1, text='')
+    
     date1_3_entry = Spinbox(tab1, from_=00, to=31, width=3, format='%02.0f')
     month1_3_entry = Spinbox(tab1, from_=00, to=12, width=3, format='%02.0f')
     year1_3_entry = Spinbox(tab1, from_=2018, to=2030, width=5)
@@ -8419,6 +8416,7 @@ if __name__ == '__main__':
     rad1_B_3 = Radiobutton(tab1, text='DD', variable=var1_3, value=2)
     rad1_C_3 = Radiobutton(tab1, text='LL', variable=var1_3, value=3)
     phaseLabel1_3.grid(column=0, row=3+row_adj, padx=15, pady=5)
+    fromLabel1_3.grid(column=1,row=3+row_adj)
     spin1_E_3.grid(column=2,row=3+row_adj)
     label1_h0_3.grid(column=3,row=3+row_adj)
     spin1_F_3.grid(column=4,row=3+row_adj)

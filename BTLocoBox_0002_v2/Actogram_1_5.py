@@ -138,7 +138,7 @@ def plot_doubleplot(box, pir, led, filename):
             plt.axis('off')
             plt.suptitle(box, size=8)
             plt.savefig('./' + box + '.png')
-            print("finished plotting x" + box)
+            print("finished plotting " + box)
 
         # plot two columns when there are enough data
         elif n_group>1: 
