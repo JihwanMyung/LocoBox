@@ -28,19 +28,25 @@ Online actogram plotting (data from 5 latest days) was included in this release.
 ### Current GUI
 
 This is the GUI when you start the python program.
+
+
 <img width="451" alt="init" src="https://github.com/JihwanMyung/LocoBox/assets/98081367/eae3cb5b-87e0-49f1-a758-6893ccc00228">
 
 
 
 
 While doing recording, you might want to press "Refresh actogram" button on the lower right to plot the data from 5 latest days (note that in this figure the plot was incomplete as there were only 4 data points)
+
+
 <img width="451" alt="day1" src="https://github.com/JihwanMyung/LocoBox/assets/98081367/ded13e36-5050-4573-a809-3a0814b5d635">
 
 
 
 
 
-Besides, the GUI can also be used for just visualization (while not doing recording). To visualize specific datafile, please change the filename in the lower left, and press "Refresh actogram".
+Besides, the GUI can also be used for just visualization (while not doing recording). To visualize specific datafile, please change the filename in the lower left, and press "Refresh actogram"
+
+
 <img width="452" alt="visualization" src="https://github.com/JihwanMyung/LocoBox/assets/98081367/c922aaf8-6b89-4c51-b631-452f7496e979">
 
 ### Installation
