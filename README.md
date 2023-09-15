@@ -75,7 +75,7 @@ This software system requires Arduino Mega 2560 for controlling either 5 (main r
 |:----------|:----------|:-------------|:-------------|
 |BTLocoBox_0001_v1| (see our publication) | ✔️ | ✔️ |
 |BTLocoBox_0002_v2| Online actogram plotting| ✔️ | ✔️ |
-|BTLocoBox_0003_v3| T_cycle| X | X |
+|BTLocoBox_0003_v3| T_cycle| ✔️ | X |
 
 ## Authors
 
