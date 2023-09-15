@@ -63,7 +63,7 @@ def plot_doubleplot(box, pir, led, filename):
         
     else: 
 
-        df = df.iloc[-14400:]
+        df = df.iloc[-10080:]
 
         df.index = pd.to_datetime(df['MO/DY/YEAR']+' ' + df['HH:MM:SS'],
                                 format="%m/%d/%Y %H:%M:%S")
@@ -138,7 +138,7 @@ def plot_doubleplot(box, pir, led, filename):
             plt.axis('off')
             plt.suptitle(box, size=8)
             plt.savefig('./' + box + '.png')
-            print("finished plotting " + box)
+            print("finished plotting x" + box)
 
         # plot two columns when there are enough data
         elif n_group>1: 
@@ -205,4 +205,3 @@ def plot_doubleplot(box, pir, led, filename):
             fig.suptitle("No data")
             plt.savefig('./' + box + '.png')
             print("finished plotting " + box)
-        

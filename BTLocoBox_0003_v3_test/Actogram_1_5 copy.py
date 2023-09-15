@@ -46,6 +46,7 @@ def plot_doubleplot(box, pir, led, filename):
     try:
         df = pd.read_table(filename, sep='\s+', skip_blank_lines=True,
                      skiprows=number_of_skipped_lines, index_col=None)
+        
 
     except Exception as e:
         print(e)
@@ -54,16 +55,10 @@ def plot_doubleplot(box, pir, led, filename):
         plt.savefig('./' + box + '.png')
         print("finished plotting " + box)
 
-    if df.empty:
-        print("empty table")
-        fig = plt.figure(figsize=(2, 2))  
-        fig.suptitle("No data")
-        plt.savefig('./' + box + '.png')
-        print("finished plotting " + box)
+
         
     else: 
 
-        df = df.iloc[-14400:]
 
         df.index = pd.to_datetime(df['MO/DY/YEAR']+' ' + df['HH:MM:SS'],
                                 format="%m/%d/%Y %H:%M:%S")
@@ -109,13 +104,13 @@ def plot_doubleplot(box, pir, led, filename):
 
             # scale to 1000 if max PIR is 60
             max_val=np.clip(max(group[pir]), a_min=1, a_max=max(group[pir]))
-            scale = 1000/max_val
-
+ 
+            
             # Plot the 1st column
             j = 0
             for name, group in dategroup:
             
-                (group[pir]*scale).plot.area(ax=axes, sharey=True, sharex=True, cmap='gray', figsize=(3, 0.2*n_group))
+                #(group[pir]).plot.area(ax=axes, sharey=True, sharex=True, cmap='gray', figsize=(3, 0.2*n_group))
                 ((1-group[led])*1000).plot.area(linewidth=0, ax=axes,
                                         cmap=my_cmap, sharey=True, sharex=True)
                 axes.axes.set_yticklabels([])
@@ -151,23 +146,19 @@ def plot_doubleplot(box, pir, led, filename):
             my_cmap[:,-1] = np.linspace(0.2, 1, cmap.N)
             my_cmap = ListedColormap(my_cmap)
 
-            # scale to 1000 if max PIR is 60
-            max_val=np.clip(max(group[pir]), a_min=1, a_max=max(group[pir]))
-            scale = 1000/max_val
-
             # Plot the 1st column    
             j = 0
             for name, group in dategroup:
-                (group[pir]*scale).plot.area(ax=axes[j, 0], sharey=True, sharex=True, cmap='gray', figsize=(3, 0.2*n_group))
-                ((1-group[led])*800).plot.area(linewidth=0, ax=axes[j, 0],
+                #(group[pir]*500).plot.area(ax=axes[j, 0], sharey=True, sharex=True, cmap='gray', figsize=(3, 0.2*n_group))
+                ((1-group[led])*500).plot.area(linewidth=0, ax=axes[j, 0],
                                         cmap=my_cmap, sharey=True, sharex=True)
                 axes[j, 0].axes.set_yticklabels([])
                 axes[j, 0].axes.set_yticks([])
-                loc = mdates.HourLocator(interval=12)
-                axes[j, 0].xaxis.set_major_locator(loc)
+
+ 
                 fmt = mdates.DateFormatter("%H")
                 axes[j, 0].xaxis.set_major_formatter(fmt)
-                axes[j, 0].axes.set_ylim(1,800)
+                axes[j, 0].axes.set_ylim(1,5)
                 axes[j, 0].axes.set_ylabel(
                     str(group[pir].index.date[0].month) + '/' + str(group[pir].index.date[0].day) + ' ', rotation=0, size=9)
                 
@@ -183,12 +174,15 @@ def plot_doubleplot(box, pir, led, filename):
             # Plot the 2nd column
             i = 0
             for name, group in dategroup2:
-                (group[pir]*scale).plot.area(ax=axes[i, 1], sharey=True, cmap='gray', figsize=(3, 0.2*n_group))
-                ((1-group[led])*800).plot.area(linewidth=0,
+                #(group[pir]*500).plot.area(ax=axes[i, 1], sharey=True, cmap='gray', figsize=(3, 0.2*n_group))
+                ((1-group[led])*500).plot.area(linewidth=0,
                                         cmap=my_cmap, ax=axes[i, 1], sharey=True)
                 x_axis = axes[i, 1].axes.get_xaxis()
                 x_axis.set_visible(False)
-                axes[i, 1].axes.set_ylim(1,800)
+                axes[i, 1].axes.set_ylim(1,5)
+                axes[i, 1].axes.set_xlim([pd.to_datetime(group['MO/DY/YEAR'][0]+' ' + '00:00:00',
+                                    format="%m/%d/%Y %H:%M:%S"), pd.to_datetime(group['MO/DY/YEAR'][0]+' ' + '23:59:00',
+                                    format="%m/%d/%Y %H:%M:%S")])
                 y_axis = axes[i, 1].axes.get_yaxis()
                 y_axis.set_visible(False)
                 i = i+1
@@ -205,4 +199,6 @@ def plot_doubleplot(box, pir, led, filename):
             fig.suptitle("No data")
             plt.savefig('./' + box + '.png')
             print("finished plotting " + box)
-        
+            
+            
+plot_doubleplot("BOX2", "PIR03", "LED02", "BOX1-5-20230916.txt")

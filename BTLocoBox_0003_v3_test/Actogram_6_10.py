@@ -205,4 +205,3 @@ def plot_doubleplot(box, pir, led, filename):
             fig.suptitle("No data")
             plt.savefig('./' + box + '.png')
             print("finished plotting " + box)
-        
