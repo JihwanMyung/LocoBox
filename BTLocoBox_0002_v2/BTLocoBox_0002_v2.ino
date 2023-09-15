@@ -341,7 +341,9 @@ void loop()
     initLED[2] = getInt(initLEDs.substring(2, 3));
     initLED[3] = getInt(initLEDs.substring(3, 4));
     initLED[4] = getInt(initLEDs.substring(4, 5));
+
     Serial.println(initLEDs);
+
     initSet = 1;
   }
 
