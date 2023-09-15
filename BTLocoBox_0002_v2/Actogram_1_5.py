@@ -63,7 +63,7 @@ def plot_doubleplot(box, pir, led, filename):
         
     else: 
 
-        df = df.iloc[-10080:]
+        df = df.iloc[-14400:]
 
         df.index = pd.to_datetime(df['MO/DY/YEAR']+' ' + df['HH:MM:SS'],
                                 format="%m/%d/%Y %H:%M:%S")

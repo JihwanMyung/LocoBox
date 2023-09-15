@@ -119,11 +119,10 @@ global hourOn2_12, minOn2_12, hourOff2_12, minOff2_12, dark2_12, light2_12, date
 global hourOn3_12, minOn3_12, hourOff3_12, minOff3_12, dark3_12, light3_12, date3_12, month3_12, year3_12, hourFrom3_12, minuteFrom3_12
 global hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12
 global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12
-#global initLED1, initLED2, initLED3, initLED4 , initLED5
+global initLED1_str, initLED2_str, initLED3_str, initLED4_str , initLED5_str
 
 
 global value_mat, phase_delimiters
-
  
  
 global setBox1, setBox2, setBox3, setBox4, setBox5
@@ -140,7 +139,7 @@ global display_string, display_counter, tcyclefactor
 #savedBoxSchedule = BoxSchedule()
 phase_delimiters = []
 tcyclefactor = 24
-initLED = 0
+#initLED = 0
 
 
 # Preset values
@@ -237,7 +236,7 @@ def get_data(istate=0): # Start recording
     global serial_obj
     global dead
     global value_mat
-    global display_string, display_counter, log_mat, initLED
+    global display_string, display_counter, log_mat
 
     try:
         while True:
@@ -260,7 +259,7 @@ def get_data(istate=0): # Start recording
 
                 phase_id = i-1
 
-                serial_obj.write(str.encode(str(initLED1) + str(initLED2) + str(initLED3)+ str(initLED4) + str(initLED5)))
+                serial_obj.write(str.encode(str(initLED1_str) + str(initLED2_str) + str(initLED3_str)+ str(initLED4_str) + str(initLED5_str)))
 
             if i==2:
 
@@ -523,8 +522,10 @@ def display_as_ON_OFF(led_value):
     led_value = str(led_value)
     if led_value == '00000':
         return 'OFF'
-    else:
+    elif led_value == '00001':
         return 'ON'
+    else:
+        return led_value
 
 def display_LD(box_id, phase_id):
     global value_mat, input_mat
@@ -7321,6 +7322,7 @@ def getBox5Schedule():
 def getAllBoxSchedule(): 
 
     global value_mat, phase_delimiters, tcyclefactor
+    global initLED1_str, initLED2_str, initLED3_str, initLED4_str , initLED5_str
     global initLED1, initLED2, initLED3, initLED4 , initLED5
 
     tcyclefactor = float(tcyclelength.get())
@@ -7332,11 +7334,11 @@ def getAllBoxSchedule():
     getBox5Schedule()
 
     
-    # initLED1 = str(initLED1.get())
-    # initLED2 = str(initLED2.get())
-    # initLED3 = str(initLED3.get())
-    # initLED4 = str(initLED4.get())
-    # initLED5 = str(initLED5.get())
+    initLED1_str = initLED1.get()
+    initLED2_str = initLED2.get()
+    initLED3_str = initLED3.get()
+    initLED4_str = initLED4.get()
+    initLED5_str = initLED5.get()
 
     today=datetime.date.today()
     day = today.day
