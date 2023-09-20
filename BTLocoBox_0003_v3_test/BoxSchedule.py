@@ -96,9 +96,6 @@ class PhaseSchedule:
 
 
 
-
-
-
 class BoxSchedule:
     def __init__(self):
         self.phase_sched = []    

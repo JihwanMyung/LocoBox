@@ -1589,7 +1589,7 @@ void loop()
     if (init_time_flag == 1){
       for (int i = 0; i < 5; i++)
       {
-        Tcycle_time[i] += round(60 * Tcycle[i] / 24);
+        Tcycle_time[i] += round(60 *  24 / Tcycle[i] );
         now[i] = DateTime(Tcycle_time[i]);
       }
     }

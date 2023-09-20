@@ -133,14 +133,14 @@ global tcycle_3_1, tcycle_3_2,tcycle_3_3, tcycle_3_4, tcycle_3_5, tcycle_3_6, tc
 global tcycle_4_1, tcycle_4_2,tcycle_4_3, tcycle_4_4, tcycle_4_5, tcycle_4_6, tcycle_4_7, tcycle_4_8, tcycle_4_9, tcycle_4_10, tcycle_4_11, tcycle_4_12
 global tcycle_5_1, tcycle_5_2,tcycle_5_3, tcycle_5_4, tcycle_5_5, tcycle_5_6, tcycle_5_7, tcycle_5_8, tcycle_5_9, tcycle_5_10, tcycle_5_11, tcycle_5_12
 
+global initLED1_str, initLED2_str, initLED3_str, initLED4_str , initLED5_str
+
 
 #global savedBoxSchedule, BoxSchedule1, BoxSchedule2, BoxSchedule3, BoxSchedule4, BoxSchedule5
 
-
-
 #savedBoxSchedule = BoxSchedule()
 phase_delimiters = []
-tcyclefactor = 24
+#tcyclefactor = 24
 #initLED = 0
 
 
@@ -3868,6 +3868,15 @@ def show_conf(): # Show schedule configuration
     global hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12
     global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12
 
+    global initLED1, initLED2, initLED3, initLED4, initLED5
+    global tcycle_1_1, tcycle_1_2,tcycle_1_3, tcycle_1_4, tcycle_1_5, tcycle_1_6, tcycle_1_7, tcycle_1_8, tcycle_1_9, tcycle_1_10, tcycle_1_11, tcycle_1_12
+    global tcycle_2_1, tcycle_2_2,tcycle_2_3, tcycle_2_4, tcycle_2_5, tcycle_2_6, tcycle_2_7, tcycle_2_8, tcycle_2_9, tcycle_2_10, tcycle_2_11, tcycle_2_12
+    global tcycle_3_1, tcycle_3_2,tcycle_3_3, tcycle_3_4, tcycle_3_5, tcycle_3_6, tcycle_3_7, tcycle_3_8, tcycle_3_9, tcycle_3_10, tcycle_3_11, tcycle_3_12
+    global tcycle_4_1, tcycle_4_2,tcycle_4_3, tcycle_4_4, tcycle_4_5, tcycle_4_6, tcycle_4_7, tcycle_4_8, tcycle_4_9, tcycle_4_10, tcycle_4_11, tcycle_4_12
+    global tcycle_5_1, tcycle_5_2,tcycle_5_3, tcycle_5_4, tcycle_5_5, tcycle_5_6, tcycle_5_7, tcycle_5_8, tcycle_5_9, tcycle_5_10, tcycle_5_11, tcycle_5_12
+
+
+
     #print("hourOn1_1" + str(hourOn1_1))
 
     col11_1 = Label(tab11, text='Phase 1')
@@ -3940,7 +3949,7 @@ def show_conf(): # Show schedule configuration
 
     box1pha1text=StringVar()
     box1pha1text.set('                                ')
-    box1pha1_LD=Label(tab11, textvariable=box1pha1text, width=40, anchor=W, justify=LEFT)
+    box1pha1_LD=Label(tab11, textvariable=box1pha1text, width=50, anchor=W, justify=LEFT)
     box1pha1_LD.grid(column=2,row=2,padx=2,pady=0)
     box1pha2text=StringVar()
     box1pha2text.set('                                ')
@@ -3991,7 +4000,7 @@ def show_conf(): # Show schedule configuration
 
     box2pha1text=StringVar()
     box2pha1text.set('                                ')
-    box2pha1_LD=Label(tab11, textvariable=box2pha1text, width=40, anchor=W, justify=LEFT)
+    box2pha1_LD=Label(tab11, textvariable=box2pha1text, width=50, anchor=W, justify=LEFT)
     box2pha1_LD.grid(column=2,row=3,padx=2,pady=0)
     box2pha2text=StringVar()
     box2pha2text.set('                                ')
@@ -4042,7 +4051,7 @@ def show_conf(): # Show schedule configuration
 
     box3pha1text=StringVar()
     box3pha1text.set('                                ')
-    box3pha1_LD=Label(tab11, textvariable=box3pha1text, width=40, anchor=W, justify=LEFT)
+    box3pha1_LD=Label(tab11, textvariable=box3pha1text, width=50, anchor=W, justify=LEFT)
     box3pha1_LD.grid(column=2,row=4,padx=2,pady=0)
     box3pha2text=StringVar()
     box3pha2text.set('                                ')
@@ -4093,7 +4102,7 @@ def show_conf(): # Show schedule configuration
 
     box4pha1text=StringVar()
     box4pha1text.set('                                ')
-    box4pha1_LD=Label(tab11, textvariable=box4pha1text, width=40, anchor=W, justify=LEFT)
+    box4pha1_LD=Label(tab11, textvariable=box4pha1text, width=50, anchor=W, justify=LEFT)
     box4pha1_LD.grid(column=2,row=5,padx=2,pady=0)
     box4pha2text=StringVar()
     box4pha2text.set('                                ')
@@ -4144,7 +4153,7 @@ def show_conf(): # Show schedule configuration
 
     box5pha1text=StringVar()
     box5pha1text.set('                                ')
-    box5pha1_LD=Label(tab11, textvariable=box5pha1text, width=40, anchor=W, justify=LEFT)
+    box5pha1_LD=Label(tab11, textvariable=box5pha1text, width=50, anchor=W, justify=LEFT)
     box5pha1_LD.grid(column=2,row=6,padx=2,pady=0)
     box5pha2text=StringVar()
     box5pha2text.set('                                ')
@@ -4191,330 +4200,354 @@ def show_conf(): # Show schedule configuration
     box5pha12_LD=Label(tab11, textvariable=box5pha12text, width=40, anchor=W, justify=LEFT)
     box5pha12_LD.grid(column=24,row=6,padx=2,pady=0)
 
-   
+    if initLED1.get() == 1: 
+        LED_state1 = 'ON'
+    else:
+        LED_state1 = 'OFF'
+
+    if initLED2.get() == 1: 
+        LED_state2 = 'ON'
+    else:
+        LED_state2 = 'OFF'
+
+    if initLED3.get() == 1: 
+        LED_state3 = 'ON'
+    else:
+        LED_state3 = 'OFF'
+
+    if initLED4.get() == 1: 
+        LED_state4 = 'ON'
+    else:
+        LED_state4 = 'OFF'
+
+    if initLED5.get()== 1: 
+        LED_state5 = 'ON'
+    else:
+        LED_state5 = 'OFF'
 
     #1 Phase
     if light1_1=='0' and dark1_1=='0':
         box1pha1text.set('                                ')
         
-        box1pha1text.set('From record onset'+' | '+hourOn1_1+':'+minOn1_1+' on>'+hourOff1_1+':'+minOff1_1+' off')
+        box1pha1text.set('Init LED: ' + str(LED_state1) +' from record onset'+' | '+hourOn1_1+':'+minOn1_1+' on>'+hourOff1_1+':'+minOff1_1+' off' + ' (' + tcycle_1_1 + 'h)')
        
     if light1_1=='0' and dark1_1=='1':
         box1pha1text.set('                                ')
         
-        box1pha1text.set('From record onset'+' | '+'DD')
+        box1pha1text.set('Init LED: ' + str(LED_state1) +' from record onset'+' | '+'DD' + ' (' + tcycle_1_1 + 'h)')
        
     if light1_1=='1' and dark1_1=='0':
         box1pha1text.set('                                ')
         
-        box1pha1text.set('From record onset'+' | '+'LL')
+        box1pha1text.set('Init LED: ' + str(LED_state1) +' from record onset'+' | '+'LL' + ' (' + tcycle_1_1 + 'h)')
         
+    
 
     if light2_1=='0' and dark2_1=='0':
         box2pha1text.set('                                ')
         
-        box2pha1text.set('From record onset'+' | '+hourOn2_1+':'+minOn2_1+' on>'+hourOff2_1+':'+minOff2_1+' off')
+        box2pha1text.set('Init LED: ' + str(LED_state2) +' from record onset'+' | '+hourOn2_1+':'+minOn2_1+' on>'+hourOff2_1+':'+minOff2_1+' off'+ ' (' + tcycle_2_1 + 'h)')
        
     if light2_1=='0' and dark2_1=='1':
         box2pha1text.set('                                ')
        
-        box2pha1text.set('From record onset'+' | '+'DD')
+        box2pha1text.set('Init LED: ' + str(LED_state2) +' from record onset'+' | '+'DD'+ ' (' + tcycle_2_1 + 'h)')
         
     if light2_1=='1' and dark2_1=='0':
         box2pha1text.set('                                ')
        
-        box2pha1text.set('From record onset'+' | '+'LL')
+        box2pha1text.set('Init LED: ' + str(LED_state2) +' from record onset'+' | '+'LL'+ ' (' + tcycle_2_1 + 'h)')
        
 
     if light3_1=='0' and dark3_1=='0':
         box3pha1text.set('                                ')
        
-        box3pha1text.set('From record onset'+' | '+hourOn3_1+':'+minOn3_1+' on>'+hourOff3_1+':'+minOff3_1+' off')
+        box3pha1text.set('Init LED: ' + str(LED_state3) +' from record onset'+' | '+hourOn3_1+':'+minOn3_1+' on>'+hourOff3_1+':'+minOff3_1+' off'+ ' (' + tcycle_3_1 + 'h)')
         
     if light3_1=='0' and dark3_1=='1':
         box3pha1text.set('                                ')
        
-        box3pha1text.set('From record onset'+' | '+'DD')
+        box3pha1text.set('Init LED: ' + str(LED_state3) +' from record onset'+' | '+'DD'+ ' (' + tcycle_3_1 + 'h)')
         
     if light3_1=='1' and dark3_1=='0':
         box3pha1text.set('                                ')
         
-        box3pha1text.set('From record onset'+' | '+'LL')
+        box3pha1text.set('Init LED: ' + str(LED_state3)+ ' from record onset'+' | '+'LL'+ ' (' + tcycle_3_1 + 'h)')
         
 
     if light4_1=='0' and dark4_1=='0':
         box4pha1text.set('                                ')
         
-        box4pha1text.set('From record onset'+' | '+hourOn4_1+':'+minOn4_1+' on>'+hourOff4_1+':'+minOff4_1+' off')
+        box4pha1text.set('Init LED: ' + str(LED_state4) +' from record onset'+' | '+hourOn4_1+':'+minOn4_1+' on>'+hourOff4_1+':'+minOff4_1+' off'+ ' (' + tcycle_4_1 + 'h)')
         
     if light4_1=='0' and dark4_1=='1':
         box4pha1text.set('                                ')
         
-        box4pha1text.set('From record onset'+' | '+'DD')
+        box4pha1text.set('Init LED: ' + str(LED_state4) +' from record onset'+' | '+'DD'+ ' (' + tcycle_4_1 + 'h)')
         
     if light4_1=='1' and dark4_1=='0':
         box4pha1text.set('                                ')
         
-        box4pha1text.set('From record onset'+' | '+'LL')
+        box4pha1text.set('Init LED: ' + str(LED_state4) +' from record onset'+' | '+'LL'+ ' (' + tcycle_4_1 + 'h)')
         
 
     if light5_1=='0' and dark5_1=='0':
         box5pha1text.set('                                ')
         
-        box5pha1text.set('From record onset'+' | '+hourOn5_1+':'+minOn5_1+' on>'+hourOff5_1+':'+minOff5_1+' off')
+        box5pha1text.set('Init LED: ' + str(LED_state5)+ ' from record onset'+' | '+hourOn5_1+':'+minOn5_1+' on>'+hourOff5_1+':'+minOff5_1+' off'+ ' (' + tcycle_5_1 + 'h)')
         
     if light5_1=='0' and dark5_1=='1':
         box5pha1text.set('                                ')
         
-        box5pha1text.set('From record onset'+' | '+'DD')
+        box5pha1text.set('Init LED: ' + str(LED_state5) +' from record onset'+' | '+'DD'+ ' (' + tcycle_5_1 + 'h)')
         
     if light5_1=='1' and dark5_1=='0':
         box5pha1text.set('                                ')
         
-        box5pha1text.set('From record onset'+' | '+'LL')
+        box5pha1text.set('Init LED: ' + str(LED_state5) +' from record onset'+' | '+'LL'+ ' (' + tcycle_5_1 + 'h)')
         
 
     #2 Phase
     if light1_2=='0' and dark1_2=='0':
         box1pha2text.set('                                ')
         
-        box1pha2text.set(year1_2+'/'+month1_2+'/'+date1_2+' '+hourFrom2_2+':'+minuteFrom1_2+' | '+hourOn1_2+':'+minOn1_2+' on>'+hourOff1_2+':'+minOff1_2+' off')
+        box1pha2text.set(year1_2+'/'+month1_2+'/'+date1_2+' '+hourFrom2_2+':'+minuteFrom1_2+' | '+hourOn1_2+':'+minOn1_2+' on>'+hourOff1_2+':'+minOff1_2+' off'+ ' (' + tcycle_1_2 + 'h)')
         
     if light1_2=='0' and dark1_2=='1':
         box1pha2text.set('                                ')
         
-        box1pha2text.set(year1_2+'/'+month1_2+'/'+date1_2+' '+hourFrom2_2+':'+minuteFrom1_2+' | '+'DD')
+        box1pha2text.set(year1_2+'/'+month1_2+'/'+date1_2+' '+hourFrom2_2+':'+minuteFrom1_2+' | '+'DD'+ ' (' + tcycle_1_2 + 'h)')
         
     if light1_2=='1' and dark1_2=='0':
         box1pha2text.set('                                ')
         
-        box1pha2text.set(year1_2+'/'+month1_2+'/'+date1_2+' '+hourFrom2_2+':'+minuteFrom1_2+' | '+'LL')
+        box1pha2text.set(year1_2+'/'+month1_2+'/'+date1_2+' '+hourFrom2_2+':'+minuteFrom1_2+' | '+'LL'+ ' (' + tcycle_1_2 + 'h)')
         
 
     if light2_2=='0' and dark2_2=='0':
         box2pha2text.set('                                ')
         
-        box2pha2text.set(year2_2+'/'+month2_2+'/'+date2_2+' '+hourFrom2_2+':'+minuteFrom2_2+' | '+hourOn2_2+':'+minOn2_2+' on>'+hourOff2_2+':'+minOff2_2+' off')
+        box2pha2text.set(year2_2+'/'+month2_2+'/'+date2_2+' '+hourFrom2_2+':'+minuteFrom2_2+' | '+hourOn2_2+':'+minOn2_2+' on>'+hourOff2_2+':'+minOff2_2+' off'+ ' (' + tcycle_2_2 + 'h)')
         
     if light2_2=='0' and dark2_2=='1':
         box2pha2text.set('                                ')
         
-        box2pha2text.set(year2_2+'/'+month2_2+'/'+date2_2+' '+hourFrom2_2+':'+minuteFrom2_2+' | '+'DD')
+        box2pha2text.set(year2_2+'/'+month2_2+'/'+date2_2+' '+hourFrom2_2+':'+minuteFrom2_2+' | '+'DD'+ ' (' + tcycle_2_2 + 'h)')
         
     if light2_2=='1' and dark2_2=='0':
         box2pha2text.set('                                ')
         
-        box2pha2text.set(year2_2+'/'+month2_2+'/'+date2_2+' '+hourFrom2_2+':'+minuteFrom2_2+' | '+'LL')
+        box2pha2text.set(year2_2+'/'+month2_2+'/'+date2_2+' '+hourFrom2_2+':'+minuteFrom2_2+' | '+'LL'+ ' (' + tcycle_2_2 + 'h)')
         
 
     if light3_2=='0' and dark3_2=='0':
         box3pha2text.set('                                ')
         
-        box3pha2text.set(year3_2+'/'+month3_2+'/'+date3_2+' '+hourFrom3_2+':'+minuteFrom3_2+' | '+hourOn3_2+':'+minOn3_2+' on>'+hourOff3_2+':'+minOff3_2+' off')
+        box3pha2text.set(year3_2+'/'+month3_2+'/'+date3_2+' '+hourFrom3_2+':'+minuteFrom3_2+' | '+hourOn3_2+':'+minOn3_2+' on>'+hourOff3_2+':'+minOff3_2+' off'+ ' (' + tcycle_3_2 + 'h)')
         
     if light3_2=='0' and dark3_2=='1':
         box3pha2text.set('                                ')
         
-        box3pha2text.set(year3_2+'/'+month3_2+'/'+date3_2+' '+hourFrom3_2+':'+minuteFrom3_2+' | '+'DD')
+        box3pha2text.set(year3_2+'/'+month3_2+'/'+date3_2+' '+hourFrom3_2+':'+minuteFrom3_2+' | '+'DD'+ ' (' + tcycle_3_2 + 'h)')
         
     if light3_2=='1' and dark3_2=='0':
         box3pha2text.set('                                ')
         
-        box3pha2text.set(year3_2+'/'+month3_2+'/'+date3_2+' '+hourFrom3_2+':'+minuteFrom3_2+' | '+'LL')
+        box3pha2text.set(year3_2+'/'+month3_2+'/'+date3_2+' '+hourFrom3_2+':'+minuteFrom3_2+' | '+'LL'+ ' (' + tcycle_3_2 + 'h)')
         
 
     if light4_2=='0' and dark4_2=='0':
         box4pha2text.set('                                ')
         
-        box4pha2text.set(year4_2+'/'+month4_2+'/'+date4_2+' '+hourFrom4_2+':'+minuteFrom4_2+' | '+hourOn4_2+':'+minOn4_2+' on>'+hourOff4_2+':'+minOff4_2+' off')
+        box4pha2text.set(year4_2+'/'+month4_2+'/'+date4_2+' '+hourFrom4_2+':'+minuteFrom4_2+' | '+hourOn4_2+':'+minOn4_2+' on>'+hourOff4_2+':'+minOff4_2+' off'+ ' (' + tcycle_4_2 + 'h)')
         
     if light4_2=='0' and dark4_2=='1':
         box4pha2text.set('                                ')
         
-        box4pha2text.set(year4_2+'/'+month4_2+'/'+date4_2+' '+hourFrom4_2+':'+minuteFrom4_2+' | '+'DD')
+        box4pha2text.set(year4_2+'/'+month4_2+'/'+date4_2+' '+hourFrom4_2+':'+minuteFrom4_2+' | '+'DD'+ ' (' + tcycle_4_2 + 'h)')
         
     if light4_2=='1' and dark4_2=='0':
         box4pha2text.set('                                ')
         
-        box4pha2text.set(year4_2+'/'+month4_2+'/'+date4_2+' '+hourFrom4_2+':'+minuteFrom4_2+' | '+'LL')
+        box4pha2text.set(year4_2+'/'+month4_2+'/'+date4_2+' '+hourFrom4_2+':'+minuteFrom4_2+' | '+'LL'+ ' (' + tcycle_4_2 + 'h)')
         
 
     if light5_2=='0' and dark5_2=='0':
         box5pha2text.set('                                ')
         
-        box5pha2text.set(year5_2+'/'+month5_2+'/'+date5_2+' '+hourFrom5_2+':'+minuteFrom5_2+' | '+hourOn5_2+':'+minOn5_2+' on>'+hourOff5_2+':'+minOff5_2+' off')
+        box5pha2text.set(year5_2+'/'+month5_2+'/'+date5_2+' '+hourFrom5_2+':'+minuteFrom5_2+' | '+hourOn5_2+':'+minOn5_2+' on>'+hourOff5_2+':'+minOff5_2+' off'+ ' (' + tcycle_5_2 + 'h)')
         
     if light5_2=='0' and dark5_2=='1':
         box5pha2text.set('                                ')
         
-        box5pha2text.set(year5_2+'/'+month5_2+'/'+date5_2+' '+hourFrom5_2+':'+minuteFrom5_2+' | '+'DD')
+        box5pha2text.set(year5_2+'/'+month5_2+'/'+date5_2+' '+hourFrom5_2+':'+minuteFrom5_2+' | '+'DD'+ ' (' + tcycle_5_2 + 'h)')
         
     if light5_2=='1' and dark5_2=='0':
         box5pha2text.set('                                ')
         
-        box5pha2text.set(year5_2+'/'+month5_2+'/'+date5_2+' '+hourFrom5_2+':'+minuteFrom5_2+' | '+'LL')
+        box5pha2text.set(year5_2+'/'+month5_2+'/'+date5_2+' '+hourFrom5_2+':'+minuteFrom5_2+' | '+'LL'+ ' (' + tcycle_5_2 + 'h)')
         
 
     #3 Phase
     if light1_3=='0' and dark1_3=='0':
         box1pha3text.set('                                ')
         
-        box1pha3text.set(year1_3+'/'+month1_3+'/'+date1_3+' '+hourFrom2_3+':'+minuteFrom1_3+' | '+hourOn1_3+':'+minOn1_3+' on>'+hourOff1_3+':'+minOff1_3+' off')
+        box1pha3text.set(year1_3+'/'+month1_3+'/'+date1_3+' '+hourFrom2_3+':'+minuteFrom1_3+' | '+hourOn1_3+':'+minOn1_3+' on>'+hourOff1_3+':'+minOff1_3+' off'+ ' (' + tcycle_1_3 + 'h)')
         
     if light1_3=='0' and dark1_3=='1':
         box1pha3text.set('                                ')
         
-        box1pha3text.set(year1_3+'/'+month1_3+'/'+date1_3+' '+hourFrom2_3+':'+minuteFrom1_3+' | '+'DD')
+        box1pha3text.set(year1_3+'/'+month1_3+'/'+date1_3+' '+hourFrom2_3+':'+minuteFrom1_3+' | '+'DD'+ ' (' + tcycle_1_3 + 'h)')
         
     if light1_3=='1' and dark1_3=='0':
         box1pha3text.set('                                 ')
         
-        box1pha3text.set(year1_3+'/'+month1_3+'/'+date1_3+' '+hourFrom2_3+':'+minuteFrom1_3+' | '+'LL')
+        box1pha3text.set(year1_3+'/'+month1_3+'/'+date1_3+' '+hourFrom2_3+':'+minuteFrom1_3+' | '+'LL'+ ' (' + tcycle_1_3 + 'h)')
         
     
     if light2_3=='0' and dark2_3=='0':
         box2pha3text.set('                                ')
         
-        box2pha3text.set(year2_3+'/'+month2_3+'/'+date2_3+' '+hourFrom2_3+':'+minuteFrom2_3+' | '+hourOn2_3+':'+minOn2_3+' on>'+hourOff2_3+':'+minOff2_3+' off')
+        box2pha3text.set(year2_3+'/'+month2_3+'/'+date2_3+' '+hourFrom2_3+':'+minuteFrom2_3+' | '+hourOn2_3+':'+minOn2_3+' on>'+hourOff2_3+':'+minOff2_3+' off'+ ' (' + tcycle_2_3 + 'h)')
         
     if light2_3=='0' and dark2_3=='1':
         box2pha3text.set('                                ')
         
-        box2pha3text.set(year2_3+'/'+month2_3+'/'+date2_3+' '+hourFrom2_3+':'+minuteFrom2_3+' | '+'DD')
+        box2pha3text.set(year2_3+'/'+month2_3+'/'+date2_3+' '+hourFrom2_3+':'+minuteFrom2_3+' | '+'DD'+ ' (' + tcycle_2_3 + 'h)')
         
     if light2_3=='1' and dark2_3=='0':
         box2pha3text.set('                                 ')
         
-        box2pha3text.set(year2_3+'/'+month2_3+'/'+date2_3+' '+hourFrom2_3+':'+minuteFrom2_3+' | '+'LL')
+        box2pha3text.set(year2_3+'/'+month2_3+'/'+date2_3+' '+hourFrom2_3+':'+minuteFrom2_3+' | '+'LL'+ ' (' + tcycle_2_3 + 'h)')
         
 
     if light3_3=='0' and dark3_3=='0':
         box3pha3text.set('                                ')
         
-        box3pha3text.set(year3_3+'/'+month3_3+'/'+date3_3+' '+hourFrom3_3+':'+minuteFrom3_3+' | '+hourOn3_3+':'+minOn3_3+' on>'+hourOff3_3+':'+minOff3_3+' off')
+        box3pha3text.set(year3_3+'/'+month3_3+'/'+date3_3+' '+hourFrom3_3+':'+minuteFrom3_3+' | '+hourOn3_3+':'+minOn3_3+' on>'+hourOff3_3+':'+minOff3_3+' off'+ ' (' + tcycle_3_3 + 'h)')
         
     if light3_3=='0' and dark3_3=='1':
         box3pha3text.set('                                ')
         
-        box3pha3text.set(year3_3+'/'+month3_3+'/'+date3_3+' '+hourFrom3_3+':'+minuteFrom3_3+' | '+'DD')
+        box3pha3text.set(year3_3+'/'+month3_3+'/'+date3_3+' '+hourFrom3_3+':'+minuteFrom3_3+' | '+'DD'+ ' (' + tcycle_3_3 + 'h)')
         
     if light3_3=='1' and dark3_3=='0':
         box3pha3text.set('                                 ')
         
-        box3pha3text.set(year3_3+'/'+month3_3+'/'+date3_3+' '+hourFrom3_3+':'+minuteFrom3_3+' | '+'LL')
+        box3pha3text.set(year3_3+'/'+month3_3+'/'+date3_3+' '+hourFrom3_3+':'+minuteFrom3_3+' | '+'LL'+ ' (' + tcycle_3_3 + 'h)')
         
 
     if light4_3=='0' and dark4_3=='0':
         box4pha3text.set('                                ')
         
-        box4pha3text.set(year4_3+'/'+month4_3+'/'+date4_3+' '+hourFrom4_3+':'+minuteFrom4_3+' | '+hourOn4_3+':'+minOn4_3+' on>'+hourOff4_3+':'+minOff4_3+' off')
+        box4pha3text.set(year4_3+'/'+month4_3+'/'+date4_3+' '+hourFrom4_3+':'+minuteFrom4_3+' | '+hourOn4_3+':'+minOn4_3+' on>'+hourOff4_3+':'+minOff4_3+' off'+ ' (' + tcycle_4_3 + 'h)')
         
     if light4_3=='0' and dark4_3=='1':
         box4pha3text.set('                                ')
         
-        box4pha3text.set(year4_3+'/'+month4_3+'/'+date4_3+' '+hourFrom4_3+':'+minuteFrom4_3+' | '+'DD')
+        box4pha3text.set(year4_3+'/'+month4_3+'/'+date4_3+' '+hourFrom4_3+':'+minuteFrom4_3+' | '+'DD'+ ' (' + tcycle_4_3 + 'h)')
         
     if light4_3=='1' and dark4_3=='0':
         box4pha3text.set('                                 ')
         
-        box4pha3text.set(year4_3+'/'+month4_3+'/'+date4_3+' '+hourFrom4_3+':'+minuteFrom4_3+' | '+'LL')
+        box4pha3text.set(year4_3+'/'+month4_3+'/'+date4_3+' '+hourFrom4_3+':'+minuteFrom4_3+' | '+'LL'+ ' (' + tcycle_4_3 + 'h)')
         
 
     if light5_3=='0' and dark5_3=='0':
         box5pha3text.set('                                ')
         
-        box5pha3text.set(year5_3+'/'+month5_3+'/'+date5_3+' '+hourFrom5_3+':'+minuteFrom5_3+' | '+hourOn5_3+':'+minOn5_3+' on>'+hourOff5_3+':'+minOff5_3+' off')
+        box5pha3text.set(year5_3+'/'+month5_3+'/'+date5_3+' '+hourFrom5_3+':'+minuteFrom5_3+' | '+hourOn5_3+':'+minOn5_3+' on>'+hourOff5_3+':'+minOff5_3+' off'+ ' (' + tcycle_5_3 + 'h)')
         
     if light5_3=='0' and dark5_3=='1':
         box5pha3text.set('                                ')
         
-        box5pha3text.set(year5_3+'/'+month5_3+'/'+date5_3+' '+hourFrom5_3+':'+minuteFrom5_3+' | '+'DD')
+        box5pha3text.set(year5_3+'/'+month5_3+'/'+date5_3+' '+hourFrom5_3+':'+minuteFrom5_3+' | '+'DD'+ ' (' + tcycle_5_3 + 'h)')
         
     if light5_3=='1' and dark5_3=='0':
         box5pha3text.set('                                 ')
         
-        box5pha3text.set(year5_3+'/'+month5_3+'/'+date5_3+' '+hourFrom5_3+':'+minuteFrom5_3+' | '+'LL')
+        box5pha3text.set(year5_3+'/'+month5_3+'/'+date5_3+' '+hourFrom5_3+':'+minuteFrom5_3+' | '+'LL'+ ' (' + tcycle_5_3 + 'h)')
         
 
     # 4 Phase
     if light1_4=='0' and dark1_4=='0':
         box1pha4text.set('                                ')
         
-        box1pha4text.set(year1_4+'/'+month1_4+'/'+date1_4+' '+hourFrom2_4+':'+minuteFrom1_4+' | '+hourOn1_4+':'+minOn1_4+' on>'+hourOff1_4+':'+minOff1_4+' off')
+        box1pha4text.set(year1_4+'/'+month1_4+'/'+date1_4+' '+hourFrom2_4+':'+minuteFrom1_4+' | '+hourOn1_4+':'+minOn1_4+' on>'+hourOff1_4+':'+minOff1_4+' off'+ ' (' + tcycle_1_4 + 'h)')
         
     if light1_4=='0' and dark1_4=='1':
         box1pha4text.set('                                ')
         
-        box1pha4text.set(year1_4+'/'+month1_4+'/'+date1_4+' '+hourFrom2_4+':'+minuteFrom1_4+' | '+'DD')
+        box1pha4text.set(year1_4+'/'+month1_4+'/'+date1_4+' '+hourFrom2_4+':'+minuteFrom1_4+' | '+'DD'+ ' (' + tcycle_1_4 + 'h)')
         
     if light1_4=='1' and dark1_4=='0':
         box1pha4text.set('                                 ')
         
-        box1pha4text.set(year1_4+'/'+month1_4+'/'+date1_4+' '+hourFrom2_4+':'+minuteFrom1_4+' | '+'LL')
+        box1pha4text.set(year1_4+'/'+month1_4+'/'+date1_4+' '+hourFrom2_4+':'+minuteFrom1_4+' | '+'LL'+ ' (' + tcycle_1_4 + 'h)')
         
 
     if light2_4=='0' and dark2_4=='0':
         box2pha4text.set('                                ')
         
-        box2pha4text.set(year2_4+'/'+month2_4+'/'+date2_4+' '+hourFrom2_4+':'+minuteFrom2_4+' | '+hourOn2_4+':'+minOn2_4+' on>'+hourOff2_4+':'+minOff2_4+' off')
+        box2pha4text.set(year2_4+'/'+month2_4+'/'+date2_4+' '+hourFrom2_4+':'+minuteFrom2_4+' | '+hourOn2_4+':'+minOn2_4+' on>'+hourOff2_4+':'+minOff2_4+' off'+ ' (' + tcycle_2_4 + 'h)')
         
     if light2_4=='0' and dark2_4=='1':
         box2pha4text.set('                                ')
         
-        box2pha4text.set(year2_4+'/'+month2_4+'/'+date2_4+' '+hourFrom2_4+':'+minuteFrom2_4+' | '+'DD')
+        box2pha4text.set(year2_4+'/'+month2_4+'/'+date2_4+' '+hourFrom2_4+':'+minuteFrom2_4+' | '+'DD'+ ' (' + tcycle_2_4 + 'h)')
         
     if light2_4=='1' and dark2_4=='0':
         box2pha4text.set('                                 ')
         
-        box2pha4text.set(year2_4+'/'+month2_4+'/'+date2_4+' '+hourFrom2_4+':'+minuteFrom2_4+' | '+'LL')
+        box2pha4text.set(year2_4+'/'+month2_4+'/'+date2_4+' '+hourFrom2_4+':'+minuteFrom2_4+' | '+'LL'+ ' (' + tcycle_2_4 + 'h)')
         
 
     if light3_4=='0' and dark3_4=='0':
         box3pha4text.set('                                ')
         
-        box3pha4text.set(year3_4+'/'+month3_4+'/'+date3_4+' '+hourFrom3_4+':'+minuteFrom3_4+' | '+hourOn3_4+':'+minOn3_4+' on>'+hourOff3_4+':'+minOff3_4+' off')
+        box3pha4text.set(year3_4+'/'+month3_4+'/'+date3_4+' '+hourFrom3_4+':'+minuteFrom3_4+' | '+hourOn3_4+':'+minOn3_4+' on>'+hourOff3_4+':'+minOff3_4+' off'+ ' (' + tcycle_3_4 + 'h)')
         
     if light3_4=='0' and dark3_4=='1':
         box3pha4text.set('                                ')
         
-        box3pha4text.set(year3_4+'/'+month3_4+'/'+date3_4+' '+hourFrom3_4+':'+minuteFrom3_4+' | '+'DD')
+        box3pha4text.set(year3_4+'/'+month3_4+'/'+date3_4+' '+hourFrom3_4+':'+minuteFrom3_4+' | '+'DD'+ ' (' + tcycle_3_4 + 'h)')
         
     if light3_4=='1' and dark3_4=='0':
         box3pha4text.set('                                 ')
         
-        box3pha4text.set(year3_4+'/'+month3_4+'/'+date3_4+' '+hourFrom3_4+':'+minuteFrom3_4+' | '+'LL')
+        box3pha4text.set(year3_4+'/'+month3_4+'/'+date3_4+' '+hourFrom3_4+':'+minuteFrom3_4+' | '+'LL'+ ' (' + tcycle_3_4 + 'h)')
         
 
     if light4_4=='0' and dark4_4=='0':
         box4pha4text.set('                                ')
         
-        box4pha4text.set(year4_4+'/'+month4_4+'/'+date4_4+' '+hourFrom4_4+':'+minuteFrom4_4+' | '+hourOn4_4+':'+minOn4_4+' on>'+hourOff4_4+':'+minOff4_4+' off')
+        box4pha4text.set(year4_4+'/'+month4_4+'/'+date4_4+' '+hourFrom4_4+':'+minuteFrom4_4+' | '+hourOn4_4+':'+minOn4_4+' on>'+hourOff4_4+':'+minOff4_4+' off'+ ' (' + tcycle_4_4 + 'h)')
         
     if light4_4=='0' and dark4_4=='1':
         box4pha4text.set('                                ')
         
-        box4pha4text.set(year4_4+'/'+month4_4+'/'+date4_4+' '+hourFrom4_4+':'+minuteFrom4_4+' | '+'DD')
+        box4pha4text.set(year4_4+'/'+month4_4+'/'+date4_4+' '+hourFrom4_4+':'+minuteFrom4_4+' | '+'DD'+ ' (' + tcycle_4_4 + 'h)')
         
     if light4_4=='1' and dark4_4=='0':
         box4pha4text.set('                                 ')
         
-        box4pha4text.set(year4_4+'/'+month4_4+'/'+date4_4+' '+hourFrom4_4+':'+minuteFrom4_4+' | '+'LL')
+        box4pha4text.set(year4_4+'/'+month4_4+'/'+date4_4+' '+hourFrom4_4+':'+minuteFrom4_4+' | '+'LL'+ ' (' + tcycle_4_4 + 'h)')
         
 
     if light5_4=='0' and dark5_4=='0':
         box5pha4text.set('                                ')
         
-        box5pha4text.set(year5_4+'/'+month5_4+'/'+date5_4+' '+hourFrom5_4+':'+minuteFrom5_4+' | '+hourOn5_4+':'+minOn5_4+' on>'+hourOff5_4+':'+minOff5_4+' off')
+        box5pha4text.set(year5_4+'/'+month5_4+'/'+date5_4+' '+hourFrom5_4+':'+minuteFrom5_4+' | '+hourOn5_4+':'+minOn5_4+' on>'+hourOff5_4+':'+minOff5_4+' off'+ ' (' + tcycle_5_4 + 'h)')
         
     if light5_4=='0' and dark5_4=='1':
         box5pha4text.set('                                ')
         
-        box5pha4text.set(year5_4+'/'+month5_4+'/'+date5_4+' '+hourFrom5_4+':'+minuteFrom5_4+' | '+'DD')
+        box5pha4text.set(year5_4+'/'+month5_4+'/'+date5_4+' '+hourFrom5_4+':'+minuteFrom5_4+' | '+'DD'+ ' (' + tcycle_5_4 + 'h)')
         
     if light5_4=='1' and dark5_4=='0':
         box5pha4text.set('                                 ')
         
-        box5pha4text.set(year5_4+'/'+month5_4+'/'+date5_4+' '+hourFrom5_4+':'+minuteFrom5_4+' | '+'LL')
+        box5pha4text.set(year5_4+'/'+month5_4+'/'+date5_4+' '+hourFrom5_4+':'+minuteFrom5_4+' | '+'LL'+ ' (' + tcycle_5_4 + 'h)')
         
 
     
@@ -4524,648 +4557,648 @@ def show_conf(): # Show schedule configuration
     if light1_5=='0' and dark1_5=='0':
         box1pha5text.set('                                ')
         
-        box1pha5text.set(year1_5+'/'+month1_5+'/'+date1_5+' '+hourFrom2_5+':'+minuteFrom1_5+' | '+hourOn1_5+':'+minOn1_5+' on>'+hourOff1_5+':'+minOff1_5+' off')
+        box1pha5text.set(year1_5+'/'+month1_5+'/'+date1_5+' '+hourFrom2_5+':'+minuteFrom1_5+' | '+hourOn1_5+':'+minOn1_5+' on>'+hourOff1_5+':'+minOff1_5+' off'+ ' (' + tcycle_1_5 + 'h)')
         
     if light1_5=='0' and dark1_5=='1':
         box1pha5text.set('                                ')
         
-        box1pha5text.set(year1_5+'/'+month1_5+'/'+date1_5+' '+hourFrom2_5+':'+minuteFrom1_5+' | '+'DD')
+        box1pha5text.set(year1_5+'/'+month1_5+'/'+date1_5+' '+hourFrom2_5+':'+minuteFrom1_5+' | '+'DD'+ ' (' + tcycle_1_5 + 'h)')
         
     if light1_5=='1' and dark1_5=='0':
         box1pha5text.set('                                 ')
         
-        box1pha5text.set(year1_5+'/'+month1_5+'/'+date1_5+' '+hourFrom2_5+':'+minuteFrom1_5+' | '+'LL')
+        box1pha5text.set(year1_5+'/'+month1_5+'/'+date1_5+' '+hourFrom2_5+':'+minuteFrom1_5+' | '+'LL'+ ' (' + tcycle_1_5 + 'h)')
         
 
     if light2_5=='0' and dark2_5=='0':
         box2pha5text.set('                                ')
         
-        box2pha5text.set(year2_5+'/'+month2_5+'/'+date2_5+' '+hourFrom2_5+':'+minuteFrom2_5+' | '+hourOn2_5+':'+minOn2_5+' on>'+hourOff2_5+':'+minOff2_5+' off')
+        box2pha5text.set(year2_5+'/'+month2_5+'/'+date2_5+' '+hourFrom2_5+':'+minuteFrom2_5+' | '+hourOn2_5+':'+minOn2_5+' on>'+hourOff2_5+':'+minOff2_5+' off'+ ' (' + tcycle_2_5 + 'h)')
         
     if light2_5=='0' and dark2_5=='1':
         box2pha5text.set('                                ')
         
-        box2pha5text.set(year2_5+'/'+month2_5+'/'+date2_5+' '+hourFrom2_5+':'+minuteFrom2_5+' | '+'DD')
+        box2pha5text.set(year2_5+'/'+month2_5+'/'+date2_5+' '+hourFrom2_5+':'+minuteFrom2_5+' | '+'DD'+ ' (' + tcycle_2_5 + 'h)')
         
     if light2_5=='1' and dark2_5=='0':
         box2pha5text.set('                                 ')
         
-        box2pha5text.set(year2_5+'/'+month2_5+'/'+date2_5+' '+hourFrom2_5+':'+minuteFrom2_5+' | '+'LL')
+        box2pha5text.set(year2_5+'/'+month2_5+'/'+date2_5+' '+hourFrom2_5+':'+minuteFrom2_5+' | '+'LL'+ ' (' + tcycle_2_5 + 'h)')
         
 
     if light3_5=='0' and dark3_5=='0':
         box3pha5text.set('                                ')
         
-        box3pha5text.set(year3_5+'/'+month3_5+'/'+date3_5+' '+hourFrom3_5+':'+minuteFrom3_5+' | '+hourOn3_5+':'+minOn3_5+' on>'+hourOff3_5+':'+minOff3_5+' off')
+        box3pha5text.set(year3_5+'/'+month3_5+'/'+date3_5+' '+hourFrom3_5+':'+minuteFrom3_5+' | '+hourOn3_5+':'+minOn3_5+' on>'+hourOff3_5+':'+minOff3_5+' off'+ ' (' + tcycle_3_5 + 'h)')
         
     if light3_5=='0' and dark3_5=='1':
         box3pha5text.set('                                ')
         
-        box3pha5text.set(year3_5+'/'+month3_5+'/'+date3_5+' '+hourFrom3_5+':'+minuteFrom3_5+' | '+'DD')
+        box3pha5text.set(year3_5+'/'+month3_5+'/'+date3_5+' '+hourFrom3_5+':'+minuteFrom3_5+' | '+'DD'+ ' (' + tcycle_3_5 + 'h)')
         
     if light3_5=='1' and dark3_5=='0':
         box3pha5text.set('                                 ')
         
-        box3pha5text.set(year3_5+'/'+month3_5+'/'+date3_5+' '+hourFrom3_5+':'+minuteFrom3_5+' | '+'LL')
+        box3pha5text.set(year3_5+'/'+month3_5+'/'+date3_5+' '+hourFrom3_5+':'+minuteFrom3_5+' | '+'LL'+ ' (' + tcycle_3_5 + 'h)')
         
 
     if light4_5=='0' and dark4_5=='0':
         box4pha5text.set('                                ')
         
-        box4pha5text.set(year4_5+'/'+month4_5+'/'+date4_5+' '+hourFrom4_5+':'+minuteFrom4_5+' | '+hourOn4_5+':'+minOn4_5+' on>'+hourOff4_5+':'+minOff4_5+' off')
+        box4pha5text.set(year4_5+'/'+month4_5+'/'+date4_5+' '+hourFrom4_5+':'+minuteFrom4_5+' | '+hourOn4_5+':'+minOn4_5+' on>'+hourOff4_5+':'+minOff4_5+' off'+ ' (' + tcycle_4_5 + 'h)')
         
     if light4_5=='0' and dark4_5=='1':
         box4pha5text.set('                                ')
         
-        box4pha5text.set(year4_5+'/'+month4_5+'/'+date4_5+' '+hourFrom4_5+':'+minuteFrom4_5+' | '+'DD')
+        box4pha5text.set(year4_5+'/'+month4_5+'/'+date4_5+' '+hourFrom4_5+':'+minuteFrom4_5+' | '+'DD'+ ' (' + tcycle_4_5 + 'h)')
         
     if light4_5=='1' and dark4_5=='0':
         box4pha5text.set('                                 ')
         
-        box4pha5text.set(year4_5+'/'+month4_5+'/'+date4_5+' '+hourFrom4_5+':'+minuteFrom4_5+' | '+'LL')
+        box4pha5text.set(year4_5+'/'+month4_5+'/'+date4_5+' '+hourFrom4_5+':'+minuteFrom4_5+' | '+'LL'+ ' (' + tcycle_4_5 + 'h)')
         
 
     if light5_5=='0' and dark5_5=='0':
         box5pha5text.set('                                ')
         
-        box5pha5text.set(year5_5+'/'+month5_5+'/'+date5_5+' '+hourFrom5_5+':'+minuteFrom5_5+' | '+hourOn5_5+':'+minOn5_5+' on>'+hourOff5_5+':'+minOff5_5+' off')
+        box5pha5text.set(year5_5+'/'+month5_5+'/'+date5_5+' '+hourFrom5_5+':'+minuteFrom5_5+' | '+hourOn5_5+':'+minOn5_5+' on>'+hourOff5_5+':'+minOff5_5+' off'+ ' (' + tcycle_5_5 + 'h)')
         
     if light5_5=='0' and dark5_5=='1':
         box5pha5text.set('                                ')
         
-        box5pha5text.set(year5_5+'/'+month5_5+'/'+date5_5+' '+hourFrom5_5+':'+minuteFrom5_5+' | '+'DD')
+        box5pha5text.set(year5_5+'/'+month5_5+'/'+date5_5+' '+hourFrom5_5+':'+minuteFrom5_5+' | '+'DD'+ ' (' + tcycle_5_5 + 'h)')
         
     if light5_5=='1' and dark5_5=='0':
         box5pha5text.set('                                 ')
         
-        box5pha5text.set(year5_5+'/'+month5_5+'/'+date5_5+' '+hourFrom5_5+':'+minuteFrom5_5+' | '+'LL')
+        box5pha5text.set(year5_5+'/'+month5_5+'/'+date5_5+' '+hourFrom5_5+':'+minuteFrom5_5+' | '+'LL'+ ' (' + tcycle_5_5 + 'h)')
         
 
     #6 Phase
     if light1_6=='0' and dark1_6=='0':
         box1pha6text.set('                                ')
         
-        box1pha6text.set(year1_6+'/'+month1_6+'/'+date1_6+' '+hourFrom2_6+':'+minuteFrom1_6+' | '+hourOn1_6+':'+minOn1_6+' on>'+hourOff1_6+':'+minOff1_6+' off')
+        box1pha6text.set(year1_6+'/'+month1_6+'/'+date1_6+' '+hourFrom2_6+':'+minuteFrom1_6+' | '+hourOn1_6+':'+minOn1_6+' on>'+hourOff1_6+':'+minOff1_6+' off'+ ' (' + tcycle_1_6 + 'h)')
         
     if light1_6=='0' and dark1_6=='1':
         box1pha6text.set('                                ')
         
-        box1pha6text.set(year1_6+'/'+month1_6+'/'+date1_6+' '+hourFrom2_6+':'+minuteFrom1_6+' | '+'DD')
+        box1pha6text.set(year1_6+'/'+month1_6+'/'+date1_6+' '+hourFrom2_6+':'+minuteFrom1_6+' | '+'DD'+ ' (' + tcycle_1_6 + 'h)')
         
     if light1_6=='1' and dark1_6=='0':
         box1pha6text.set('                                 ')
         
-        box1pha6text.set(year1_6+'/'+month1_6+'/'+date1_6+' '+hourFrom2_6+':'+minuteFrom1_6+' | '+'LL')
+        box1pha6text.set(year1_6+'/'+month1_6+'/'+date1_6+' '+hourFrom2_6+':'+minuteFrom1_6+' | '+'LL'+ ' (' + tcycle_1_6 + 'h)')
         
 
     if light2_6=='0' and dark2_6=='0':
         box2pha6text.set('                                ')
         
-        box2pha6text.set(year2_6+'/'+month2_6+'/'+date2_6+' '+hourFrom2_6+':'+minuteFrom2_6+' | '+hourOn2_6+':'+minOn2_6+' on>'+hourOff2_6+':'+minOff2_6+' off')
+        box2pha6text.set(year2_6+'/'+month2_6+'/'+date2_6+' '+hourFrom2_6+':'+minuteFrom2_6+' | '+hourOn2_6+':'+minOn2_6+' on>'+hourOff2_6+':'+minOff2_6+' off'+ ' (' + tcycle_2_6 + 'h)')
         
     if light2_6=='0' and dark2_6=='1':
         box2pha6text.set('                                ')
         
-        box2pha6text.set(year2_6+'/'+month2_6+'/'+date2_6+' '+hourFrom2_6+':'+minuteFrom2_6+' | '+'DD')
+        box2pha6text.set(year2_6+'/'+month2_6+'/'+date2_6+' '+hourFrom2_6+':'+minuteFrom2_6+' | '+'DD'+ ' (' + tcycle_2_6 + 'h)')
         
     if light2_6=='1' and dark2_6=='0':
         box2pha6text.set('                                 ')
         
-        box2pha6text.set(year2_6+'/'+month2_6+'/'+date2_6+' '+hourFrom2_6+':'+minuteFrom2_6+' | '+'LL')
+        box2pha6text.set(year2_6+'/'+month2_6+'/'+date2_6+' '+hourFrom2_6+':'+minuteFrom2_6+' | '+'LL'+ ' (' + tcycle_2_6 + 'h)')
         
 
     if light3_6=='0' and dark3_6=='0':
         box3pha6text.set('                                ')
         
-        box3pha6text.set(year3_6+'/'+month3_6+'/'+date3_6+' '+hourFrom3_6+':'+minuteFrom3_6+' | '+hourOn3_6+':'+minOn3_6+' on>'+hourOff3_6+':'+minOff3_6+' off')
+        box3pha6text.set(year3_6+'/'+month3_6+'/'+date3_6+' '+hourFrom3_6+':'+minuteFrom3_6+' | '+hourOn3_6+':'+minOn3_6+' on>'+hourOff3_6+':'+minOff3_6+' off'+ ' (' + tcycle_3_6 + 'h)')
         
     if light3_6=='0' and dark3_6=='1':
         box3pha6text.set('                                ')
         
-        box3pha6text.set(year3_6+'/'+month3_6+'/'+date3_6+' '+hourFrom3_6+':'+minuteFrom3_6+' | '+'DD')
+        box3pha6text.set(year3_6+'/'+month3_6+'/'+date3_6+' '+hourFrom3_6+':'+minuteFrom3_6+' | '+'DD'+ ' (' + tcycle_3_6 + 'h)')
         
     if light3_6=='1' and dark3_6=='0':
         box3pha6text.set('                                 ')
         
-        box3pha6text.set(year3_6+'/'+month3_6+'/'+date3_6+' '+hourFrom3_6+':'+minuteFrom3_6+' | '+'LL')
+        box3pha6text.set(year3_6+'/'+month3_6+'/'+date3_6+' '+hourFrom3_6+':'+minuteFrom3_6+' | '+'LL'+ ' (' + tcycle_3_6 + 'h)')
         
 
     if light4_6=='0' and dark4_6=='0':
         box4pha6text.set('                                ')
         
-        box4pha6text.set(year4_6+'/'+month4_6+'/'+date4_6+' '+hourFrom4_6+':'+minuteFrom4_6+' | '+hourOn4_6+':'+minOn4_6+' on>'+hourOff4_6+':'+minOff4_6+' off')
+        box4pha6text.set(year4_6+'/'+month4_6+'/'+date4_6+' '+hourFrom4_6+':'+minuteFrom4_6+' | '+hourOn4_6+':'+minOn4_6+' on>'+hourOff4_6+':'+minOff4_6+' off'+ ' (' + tcycle_4_6 + 'h)')
         
     if light4_6=='0' and dark4_6=='1':
         box4pha6text.set('                                ')
         
-        box4pha6text.set(year4_6+'/'+month4_6+'/'+date4_6+' '+hourFrom4_6+':'+minuteFrom4_6+' | '+'DD')
+        box4pha6text.set(year4_6+'/'+month4_6+'/'+date4_6+' '+hourFrom4_6+':'+minuteFrom4_6+' | '+'DD'+ ' (' + tcycle_4_6 + 'h)')
         
     if light4_6=='1' and dark4_6=='0':
         box4pha6text.set('                                 ')
         
-        box4pha6text.set(year4_6+'/'+month4_6+'/'+date4_6+' '+hourFrom4_6+':'+minuteFrom4_6+' | '+'LL')
+        box4pha6text.set(year4_6+'/'+month4_6+'/'+date4_6+' '+hourFrom4_6+':'+minuteFrom4_6+' | '+'LL'+ ' (' + tcycle_4_6 + 'h)')
         
 
     if light5_6=='0' and dark5_6=='0':
         box5pha6text.set('                                ')
         
-        box5pha6text.set(year5_6+'/'+month5_6+'/'+date5_6+' '+hourFrom5_6+':'+minuteFrom5_6+' | '+hourOn5_6+':'+minOn5_6+' on>'+hourOff5_6+':'+minOff5_6+' off')
+        box5pha6text.set(year5_6+'/'+month5_6+'/'+date5_6+' '+hourFrom5_6+':'+minuteFrom5_6+' | '+hourOn5_6+':'+minOn5_6+' on>'+hourOff5_6+':'+minOff5_6+' off'+ ' (' + tcycle_5_6 + 'h)')
         
     if light5_6=='0' and dark5_6=='1':
         box5pha6text.set('                                ')
         
-        box5pha6text.set(year5_6+'/'+month5_6+'/'+date5_6+' '+hourFrom5_6+':'+minuteFrom5_6+' | '+'DD')
+        box5pha6text.set(year5_6+'/'+month5_6+'/'+date5_6+' '+hourFrom5_6+':'+minuteFrom5_6+' | '+'DD'+ ' (' + tcycle_5_6 + 'h)')
         
     if light5_6=='1' and dark5_6=='0':
         box5pha6text.set('                                 ')
         
-        box5pha6text.set(year5_6+'/'+month5_6+'/'+date5_6+' '+hourFrom5_6+':'+minuteFrom5_6+' | '+'LL')
+        box5pha6text.set(year5_6+'/'+month5_6+'/'+date5_6+' '+hourFrom5_6+':'+minuteFrom5_6+' | '+'LL'+ ' (' + tcycle_5_6 + 'h)')
         
 
     #7 Phase
     if light1_7=='0' and dark1_7=='0':
         box1pha7text.set('                                ')
         
-        box1pha7text.set(year1_7+'/'+month1_7+'/'+date1_7+' '+hourFrom2_7+':'+minuteFrom1_7+' | '+hourOn1_7+':'+minOn1_7+' on>'+hourOff1_7+':'+minOff1_7+' off')
+        box1pha7text.set(year1_7+'/'+month1_7+'/'+date1_7+' '+hourFrom2_7+':'+minuteFrom1_7+' | '+hourOn1_7+':'+minOn1_7+' on>'+hourOff1_7+':'+minOff1_7+' off'+ ' (' + tcycle_1_7 + 'h)')
         
     if light1_7=='0' and dark1_7=='1':
         box1pha7text.set('                                ')
         
-        box1pha7text.set(year1_7+'/'+month1_7+'/'+date1_7+' '+hourFrom2_7+':'+minuteFrom1_7+' | '+'DD')
+        box1pha7text.set(year1_7+'/'+month1_7+'/'+date1_7+' '+hourFrom2_7+':'+minuteFrom1_7+' | '+'DD'+ ' (' + tcycle_1_7 + 'h)')
         
     if light1_7=='1' and dark1_7=='0':
         box1pha7text.set('                                 ')
         
-        box1pha7text.set(year1_7+'/'+month1_7+'/'+date1_7+' '+hourFrom2_7+':'+minuteFrom1_7+' | '+'LL')
+        box1pha7text.set(year1_7+'/'+month1_7+'/'+date1_7+' '+hourFrom2_7+':'+minuteFrom1_7+' | '+'LL'+ ' (' + tcycle_1_7 + 'h)')
         
     
     if light2_7=='0' and dark2_7=='0':
         box2pha7text.set('                                ')
         
-        box2pha7text.set(year2_7+'/'+month2_7+'/'+date2_7+' '+hourFrom2_7+':'+minuteFrom2_7+' | '+hourOn2_7+':'+minOn2_7+' on>'+hourOff2_7+':'+minOff2_7+' off')
+        box2pha7text.set(year2_7+'/'+month2_7+'/'+date2_7+' '+hourFrom2_7+':'+minuteFrom2_7+' | '+hourOn2_7+':'+minOn2_7+' on>'+hourOff2_7+':'+minOff2_7+' off'+ ' (' + tcycle_2_7 + 'h)')
         
     if light2_7=='0' and dark2_7=='1':
         box2pha7text.set('                                ')
         
-        box2pha7text.set(year2_7+'/'+month2_7+'/'+date2_7+' '+hourFrom2_7+':'+minuteFrom2_7+' | '+'DD')
+        box2pha7text.set(year2_7+'/'+month2_7+'/'+date2_7+' '+hourFrom2_7+':'+minuteFrom2_7+' | '+'DD'+ ' (' + tcycle_2_7 + 'h)')
         
     if light2_7=='1' and dark2_7=='0':
         box2pha7text.set('                                 ')
         
-        box2pha7text.set(year2_7+'/'+month2_7+'/'+date2_7+' '+hourFrom2_7+':'+minuteFrom2_7+' | '+'LL')
+        box2pha7text.set(year2_7+'/'+month2_7+'/'+date2_7+' '+hourFrom2_7+':'+minuteFrom2_7+' | '+'LL'+ ' (' + tcycle_2_7 + 'h)')
         
     
     if light3_7=='0' and dark3_7=='0':
         box3pha7text.set('                                ')
         
-        box3pha7text.set(year3_7+'/'+month3_7+'/'+date3_7+' '+hourFrom3_7+':'+minuteFrom3_7+' | '+hourOn3_7+':'+minOn3_6+' on>'+hourOff3_7+':'+minOff3_7+' off')
+        box3pha7text.set(year3_7+'/'+month3_7+'/'+date3_7+' '+hourFrom3_7+':'+minuteFrom3_7+' | '+hourOn3_7+':'+minOn3_6+' on>'+hourOff3_7+':'+minOff3_7+' off'+ ' (' + tcycle_3_7 + 'h)')
          
     if light3_7=='0' and dark3_7=='1':
         box3pha7text.set('                                ')
         
-        box3pha7text.set(year3_7+'/'+month3_7+'/'+date3_7+' '+hourFrom3_7+':'+minuteFrom3_7+' | '+'DD')
+        box3pha7text.set(year3_7+'/'+month3_7+'/'+date3_7+' '+hourFrom3_7+':'+minuteFrom3_7+' | '+'DD'+ ' (' + tcycle_3_7 + 'h)')
         
     if light3_7=='1' and dark3_7=='0':
         box3pha7text.set('                                 ')
         
-        box3pha7text.set(year3_7+'/'+month3_7+'/'+date3_7+' '+hourFrom3_7+':'+minuteFrom3_7+' | '+'LL')
+        box3pha7text.set(year3_7+'/'+month3_7+'/'+date3_7+' '+hourFrom3_7+':'+minuteFrom3_7+' | '+'LL'+ ' (' + tcycle_3_7 + 'h)')
         
     
     if light4_7=='0' and dark4_7=='0':
         box4pha7text.set('                                ')
         
-        box4pha7text.set(year4_7+'/'+month4_7+'/'+date4_7+' '+hourFrom4_7+':'+minuteFrom4_7+' | '+hourOn4_7+':'+minOn4_7+' on>'+hourOff4_7+':'+minOff4_7+' off')
+        box4pha7text.set(year4_7+'/'+month4_7+'/'+date4_7+' '+hourFrom4_7+':'+minuteFrom4_7+' | '+hourOn4_7+':'+minOn4_7+' on>'+hourOff4_7+':'+minOff4_7+' off'+ ' (' + tcycle_4_7 + 'h)')
         
     if light4_7=='0' and dark4_7=='1':
         box4pha7text.set('                                ')
         
-        box4pha7text.set(year4_7+'/'+month4_7+'/'+date4_7+' '+hourFrom4_7+':'+minuteFrom4_7+' | '+'DD')
+        box4pha7text.set(year4_7+'/'+month4_7+'/'+date4_7+' '+hourFrom4_7+':'+minuteFrom4_7+' | '+'DD'+ ' (' + tcycle_4_7 + 'h)')
         
     if light4_7=='1' and dark4_7=='0':
         box4pha7text.set('                                 ')
         
-        box4pha7text.set(year4_7+'/'+month4_7+'/'+date4_7+' '+hourFrom4_7+':'+minuteFrom4_7+' | '+'LL')
+        box4pha7text.set(year4_7+'/'+month4_7+'/'+date4_7+' '+hourFrom4_7+':'+minuteFrom4_7+' | '+'LL'+ ' (' + tcycle_4_7 + 'h)')
         
     
     if light5_7=='0' and dark5_7=='0':
         box5pha7text.set('                                ')
         
-        box5pha7text.set(year5_7+'/'+month5_7+'/'+date5_7+' '+hourFrom5_7+':'+minuteFrom5_7+' | '+hourOn5_7+':'+minOn5_7+' on>'+hourOff5_7+':'+minOff5_7+' off')
+        box5pha7text.set(year5_7+'/'+month5_7+'/'+date5_7+' '+hourFrom5_7+':'+minuteFrom5_7+' | '+hourOn5_7+':'+minOn5_7+' on>'+hourOff5_7+':'+minOff5_7+' off'+ ' (' + tcycle_5_7 + 'h)')
         
     if light5_7=='0' and dark5_7=='1':
         box5pha7text.set('                                ')
         
-        box5pha7text.set(year5_7+'/'+month5_7+'/'+date5_7+' '+hourFrom5_7+':'+minuteFrom5_7+' | '+'DD')
+        box5pha7text.set(year5_7+'/'+month5_7+'/'+date5_7+' '+hourFrom5_7+':'+minuteFrom5_7+' | '+'DD'+ ' (' + tcycle_5_7 + 'h)')
         
     if light5_7=='1' and dark5_7=='0':
         box5pha7text.set('                                 ')
         
-        box5pha7text.set(year5_7+'/'+month5_7+'/'+date5_7+' '+hourFrom5_7+':'+minuteFrom5_7+' | '+'LL')
+        box5pha7text.set(year5_7+'/'+month5_7+'/'+date5_7+' '+hourFrom5_7+':'+minuteFrom5_7+' | '+'LL'+ ' (' + tcycle_5_7 + 'h)')
            
 
     #8 Phase
     if light1_8=='0' and dark1_8=='0':
         box1pha8text.set('                                ')
         
-        box1pha8text.set(year1_8+'/'+month1_8+'/'+date1_8+' '+hourFrom2_8+':'+minuteFrom1_8+' | '+hourOn1_8+':'+minOn1_8+' on>'+hourOff1_8+':'+minOff1_8+' off')
+        box1pha8text.set(year1_8+'/'+month1_8+'/'+date1_8+' '+hourFrom2_8+':'+minuteFrom1_8+' | '+hourOn1_8+':'+minOn1_8+' on>'+hourOff1_8+':'+minOff1_8+' off'+ ' (' + tcycle_1_8 + 'h)')
         
     if light1_8=='0' and dark1_8=='1':
         box1pha8text.set('                                ')
         
-        box1pha8text.set(year1_8+'/'+month1_8+'/'+date1_8+' '+hourFrom2_8+':'+minuteFrom1_8+' | '+'DD')
+        box1pha8text.set(year1_8+'/'+month1_8+'/'+date1_8+' '+hourFrom2_8+':'+minuteFrom1_8+' | '+'DD'+ ' (' + tcycle_1_8 + 'h)')
         
     if light1_8=='1' and dark1_8=='0':
         box1pha8text.set('                                 ')
         
-        box1pha8text.set(year1_8+'/'+month1_8+'/'+date1_8+' '+hourFrom2_8+':'+minuteFrom1_8+' | '+'LL')
+        box1pha8text.set(year1_8+'/'+month1_8+'/'+date1_8+' '+hourFrom2_8+':'+minuteFrom1_8+' | '+'LL'+ ' (' + tcycle_1_8 + 'h)')
         
     
     if light2_8=='0' and dark2_8=='0':
         box2pha8text.set('                                ')
         
-        box2pha8text.set(year2_8+'/'+month2_8+'/'+date2_8+' '+hourFrom2_8+':'+minuteFrom2_8+' | '+hourOn2_8+':'+minOn2_8+' on>'+hourOff2_8+':'+minOff2_8+' off')
+        box2pha8text.set(year2_8+'/'+month2_8+'/'+date2_8+' '+hourFrom2_8+':'+minuteFrom2_8+' | '+hourOn2_8+':'+minOn2_8+' on>'+hourOff2_8+':'+minOff2_8+' off'+ ' (' + tcycle_2_8 + 'h)')
         
     if light2_8=='0' and dark2_8=='1':
         box2pha8text.set('                                ')
         
-        box2pha8text.set(year2_8+'/'+month2_8+'/'+date2_8+' '+hourFrom2_8+':'+minuteFrom2_8+' | '+'DD')
+        box2pha8text.set(year2_8+'/'+month2_8+'/'+date2_8+' '+hourFrom2_8+':'+minuteFrom2_8+' | '+'DD'+ ' (' + tcycle_2_8 + 'h)')
         
     if light2_8=='1' and dark2_8=='0':
         box2pha8text.set('                                 ')
         
-        box2pha8text.set(year2_8+'/'+month2_8+'/'+date2_8+' '+hourFrom2_8+':'+minuteFrom2_8+' | '+'LL')
+        box2pha8text.set(year2_8+'/'+month2_8+'/'+date2_8+' '+hourFrom2_8+':'+minuteFrom2_8+' | '+'LL'+ ' (' + tcycle_2_8 + 'h)')
         
     
     if light3_8=='0' and dark3_8=='0':
         box3pha8text.set('                                ')
         
-        box3pha8text.set(year3_8+'/'+month3_8+'/'+date3_8+' '+hourFrom3_8+':'+minuteFrom3_8+' | '+hourOn3_8+':'+minOn3_6+' on>'+hourOff3_8+':'+minOff3_8+' off')
+        box3pha8text.set(year3_8+'/'+month3_8+'/'+date3_8+' '+hourFrom3_8+':'+minuteFrom3_8+' | '+hourOn3_8+':'+minOn3_6+' on>'+hourOff3_8+':'+minOff3_8+' off'+ ' (' + tcycle_3_8 + 'h)')
          
     if light3_8=='0' and dark3_8=='1':
         box3pha8text.set('                                ')
         
-        box3pha8text.set(year3_8+'/'+month3_8+'/'+date3_8+' '+hourFrom3_8+':'+minuteFrom3_8+' | '+'DD')
+        box3pha8text.set(year3_8+'/'+month3_8+'/'+date3_8+' '+hourFrom3_8+':'+minuteFrom3_8+' | '+'DD'+ ' (' + tcycle_3_8 + 'h)')
         
     if light3_8=='1' and dark3_8=='0':
         box3pha8text.set('                                 ')
         
-        box3pha8text.set(year3_8+'/'+month3_8+'/'+date3_8+' '+hourFrom3_8+':'+minuteFrom3_8+' | '+'LL')
+        box3pha8text.set(year3_8+'/'+month3_8+'/'+date3_8+' '+hourFrom3_8+':'+minuteFrom3_8+' | '+'LL'+ ' (' + tcycle_3_8 + 'h)')
         
     
     if light4_8=='0' and dark4_8=='0':
         box4pha8text.set('                                ')
         
-        box4pha8text.set(year4_8+'/'+month4_8+'/'+date4_8+' '+hourFrom4_8+':'+minuteFrom4_8+' | '+hourOn4_8+':'+minOn4_8+' on>'+hourOff4_8+':'+minOff4_8+' off')
+        box4pha8text.set(year4_8+'/'+month4_8+'/'+date4_8+' '+hourFrom4_8+':'+minuteFrom4_8+' | '+hourOn4_8+':'+minOn4_8+' on>'+hourOff4_8+':'+minOff4_8+' off'+ ' (' + tcycle_4_8 + 'h)')
         
     if light4_8=='0' and dark4_8=='1':
         box4pha8text.set('                                ')
         
-        box4pha8text.set(year4_8+'/'+month4_8+'/'+date4_8+' '+hourFrom4_8+':'+minuteFrom4_8+' | '+'DD')
+        box4pha8text.set(year4_8+'/'+month4_8+'/'+date4_8+' '+hourFrom4_8+':'+minuteFrom4_8+' | '+'DD'+ ' (' + tcycle_4_8 + 'h)')
         
     if light4_8=='1' and dark4_8=='0':
         box4pha8text.set('                                 ')
         
-        box4pha8text.set(year4_8+'/'+month4_8+'/'+date4_8+' '+hourFrom4_8+':'+minuteFrom4_8+' | '+'LL')
+        box4pha8text.set(year4_8+'/'+month4_8+'/'+date4_8+' '+hourFrom4_8+':'+minuteFrom4_8+' | '+'LL'+ ' (' + tcycle_4_8 + 'h)')
         
     
     if light5_8=='0' and dark5_8=='0':
         box5pha8text.set('                                ')
         
-        box5pha8text.set(year5_8+'/'+month5_8+'/'+date5_8+' '+hourFrom5_8+':'+minuteFrom5_8+' | '+hourOn5_8+':'+minOn5_8+' on>'+hourOff5_8+':'+minOff5_8+' off')
+        box5pha8text.set(year5_8+'/'+month5_8+'/'+date5_8+' '+hourFrom5_8+':'+minuteFrom5_8+' | '+hourOn5_8+':'+minOn5_8+' on>'+hourOff5_8+':'+minOff5_8+' off'+ ' (' + tcycle_5_8 + 'h)')
         
     if light5_8=='0' and dark5_8=='1':
         box5pha8text.set('                                ')
         
-        box5pha8text.set(year5_8+'/'+month5_8+'/'+date5_8+' '+hourFrom5_8+':'+minuteFrom5_8+' | '+'DD')
+        box5pha8text.set(year5_8+'/'+month5_8+'/'+date5_8+' '+hourFrom5_8+':'+minuteFrom5_8+' | '+'DD'+ ' (' + tcycle_5_8 + 'h)')
         
     if light5_8=='1' and dark5_8=='0':
         box5pha8text.set('                                 ')
         
-        box5pha8text.set(year5_8+'/'+month5_8+'/'+date5_8+' '+hourFrom5_8+':'+minuteFrom5_8+' | '+'LL')
+        box5pha8text.set(year5_8+'/'+month5_8+'/'+date5_8+' '+hourFrom5_8+':'+minuteFrom5_8+' | '+'LL'+ ' (' + tcycle_5_8 + 'h)')
             
       
     #9 Phase
     if light1_9=='0' and dark1_9=='0':
         box1pha9text.set('                                ')
         
-        box1pha9text.set(year1_9+'/'+month1_9+'/'+date1_9+' '+hourFrom2_9+':'+minuteFrom1_9+' | '+hourOn1_9+':'+minOn1_9+' on>'+hourOff1_9+':'+minOff1_9+' off')
+        box1pha9text.set(year1_9+'/'+month1_9+'/'+date1_9+' '+hourFrom2_9+':'+minuteFrom1_9+' | '+hourOn1_9+':'+minOn1_9+' on>'+hourOff1_9+':'+minOff1_9+' off'+ ' (' + tcycle_1_9 + 'h)')
         
     if light1_9=='0' and dark1_9=='1':
         box1pha9text.set('                                ')
         
-        box1pha9text.set(year1_9+'/'+month1_9+'/'+date1_9+' '+hourFrom2_9+':'+minuteFrom1_9+' | '+'DD')
+        box1pha9text.set(year1_9+'/'+month1_9+'/'+date1_9+' '+hourFrom2_9+':'+minuteFrom1_9+' | '+'DD'+ ' (' + tcycle_1_9 + 'h)')
         
     if light1_9=='1' and dark1_9=='0':
         box1pha9text.set('                                 ')
         
-        box1pha9text.set(year1_9+'/'+month1_9+'/'+date1_9+' '+hourFrom2_9+':'+minuteFrom1_9+' | '+'LL')
+        box1pha9text.set(year1_9+'/'+month1_9+'/'+date1_9+' '+hourFrom2_9+':'+minuteFrom1_9+' | '+'LL'+ ' (' + tcycle_1_9 + 'h)')
         
     
     if light2_9=='0' and dark2_9=='0':
         box2pha9text.set('                                ')
         
-        box2pha9text.set(year2_9+'/'+month2_9+'/'+date2_9+' '+hourFrom2_9+':'+minuteFrom2_9+' | '+hourOn2_9+':'+minOn2_9+' on>'+hourOff2_9+':'+minOff2_9+' off')
+        box2pha9text.set(year2_9+'/'+month2_9+'/'+date2_9+' '+hourFrom2_9+':'+minuteFrom2_9+' | '+hourOn2_9+':'+minOn2_9+' on>'+hourOff2_9+':'+minOff2_9+' off'+ ' (' + tcycle_2_9 + 'h)')
         
     if light2_9=='0' and dark2_9=='1':
         box2pha9text.set('                                ')
         
-        box2pha9text.set(year2_9+'/'+month2_9+'/'+date2_9+' '+hourFrom2_9+':'+minuteFrom2_9+' | '+'DD')
+        box2pha9text.set(year2_9+'/'+month2_9+'/'+date2_9+' '+hourFrom2_9+':'+minuteFrom2_9+' | '+'DD'+ ' (' + tcycle_2_9 + 'h)')
         
     if light2_9=='1' and dark2_9=='0':
         box2pha9text.set('                                 ')
         
-        box2pha9text.set(year2_9+'/'+month2_9+'/'+date2_9+' '+hourFrom2_9+':'+minuteFrom2_9+' | '+'LL')
+        box2pha9text.set(year2_9+'/'+month2_9+'/'+date2_9+' '+hourFrom2_9+':'+minuteFrom2_9+' | '+'LL'+ ' (' + tcycle_2_9 + 'h)')
         
     
     if light3_9=='0' and dark3_9=='0':
         box3pha9text.set('                                ')
         
-        box3pha9text.set(year3_9+'/'+month3_9+'/'+date3_9+' '+hourFrom3_9+':'+minuteFrom3_9+' | '+hourOn3_9+':'+minOn3_6+' on>'+hourOff3_9+':'+minOff3_9+' off')
+        box3pha9text.set(year3_9+'/'+month3_9+'/'+date3_9+' '+hourFrom3_9+':'+minuteFrom3_9+' | '+hourOn3_9+':'+minOn3_6+' on>'+hourOff3_9+':'+minOff3_9+' off'+ ' (' + tcycle_3_9 + 'h)')
          
     if light3_9=='0' and dark3_9=='1':
         box3pha9text.set('                                ')
         
-        box3pha9text.set(year3_9+'/'+month3_9+'/'+date3_9+' '+hourFrom3_9+':'+minuteFrom3_9+' | '+'DD')
+        box3pha9text.set(year3_9+'/'+month3_9+'/'+date3_9+' '+hourFrom3_9+':'+minuteFrom3_9+' | '+'DD'+ ' (' + tcycle_3_9 + 'h)')
         
     if light3_9=='1' and dark3_9=='0':
         box3pha9text.set('                                 ')
         
-        box3pha9text.set(year3_9+'/'+month3_9+'/'+date3_9+' '+hourFrom3_9+':'+minuteFrom3_9+' | '+'LL')
+        box3pha9text.set(year3_9+'/'+month3_9+'/'+date3_9+' '+hourFrom3_9+':'+minuteFrom3_9+' | '+'LL'+ ' (' + tcycle_3_9 + 'h)')
         
     
     if light4_9=='0' and dark4_9=='0':
         box4pha9text.set('                                ')
         
-        box4pha9text.set(year4_9+'/'+month4_9+'/'+date4_9+' '+hourFrom4_9+':'+minuteFrom4_9+' | '+hourOn4_9+':'+minOn4_9+' on>'+hourOff4_9+':'+minOff4_9+' off')
+        box4pha9text.set(year4_9+'/'+month4_9+'/'+date4_9+' '+hourFrom4_9+':'+minuteFrom4_9+' | '+hourOn4_9+':'+minOn4_9+' on>'+hourOff4_9+':'+minOff4_9+' off'+ ' (' + tcycle_4_9 + 'h)')
         
     if light4_9=='0' and dark4_9=='1':
         box4pha9text.set('                                ')
         
-        box4pha9text.set(year4_9+'/'+month4_9+'/'+date4_9+' '+hourFrom4_9+':'+minuteFrom4_9+' | '+'DD')
+        box4pha9text.set(year4_9+'/'+month4_9+'/'+date4_9+' '+hourFrom4_9+':'+minuteFrom4_9+' | '+'DD'+ ' (' + tcycle_4_9 + 'h)')
         
     if light4_9=='1' and dark4_9=='0':
         box4pha9text.set('                                 ')
         
-        box4pha9text.set(year4_9+'/'+month4_9+'/'+date4_9+' '+hourFrom4_9+':'+minuteFrom4_9+' | '+'LL')
+        box4pha9text.set(year4_9+'/'+month4_9+'/'+date4_9+' '+hourFrom4_9+':'+minuteFrom4_9+' | '+'LL'+ ' (' + tcycle_4_9 + 'h)')
         
     
     if light5_9=='0' and dark5_9=='0':
         box5pha9text.set('                                ')
         
-        box5pha9text.set(year5_9+'/'+month5_9+'/'+date5_9+' '+hourFrom5_9+':'+minuteFrom5_9+' | '+hourOn5_9+':'+minOn5_9+' on>'+hourOff5_9+':'+minOff5_9+' off')
+        box5pha9text.set(year5_9+'/'+month5_9+'/'+date5_9+' '+hourFrom5_9+':'+minuteFrom5_9+' | '+hourOn5_9+':'+minOn5_9+' on>'+hourOff5_9+':'+minOff5_9+' off'+ ' (' + tcycle_5_9 + 'h)')
         
     if light5_9=='0' and dark5_9=='1':
         box5pha9text.set('                                ')
         
-        box5pha9text.set(year5_9+'/'+month5_9+'/'+date5_9+' '+hourFrom5_9+':'+minuteFrom5_9+' | '+'DD')
+        box5pha9text.set(year5_9+'/'+month5_9+'/'+date5_9+' '+hourFrom5_9+':'+minuteFrom5_9+' | '+'DD'+ ' (' + tcycle_5_9 + 'h)')
         
     if light5_9=='1' and dark5_9=='0':
         box5pha9text.set('                                 ')
         
-        box5pha9text.set(year5_9+'/'+month5_9+'/'+date5_9+' '+hourFrom5_9+':'+minuteFrom5_9+' | '+'LL')
+        box5pha9text.set(year5_9+'/'+month5_9+'/'+date5_9+' '+hourFrom5_9+':'+minuteFrom5_9+' | '+'LL'+ ' (' + tcycle_5_9 + 'h)')
            
 
     #10 Phase
     if light1_10=='0' and dark1_10=='0':
         box1pha10text.set('                                ')
         
-        box1pha10text.set(year1_10+'/'+month1_10+'/'+date1_10+' '+hourFrom2_10+':'+minuteFrom1_10+' | '+hourOn1_10+':'+minOn1_10+' on>'+hourOff1_10+':'+minOff1_10+' off')
+        box1pha10text.set(year1_10+'/'+month1_10+'/'+date1_10+' '+hourFrom2_10+':'+minuteFrom1_10+' | '+hourOn1_10+':'+minOn1_10+' on>'+hourOff1_10+':'+minOff1_10+' off'+ ' (' + tcycle_1_10 + 'h)')
         
     if light1_10=='0' and dark1_10=='1':
         box1pha10text.set('                                ')
         
-        box1pha10text.set(year1_10+'/'+month1_10+'/'+date1_10+' '+hourFrom2_10+':'+minuteFrom1_10+' | '+'DD')
+        box1pha10text.set(year1_10+'/'+month1_10+'/'+date1_10+' '+hourFrom2_10+':'+minuteFrom1_10+' | '+'DD'+ ' (' + tcycle_1_10 + 'h)')
         
     if light1_10=='1' and dark1_10=='0':
         box1pha10text.set('                                 ')
         
-        box1pha10text.set(year1_10+'/'+month1_10+'/'+date1_10+' '+hourFrom2_10+':'+minuteFrom1_10+' | '+'LL')
+        box1pha10text.set(year1_10+'/'+month1_10+'/'+date1_10+' '+hourFrom2_10+':'+minuteFrom1_10+' | '+'LL'+ ' (' + tcycle_1_10 + 'h)')
         
     
     if light2_10=='0' and dark2_10=='0':
         box2pha10text.set('                                ')
         
-        box2pha10text.set(year2_10+'/'+month2_10+'/'+date2_10+' '+hourFrom2_10+':'+minuteFrom2_10+' | '+hourOn2_10+':'+minOn2_10+' on>'+hourOff2_10+':'+minOff2_10+' off')
+        box2pha10text.set(year2_10+'/'+month2_10+'/'+date2_10+' '+hourFrom2_10+':'+minuteFrom2_10+' | '+hourOn2_10+':'+minOn2_10+' on>'+hourOff2_10+':'+minOff2_10+' off'+ ' (' + tcycle_2_10 + 'h)')
         
     if light2_10=='0' and dark2_10=='1':
         box2pha10text.set('                                ')
         
-        box2pha10text.set(year2_10+'/'+month2_10+'/'+date2_10+' '+hourFrom2_10+':'+minuteFrom2_10+' | '+'DD')
+        box2pha10text.set(year2_10+'/'+month2_10+'/'+date2_10+' '+hourFrom2_10+':'+minuteFrom2_10+' | '+'DD'+ ' (' + tcycle_2_10 + 'h)')
         
     if light2_10=='1' and dark2_10=='0':
         box2pha10text.set('                                 ')
         
-        box2pha10text.set(year2_10+'/'+month2_10+'/'+date2_10+' '+hourFrom2_10+':'+minuteFrom2_10+' | '+'LL')
+        box2pha10text.set(year2_10+'/'+month2_10+'/'+date2_10+' '+hourFrom2_10+':'+minuteFrom2_10+' | '+'LL'+ ' (' + tcycle_2_10 + 'h)')
         
     
     if light3_10=='0' and dark3_10=='0':
         box3pha10text.set('                                ')
         
-        box3pha10text.set(year3_10+'/'+month3_10+'/'+date3_10+' '+hourFrom3_10+':'+minuteFrom3_10+' | '+hourOn3_10+':'+minOn3_6+' on>'+hourOff3_10+':'+minOff3_10+' off')
+        box3pha10text.set(year3_10+'/'+month3_10+'/'+date3_10+' '+hourFrom3_10+':'+minuteFrom3_10+' | '+hourOn3_10+':'+minOn3_6+' on>'+hourOff3_10+':'+minOff3_10+' off'+ ' (' + tcycle_3_10 + 'h)')
          
     if light3_10=='0' and dark3_10=='1':
         box3pha10text.set('                                ')
         
-        box3pha10text.set(year3_10+'/'+month3_10+'/'+date3_10+' '+hourFrom3_10+':'+minuteFrom3_10+' | '+'DD')
+        box3pha10text.set(year3_10+'/'+month3_10+'/'+date3_10+' '+hourFrom3_10+':'+minuteFrom3_10+' | '+'DD'+ ' (' + tcycle_3_10 + 'h)')
         
     if light3_10=='1' and dark3_10=='0':
         box3pha10text.set('                                 ')
         
-        box3pha10text.set(year3_10+'/'+month3_10+'/'+date3_10+' '+hourFrom3_10+':'+minuteFrom3_10+' | '+'LL')
+        box3pha10text.set(year3_10+'/'+month3_10+'/'+date3_10+' '+hourFrom3_10+':'+minuteFrom3_10+' | '+'LL'+ ' (' + tcycle_3_10 + 'h)')
         
     
     if light4_10=='0' and dark4_10=='0':
         box4pha10text.set('                                ')
         
-        box4pha10text.set(year4_10+'/'+month4_10+'/'+date4_10+' '+hourFrom4_10+':'+minuteFrom4_10+' | '+hourOn4_10+':'+minOn4_10+' on>'+hourOff4_10+':'+minOff4_10+' off')
+        box4pha10text.set(year4_10+'/'+month4_10+'/'+date4_10+' '+hourFrom4_10+':'+minuteFrom4_10+' | '+hourOn4_10+':'+minOn4_10+' on>'+hourOff4_10+':'+minOff4_10+' off'+ ' (' + tcycle_4_10 + 'h)')
         
     if light4_10=='0' and dark4_10=='1':
         box4pha10text.set('                                ')
         
-        box4pha10text.set(year4_10+'/'+month4_10+'/'+date4_10+' '+hourFrom4_10+':'+minuteFrom4_10+' | '+'DD')
+        box4pha10text.set(year4_10+'/'+month4_10+'/'+date4_10+' '+hourFrom4_10+':'+minuteFrom4_10+' | '+'DD'+ ' (' + tcycle_4_10 + 'h)')
         
     if light4_10=='1' and dark4_10=='0':
         box4pha10text.set('                                 ')
         
-        box4pha10text.set(year4_10+'/'+month4_10+'/'+date4_10+' '+hourFrom4_10+':'+minuteFrom4_10+' | '+'LL')
+        box4pha10text.set(year4_10+'/'+month4_10+'/'+date4_10+' '+hourFrom4_10+':'+minuteFrom4_10+' | '+'LL'+ ' (' + tcycle_4_10 + 'h)')
         
     
     if light5_10=='0' and dark5_10=='0':
         box5pha10text.set('                                ')
         
-        box5pha10text.set(year5_10+'/'+month5_10+'/'+date5_10+' '+hourFrom5_10+':'+minuteFrom5_10+' | '+hourOn5_10+':'+minOn5_10+' on>'+hourOff5_10+':'+minOff5_10+' off')
+        box5pha10text.set(year5_10+'/'+month5_10+'/'+date5_10+' '+hourFrom5_10+':'+minuteFrom5_10+' | '+hourOn5_10+':'+minOn5_10+' on>'+hourOff5_10+':'+minOff5_10+' off'+ ' (' + tcycle_5_10 + 'h)')
         
     if light5_10=='0' and dark5_10=='1':
         box5pha10text.set('                                ')
         
-        box5pha10text.set(year5_10+'/'+month5_10+'/'+date5_10+' '+hourFrom5_10+':'+minuteFrom5_10+' | '+'DD')
+        box5pha10text.set(year5_10+'/'+month5_10+'/'+date5_10+' '+hourFrom5_10+':'+minuteFrom5_10+' | '+'DD'+ ' (' + tcycle_5_10 + 'h)')
         
     if light5_10=='1' and dark5_10=='0':
         box5pha10text.set('                                 ')
         
-        box5pha10text.set(year5_10+'/'+month5_10+'/'+date5_10+' '+hourFrom5_10+':'+minuteFrom5_10+' | '+'LL')
+        box5pha10text.set(year5_10+'/'+month5_10+'/'+date5_10+' '+hourFrom5_10+':'+minuteFrom5_10+' | '+'LL'+ ' (' + tcycle_5_10 + 'h)')
           
 
     #11 Phase
     if light1_11=='0' and dark1_11=='0':
         box1pha11text.set('                                ')
         
-        box1pha11text.set(year1_11+'/'+month1_11+'/'+date1_11+' '+hourFrom2_11+':'+minuteFrom1_11+' | '+hourOn1_11+':'+minOn1_11+' on>'+hourOff1_11+':'+minOff1_11+' off')
+        box1pha11text.set(year1_11+'/'+month1_11+'/'+date1_11+' '+hourFrom2_11+':'+minuteFrom1_11+' | '+hourOn1_11+':'+minOn1_11+' on>'+hourOff1_11+':'+minOff1_11+' off'+ ' (' + tcycle_1_11 + 'h)')
         
     if light1_11=='0' and dark1_11=='1':
         box1pha11text.set('                                ')
         
-        box1pha11text.set(year1_11+'/'+month1_11+'/'+date1_11+' '+hourFrom2_11+':'+minuteFrom1_11+' | '+'DD')
+        box1pha11text.set(year1_11+'/'+month1_11+'/'+date1_11+' '+hourFrom2_11+':'+minuteFrom1_11+' | '+'DD'+ ' (' + tcycle_1_11 + 'h)')
         
     if light1_11=='1' and dark1_11=='0':
         box1pha11text.set('                                 ')
         
-        box1pha11text.set(year1_11+'/'+month1_11+'/'+date1_11+' '+hourFrom2_11+':'+minuteFrom1_11+' | '+'LL')
+        box1pha11text.set(year1_11+'/'+month1_11+'/'+date1_11+' '+hourFrom2_11+':'+minuteFrom1_11+' | '+'LL'+ ' (' + tcycle_1_11 + 'h)')
         
     
     if light2_11=='0' and dark2_11=='0':
         box2pha11text.set('                                ')
         
-        box2pha11text.set(year2_11+'/'+month2_11+'/'+date2_11+' '+hourFrom2_11+':'+minuteFrom2_11+' | '+hourOn2_11+':'+minOn2_11+' on>'+hourOff2_11+':'+minOff2_11+' off')
+        box2pha11text.set(year2_11+'/'+month2_11+'/'+date2_11+' '+hourFrom2_11+':'+minuteFrom2_11+' | '+hourOn2_11+':'+minOn2_11+' on>'+hourOff2_11+':'+minOff2_11+' off'+ ' (' + tcycle_2_11 + 'h)')
         
     if light2_11=='0' and dark2_11=='1':
         box2pha11text.set('                                ')
         
-        box2pha11text.set(year2_11+'/'+month2_11+'/'+date2_11+' '+hourFrom2_11+':'+minuteFrom2_11+' | '+'DD')
+        box2pha11text.set(year2_11+'/'+month2_11+'/'+date2_11+' '+hourFrom2_11+':'+minuteFrom2_11+' | '+'DD'+ ' (' + tcycle_2_11 + 'h)'+ ' (' + tcycle_2_11 + 'h)')
         
     if light2_11=='1' and dark2_11=='0':
         box2pha11text.set('                                 ')
         
-        box2pha11text.set(year2_11+'/'+month2_11+'/'+date2_11+' '+hourFrom2_11+':'+minuteFrom2_11+' | '+'LL')
+        box2pha11text.set(year2_11+'/'+month2_11+'/'+date2_11+' '+hourFrom2_11+':'+minuteFrom2_11+' | '+'LL'+ ' (' + tcycle_2_11 + 'h)'+ ' (' + tcycle_2_11 + 'h)')
         
     
     if light3_11=='0' and dark3_11=='0':
         box3pha11text.set('                                ')
         
-        box3pha11text.set(year3_11+'/'+month3_11+'/'+date3_11+' '+hourFrom3_11+':'+minuteFrom3_11+' | '+hourOn3_11+':'+minOn3_6+' on>'+hourOff3_11+':'+minOff3_11+' off')
+        box3pha11text.set(year3_11+'/'+month3_11+'/'+date3_11+' '+hourFrom3_11+':'+minuteFrom3_11+' | '+hourOn3_11+':'+minOn3_6+' on>'+hourOff3_11+':'+minOff3_11+' off'+ ' (' + tcycle_3_11 + 'h)')
          
     if light3_11=='0' and dark3_11=='1':
         box3pha11text.set('                                ')
         
-        box3pha11text.set(year3_11+'/'+month3_11+'/'+date3_11+' '+hourFrom3_11+':'+minuteFrom3_11+' | '+'DD')
+        box3pha11text.set(year3_11+'/'+month3_11+'/'+date3_11+' '+hourFrom3_11+':'+minuteFrom3_11+' | '+'DD'+ ' (' + tcycle_3_11 + 'h)'+ ' (' + tcycle_3_11 + 'h)')
         
     if light3_11=='1' and dark3_11=='0':
         box3pha11text.set('                                 ')
         
-        box3pha11text.set(year3_11+'/'+month3_11+'/'+date3_11+' '+hourFrom3_11+':'+minuteFrom3_11+' | '+'LL')
+        box3pha11text.set(year3_11+'/'+month3_11+'/'+date3_11+' '+hourFrom3_11+':'+minuteFrom3_11+' | '+'LL'+ ' (' + tcycle_3_11 + 'h)'+ ' (' + tcycle_3_11 + 'h)')
         
     
     if light4_11=='0' and dark4_11=='0':
         box4pha11text.set('                                ')
         
-        box4pha11text.set(year4_11+'/'+month4_11+'/'+date4_11+' '+hourFrom4_11+':'+minuteFrom4_11+' | '+hourOn4_11+':'+minOn4_11+' on>'+hourOff4_11+':'+minOff4_11+' off')
+        box4pha11text.set(year4_11+'/'+month4_11+'/'+date4_11+' '+hourFrom4_11+':'+minuteFrom4_11+' | '+hourOn4_11+':'+minOn4_11+' on>'+hourOff4_11+':'+minOff4_11+' off'+ ' (' + tcycle_4_11 + 'h)')
         
     if light4_11=='0' and dark4_11=='1':
         box4pha11text.set('                                ')
         
-        box4pha11text.set(year4_11+'/'+month4_11+'/'+date4_11+' '+hourFrom4_11+':'+minuteFrom4_11+' | '+'DD')
+        box4pha11text.set(year4_11+'/'+month4_11+'/'+date4_11+' '+hourFrom4_11+':'+minuteFrom4_11+' | '+'DD'+ ' (' + tcycle_4_11 + 'h)')
         
     if light4_11=='1' and dark4_11=='0':
         box4pha11text.set('                                 ')
         
-        box4pha11text.set(year4_11+'/'+month4_11+'/'+date4_11+' '+hourFrom4_11+':'+minuteFrom4_11+' | '+'LL')
+        box4pha11text.set(year4_11+'/'+month4_11+'/'+date4_11+' '+hourFrom4_11+':'+minuteFrom4_11+' | '+'LL'+ ' (' + tcycle_4_11 + 'h)')
         
     
     if light5_11=='0' and dark5_11=='0':
         box5pha11text.set('                                ')
         
-        box5pha11text.set(year5_11+'/'+month5_11+'/'+date5_11+' '+hourFrom5_11+':'+minuteFrom5_11+' | '+hourOn5_11+':'+minOn5_11+' on>'+hourOff5_11+':'+minOff5_11+' off')
+        box5pha11text.set(year5_11+'/'+month5_11+'/'+date5_11+' '+hourFrom5_11+':'+minuteFrom5_11+' | '+hourOn5_11+':'+minOn5_11+' on>'+hourOff5_11+':'+minOff5_11+' off'+ ' (' + tcycle_5_11 + 'h)')
         
     if light5_11=='0' and dark5_11=='1':
         box5pha11text.set('                                ')
         
-        box5pha11text.set(year5_11+'/'+month5_11+'/'+date5_11+' '+hourFrom5_11+':'+minuteFrom5_11+' | '+'DD')
+        box5pha11text.set(year5_11+'/'+month5_11+'/'+date5_11+' '+hourFrom5_11+':'+minuteFrom5_11+' | '+'DD'+ ' (' + tcycle_5_11 + 'h)')
         
     if light5_11=='1' and dark5_11=='0':
         box5pha11text.set('                                 ')
         
-        box5pha11text.set(year5_11+'/'+month5_11+'/'+date5_11+' '+hourFrom5_11+':'+minuteFrom5_11+' | '+'LL')
+        box5pha11text.set(year5_11+'/'+month5_11+'/'+date5_11+' '+hourFrom5_11+':'+minuteFrom5_11+' | '+'LL'+ ' (' + tcycle_5_11 + 'h)')
           
 
     #12 Phase
     if light1_12=='0' and dark1_12=='0':
         box1pha12text.set('                                ')
         
-        box1pha12text.set(year1_12+'/'+month1_12+'/'+date1_12+' '+hourFrom2_12+':'+minuteFrom1_12+' | '+hourOn1_12+':'+minOn1_12+' on>'+hourOff1_12+':'+minOff1_12+' off')
+        box1pha12text.set(year1_12+'/'+month1_12+'/'+date1_12+' '+hourFrom2_12+':'+minuteFrom1_12+' | '+hourOn1_12+':'+minOn1_12+' on>'+hourOff1_12+':'+minOff1_12+' off'+ ' (' + tcycle_1_12 + 'h)')
         
     if light1_12=='0' and dark1_12=='1':
         box1pha12text.set('                                ')
         
-        box1pha12text.set(year1_12+'/'+month1_12+'/'+date1_12+' '+hourFrom2_12+':'+minuteFrom1_12+' | '+'DD')
+        box1pha12text.set(year1_12+'/'+month1_12+'/'+date1_12+' '+hourFrom2_12+':'+minuteFrom1_12+' | '+'DD'+ ' (' + tcycle_1_12 + 'h)')
         
     if light1_12=='1' and dark1_12=='0':
         box1pha12text.set('                                 ')
         
-        box1pha12text.set(year1_12+'/'+month1_12+'/'+date1_12+' '+hourFrom2_12+':'+minuteFrom1_12+' | '+'LL')
+        box1pha12text.set(year1_12+'/'+month1_12+'/'+date1_12+' '+hourFrom2_12+':'+minuteFrom1_12+' | '+'LL'+ ' (' + tcycle_1_12 + 'h)')
         
     
     if light2_12=='0' and dark2_12=='0':
         box2pha12text.set('                                ')
         
-        box2pha12text.set(year2_12+'/'+month2_12+'/'+date2_12+' '+hourFrom2_12+':'+minuteFrom2_12+' | '+hourOn2_12+':'+minOn2_12+' on>'+hourOff2_12+':'+minOff2_12+' off')
+        box2pha12text.set(year2_12+'/'+month2_12+'/'+date2_12+' '+hourFrom2_12+':'+minuteFrom2_12+' | '+hourOn2_12+':'+minOn2_12+' on>'+hourOff2_12+':'+minOff2_12+' off'+ ' (' + tcycle_2_12 + 'h)')
         
     if light2_12=='0' and dark2_12=='1':
         box2pha12text.set('                                ')
         
-        box2pha12text.set(year2_12+'/'+month2_12+'/'+date2_12+' '+hourFrom2_12+':'+minuteFrom2_12+' | '+'DD')
+        box2pha12text.set(year2_12+'/'+month2_12+'/'+date2_12+' '+hourFrom2_12+':'+minuteFrom2_12+' | '+'DD'+ ' (' + tcycle_2_12 + 'h)')
         
     if light2_12=='1' and dark2_12=='0':
         box2pha12text.set('                                 ')
         
-        box2pha12text.set(year2_12+'/'+month2_12+'/'+date2_12+' '+hourFrom2_12+':'+minuteFrom2_12+' | '+'LL')
+        box2pha12text.set(year2_12+'/'+month2_12+'/'+date2_12+' '+hourFrom2_12+':'+minuteFrom2_12+' | '+'LL'+ ' (' + tcycle_2_12 + 'h)')
         
     
     if light3_12=='0' and dark3_12=='0':
         box3pha12text.set('                                ')
         
-        box3pha12text.set(year3_12+'/'+month3_12+'/'+date3_12+' '+hourFrom3_12+':'+minuteFrom3_12+' | '+hourOn3_12+':'+minOn3_6+' on>'+hourOff3_12+':'+minOff3_12+' off')
+        box3pha12text.set(year3_12+'/'+month3_12+'/'+date3_12+' '+hourFrom3_12+':'+minuteFrom3_12+' | '+hourOn3_12+':'+minOn3_6+' on>'+hourOff3_12+':'+minOff3_12+' off'+ ' (' + tcycle_3_12 + 'h)')
          
     if light3_12=='0' and dark3_12=='1':
         box3pha12text.set('                                ')
         
-        box3pha12text.set(year3_12+'/'+month3_12+'/'+date3_12+' '+hourFrom3_12+':'+minuteFrom3_12+' | '+'DD')
+        box3pha12text.set(year3_12+'/'+month3_12+'/'+date3_12+' '+hourFrom3_12+':'+minuteFrom3_12+' | '+'DD'+ ' (' + tcycle_3_12 + 'h)')
         
     if light3_12=='1' and dark3_12=='0':
         box3pha12text.set('                                 ')
         
-        box3pha12text.set(year3_12+'/'+month3_12+'/'+date3_12+' '+hourFrom3_12+':'+minuteFrom3_12+' | '+'LL')
+        box3pha12text.set(year3_12+'/'+month3_12+'/'+date3_12+' '+hourFrom3_12+':'+minuteFrom3_12+' | '+'LL'+ ' (' + tcycle_3_12 + 'h)')
         
     
     if light4_12=='0' and dark4_12=='0':
         box4pha12text.set('                                ')
         
-        box4pha12text.set(year4_12+'/'+month4_12+'/'+date4_12+' '+hourFrom4_12+':'+minuteFrom4_12+' | '+hourOn4_12+':'+minOn4_12+' on>'+hourOff4_12+':'+minOff4_12+' off')
+        box4pha12text.set(year4_12+'/'+month4_12+'/'+date4_12+' '+hourFrom4_12+':'+minuteFrom4_12+' | '+hourOn4_12+':'+minOn4_12+' on>'+hourOff4_12+':'+minOff4_12+' off'+ ' (' + tcycle_4_12 + 'h)')
         
     if light4_12=='0' and dark4_12=='1':
         box4pha12text.set('                                ')
         
-        box4pha12text.set(year4_12+'/'+month4_12+'/'+date4_12+' '+hourFrom4_12+':'+minuteFrom4_12+' | '+'DD')
+        box4pha12text.set(year4_12+'/'+month4_12+'/'+date4_12+' '+hourFrom4_12+':'+minuteFrom4_12+' | '+'DD'+ ' (' + tcycle_4_12 + 'h)')
         
     if light4_12=='1' and dark4_12=='0':
         box4pha12text.set('                                 ')
         
-        box4pha12text.set(year4_12+'/'+month4_12+'/'+date4_12+' '+hourFrom4_12+':'+minuteFrom4_12+' | '+'LL')
+        box4pha12text.set(year4_12+'/'+month4_12+'/'+date4_12+' '+hourFrom4_12+':'+minuteFrom4_12+' | '+'LL'+ ' (' + tcycle_4_12 + 'h)')
         
     
     if light5_12=='0' and dark5_12=='0':
         box5pha12text.set('                                ')
         
-        box5pha12text.set(year5_12+'/'+month5_12+'/'+date5_12+' '+hourFrom5_12+':'+minuteFrom5_12+' | '+hourOn5_12+':'+minOn5_12+' on>'+hourOff5_12+':'+minOff5_12+' off')
+        box5pha12text.set(year5_12+'/'+month5_12+'/'+date5_12+' '+hourFrom5_12+':'+minuteFrom5_12+' | '+hourOn5_12+':'+minOn5_12+' on>'+hourOff5_12+':'+minOff5_12+' off'+ ' (' + tcycle_5_12 + 'h)')
         
     if light5_12=='0' and dark5_12=='1':
         box5pha12text.set('                                ')
         
-        box5pha12text.set(year5_12+'/'+month5_12+'/'+date5_12+' '+hourFrom5_12+':'+minuteFrom5_12+' | '+'DD')
+        box5pha12text.set(year5_12+'/'+month5_12+'/'+date5_12+' '+hourFrom5_12+':'+minuteFrom5_12+' | '+'DD'+ ' (' + tcycle_5_12 + 'h)')
         
     if light5_12=='1' and dark5_12=='0':
         box5pha12text.set('                                 ')
         
-        box5pha12text.set(year5_12+'/'+month5_12+'/'+date5_12+' '+hourFrom5_12+':'+minuteFrom5_12+' | '+'LL')
+        box5pha12text.set(year5_12+'/'+month5_12+'/'+date5_12+' '+hourFrom5_12+':'+minuteFrom5_12+' | '+'LL'+ ' (' + tcycle_5_12 + 'h)')
         
     window.update_idletasks()   
 
@@ -7398,7 +7431,7 @@ def getBox5Schedule():
 
 def getAllBoxSchedule(): 
 
-    global value_mat, phase_delimiters, tcyclefactor
+    global value_mat, phase_delimiters
     global initLED1_str, initLED2_str, initLED3_str, initLED4_str , initLED5_str
     global initLED1, initLED2, initLED3, initLED4 , initLED5
 
@@ -7511,7 +7544,6 @@ def getAllBoxSchedule():
 
 
 
-
 def copyScheduletoAll(tab_index):
     global value_mat, input_mat
 
@@ -7534,9 +7566,6 @@ def copyScheduletoAll(tab_index):
     for ind in range(1,6):
         temp_savedBoxSchedule.pasteSchedule(ind, input_mat) #box_index_to be pasted, global_mat
    
-
-
-
 
 def copyBox1():
     temp_savedBoxSchedule = BoxSchedule()
@@ -7646,9 +7675,10 @@ if __name__ == '__main__':
     #### All of the components and their positions in the GUI ####
     # You can change the design from here # 
     # 
-    global value_mat, input_mat, log_mat      
+    global value_mat
+    #, input_mat, log_mat      
     menu = Menu(window) #define menu    
-    tcyclefactor =24
+    # tcyclefactor =24
   
 
     # Define Var to keep track of the schedule
@@ -8103,28 +8133,31 @@ if __name__ == '__main__':
     rad_OFF5.grid(column=11, row=1+row_adj, pady=5)
 
     initLEDlabel1 = Label(tab1, text='Initial LED')
-    initLEDlabel1.grid(column=9, row=1, padx=3, pady=5)
+    initLEDlabel1.grid(column=7, row=1+row_adj, padx=13, pady=5)
 
     initLEDlabel2 = Label(tab2, text='Initial LED')
-    initLEDlabel2.grid(column=9, row=1, padx=3, pady=5)
+    initLEDlabel2.grid(column=7, row=1+row_adj, padx=13, pady=5)
 
     initLEDlabel3 = Label(tab3, text='Initial LED')
-    initLEDlabel3.grid(column=9, row=1, padx=3, pady=5)
+    initLEDlabel3.grid(column=7, row=1+row_adj, padx=13, pady=5)
 
     initLEDlabel4 = Label(tab4, text='Initial LED')
-    initLEDlabel4.grid(column=9, row=1, padx=3, pady=5)
+    initLEDlabel4.grid(column=7, row=1+row_adj, padx=13, pady=5)
 
     initLEDlabel5 = Label(tab5, text='Initial LED')
-    initLEDlabel5.grid(column=9, row=1, padx=3, pady=5)
+    initLEDlabel5.grid(column=7, row=1+row_adj, padx=13, pady=5)
 
  # Box1 main
 
     for i in range(0,12):
         tcyclelength = Spinbox(tab1,from_=00, to=24, width=3)
-        tcyclelength.grid(column=26, row=1+i+row_adj, pady=5)
+
+        tcyclelength.grid(column=26, row=2+i+row_adj, pady=5)
         tcyclelength.delete(0,'end')
         tcyclelength.insert(0,24)
         tcyclespinbox_arr[0,i] = tcyclelength
+    
+    tcyclespinbox_arr[0,0].grid(column=26, row=1+i+row_adj, pady=5)
 
     tcyclelabel = Label(tab1, text='T-cycle length')
     tcyclelabel.grid(column=26, row=1, padx=3, pady=5)
@@ -8211,6 +8244,18 @@ if __name__ == '__main__':
     month1_2_entry.insert(0,'{:02d}'.format(day_phase2.month))
     year1_2_entry.delete(0,'end')
     year1_2_entry.insert(0,day_phase2.year) # ISO format is YYYY/MM/DD
+
+    label1_d_0 = Label(tab1, text= 'Date')
+    label1_m_0 = Label(tab1, text= 'Month')
+    label1_m_0.grid(column=11,row=2+row_adj)
+    label1_d_0.grid(column=9,row=2+row_adj)
+
+    label1_d_1 = Label(tab1, text= '/')
+    label1_m_1 = Label(tab1, text= '/')
+    label1_d_1.grid(column=8,row=2+row_adj)
+    label1_m_1.grid(column=10,row=2+row_adj)
+
+
     label1_d_2 = Label(tab1, text= '/')
     label1_m_2 = Label(tab1, text= '/')
     rad1_A_2 = Radiobutton(tab1, text='LD', variable=var1_2, value=1)
@@ -8234,32 +8279,32 @@ if __name__ == '__main__':
     label1_m2_2 = Label(tab1, text='')
     rad1_B_2 = Radiobutton(tab1, text='DD', variable=var1_2, value=2)
     rad1_C_2 = Radiobutton(tab1, text='LL', variable=var1_2, value=3)
-    phaseLabel1_2.grid(column=0, row=2+row_adj, padx=15, pady=5)
-    fromLabel1_2.grid(column=1,row=2+row_adj)
-    spin1_E_2.grid(column=2,row=2+row_adj)
-    label1_h0_2.grid(column=3,row=2+row_adj)
-    spin1_F_2.grid(column=4,row=2+row_adj)
-    label1_m0_2.grid(column=5,row=2+row_adj)
-    space1_2.grid(column=6,row=2+row_adj)
-    year1_2_entry.grid(column=7, row=2+row_adj)
-    label1_m_2.grid(column=8,row=2+row_adj)
-    month1_2_entry.grid(column=9, row=2+row_adj)
-    label1_d_2.grid(column=10,row=2+row_adj)
-    date1_2_entry.grid(column=11, row=2+row_adj) # ISO format
-    space1_2_2.grid(column=12,row=2+row_adj,padx=5)
-    rad1_A_2.grid(column=13, row=2+row_adj, pady=5)
-    lbl1_A_2.grid(column=14, row=2+row_adj, pady=5)
-    spin1_A_2.grid(column=15,row=2+row_adj, pady=5)
-    label1_h1_2.grid(column=16,row=2+row_adj, pady=5)
-    spin1_B_2.grid(column=17,row=2+row_adj, pady=5)
-    label1_m1_2.grid(column=18,row=2+row_adj, pady=5)
-    lbl1_B_2.grid(column=19, row=2+row_adj, pady=5)
-    spin1_C_2.grid(column=20,row=2+row_adj, pady=5)
-    label1_h2_2.grid(column=21,row=2+row_adj, pady=5)
-    spin1_D_2.grid(column=22,row=2+row_adj, pady=5)
-    label1_m2_2.grid(column=23,row=2+row_adj, pady=5)
-    rad1_B_2.grid(column=24, row=2+row_adj, padx=15, pady=5)
-    rad1_C_2.grid(column=25, row=2+row_adj, pady=5)
+    phaseLabel1_2.grid(column=0, row=3+row_adj, padx=15, pady=5)
+    fromLabel1_2.grid(column=1,row=3+row_adj)
+    spin1_E_2.grid(column=2,row=3+row_adj)
+    label1_h0_2.grid(column=3,row=3+row_adj)
+    spin1_F_2.grid(column=4,row=3+row_adj)
+    label1_m0_2.grid(column=5,row=3+row_adj)
+    space1_2.grid(column=6,row=3+row_adj)
+    year1_2_entry.grid(column=7, row=3+row_adj)
+    label1_m_2.grid(column=8,row=3+row_adj)
+    month1_2_entry.grid(column=9, row=3+row_adj)
+    label1_d_2.grid(column=10,row=3+row_adj)
+    date1_2_entry.grid(column=11, row=3+row_adj) # ISO format
+    space1_2_2.grid(column=12,row=3+row_adj,padx=5)
+    rad1_A_2.grid(column=13, row=3+row_adj, pady=5)
+    lbl1_A_2.grid(column=14, row=3+row_adj, pady=5)
+    spin1_A_2.grid(column=15,row=3+row_adj, pady=5)
+    label1_h1_2.grid(column=16,row=3+row_adj, pady=5)
+    spin1_B_2.grid(column=17,row=3+row_adj, pady=5)
+    label1_m1_2.grid(column=18,row=3+row_adj, pady=5)
+    lbl1_B_2.grid(column=19, row=3+row_adj, pady=5)
+    spin1_C_2.grid(column=20,row=3+row_adj, pady=5)
+    label1_h2_2.grid(column=21,row=3+row_adj, pady=5)
+    spin1_D_2.grid(column=22,row=3+row_adj, pady=5)
+    label1_m2_2.grid(column=23,row=3+row_adj, pady=5)
+    rad1_B_2.grid(column=24, row=3+row_adj, padx=15, pady=5)
+    rad1_C_2.grid(column=25, row=3+row_adj, pady=5)
 
     
 
@@ -8269,7 +8314,7 @@ if __name__ == '__main__':
         # phase 3
     phaseLabel1_3 = Label(tab1, text='Phase 3')
     fromLabel1_3 = Label(tab1, text='From:')
-    fromLabel1_3.grid(column=1,row=3+row_adj)
+    fromLabel1_3.grid(column=1,row=4+row_adj)
     space1_3 = Label(tab1, text=' ')
     space1_3_2 = Label(tab1, text=' ')
     spin1_E_3 = Spinbox(tab1, from_=00, to=24, width=3, format='%02.0f')
@@ -8314,31 +8359,31 @@ if __name__ == '__main__':
     label1_m2_3 = Label(tab1, text='')
     rad1_B_3 = Radiobutton(tab1, text='DD', variable=var1_3, value=2)
     rad1_C_3 = Radiobutton(tab1, text='LL', variable=var1_3, value=3)
-    phaseLabel1_3.grid(column=0, row=3+row_adj, padx=15, pady=5)
-    spin1_E_3.grid(column=2,row=3+row_adj)
-    label1_h0_3.grid(column=3,row=3+row_adj)
-    spin1_F_3.grid(column=4,row=3+row_adj)
-    label1_m0_3.grid(column=5,row=3+row_adj)
-    space1_3.grid(column=6,row=3+row_adj)
-    date1_3_entry.grid(column=11, row=3+row_adj)
-    label1_d_3.grid(column=8,row=3+row_adj)
-    month1_3_entry.grid(column=9, row=3+row_adj)
-    label1_m_3.grid(column=10,row=3+row_adj)
-    year1_3_entry.grid(column=7, row=3+row_adj) # ISO format
-    space1_3_2.grid(column=12,row=3+row_adj,padx=5)
-    rad1_A_3.grid(column=13, row=3+row_adj, pady=5)
-    lbl1_A_3.grid(column=14, row=3+row_adj, pady=5)
-    spin1_A_3.grid(column=15,row=3+row_adj, pady=5)
-    label1_h1_3.grid(column=16,row=3+row_adj, pady=5)
-    spin1_B_3.grid(column=17,row=3+row_adj, pady=5)
-    label1_m1_3.grid(column=18,row=3+row_adj, pady=5)
-    lbl1_B_3.grid(column=19, row=3+row_adj, pady=5)
-    spin1_C_3.grid(column=20,row=3+row_adj, pady=5)
-    label1_h2_3.grid(column=21,row=3+row_adj, pady=5)
-    spin1_D_3.grid(column=22,row=3+row_adj, pady=5)
-    label1_m2_3.grid(column=23,row=3+row_adj, pady=5)
-    rad1_B_3.grid(column=24, row=3+row_adj, padx=15, pady=5)
-    rad1_C_3.grid(column=25, row=3+row_adj, pady=5)
+    phaseLabel1_3.grid(column=0, row=4+row_adj, padx=15, pady=5)
+    spin1_E_3.grid(column=2,row=4+row_adj)
+    label1_h0_3.grid(column=3,row=4+row_adj)
+    spin1_F_3.grid(column=4,row=4+row_adj)
+    label1_m0_3.grid(column=5,row=4+row_adj)
+    space1_3.grid(column=6,row=4+row_adj)
+    date1_3_entry.grid(column=11, row=4+row_adj)
+    label1_d_3.grid(column=8,row=4+row_adj)
+    month1_3_entry.grid(column=9, row=4+row_adj)
+    label1_m_3.grid(column=10,row=4+row_adj)
+    year1_3_entry.grid(column=7, row=4+row_adj) # ISO format
+    space1_3_2.grid(column=12,row=4+row_adj,padx=5)
+    rad1_A_3.grid(column=13, row=4+row_adj, pady=5)
+    lbl1_A_3.grid(column=14, row=4+row_adj, pady=5)
+    spin1_A_3.grid(column=15,row=4+row_adj, pady=5)
+    label1_h1_3.grid(column=16,row=4+row_adj, pady=5)
+    spin1_B_3.grid(column=17,row=4+row_adj, pady=5)
+    label1_m1_3.grid(column=18,row=4+row_adj, pady=5)
+    lbl1_B_3.grid(column=19, row=4+row_adj, pady=5)
+    spin1_C_3.grid(column=20,row=4+row_adj, pady=5)
+    label1_h2_3.grid(column=21,row=4+row_adj, pady=5)
+    spin1_D_3.grid(column=22,row=4+row_adj, pady=5)
+    label1_m2_3.grid(column=23,row=4+row_adj, pady=5)
+    rad1_B_3.grid(column=24, row=4+row_adj, padx=15, pady=5)
+    rad1_C_3.grid(column=25, row=4+row_adj, pady=5)
 
 
    
