@@ -4,7 +4,7 @@
 #include <Adafruit_I2CRegister.h>
 
 /*
- * 1-LED, 1-PIR box driver (1 arduino driving 10 box)
+ * 1-LED, 1-PIR box driver (1 arduino driving 5 box)
  *
  * Jihwan Myung
  * 28 Mar 2022 DS3231 correction
