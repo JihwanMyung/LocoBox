@@ -133,8 +133,6 @@ global tcycle_3_1, tcycle_3_2,tcycle_3_3, tcycle_3_4, tcycle_3_5, tcycle_3_6, tc
 global tcycle_4_1, tcycle_4_2,tcycle_4_3, tcycle_4_4, tcycle_4_5, tcycle_4_6, tcycle_4_7, tcycle_4_8, tcycle_4_9, tcycle_4_10, tcycle_4_11, tcycle_4_12
 global tcycle_5_1, tcycle_5_2,tcycle_5_3, tcycle_5_4, tcycle_5_5, tcycle_5_6, tcycle_5_7, tcycle_5_8, tcycle_5_9, tcycle_5_10, tcycle_5_11, tcycle_5_12
 
-global initLED1_str, initLED2_str, initLED3_str, initLED4_str , initLED5_str
-
 
 #global savedBoxSchedule, BoxSchedule1, BoxSchedule2, BoxSchedule3, BoxSchedule4, BoxSchedule5
 
@@ -158,8 +156,8 @@ def about():
     return messagebox.showinfo('About',
                                 '5-Box Schedule Setter\n'+
                                 'LocoBox.py\n\n'+
-                                'Version 0.2.10\n'+
-                                'Oct 15, 2018\n\n'+
+                                'Version 0.3.00\n'+
+                                'Sep 22, 2023\n\n'+
                                 'Jihwan Myung & Vuong Truong\n'+
                                 'Laboratory of Braintime\n\n'+
                                 'https://github.com/braintimelab/LocomotorBox')
@@ -189,9 +187,9 @@ class StatusBar(Frame): # scan open serial ports
 
 #Initialize the windows size and name
 window = Tk()
-window.title('LocoBox (1-5_box)')
+window.title('LocoBox (Box6-10)')
 if sys.platform.startswith('win'):
-    window.geometry('900x780')
+    window.geometry('1000x780')
 elif sys.platform.startswith('darwin'):
     window.geometry('1200x640')
 elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
@@ -558,7 +556,7 @@ def save_logs( counti, string2): #max 120 timepoints
 def get_values_for_actogram():
     tab = int(tab_control.index('current'))+1
     filename = './' + filename_entry.get()
-    box = 'BOX' + str(tab)
+    box = 'BOX' + str(tab + 5)
     pir = 'PIR0'  + str(tab)
     led = 'LED0'   + str(tab)
     plot_doubleplot(box, pir, led, filename)
@@ -570,7 +568,7 @@ def plot_double_acto(tab):
     
     global label_acto
     # Create an object of tkinter ImageTk
-    img = ImageTk.PhotoImage(Image.open("./BOX" + str(tab) + ".png"))
+    img = ImageTk.PhotoImage(Image.open("./BOX" + str(tab+5) + ".png"))
     label_acto.configure(image=img)
     label_acto.image = img
 
@@ -591,27 +589,27 @@ def set_log_text(log_text, log_mat, tab):
     history_str = ''
     for counti in range(0,120): #check if I can get rid of the loop
         
-        if tab == 1 or tab == 'Box1' :
+        if tab == 1 or tab == 'Box6' :
 
             phase_id = get_phase(1)
             
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str =  '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+ display_as_ON_OFF(str(log_mat[counti % 120,2]))+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
-        elif tab == 2 or tab == 'Box2':
+        elif tab == 2 or tab == 'Box7':
             phase_id = get_phase(2)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) + '   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,4]))+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
 
-        elif tab == 3 or tab == 'Box3':
+        elif tab == 3 or tab == 'Box8':
             phase_id = get_phase(3)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str =  '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) + '   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,6]))+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
                 
-        elif tab == 4 or tab == 'Box4':
+        elif tab == 4 or tab == 'Box9':
             phase_id = get_phase(4)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) + '   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,8]))+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
-        elif tab == 5 or tab == 'Box5':
+        elif tab == 5 or tab == 'Box10':
             phase_id = get_phase(5)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str =  '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,10]))+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
@@ -629,27 +627,27 @@ def restore_history(log_text, log_mat, tab):
     history_str = ''
     for counti in range(0,120):
         
-        if tab == 1 or tab == 'Box1' :
+        if tab == 1 or tab == 'Box6' :
 
             phase_id = get_phase(1)
             
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str =  history_str + '# '+str(log_mat[counti % 120,0])+ '   ' + display_LD(0, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,2]))+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
-        elif tab == 2 or tab == 'Box2':
+        elif tab == 2 or tab == 'Box7':
             phase_id = get_phase(2)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = history_str +'# '+str(log_mat[counti % 120,0])+'   ' +display_LD(1, phase_id-1) +'  Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,4]))+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
 
-        elif tab == 3 or tab == 'Box3':
+        elif tab == 3 or tab == 'Box8':
             phase_id = get_phase(3)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = history_str + '# '+str(log_mat[counti % 120,0])+'   ' +display_LD(2, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,6]))+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
                 
-        elif tab == 4 or tab == 'Box4':
+        elif tab == 4 or tab == 'Box9':
             phase_id = get_phase(4)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = history_str + '# '+str(log_mat[counti % 120,0])+'   ' +display_LD(3, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,8]))+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
-        elif tab == 5 or tab == 'Box5':
+        elif tab == 5 or tab == 'Box10':
             phase_id = get_phase(5)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = history_str + '# '+str(log_mat[counti % 120,0])+'   ' +display_LD(4, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,10]))+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
@@ -1470,6 +1468,78 @@ def save_conf(): # Save schedule configuration
     config['hourFrom5_12'] = hourFrom5_12
     config['minuteFrom5_12'] = minuteFrom5_12
 
+    config['initLED1_str'] = initLED1_str
+    config['initLED2_str'] = initLED1_str
+    config['initLED3_str'] = initLED1_str
+    config['initLED4_str'] = initLED1_str
+    config['initLED5_str'] = initLED1_str
+    
+    config['tcycle_1_1'] = tcycle_1_1
+    config['tcycle_1_2'] = tcycle_1_2
+    config['tcycle_1_3'] = tcycle_1_3
+    config['tcycle_1_4'] = tcycle_1_4
+    config['tcycle_1_5'] = tcycle_1_5
+    config['tcycle_1_6'] = tcycle_1_6
+    config['tcycle_1_7'] = tcycle_1_7
+    config['tcycle_1_8'] = tcycle_1_8
+    config['tcycle_1_9'] = tcycle_1_9
+    config['tcycle_1_10'] = tcycle_1_10
+    config['tcycle_1_11'] = tcycle_1_11
+    config['tcycle_1_12'] = tcycle_1_12
+
+
+    config['tcycle_2_1'] = tcycle_2_1
+    config['tcycle_2_2'] = tcycle_2_2
+    config['tcycle_2_3'] = tcycle_2_3
+    config['tcycle_2_4'] = tcycle_2_4
+    config['tcycle_2_5'] = tcycle_2_5
+    config['tcycle_2_6'] = tcycle_2_6
+    config['tcycle_2_7'] = tcycle_2_7
+    config['tcycle_2_8'] = tcycle_2_8
+    config['tcycle_2_9'] = tcycle_2_9
+    config['tcycle_2_10'] = tcycle_2_10
+    config['tcycle_2_11'] = tcycle_2_11
+    config['tcycle_2_12'] = tcycle_2_12
+
+    config['tcycle_3_1'] = tcycle_3_1
+    config['tcycle_3_2'] = tcycle_3_2
+    config['tcycle_3_3'] = tcycle_3_3
+    config['tcycle_3_4'] = tcycle_3_4
+    config['tcycle_3_5'] = tcycle_3_5
+    config['tcycle_3_6'] = tcycle_3_6
+    config['tcycle_3_7'] = tcycle_3_7
+    config['tcycle_3_8'] = tcycle_3_8
+    config['tcycle_3_9'] = tcycle_3_9
+    config['tcycle_3_10'] = tcycle_3_10
+    config['tcycle_3_11'] = tcycle_3_11
+    config['tcycle_3_12'] = tcycle_3_12
+
+    config['tcycle_4_1'] = tcycle_4_1
+    config['tcycle_4_2'] = tcycle_4_2
+    config['tcycle_4_3'] = tcycle_4_3
+    config['tcycle_4_4'] = tcycle_4_4
+    config['tcycle_4_5'] = tcycle_4_5
+    config['tcycle_4_6'] = tcycle_4_6
+    config['tcycle_4_7'] = tcycle_4_7
+    config['tcycle_4_8'] = tcycle_4_8
+    config['tcycle_4_9'] = tcycle_4_9
+    config['tcycle_4_10'] = tcycle_4_10
+    config['tcycle_4_11'] = tcycle_4_11
+    config['tcycle_4_12'] = tcycle_4_12
+
+    config['tcycle_5_1'] = tcycle_5_1
+    config['tcycle_5_2'] = tcycle_5_2
+    config['tcycle_5_3'] = tcycle_5_3
+    config['tcycle_5_4'] = tcycle_5_4
+    config['tcycle_5_5'] = tcycle_5_5
+    config['tcycle_5_6'] = tcycle_5_6
+    config['tcycle_5_7'] = tcycle_5_7
+    config['tcycle_5_8'] = tcycle_5_8
+    config['tcycle_5_9'] = tcycle_5_9
+    config['tcycle_5_10'] = tcycle_5_10
+    config['tcycle_5_11'] = tcycle_5_11
+    config['tcycle_5_12'] = tcycle_5_12
+
     configfilename = configfilename_entry.get()
     writeToJSONFile(configfilename, config)
     status.pack(side='bottom', fill='x')
@@ -1586,46 +1656,52 @@ def read_conf(): # Read schedule configuration
     global hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12
     global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12
 
+    global initLED1_str, initLED2_str, initLED3_str, initLED4_str , initLED5_str
+    global tcycle_1_1, tcycle_1_2,tcycle_1_3, tcycle_1_4, tcycle_1_5, tcycle_1_6, tcycle_1_7, tcycle_1_8, tcycle_1_9, tcycle_1_10, tcycle_1_11, tcycle_1_12
+    global tcycle_2_1, tcycle_2_2,tcycle_2_3, tcycle_2_4, tcycle_2_5, tcycle_2_6, tcycle_2_7, tcycle_2_8, tcycle_2_9, tcycle_2_10, tcycle_2_11, tcycle_2_12
+    global tcycle_3_1, tcycle_3_2,tcycle_3_3, tcycle_3_4, tcycle_3_5, tcycle_3_6, tcycle_3_7, tcycle_3_8, tcycle_3_9, tcycle_3_10, tcycle_3_11, tcycle_3_12
+    global tcycle_4_1, tcycle_4_2,tcycle_4_3, tcycle_4_4, tcycle_4_5, tcycle_4_6, tcycle_4_7, tcycle_4_8, tcycle_4_9, tcycle_4_10, tcycle_4_11, tcycle_4_12
+    global tcycle_5_1, tcycle_5_2,tcycle_5_3, tcycle_5_4, tcycle_5_5, tcycle_5_6, tcycle_5_7, tcycle_5_8, tcycle_5_9, tcycle_5_10, tcycle_5_11, tcycle_5_12
+
     try:
         minuteFrom5_12 = config['minuteFrom5_12'] 
     except KeyError:
         getAllBoxSchedule() #set default values using the ones displayed and then load the JSON values on top
-    
-    
-    hourOn1_1 = config['hourOn1_1'] 
-    minOn1_1 = config['minOn1_1'] 
-    hourOff1_1 = config['hourOff1_1']
-    minOff1_1 = config['minOff1_1'] 
-    hourOn2_1 = config['hourOn2_1']
-    minOn2_1 = config['minOn2_1'] 
-    hourOff2_1 = config['hourOff2_1'] 
-    minOff2_1 = config['minOff2_1'] 
-    hourOn3_1 = config['hourOn3_1'] 
-    minOn3_1 = config['minOn3_1'] 
-    hourOff3_1 = config['hourOff3_1'] 
-    minOff3_1 = config['minOff3_1'] 
-    hourOn4_1 = config['hourOn4_1'] 
-    minOn4_1 = config['minOn4_1']
-    hourOff4_1 = config['hourOff4_1'] 
-    minOff4_1 = config['minOff4_1'] 
-    hourOn5_1 = config['hourOn5_1']
-    minOn5_1 = config['minOn5_1'] 
-    hourOff5_1 = config['hourOff5_1'] 
-    minOff5_1 = config['minOff5_1'] 
-     
-    dark1_1 = config['dark1_1'] 
-    light1_1 = config['light1_1']
-    dark2_1 = config['dark2_1'] 
-    light2_1 = config['light2_1'] 
-    dark3_1 = config['dark3_1'] 
-    light3_1 = config['light3_1'] 
-    dark4_1 = config['dark4_1'] 
-    light4_1 = config['light4_1'] 
-    dark5_1 = config['dark5_1'] 
-    light5_1 = config['light5_1'] 
      
 
     try:
+        hourOn1_1 = config['hourOn1_1'] 
+        minOn1_1 = config['minOn1_1'] 
+        hourOff1_1 = config['hourOff1_1']
+        minOff1_1 = config['minOff1_1'] 
+        hourOn2_1 = config['hourOn2_1']
+        minOn2_1 = config['minOn2_1'] 
+        hourOff2_1 = config['hourOff2_1'] 
+        minOff2_1 = config['minOff2_1'] 
+        hourOn3_1 = config['hourOn3_1'] 
+        minOn3_1 = config['minOn3_1'] 
+        hourOff3_1 = config['hourOff3_1'] 
+        minOff3_1 = config['minOff3_1'] 
+        hourOn4_1 = config['hourOn4_1'] 
+        minOn4_1 = config['minOn4_1']
+        hourOff4_1 = config['hourOff4_1'] 
+        minOff4_1 = config['minOff4_1'] 
+        hourOn5_1 = config['hourOn5_1']
+        minOn5_1 = config['minOn5_1'] 
+        hourOff5_1 = config['hourOff5_1'] 
+        minOff5_1 = config['minOff5_1'] 
+        
+        dark1_1 = config['dark1_1'] 
+        light1_1 = config['light1_1']
+        dark2_1 = config['dark2_1'] 
+        light2_1 = config['light2_1'] 
+        dark3_1 = config['dark3_1'] 
+        light3_1 = config['light3_1'] 
+        dark4_1 = config['dark4_1'] 
+        light4_1 = config['light4_1'] 
+        dark5_1 = config['dark5_1'] 
+        light5_1 = config['light5_1'] 
+
         hourOn1_2 = config['hourOn1_2'] 
         minOn1_2 = config['minOn1_2'] 
         hourOff1_2 = config['hourOff1_2'] 
@@ -2318,12 +2394,82 @@ def read_conf(): # Read schedule configuration
         minuteFrom4_12 = config['minuteFrom4_12'] 
         hourFrom5_12 = config['hourFrom5_12'] 
         
-    
+        initLED1_str = config['initLED1_str']
+        initLED1_str = config['initLED2_str']
+        initLED1_str = config['initLED3_str']
+        initLED1_str = config['initLED4_str']
+        initLED1_str = config['initLED5_str']
+        
+        tcycle_1_1 = config['tcycle_1_1']
+        tcycle_1_2 = config['tcycle_1_2']
+        tcycle_1_3 = config['tcycle_1_3']
+        tcycle_1_4 = config['tcycle_1_4']
+        tcycle_1_5 = config['tcycle_1_5']
+        tcycle_1_6 = config['tcycle_1_6']
+        tcycle_1_7 = config['tcycle_1_7']
+        tcycle_1_8 = config['tcycle_1_8']
+        tcycle_1_9 = config['tcycle_1_9']
+        tcycle_1_10 = config['tcycle_1_10']
+        tcycle_1_11 = config['tcycle_1_11']
+        tcycle_1_12 = config['tcycle_1_12']
+
+
+        tcycle_2_1 = config['tcycle_2_1']
+        tcycle_2_2 = config['tcycle_2_2']
+        tcycle_2_3 = config['tcycle_2_3']
+        tcycle_2_4 = config['tcycle_2_4']
+        tcycle_2_5 = config['tcycle_2_5']
+        tcycle_2_6 = config['tcycle_2_6']
+        tcycle_2_7 = config['tcycle_2_7']
+        tcycle_2_8 = config['tcycle_2_8']
+        tcycle_2_9 = config['tcycle_2_9']
+        tcycle_2_10 = config['tcycle_2_10']
+        tcycle_2_11 = config['tcycle_2_11']
+        tcycle_2_12 = config['tcycle_2_12']
+
+        tcycle_3_1 = config['tcycle_3_1']
+        tcycle_3_2 = config['tcycle_3_2']
+        tcycle_3_3 = config['tcycle_3_3']
+        tcycle_3_4 = config['tcycle_3_4']
+        tcycle_3_5 = config['tcycle_3_5']
+        tcycle_3_6 = config['tcycle_3_6']
+        tcycle_3_7 = config['tcycle_3_7']
+        tcycle_3_8 = config['tcycle_3_8']
+        tcycle_3_9 = config['tcycle_3_9']
+        tcycle_3_10 = config['tcycle_3_10']
+        tcycle_3_11 = config['tcycle_3_11']
+        tcycle_3_12 = config['tcycle_3_12']
+
+        tcycle_4_1 = config['tcycle_4_1']
+        tcycle_4_2 = config['tcycle_4_2']
+        tcycle_4_3 = config['tcycle_4_3']
+        tcycle_4_4 = config['tcycle_4_4']
+        tcycle_4_5 = config['tcycle_4_5']
+        tcycle_4_6 = config['tcycle_4_6']
+        tcycle_4_7 = config['tcycle_4_7']
+        tcycle_4_8 = config['tcycle_4_8']
+        tcycle_4_9 = config['tcycle_4_9']
+        tcycle_4_10 = config['tcycle_4_10']
+        tcycle_4_11 = config['tcycle_4_11']
+        tcycle_4_12 = config['tcycle_4_12']
+
+        tcycle_5_1 = config['tcycle_5_1']
+        tcycle_5_2 = config['tcycle_5_2']
+        tcycle_5_3 = config['tcycle_5_3']
+        tcycle_5_4 = config['tcycle_5_4']
+        tcycle_5_5 = config['tcycle_5_5']
+        tcycle_5_6 = config['tcycle_5_6']
+        tcycle_5_7 = config['tcycle_5_7']
+        tcycle_5_8 = config['tcycle_5_8']
+        tcycle_5_9 = config['tcycle_5_9']
+        tcycle_5_10 = config['tcycle_5_10']
+        tcycle_5_11 = config['tcycle_5_11']
+        tcycle_5_12 = config['tcycle_5_12']
+
     except KeyError:
         
         showinfo("Warning", "The file has less than 12 phases. The phases that are not included in the schedule file will be set to the default values.")
         
-
 
 #BOX1
 
@@ -2370,10 +2516,6 @@ def read_conf(): # Read schedule configuration
     spin1_F_2.insert(0,minuteFrom1_2)
     temp_var = inverseDarkLightValue(dark1_2, light1_2)
     var1_2.set(temp_var)
-
-
-
-
 
 
 
@@ -3879,326 +4021,326 @@ def show_conf(): # Show schedule configuration
 
     #print("hourOn1_1" + str(hourOn1_1))
 
-    col11_1 = Label(tab11, text='Phase 1')
-    col11_2 = Label(tab11, text='Phase 2')
-    col11_3 = Label(tab11, text='Phase 3')
-    col11_4 = Label(tab11, text='Phase 4')
-    col11_5 = Label(tab11, text='Phase 5')
-    col11_6 = Label(tab11, text='Phase 6')
-    col11_7 = Label(tab11, text='Phase 7')
-    col11_8 = Label(tab11, text='Phase 8')
-    col11_9 = Label(tab11, text='Phase 9')
-    col11_10 = Label(tab11, text='Phase 10')
-    col11_11 = Label(tab11, text='Phase 11')
-    col11_12 = Label(tab11, text='Phase 12')
+    col11_1 = Label(tab11, text='Box 6')
+    col11_2 = Label(tab11, text='Box 7')
+    col11_3 = Label(tab11, text='Box 8')
+    col11_4 = Label(tab11, text='Box 9')
+    col11_5 = Label(tab11, text='Box 10')
 
 
-    row11_1 = Label(tab11, text='Box1')
-    row11_2 = Label(tab11, text='Box2')
-    row11_3 = Label(tab11, text='Box3')
-    row11_4 = Label(tab11, text='Box4')
-    row11_5 = Label(tab11, text='Box5')
+    row11_1 = Label(tab11, text='Phase 1 ')
+    row11_2 = Label(tab11, text='Phase 2')
+    row11_3 = Label(tab11, text='Phase 3 ')
+    row11_4 = Label(tab11, text='Phase 4')
+    row11_5 = Label(tab11, text='Phase 5 ')
+    row11_6 = Label(tab11, text='Phase 6')
+    row11_7 = Label(tab11, text='Phase 7 ')
+    row11_8 = Label(tab11, text='Phase 8')
+    row11_9 = Label(tab11, text='Phase 9 ')
+    row11_10 = Label(tab11, text='Phase 10')
+    row11_11 = Label(tab11, text='Phase 11 ')
+    row11_12 = Label(tab11, text='Phase 12')
 
     col11_1.grid(column=2,row=0,padx=5)
     col11_2.grid(column=4,row=0,padx=5)
     col11_3.grid(column=6,row=0,padx=5)
     col11_4.grid(column=8,row=0,padx=5)
     col11_5.grid(column=10,row=0,padx=5)
-    col11_6.grid(column=12,row=0,padx=5)
-    col11_7.grid(column=14,row=0,padx=5)
-    col11_8.grid(column=16,row=0,padx=5)
-    col11_9.grid(column=18,row=0,padx=5)
-    col11_10.grid(column=20,row=0,padx=5)
-    col11_11.grid(column=22,row=0,padx=5)
-    col11_12.grid(column=24,row=0,padx=5)
 
-    schedSep = ttk.Separator(tab11, orient=HORIZONTAL)
-    schedSep.grid(column=0, row = 1, columnspan='25', sticky='we')
+    # schedSep = ttk.Separator(tab11, orient=HORIZONTAL)
+    # schedSep.grid(column=0, row = 0, columnspan='50', sticky='we')
     schedSep2 = ttk.Separator(tab11, orient=VERTICAL)
-    schedSep2.grid(column=1, row = 2, rowspan='10', sticky='ns')
+    schedSep2.grid(column=1, row = 2, rowspan='20', sticky='ns')
     schedSep3 = ttk.Separator(tab11, orient=VERTICAL)
-    schedSep3.grid(column=3, row = 2, rowspan='10', sticky='ns')
+    schedSep3.grid(column=3, row = 2, rowspan='20', sticky='ns')
     schedSep4 = ttk.Separator(tab11, orient=VERTICAL)
-    schedSep4.grid(column=5, row = 2, rowspan='10', sticky='ns')
+    schedSep4.grid(column=5, row = 2, rowspan='20', sticky='ns')
     schedSep5 = ttk.Separator(tab11, orient=VERTICAL)
-    schedSep5.grid(column=7, row = 2, rowspan='10', sticky='ns')
+    schedSep5.grid(column=7, row = 2, rowspan='20', sticky='ns')
     schedSep6 = ttk.Separator(tab11, orient=VERTICAL)
-    schedSep6.grid(column=9, row = 2, rowspan='10', sticky='ns')
-    schedSep7 = ttk.Separator(tab11, orient=VERTICAL)
-    schedSep7.grid(column=11, row = 2, rowspan='10', sticky='ns')
-    schedSep8 = ttk.Separator(tab11, orient=VERTICAL)
-    schedSep8.grid(column=13, row = 2, rowspan='10', sticky='ns')
-    schedSep9 = ttk.Separator(tab11, orient=VERTICAL)
-    schedSep9.grid(column=15, row = 2, rowspan='10', sticky='ns')
-    schedSep10 = ttk.Separator(tab11, orient=VERTICAL)
-    schedSep10.grid(column=17, row = 2, rowspan='10', sticky='ns')
-    schedSep11 = ttk.Separator(tab11, orient=VERTICAL)
-    schedSep11.grid(column=19, row = 2, rowspan='10', sticky='ns')
-    schedSep12 = ttk.Separator(tab11, orient=VERTICAL)
-    schedSep12.grid(column=21, row = 2, rowspan='10', sticky='ns')
-    schedSep13 = ttk.Separator(tab11, orient=VERTICAL)
-    schedSep13.grid(column=23, row = 2, rowspan='10', sticky='ns')
-    schedSep14 = ttk.Separator(tab11, orient=VERTICAL)
-    schedSep14.grid(column=25, row = 2, rowspan='10', sticky='ns')
+    schedSep6.grid(column=9, row = 2, rowspan='20', sticky='ns')
+    # schedSep7 = ttk.Separator(tab11, orient=VERTICAL)
+    # schedSep7.grid(column=11, row = 2, rowspan='10', sticky='ns')
+    # schedSep8 = ttk.Separator(tab11, orient=VERTICAL)
+    # schedSep8.grid(column=13, row = 2, rowspan='10', sticky='ns')
+    # schedSep9 = ttk.Separator(tab11, orient=VERTICAL)
+    # schedSep9.grid(column=15, row = 2, rowspan='10', sticky='ns')
+    # schedSep10 = ttk.Separator(tab11, orient=VERTICAL)
+    # schedSep10.grid(column=17, row = 2, rowspan='10', sticky='ns')
+    # schedSep11 = ttk.Separator(tab11, orient=VERTICAL)
+    # schedSep11.grid(column=19, row = 2, rowspan='10', sticky='ns')
+    # schedSep12 = ttk.Separator(tab11, orient=VERTICAL)
+    # schedSep12.grid(column=21, row = 2, rowspan='10', sticky='ns')
+    # schedSep13 = ttk.Separator(tab11, orient=VERTICAL)
+    # schedSep13.grid(column=23, row = 2, rowspan='10', sticky='ns')
+    # schedSep14 = ttk.Separator(tab11, orient=VERTICAL)
+    # schedSep14.grid(column=25, row = 2, rowspan='10', sticky='ns')
 
     row11_1.grid(column=0,row=2,padx=2,pady=0)
     row11_2.grid(column=0,row=3,padx=2,pady=0)
     row11_3.grid(column=0,row=4,padx=2,pady=0)
     row11_4.grid(column=0,row=5,padx=2,pady=0)
     row11_5.grid(column=0,row=6,padx=2,pady=0)
+    row11_6.grid(column=0,row=7,padx=2,pady=0)
+    row11_7.grid(column=0,row=8,padx=2,pady=0)
+    row11_8.grid(column=0,row=9,padx=2,pady=0)
+    row11_9.grid(column=0,row=10,padx=2,pady=0)
+    row11_10.grid(column=0,row=11,padx=2,pady=0)
+    row11_11.grid(column=0,row=12,padx=2,pady=0)
+    row11_12.grid(column=0,row=13,padx=2,pady=0)
 
     box1pha1text=StringVar()
     box1pha1text.set('                                ')
-    box1pha1_LD=Label(tab11, textvariable=box1pha1text, width=50, anchor=W, justify=LEFT)
+    box1pha1_LD=Label(tab11, textvariable=box1pha1text, width=40, anchor="e", justify=LEFT)
     box1pha1_LD.grid(column=2,row=2,padx=2,pady=0)
     box1pha2text=StringVar()
     box1pha2text.set('                                ')
-    box1pha2_LD=Label(tab11, textvariable=box1pha2text, width=40, anchor=W, justify=LEFT)
-    box1pha2_LD.grid(column=4,row=2,padx=2,pady=0)
+    box1pha2_LD=Label(tab11, textvariable=box1pha2text, width=40, anchor="e", justify=LEFT)
+    box1pha2_LD.grid(column=2,row=3,padx=2,pady=0)
     box1pha3text=StringVar()
     box1pha3text.set('                                ')
-    box1pha3_LD=Label(tab11, textvariable=box1pha3text, width=40, anchor=W, justify=LEFT)
-    box1pha3_LD.grid(column=6,row=2,padx=2,pady=0)
+    box1pha3_LD=Label(tab11, textvariable=box1pha3text, width=40, anchor="e", justify=LEFT)
+    box1pha3_LD.grid(column=2,row=4,padx=2,pady=0)
     box1pha4text=StringVar()
     box1pha4text.set('                                ')
-    box1pha4_LD=Label(tab11, textvariable=box1pha4text, width=40, anchor=W, justify=LEFT)
-    box1pha4_LD.grid(column=8,row=2,padx=2,pady=0)
+    box1pha4_LD=Label(tab11, textvariable=box1pha4text, width=40, anchor="e", justify=LEFT)
+    box1pha4_LD.grid(column=2,row=5,padx=2,pady=0)
     box1pha5text=StringVar()
     box1pha5text.set('                                ')
-    box1pha5_LD=Label(tab11, textvariable=box1pha5text, width=40, anchor=W, justify=LEFT)
-    box1pha5_LD.grid(column=10,row=2,padx=2,pady=0)
+    box1pha5_LD=Label(tab11, textvariable=box1pha5text, width=40, anchor="e", justify=LEFT)
+    box1pha5_LD.grid(column=2,row=6,padx=2,pady=0)
     box1pha6text=StringVar()
     box1pha6text.set('                                ')
-    box1pha6_LD=Label(tab11, textvariable=box1pha6text, width=40, anchor=W, justify=LEFT)
-    box1pha6_LD.grid(column=12,row=2,padx=2,pady=0)
+    box1pha6_LD=Label(tab11, textvariable=box1pha6text, width=40, anchor="e", justify=LEFT)
+    box1pha6_LD.grid(column=2,row=7,padx=2,pady=0)
     box1pha7text=StringVar()
     box1pha7text.set('                                ')
-    box1pha7_LD=Label(tab11, textvariable=box1pha7text, width=40, anchor=W, justify=LEFT)
-    box1pha7_LD.grid(column=14,row=2,padx=2,pady=0)
+    box1pha7_LD=Label(tab11, textvariable=box1pha7text, width=40, anchor="e", justify=LEFT)
+    box1pha7_LD.grid(column=2,row=8,padx=2,pady=0)
     box1pha8text=StringVar()
     box1pha8text.set('                                ')
-    box1pha8_LD=Label(tab11, textvariable=box1pha8text, width=40, anchor=W, justify=LEFT)
-    box1pha8_LD.grid(column=16,row=2,padx=2,pady=0)
+    box1pha8_LD=Label(tab11, textvariable=box1pha8text, width=40, anchor="e", justify=LEFT)
+    box1pha8_LD.grid(column=2,row=9,padx=2,pady=0)
     box1pha9text=StringVar()
     box1pha9text.set('                                ')
-    box1pha9_LD=Label(tab11, textvariable=box1pha9text, width=40, anchor=W, justify=LEFT)
-    box1pha9_LD.grid(column=18,row=2,padx=2,pady=0)
+    box1pha9_LD=Label(tab11, textvariable=box1pha9text, width=40, anchor="e", justify=LEFT)
+    box1pha9_LD.grid(column=2,row=10,padx=2,pady=0)
     box1pha10text=StringVar()
     box1pha10text.set('                                ')
-    box1pha10_LD=Label(tab11, textvariable=box1pha10text, width=40, anchor=W, justify=LEFT)
-    box1pha10_LD.grid(column=20,row=2,padx=2,pady=0)
+    box1pha10_LD=Label(tab11, textvariable=box1pha10text, width=40, anchor="e", justify=LEFT)
+    box1pha10_LD.grid(column=2,row=11,padx=2,pady=0)
     box1pha11text=StringVar()
     box1pha11text.set('                                ')
-    box1pha11_LD=Label(tab11, textvariable=box1pha11text, width=40, anchor=W, justify=LEFT)
-    box1pha11_LD.grid(column=22,row=2,padx=2,pady=0)
+    box1pha11_LD=Label(tab11, textvariable=box1pha11text, width=40, anchor="e", justify=LEFT)
+    box1pha11_LD.grid(column=2,row=12,padx=2,pady=0)
     box1pha12text=StringVar()
     box1pha12text.set('                                ')
-    box1pha12_LD=Label(tab11, textvariable=box1pha12text, width=40, anchor=W, justify=LEFT)
-    box1pha12_LD.grid(column=24,row=2,padx=2,pady=0)
+    box1pha12_LD=Label(tab11, textvariable=box1pha12text, width=40, anchor="e", justify=LEFT)
+    box1pha12_LD.grid(column=2,row=13,padx=2,pady=0)
 
     
 
     box2pha1text=StringVar()
     box2pha1text.set('                                ')
-    box2pha1_LD=Label(tab11, textvariable=box2pha1text, width=50, anchor=W, justify=LEFT)
-    box2pha1_LD.grid(column=2,row=3,padx=2,pady=0)
+    box2pha1_LD=Label(tab11, textvariable=box2pha1text, width=40, anchor="e", justify=LEFT)
+    box2pha1_LD.grid(column=4,row=2,padx=2,pady=0)
     box2pha2text=StringVar()
     box2pha2text.set('                                ')
-    box2pha2_LD=Label(tab11, textvariable=box2pha2text, width=40, anchor=W, justify=LEFT)
+    box2pha2_LD=Label(tab11, textvariable=box2pha2text, width=40, anchor="e", justify=LEFT)
     box2pha2_LD.grid(column=4,row=3,padx=2,pady=0)
     box2pha3text=StringVar()
     box2pha3text.set('                                ')
-    box2pha3_LD=Label(tab11, textvariable=box2pha3text, width=40, anchor=W, justify=LEFT)
-    box2pha3_LD.grid(column=6,row=3,padx=2,pady=0)
+    box2pha3_LD=Label(tab11, textvariable=box2pha3text, width=40, anchor="e", justify=LEFT)
+    box2pha3_LD.grid(column=4,row=4,padx=2,pady=0)
     box2pha4text=StringVar()
     box2pha4text.set('                                ')
-    box2pha4_LD=Label(tab11, textvariable=box2pha4text, width=40, anchor=W, justify=LEFT)
-    box2pha4_LD.grid(column=8,row=3,padx=2,pady=0)
+    box2pha4_LD=Label(tab11, textvariable=box2pha4text, width=40, anchor="e", justify=LEFT)
+    box2pha4_LD.grid(column=4,row=5,padx=2,pady=0)
     box2pha5text=StringVar()
     box2pha5text.set('                                ')
-    box2pha5_LD=Label(tab11, textvariable=box2pha5text, width=40, anchor=W, justify=LEFT)
-    box2pha5_LD.grid(column=10,row=3,padx=2,pady=0)
+    box2pha5_LD=Label(tab11, textvariable=box2pha5text, width=40, anchor="e", justify=LEFT)
+    box2pha5_LD.grid(column=4,row=6,padx=2,pady=0)
     box2pha6text=StringVar()
     box2pha6text.set('                                ')
-    box2pha6_LD=Label(tab11, textvariable=box2pha6text, width=40, anchor=W, justify=LEFT)
-    box2pha6_LD.grid(column=12,row=3,padx=2,pady=0)
+    box2pha6_LD=Label(tab11, textvariable=box2pha6text, width=40, anchor="e", justify=LEFT)
+    box2pha6_LD.grid(column=4,row=7,padx=2,pady=0)
     box2pha7text=StringVar()
     box2pha7text.set('                                ')
-    box2pha7_LD=Label(tab11, textvariable=box2pha7text, width=40, anchor=W, justify=LEFT)
-    box2pha7_LD.grid(column=14,row=3,padx=2,pady=0)
+    box2pha7_LD=Label(tab11, textvariable=box2pha7text, width=40, anchor="e", justify=LEFT)
+    box2pha7_LD.grid(column=4,row=8,padx=2,pady=0)
     box2pha8text=StringVar()
     box2pha8text.set('                                ')
-    box2pha8_LD=Label(tab11, textvariable=box2pha8text, width=40, anchor=W, justify=LEFT)
-    box2pha8_LD.grid(column=16,row=3,padx=2,pady=0)
+    box2pha8_LD=Label(tab11, textvariable=box2pha8text, width=40, anchor="e", justify=LEFT)
+    box2pha8_LD.grid(column=4,row=9,padx=2,pady=0)
     box2pha9text=StringVar()
     box2pha9text.set('                                ')
-    box2pha9_LD=Label(tab11, textvariable=box2pha9text, width=40, anchor=W, justify=LEFT)
-    box2pha9_LD.grid(column=18,row=3,padx=2,pady=0)
+    box2pha9_LD=Label(tab11, textvariable=box2pha9text, width=40, anchor="e", justify=LEFT)
+    box2pha9_LD.grid(column=4,row=10,padx=2,pady=0)
     box2pha10text=StringVar()
     box2pha10text.set('                                ')
-    box2pha10_LD=Label(tab11, textvariable=box2pha10text, width=40, anchor=W, justify=LEFT)
-    box2pha10_LD.grid(column=20,row=3,padx=2,pady=0)
+    box2pha10_LD=Label(tab11, textvariable=box2pha10text, width=40, anchor="e", justify=LEFT)
+    box2pha10_LD.grid(column=4,row=11,padx=2,pady=0)
     box2pha11text=StringVar()
     box2pha11text.set('                                ')
-    box2pha11_LD=Label(tab11, textvariable=box2pha11text, width=40, anchor=W, justify=LEFT)
-    box2pha11_LD.grid(column=22,row=3,padx=2,pady=0)
+    box2pha11_LD=Label(tab11, textvariable=box2pha11text, width=40, anchor="e", justify=LEFT)
+    box2pha11_LD.grid(column=4,row=12,padx=2,pady=0)
     box2pha12text=StringVar()
     box2pha12text.set('                                ')
-    box2pha12_LD=Label(tab11, textvariable=box2pha12text, width=40, anchor=W, justify=LEFT)
-    box2pha12_LD.grid(column=24,row=3,padx=2,pady=0)
+    box2pha12_LD=Label(tab11, textvariable=box2pha12text, width=40, anchor="e", justify=LEFT)
+    box2pha12_LD.grid(column=4,row=13,padx=2,pady=0)
 
     
 
     box3pha1text=StringVar()
     box3pha1text.set('                                ')
-    box3pha1_LD=Label(tab11, textvariable=box3pha1text, width=50, anchor=W, justify=LEFT)
-    box3pha1_LD.grid(column=2,row=4,padx=2,pady=0)
+    box3pha1_LD=Label(tab11, textvariable=box3pha1text, width=40, anchor="e", justify=LEFT)
+    box3pha1_LD.grid(column=6,row=2,padx=2,pady=0)
     box3pha2text=StringVar()
     box3pha2text.set('                                ')
-    box3pha2_LD=Label(tab11, textvariable=box3pha2text, width=40, anchor=W, justify=LEFT)
-    box3pha2_LD.grid(column=4,row=4,padx=2,pady=0)
+    box3pha2_LD=Label(tab11, textvariable=box3pha2text, width=40, anchor="e", justify=LEFT)
+    box3pha2_LD.grid(column=6,row=3,padx=2,pady=0)
     box3pha3text=StringVar()
     box3pha3text.set('                                ')
-    box3pha3_LD=Label(tab11, textvariable=box3pha3text, width=40, anchor=W, justify=LEFT)
+    box3pha3_LD=Label(tab11, textvariable=box3pha3text, width=40, anchor="e", justify=LEFT)
     box3pha3_LD.grid(column=6,row=4,padx=2,pady=0)
     box3pha4text=StringVar()
     box3pha4text.set('                                ')
-    box3pha4_LD=Label(tab11, textvariable=box3pha4text, width=40, anchor=W, justify=LEFT)
-    box3pha4_LD.grid(column=8,row=4,padx=2,pady=0)
+    box3pha4_LD=Label(tab11, textvariable=box3pha4text, width=40, anchor="e", justify=LEFT)
+    box3pha4_LD.grid(column=6,row=5,padx=2,pady=0)
     box3pha5text=StringVar()
     box3pha5text.set('                                ')
-    box3pha5_LD=Label(tab11, textvariable=box3pha5text, width=40, anchor=W, justify=LEFT)
-    box3pha5_LD.grid(column=10,row=4,padx=2,pady=0)
+    box3pha5_LD=Label(tab11, textvariable=box3pha5text, width=40, anchor="e", justify=LEFT)
+    box3pha5_LD.grid(column=6,row=6,padx=2,pady=0)
     box3pha6text=StringVar()
     box3pha6text.set('                                ')
-    box3pha6_LD=Label(tab11, textvariable=box3pha6text, width=40, anchor=W, justify=LEFT)
-    box3pha6_LD.grid(column=12,row=4,padx=2,pady=0)
+    box3pha6_LD=Label(tab11, textvariable=box3pha6text, width=40, anchor="e", justify=LEFT)
+    box3pha6_LD.grid(column=6,row=7,padx=2,pady=0)
     box3pha7text=StringVar()
     box3pha7text.set('                                ')
-    box3pha7_LD=Label(tab11, textvariable=box3pha7text, width=40, anchor=W, justify=LEFT)
-    box3pha7_LD.grid(column=14,row=4,padx=2,pady=0)
+    box3pha7_LD=Label(tab11, textvariable=box3pha7text, width=40, anchor="e", justify=LEFT)
+    box3pha7_LD.grid(column=6,row=8,padx=2,pady=0)
     box3pha8text=StringVar()
     box3pha8text.set('                                ')
-    box3pha8_LD=Label(tab11, textvariable=box3pha8text, width=40, anchor=W, justify=LEFT)
-    box3pha8_LD.grid(column=16,row=4,padx=2,pady=0)
+    box3pha8_LD=Label(tab11, textvariable=box3pha8text, width=40, anchor="e", justify=LEFT)
+    box3pha8_LD.grid(column=6,row=9,padx=2,pady=0)
     box3pha9text=StringVar()
     box3pha9text.set('                                ')
-    box3pha9_LD=Label(tab11, textvariable=box3pha9text, width=40, anchor=W, justify=LEFT)
-    box3pha9_LD.grid(column=18,row=4,padx=2,pady=0)
+    box3pha9_LD=Label(tab11, textvariable=box3pha9text, width=40, anchor="e", justify=LEFT)
+    box3pha9_LD.grid(column=6,row=10,padx=2,pady=0)
     box3pha10text=StringVar()
     box3pha10text.set('                                ')
-    box3pha10_LD=Label(tab11, textvariable=box3pha10text, width=40, anchor=W, justify=LEFT)
-    box3pha10_LD.grid(column=20,row=4,padx=2,pady=0)
+    box3pha10_LD=Label(tab11, textvariable=box3pha10text, width=40, anchor="e", justify=LEFT)
+    box3pha10_LD.grid(column=6,row=11,padx=2,pady=0)
     box3pha11text=StringVar()
     box3pha11text.set('                                ')
-    box3pha11_LD=Label(tab11, textvariable=box3pha11text, width=40, anchor=W, justify=LEFT)
-    box3pha11_LD.grid(column=22,row=4,padx=2,pady=0)
+    box3pha11_LD=Label(tab11, textvariable=box3pha11text, width=40, anchor="e", justify=LEFT)
+    box3pha11_LD.grid(column=6,row=12,padx=2,pady=0)
     box3pha12text=StringVar()
     box3pha12text.set('                                ')
-    box3pha12_LD=Label(tab11, textvariable=box3pha12text, width=40, anchor=W, justify=LEFT)
-    box3pha12_LD.grid(column=24,row=4,padx=2,pady=0)
+    box3pha12_LD=Label(tab11, textvariable=box3pha12text, width=40, anchor="e", justify=LEFT)
+    box3pha12_LD.grid(column=6,row=13,padx=2,pady=0)
     
     
 
     box4pha1text=StringVar()
     box4pha1text.set('                                ')
-    box4pha1_LD=Label(tab11, textvariable=box4pha1text, width=50, anchor=W, justify=LEFT)
-    box4pha1_LD.grid(column=2,row=5,padx=2,pady=0)
+    box4pha1_LD=Label(tab11, textvariable=box4pha1text, width=40, anchor="e", justify=LEFT)
+    box4pha1_LD.grid(column=8,row=2,padx=2,pady=0)
     box4pha2text=StringVar()
     box4pha2text.set('                                ')
-    box4pha2_LD=Label(tab11, textvariable=box4pha2text, width=40, anchor=W, justify=LEFT)
-    box4pha2_LD.grid(column=4,row=5,padx=2,pady=0)
+    box4pha2_LD=Label(tab11, textvariable=box4pha2text, width=40, anchor="e", justify=LEFT)
+    box4pha2_LD.grid(column=8,row=3,padx=2,pady=0)
     box4pha3text=StringVar()
     box4pha3text.set('                                ')
-    box4pha3_LD=Label(tab11, textvariable=box4pha3text, width=40, anchor=W, justify=LEFT)
-    box4pha3_LD.grid(column=6,row=5,padx=2,pady=0)
+    box4pha3_LD=Label(tab11, textvariable=box4pha3text, width=40, anchor="e", justify=LEFT)
+    box4pha3_LD.grid(column=8,row=4,padx=2,pady=0)
     box4pha4text=StringVar()
     box4pha4text.set('                                ')
-    box4pha4_LD=Label(tab11, textvariable=box4pha4text, width=40, anchor=W, justify=LEFT)
+    box4pha4_LD=Label(tab11, textvariable=box4pha4text, width=40, anchor="e", justify=LEFT)
     box4pha4_LD.grid(column=8,row=5,padx=2,pady=0)
     box4pha5text=StringVar()
     box4pha5text.set('                                ')
-    box4pha5_LD=Label(tab11, textvariable=box4pha5text, width=40, anchor=W, justify=LEFT)
-    box4pha5_LD.grid(column=10,row=5,padx=2,pady=0)
+    box4pha5_LD=Label(tab11, textvariable=box4pha5text, width=40, anchor="e", justify=LEFT)
+    box4pha5_LD.grid(column=8,row=6,padx=2,pady=0)
     box4pha6text=StringVar()
     box4pha6text.set('                                ')
-    box4pha6_LD=Label(tab11, textvariable=box4pha6text, width=40, anchor=W, justify=LEFT)
-    box4pha6_LD.grid(column=12,row=5,padx=2,pady=0)
+    box4pha6_LD=Label(tab11, textvariable=box4pha6text, width=40, anchor="e", justify=LEFT)
+    box4pha6_LD.grid(column=8,row=7,padx=2,pady=0)
     box4pha7text=StringVar()
     box4pha7text.set('                                ')
-    box4pha7_LD=Label(tab11, textvariable=box4pha7text, width=40, anchor=W, justify=LEFT)
-    box4pha7_LD.grid(column=14,row=5,padx=2,pady=0)
+    box4pha7_LD=Label(tab11, textvariable=box4pha7text, width=40, anchor="e", justify=LEFT)
+    box4pha7_LD.grid(column=8,row=8,padx=2,pady=0)
     box4pha8text=StringVar()
     box4pha8text.set('                                ')
-    box4pha8_LD=Label(tab11, textvariable=box4pha8text, width=40, anchor=W, justify=LEFT)
-    box4pha8_LD.grid(column=16,row=5,padx=2,pady=0)
+    box4pha8_LD=Label(tab11, textvariable=box4pha8text, width=40, anchor="e", justify=LEFT)
+    box4pha8_LD.grid(column=8,row=9,padx=2,pady=0)
     box4pha9text=StringVar()
     box4pha9text.set('                                ')
-    box4pha9_LD=Label(tab11, textvariable=box4pha9text, width=40, anchor=W, justify=LEFT)
-    box4pha9_LD.grid(column=18,row=5,padx=2,pady=0)
+    box4pha9_LD=Label(tab11, textvariable=box4pha9text, width=40, anchor="e", justify=LEFT)
+    box4pha9_LD.grid(column=8,row=10,padx=2,pady=0)
     box4pha10text=StringVar()
     box4pha10text.set('                                ')
-    box4pha10_LD=Label(tab11, textvariable=box4pha10text, width=40, anchor=W, justify=LEFT)
-    box4pha10_LD.grid(column=20,row=5,padx=2,pady=0)
+    box4pha10_LD=Label(tab11, textvariable=box4pha10text, width=40, anchor="e", justify=LEFT)
+    box4pha10_LD.grid(column=8,row=11,padx=2,pady=0)
     box4pha11text=StringVar()
     box4pha11text.set('                                ')
-    box4pha11_LD=Label(tab11, textvariable=box4pha11text, width=40, anchor=W, justify=LEFT)
-    box4pha11_LD.grid(column=22,row=5,padx=2,pady=0)
+    box4pha11_LD=Label(tab11, textvariable=box4pha11text, width=40, anchor="e", justify=LEFT)
+    box4pha11_LD.grid(column=8,row=12,padx=2,pady=0)
     box4pha12text=StringVar()
     box4pha12text.set('                                ')
-    box4pha12_LD=Label(tab11, textvariable=box4pha12text, width=40, anchor=W, justify=LEFT)
-    box4pha12_LD.grid(column=24,row=5,padx=2,pady=0)
+    box4pha12_LD=Label(tab11, textvariable=box4pha12text, width=40, anchor="e", justify=LEFT)
+    box4pha12_LD.grid(column=8,row=13,padx=2,pady=0)
 
    
 
     box5pha1text=StringVar()
     box5pha1text.set('                                ')
-    box5pha1_LD=Label(tab11, textvariable=box5pha1text, width=50, anchor=W, justify=LEFT)
-    box5pha1_LD.grid(column=2,row=6,padx=2,pady=0)
+    box5pha1_LD=Label(tab11, textvariable=box5pha1text, width=40, anchor="e", justify=LEFT)
+    box5pha1_LD.grid(column=10,row=2,padx=2,pady=0)
     box5pha2text=StringVar()
     box5pha2text.set('                                ')
-    box5pha2_LD=Label(tab11, textvariable=box5pha2text, width=40, anchor=W, justify=LEFT)
-    box5pha2_LD.grid(column=4,row=6,padx=2,pady=0)
+    box5pha2_LD=Label(tab11, textvariable=box5pha2text, width=40, anchor="e", justify=LEFT)
+    box5pha2_LD.grid(column=10,row=3,padx=2,pady=0)
     box5pha3text=StringVar()
     box5pha3text.set('                                ')
-    box5pha3_LD=Label(tab11, textvariable=box5pha3text, width=40, anchor=W, justify=LEFT)
-    box5pha3_LD.grid(column=6,row=6,padx=2,pady=0)
+    box5pha3_LD=Label(tab11, textvariable=box5pha3text, width=40, anchor="e", justify=LEFT)
+    box5pha3_LD.grid(column=10,row=4,padx=2,pady=0)
     box5pha4text=StringVar()
     box5pha4text.set('                                ')
-    box5pha4_LD=Label(tab11, textvariable=box5pha4text, width=40, anchor=W, justify=LEFT)
-    box5pha4_LD.grid(column=8,row=6,padx=2,pady=0)
+    box5pha4_LD=Label(tab11, textvariable=box5pha4text, width=40, anchor="e", justify=LEFT)
+    box5pha4_LD.grid(column=10,row=5,padx=2,pady=0)
     box5pha5text=StringVar()
     box5pha5text.set('                                ')
-    box5pha5_LD=Label(tab11, textvariable=box5pha5text, width=40, anchor=W, justify=LEFT)
+    box5pha5_LD=Label(tab11, textvariable=box5pha5text, width=40, anchor="e", justify=LEFT)
     box5pha5_LD.grid(column=10,row=6,padx=2,pady=0)
     box5pha6text=StringVar()
     box5pha6text.set('                                ')
-    box5pha6_LD=Label(tab11, textvariable=box5pha6text, width=40, anchor=W, justify=LEFT)
-    box5pha6_LD.grid(column=12,row=6,padx=2,pady=0)
+    box5pha6_LD=Label(tab11, textvariable=box5pha6text, width=40, anchor="e", justify=LEFT)
+    box5pha6_LD.grid(column=10,row=7,padx=2,pady=0)
     box5pha7text=StringVar()
     box5pha7text.set('                                ')
-    box5pha7_LD=Label(tab11, textvariable=box5pha7text, width=40, anchor=W, justify=LEFT)
-    box5pha7_LD.grid(column=14,row=6,padx=2,pady=0)
+    box5pha7_LD=Label(tab11, textvariable=box5pha7text, width=40, anchor="e", justify=LEFT)
+    box5pha7_LD.grid(column=10,row=8,padx=2,pady=0)
     box5pha8text=StringVar()
     box5pha8text.set('                                ')
-    box5pha8_LD=Label(tab11, textvariable=box5pha8text, width=40, anchor=W, justify=LEFT)
-    box5pha8_LD.grid(column=16,row=6,padx=2,pady=0)
+    box5pha8_LD=Label(tab11, textvariable=box5pha8text, width=40, anchor="e", justify=LEFT)
+    box5pha8_LD.grid(column=10,row=9,padx=2,pady=0)
     box5pha9text=StringVar()
     box5pha9text.set('                                ')
-    box5pha9_LD=Label(tab11, textvariable=box5pha9text, width=40, anchor=W, justify=LEFT)
-    box5pha9_LD.grid(column=18,row=6,padx=2,pady=0)
+    box5pha9_LD=Label(tab11, textvariable=box5pha9text, width=40, anchor="e", justify=LEFT)
+    box5pha9_LD.grid(column=10,row=10,padx=2,pady=0)
     box5pha10text=StringVar()
     box5pha10text.set('                                ')
-    box5pha10_LD=Label(tab11, textvariable=box5pha10text, width=40, anchor=W, justify=LEFT)
-    box5pha10_LD.grid(column=20,row=6,padx=2,pady=0)
+    box5pha10_LD=Label(tab11, textvariable=box5pha10text, width=40, anchor="e", justify=LEFT)
+    box5pha10_LD.grid(column=10,row=11,padx=2,pady=0)
     box5pha11text=StringVar()
     box5pha11text.set('                                ')
-    box5pha11_LD=Label(tab11, textvariable=box5pha11text, width=40, anchor=W, justify=LEFT)
-    box5pha11_LD.grid(column=22,row=6,padx=2,pady=0)
+    box5pha11_LD=Label(tab11, textvariable=box5pha11text, width=40, anchor="e", justify=LEFT)
+    box5pha11_LD.grid(column=10,row=12,padx=2,pady=0)
     box5pha12text=StringVar()
     box5pha12text.set('                                ')
-    box5pha12_LD=Label(tab11, textvariable=box5pha12text, width=40, anchor=W, justify=LEFT)
-    box5pha12_LD.grid(column=24,row=6,padx=2,pady=0)
+    box5pha12_LD=Label(tab11, textvariable=box5pha12text, width=40, anchor="e", justify=LEFT)
+    box5pha12_LD.grid(column=10,row=13,padx=2,pady=0)
 
     if initLED1.get() == 1: 
         LED_state1 = 'ON'
@@ -7674,8 +7816,6 @@ if __name__ == '__main__':
     init_plot()
     #### All of the components and their positions in the GUI ####
     # You can change the design from here # 
-    # 
-    global value_mat
     #, input_mat, log_mat      
     menu = Menu(window) #define menu    
     # tcyclefactor =24
@@ -7824,7 +7964,7 @@ if __name__ == '__main__':
 
     #tab1
 
-    canvas1 = Canvas(ParentFrame1, width=850, height=220) #, highlightbackground="red", highlightthickness=2
+    canvas1 = Canvas(ParentFrame1, width=900, height=220) #, highlightbackground="red", highlightthickness=2
     scroll1 = Scrollbar(ParentFrame1, orient=VERTICAL, command=canvas1.yview)
     scrollx1 = Scrollbar(ParentFrame1, orient=HORIZONTAL, command=canvas1.xview)
    
@@ -7847,7 +7987,7 @@ if __name__ == '__main__':
     canvas1.create_window(400, 175, window=tab1)
 
 #tab2
-    canvas2 = Canvas(ParentFrame2, width=850, height=220, scrollregion=(0,0,850,300))
+    canvas2 = Canvas(ParentFrame2, width=900, height=220, scrollregion=(0,0,900,300))
     canvas2.grid(row=0, column=0)
     scroll2 = Scrollbar(ParentFrame2, orient=VERTICAL, command=canvas2.yview)
     
@@ -7869,7 +8009,7 @@ if __name__ == '__main__':
     canvas2.create_window(400, 175, window=tab2)
 
 #tab3
-    canvas3 = Canvas(ParentFrame3, width=850, height=220, scrollregion=(0,0,850,300))
+    canvas3 = Canvas(ParentFrame3, width=900, height=220, scrollregion=(0,0,900,300))
     scroll3 = Scrollbar(ParentFrame3, orient=VERTICAL, command=canvas3.yview)
     canvas3.grid(row=0, column=0)
     scroll3.grid(row=0, column=1, sticky='ns')
@@ -7890,7 +8030,7 @@ if __name__ == '__main__':
 
 
 #tab 4 
-    canvas4 = Canvas(ParentFrame4, width=850, height=220, scrollregion=(0,0,850,300))
+    canvas4 = Canvas(ParentFrame4, width=900, height=220, scrollregion=(0,0,900,300))
     scroll4 = Scrollbar(ParentFrame4, orient=VERTICAL, command=canvas4.yview)
     canvas4.grid(row=0, column=0)
     scroll4.grid(row=0, column=1, sticky='ns')
@@ -7911,7 +8051,7 @@ if __name__ == '__main__':
 
 
 #tab 5
-    canvas5 = Canvas(ParentFrame5, width=850, height=220, scrollregion=(0,0,850,300))
+    canvas5 = Canvas(ParentFrame5, width=900, height=220, scrollregion=(0,0,900,300))
     scroll5 = Scrollbar(ParentFrame5, orient=VERTICAL, command=canvas5.yview)
     canvas5.grid(row=0, column=0)
     scroll5.grid(row=0, column=1, sticky='ns')
@@ -7930,13 +8070,16 @@ if __name__ == '__main__':
     )
     canvas5.create_window(400, 175, window=tab5)
     
-    canvas11 = Canvas(ParentFrame11, width=850, height=220) #, highlightbackground="red", highlightthickness=2
-    scroll11 = Scrollbar(ParentFrame11, orient=HORIZONTAL, command=canvas11.xview)
+
+
+    canvas11 = Canvas(ParentFrame11, width=900, height=220, scrollregion=(0,0,900,300)) #, highlightbackground="red", highlightthickness=2
+    scroll11 = Scrollbar(ParentFrame11, orient=VERTICAL, command=canvas11.yview)
     canvas11.grid(row=0, column=0)
-    scroll11.grid(row=1, column=0, sticky='ew')
-    
+    scroll11.grid(row=0, column=1, sticky='ns')
+    scrollx11 = Scrollbar(ParentFrame11, orient=HORIZONTAL, command=canvas11.xview)
+    scrollx11.grid(row=1, column=0, sticky='ew')
    
-    canvas11.config(xscrollcommand=scroll11.set )
+    canvas11.config(yscrollcommand=scroll11.set, xscrollcommand=scrollx11.set)
     tab11 = Frame(canvas11, width=200, height=150)#, highlightbackground="black", highlightthickness=1
     tab11.bind(
     "<Configure>",
@@ -7992,10 +8135,10 @@ if __name__ == '__main__':
     filename_entry = Entry(f3, width = 25)
     filename_entry.place(x=80, y=ymidbtns)
     date_string = time.strftime('%Y%m%d') # predefine a default filename with ISO date    
-    filename_entry.insert(0,'BOX1-5-'+date_string+'.txt')
+    filename_entry.insert(0,'BOX6-10-'+date_string+'.txt')
     configfilename_entry = Entry(f3,width = 30)
     configfilename_entry.place(x=470, y=ymidbtns)
-    configfilename_entry.insert(0,'BOX1-5-sched-'+date_string+'.json')
+    configfilename_entry.insert(0,'BOX6-10-sched-'+date_string+'.json')
 
     #SHOW STATUS
     
@@ -8017,7 +8160,7 @@ if __name__ == '__main__':
     # Packing the actogram
     frame_acto = Frame(f2, width=300, height=500)
     frame_acto.pack()
-    frame_acto.place(anchor='center', relx=0.81, rely=0.4)
+    frame_acto.place(anchor='center', relx=0.78, rely=0.4)
 
     # Create an object of tkinter ImageTk
     img_acto = ImageTk.PhotoImage(Image.open("./init.png"))
@@ -8056,7 +8199,7 @@ if __name__ == '__main__':
     # button positions change depending on OS
 
 
-    btnRefresh.place(anchor='se', relx=0.86, rely=0.85)
+    btnRefresh.place(anchor='se', relx=0.835, rely=0.85)
     window.update_idletasks()
 
 
@@ -8150,7 +8293,7 @@ if __name__ == '__main__':
  # Box1 main
 
     for i in range(0,12):
-        tcyclelength = Spinbox(tab1,from_=00, to=24, width=3)
+        tcyclelength = Spinbox(tab1,from_=12, to=48, width=3)
 
         tcyclelength.grid(column=26, row=2+i+row_adj, pady=5)
         tcyclelength.delete(0,'end')
@@ -9090,7 +9233,7 @@ if __name__ == '__main__':
     tcyclelabel2.grid(column=26, row=1, padx=3, pady=5)
 
     for i in range(0,12): 
-        tcyclelength = Spinbox(tab2, from_=00, to=24, width=3)    
+        tcyclelength = Spinbox(tab2, from_=12, to=48, width=3)
         tcyclelength.grid(column=26, row=2+i+row_adj, padx=3,pady=5)
         tcyclelength.delete(0,'end')
         tcyclelength.insert(0,24)
@@ -9549,8 +9692,8 @@ if __name__ == '__main__':
     month2_7_entry.insert(0,'{:02d}'.format(day_phase7.month))
     year2_7_entry.delete(0,'end')
     year2_7_entry.insert(0,day_phase5.year)
-    label2_d_7 = Label(tab1, text= '/')
-    label2_m_7 = Label(tab1, text= '/')
+    label2_d_7 = Label(tab2, text= '/')
+    label2_m_7 = Label(tab2, text= '/')
     rad2_A_7 = Radiobutton(tab2, text='LD', variable=var2_7, value=1)
     lbl2_A_7 = Label(tab2, text= 'On:')
     spin2_A_7 = Spinbox(tab2, from_=00, to=24, width=3, format='%02.0f')
@@ -9985,14 +10128,15 @@ if __name__ == '__main__':
     tcyclelabel3.grid(column=26, row=1, padx=3, pady=5)
 
     for i in range(0,12): 
-        tcyclespinbox_arr[2,i] = Spinbox(tab3,from_=00, to=24, width=3)    
-        tcyclespinbox_arr[2,i].grid(column=26, row=i+1+row_adj, padx=3,pady=5)
-        tcyclespinbox_arr[2,i].delete(0,'end')
-        tcyclespinbox_arr[2,i].insert(0,24)
+        tcyclelength = Spinbox(tab3, from_=12, to=48, width=3)
+        tcyclelength.grid(column=26, row=2+i+row_adj, padx=3,pady=5)
+        tcyclelength.delete(0,'end')
+        tcyclelength.insert(0,24)
+        tcyclespinbox_arr[2,i] = tcyclelength
+        
+    tcyclespinbox_arr[2,0].grid(column=26, row=1+row_adj, pady=5)
         
   
-   
-    
     tab3_title = Label(tab3, text= 'LED schedule', anchor='center')
     tab3_title.grid(column=12, row= 1, columnspan='27', sticky='we')
     # capSep3 = ttk.Separator(tab3, orient=HORIZONTAL)
@@ -10042,6 +10186,7 @@ if __name__ == '__main__':
     label3_m2_1.grid(column=23,row=1+row_adj, pady=5, sticky='w')
     rad3_B_1.grid(column=24, row=1+row_adj, padx=15, pady=5)
     rad3_C_1.grid(column=25, row=1+row_adj, pady=5)
+
         # phase 2
     phaseLabel3_2 = Label(tab3, text='Phase 2')
     fromLabel3_2 = Label(tab3, text='From:')
@@ -10066,6 +10211,16 @@ if __name__ == '__main__':
     month3_2_entry.insert(0,'{:02d}'.format(day_phase2.month))
     year3_2_entry.delete(0,'end')
     year3_2_entry.insert(0,day_phase2.year) # ISO format is YYYY/MM/DD    
+
+    label3_d_0 = Label(tab3, text= 'Month')
+    label3_m_0 = Label(tab3, text= 'Date')
+    label3_m_0.grid(column=11,row=2+row_adj)
+    label3_d_0.grid(column=9,row=2+row_adj)
+    label3_d_1 = Label(tab3, text= '/')
+    label3_m_1 = Label(tab3, text= '/')
+    label3_d_1.grid(column=8,row=2+row_adj)
+    label3_m_1.grid(column=10,row=2+row_adj)
+
     label3_d_2 = Label(tab3, text= '/')
     label3_m_2 = Label(tab3, text= '/')
     rad3_A_2 = Radiobutton(tab3, text='LD', variable=var3_2, value=1)
@@ -10089,32 +10244,33 @@ if __name__ == '__main__':
     label3_m2_2 = Label(tab3, text='')
     rad3_B_2 = Radiobutton(tab3, text='DD', variable=var3_2, value=2)
     rad3_C_2 = Radiobutton(tab3, text='LL', variable=var3_2, value=3)
-    phaseLabel3_2.grid(column=0, row=2+row_adj, padx=15, pady=5)
-    fromLabel3_2.grid(column=1,row=2+row_adj)
-    spin3_E_2.grid(column=2,row=2+row_adj)
-    label3_h0_2.grid(column=3,row=2+row_adj)
-    spin3_F_2.grid(column=4,row=2+row_adj)
-    label3_m0_2.grid(column=5,row=2+row_adj)
-    space3_2.grid(column=6,row=2+row_adj)
-    date3_2_entry.grid(column=11, row=2+row_adj)
-    label3_d_2.grid(column=8,row=2+row_adj)
-    month3_2_entry.grid(column=9, row=2+row_adj)
-    label3_m_2.grid(column=10,row=2+row_adj)
-    year3_2_entry.grid(column=7, row=2+row_adj) # ISO format
-    space3_2_2.grid(column=12,row=2+row_adj,padx=5)
-    rad3_A_2.grid(column=13, row=2+row_adj, pady=5)
-    lbl3_A_2.grid(column=14, row=2+row_adj, pady=5)
-    spin3_A_2.grid(column=15,row=2+row_adj, pady=5)
-    label3_h1_2.grid(column=16,row=2+row_adj, pady=5)
-    spin3_B_2.grid(column=17,row=2+row_adj, pady=5)
-    label3_m1_2.grid(column=18,row=2+row_adj, pady=5)
-    lbl3_B_2.grid(column=19, row=2+row_adj, pady=5)
-    spin3_C_2.grid(column=20,row=2+row_adj, pady=5)
-    label3_h2_2.grid(column=21,row=2+row_adj, pady=5)
-    spin3_D_2.grid(column=22,row=2+row_adj, pady=5)
-    label3_m2_2.grid(column=23,row=2+row_adj, pady=5)
-    rad3_B_2.grid(column=24, row=2+row_adj, padx=15, pady=5)
-    rad3_C_2.grid(column=25, row=2+row_adj, pady=5)
+    phaseLabel3_2.grid(column=0, row=3+row_adj, padx=15, pady=5)
+    fromLabel3_2.grid(column=1,row=3+row_adj)
+    spin3_E_2.grid(column=2,row=3+row_adj)
+    label3_h0_2.grid(column=3,row=3+row_adj)
+    spin3_F_2.grid(column=4,row=3+row_adj)
+    label3_m0_2.grid(column=5,row=3+row_adj)
+    space3_2.grid(column=6,row=3+row_adj)
+    date3_2_entry.grid(column=11, row=3+row_adj)
+    label3_d_2.grid(column=8,row=3+row_adj)
+    month3_2_entry.grid(column=9, row=3+row_adj)
+    label3_m_2.grid(column=10,row=3+row_adj)
+    year3_2_entry.grid(column=7, row=3+row_adj) # ISO format
+    space3_2_2.grid(column=12,row=3+row_adj,padx=5)
+    rad3_A_2.grid(column=13, row=3+row_adj, pady=5)
+    lbl3_A_2.grid(column=14, row=3+row_adj, pady=5)
+    spin3_A_2.grid(column=15,row=3+row_adj, pady=5)
+    label3_h1_2.grid(column=16,row=3+row_adj, pady=5)
+    spin3_B_2.grid(column=17,row=3+row_adj, pady=5)
+    label3_m1_2.grid(column=18,row=3+row_adj, pady=5)
+    lbl3_B_2.grid(column=19, row=3+row_adj, pady=5)
+    spin3_C_2.grid(column=20,row=3+row_adj, pady=5)
+    label3_h2_2.grid(column=21,row=3+row_adj, pady=5)
+    spin3_D_2.grid(column=22,row=3+row_adj, pady=5)
+    label3_m2_2.grid(column=23,row=3+row_adj, pady=5)
+    rad3_B_2.grid(column=24, row=3+row_adj, padx=15, pady=5)
+    rad3_C_2.grid(column=25, row=3+row_adj, pady=5)
+
         # phase 3
     phaseLabel3_3 = Label(tab3, text='Phase 3')
     fromLabel3_3 = Label(tab3, text='From:')
@@ -10161,31 +10317,31 @@ if __name__ == '__main__':
     label3_m2_3 = Label(tab3, text='')
     rad3_B_3 = Radiobutton(tab3, text='DD', variable=var3_3, value=2)
     rad3_C_3 = Radiobutton(tab3, text='LL', variable=var3_3, value=3)
-    phaseLabel3_3.grid(column=0, row=3+row_adj, padx=15, pady=5)
-    fromLabel3_3.grid(column=1,row=3+row_adj)
-    spin3_E_3.grid(column=2,row=3+row_adj)
-    label3_h0_3.grid(column=3,row=3+row_adj)
-    spin3_F_3.grid(column=4,row=3+row_adj)
-    label3_m0_3.grid(column=5,row=3+row_adj)
-    space3_3.grid(column=6,row=3+row_adj)
-    date3_3_entry.grid(column=11, row=3+row_adj)
-    label3_d_3.grid(column=8,row=3+row_adj)
-    month3_3_entry.grid(column=9, row=3+row_adj)
-    label3_m_3.grid(column=10,row=3+row_adj)
-    year3_3_entry.grid(column=7, row=3+row_adj) # ISO format
-    rad3_A_3.grid(column=13, row=3+row_adj, pady=5)
-    lbl3_A_3.grid(column=14, row=3+row_adj, pady=5)
-    spin3_A_3.grid(column=15,row=3+row_adj, pady=5)
-    label3_h1_3.grid(column=16,row=3+row_adj, pady=5)
-    spin3_B_3.grid(column=17,row=3+row_adj, pady=5)
-    label3_m1_3.grid(column=18,row=3+row_adj, pady=5)
-    lbl3_B_3.grid(column=19, row=3+row_adj, pady=5)
-    spin3_C_3.grid(column=20,row=3+row_adj, pady=5)
-    label3_h2_3.grid(column=21,row=3+row_adj, pady=5)
-    spin3_D_3.grid(column=22,row=3+row_adj, pady=5)
-    label3_m2_3.grid(column=23,row=3+row_adj, pady=5)
-    rad3_B_3.grid(column=24, row=3+row_adj, padx=15, pady=5)
-    rad3_C_3.grid(column=25, row=3+row_adj, pady=5)
+    phaseLabel3_3.grid(column=0, row=4+row_adj, padx=15, pady=5)
+    fromLabel3_3.grid(column=1,row=4+row_adj)
+    spin3_E_3.grid(column=2,row=4+row_adj)
+    label3_h0_3.grid(column=3,row=4+row_adj)
+    spin3_F_3.grid(column=4,row=4+row_adj)
+    label3_m0_3.grid(column=5,row=4+row_adj)
+    space3_3.grid(column=6,row=4+row_adj)
+    date3_3_entry.grid(column=11, row=4+row_adj)
+    label3_d_3.grid(column=8,row=4+row_adj)
+    month3_3_entry.grid(column=9, row=4+row_adj)
+    label3_m_3.grid(column=10,row=4+row_adj)
+    year3_3_entry.grid(column=7, row=4+row_adj) # ISO format
+    rad3_A_3.grid(column=13, row=4+row_adj, pady=5)
+    lbl3_A_3.grid(column=14, row=4+row_adj, pady=5)
+    spin3_A_3.grid(column=15,row=4+row_adj, pady=5)
+    label3_h1_3.grid(column=16,row=4+row_adj, pady=5)
+    spin3_B_3.grid(column=17,row=4+row_adj, pady=5)
+    label3_m1_3.grid(column=18,row=4+row_adj, pady=5)
+    lbl3_B_3.grid(column=19, row=4+row_adj, pady=5)
+    spin3_C_3.grid(column=20,row=4+row_adj, pady=5)
+    label3_h2_3.grid(column=21,row=4+row_adj, pady=5)
+    spin3_D_3.grid(column=22,row=4+row_adj, pady=5)
+    label3_m2_3.grid(column=23,row=4+row_adj, pady=5)
+    rad3_B_3.grid(column=24, row=4+row_adj, padx=15, pady=5)
+    rad3_C_3.grid(column=25, row=4+row_adj, pady=5)
 
         # phase 4
     phaseLabel3_4 = Label(tab3, text='Phase 4')
@@ -10211,8 +10367,8 @@ if __name__ == '__main__':
     month3_4_entry.insert(0,'{:02d}'.format(day_phase4.month))
     year3_4_entry.delete(0,'end')
     year3_4_entry.insert(0,day_phase4.year)
-    label3_d_4 = Label(tab1, text= '/')
-    label3_m_4 = Label(tab1, text= '/')
+    label3_d_4 = Label(tab3, text= '/')
+    label3_m_4 = Label(tab3, text= '/')
     rad3_A_4 = Radiobutton(tab3, text='LD', variable=var3_4, value=1)
     lbl3_A_4 = Label(tab3, text= 'On:')
     spin3_A_4 = Spinbox(tab3, from_=00, to=24, width=3, format='%02.0f')
@@ -10234,32 +10390,32 @@ if __name__ == '__main__':
     label3_m2_4 = Label(tab3, text='')
     rad3_B_4 = Radiobutton(tab3, text='DD', variable=var3_4, value=2)
     rad3_C_4 = Radiobutton(tab3, text='LL', variable=var3_4, value=3)
-    phaseLabel3_4.grid(column=0, row=4+row_adj, padx=15, pady=5)
-    fromLabel3_4.grid(column=1,row=4+row_adj)
-    spin3_E_4.grid(column=2,row=4+row_adj)
-    label3_h0_4.grid(column=3,row=4+row_adj)
-    spin3_F_4.grid(column=4,row=4+row_adj)
-    label3_m0_4.grid(column=5,row=4+row_adj)
-    space3_4.grid(column=6,row=4+row_adj)
-    date3_4_entry.grid(column=11, row=4+row_adj)
-    label3_d_4.grid(column=8,row=4+row_adj)
-    month3_4_entry.grid(column=9, row=4+row_adj)
-    label3_m_4.grid(column=10,row=4+row_adj)
-    year3_4_entry.grid(column=7, row=4+row_adj) # ISO format
-    space3_4_2.grid(column=12,row=4+row_adj,padx=5)
-    rad3_A_4.grid(column=13, row=4+row_adj, pady=5)
-    lbl3_A_4.grid(column=14, row=4+row_adj, pady=5)
-    spin3_A_4.grid(column=15,row=4+row_adj, pady=5)
-    label3_h1_4.grid(column=16,row=4+row_adj, pady=5)
-    spin3_B_4.grid(column=17,row=4+row_adj, pady=5)
-    label3_m1_4.grid(column=18,row=4+row_adj, pady=5)
-    lbl3_B_4.grid(column=19, row=4+row_adj, pady=5)
-    spin3_C_4.grid(column=20,row=4+row_adj, pady=5)
-    label3_h2_4.grid(column=21,row=4+row_adj, pady=5)
-    spin3_D_4.grid(column=22,row=4+row_adj, pady=5)
-    label3_m2_4.grid(column=23,row=4+row_adj, pady=5)
-    rad3_B_4.grid(column=24, row=4+row_adj, padx=15, pady=5)
-    rad3_C_4.grid(column=25, row=4+row_adj, pady=5)
+    phaseLabel3_4.grid(column=0, row=5+row_adj, padx=15, pady=5)
+    fromLabel3_4.grid(column=1,row=5+row_adj)
+    spin3_E_4.grid(column=2,row=5+row_adj)
+    label3_h0_4.grid(column=3,row=5+row_adj)
+    spin3_F_4.grid(column=4,row=5+row_adj)
+    label3_m0_4.grid(column=5,row=5+row_adj)
+    space3_4.grid(column=6,row=5+row_adj)
+    date3_4_entry.grid(column=11, row=5+row_adj)
+    label3_d_4.grid(column=8,row=5+row_adj)
+    month3_4_entry.grid(column=9, row=5+row_adj)
+    label3_m_4.grid(column=10,row=5+row_adj)
+    year3_4_entry.grid(column=7, row=5+row_adj) # ISO format
+    space3_4_2.grid(column=12,row=5+row_adj,padx=5)
+    rad3_A_4.grid(column=13, row=5+row_adj, pady=5)
+    lbl3_A_4.grid(column=14, row=5+row_adj, pady=5)
+    spin3_A_4.grid(column=15,row=5+row_adj, pady=5)
+    label3_h1_4.grid(column=16,row=5+row_adj, pady=5)
+    spin3_B_4.grid(column=17,row=5+row_adj, pady=5)
+    label3_m1_4.grid(column=18,row=5+row_adj, pady=5)
+    lbl3_B_4.grid(column=19, row=5+row_adj, pady=5)
+    spin3_C_4.grid(column=20,row=5+row_adj, pady=5)
+    label3_h2_4.grid(column=21,row=5+row_adj, pady=5)
+    spin3_D_4.grid(column=22,row=5+row_adj, pady=5)
+    label3_m2_4.grid(column=23,row=5+row_adj, pady=5)
+    rad3_B_4.grid(column=24, row=5+row_adj, padx=15, pady=5)
+    rad3_C_4.grid(column=25, row=5+row_adj, pady=5)
 
     # phase 5
     phaseLabel3_5 = Label(tab3, text='Phase 5')
@@ -10285,8 +10441,8 @@ if __name__ == '__main__':
     month3_5_entry.insert(0,'{:02d}'.format(day_phase5.month))
     year3_5_entry.delete(0,'end')
     year3_5_entry.insert(0,day_phase5.year)
-    label3_d_5 = Label(tab1, text= '/')
-    label3_m_5 = Label(tab1, text= '/')
+    label3_d_5 = Label(tab3, text= '/')
+    label3_m_5 = Label(tab3, text= '/')
     rad3_A_5 = Radiobutton(tab3, text='LD', variable=var3_5, value=1)
     lbl3_A_5 = Label(tab3, text= 'On:')
     spin3_A_5 = Spinbox(tab3, from_=00, to=24, width=3, format='%02.0f')
@@ -10308,32 +10464,32 @@ if __name__ == '__main__':
     label3_m2_5 = Label(tab3, text='')
     rad3_B_5 = Radiobutton(tab3, text='DD', variable=var3_5, value=2)
     rad3_C_5 = Radiobutton(tab3, text='LL', variable=var3_5, value=3)
-    phaseLabel3_5.grid(column=0, row=5+row_adj, padx=15, pady=5)
-    fromLabel3_5.grid(column=1,row=5+row_adj)
-    spin3_E_5.grid(column=2,row=5+row_adj)
-    label3_h0_5.grid(column=3,row=5+row_adj)
-    spin3_F_5.grid(column=4,row=5+row_adj)
-    label3_m0_5.grid(column=5,row=5+row_adj)
-    space3_5.grid(column=6,row=5+row_adj)
-    date3_5_entry.grid(column=11, row=5+row_adj)
-    label3_d_5.grid(column=8,row=5+row_adj)
-    month3_5_entry.grid(column=9, row=5+row_adj)
-    label3_m_5.grid(column=10,row=5+row_adj)
-    year3_5_entry.grid(column=7, row=5+row_adj) # ISO format
-    space3_5_2.grid(column=12,row=5+row_adj,padx=5)
-    rad3_A_5.grid(column=13, row=5+row_adj, pady=5)
-    lbl3_A_5.grid(column=14, row=5+row_adj, pady=5)
-    spin3_A_5.grid(column=15,row=5+row_adj, pady=5)
-    label3_h1_5.grid(column=16,row=5+row_adj, pady=5)
-    spin3_B_5.grid(column=17,row=5+row_adj, pady=5)
-    label3_m1_5.grid(column=18,row=5+row_adj, pady=5)
-    lbl3_B_5.grid(column=19, row=5+row_adj, pady=5)
-    spin3_C_5.grid(column=20,row=5+row_adj, pady=5)
-    label3_h2_5.grid(column=21,row=5+row_adj, pady=5)
-    spin3_D_5.grid(column=22,row=5+row_adj, pady=5)
-    label3_m2_5.grid(column=23,row=5+row_adj, pady=5)
-    rad3_B_5.grid(column=24, row=5+row_adj, padx=15, pady=5)
-    rad3_C_5.grid(column=25, row=5+row_adj, pady=5)
+    phaseLabel3_5.grid(column=0, row=6+row_adj, padx=15, pady=5)
+    fromLabel3_5.grid(column=1,row=6+row_adj)
+    spin3_E_5.grid(column=2,row=6+row_adj)
+    label3_h0_5.grid(column=3,row=6+row_adj)
+    spin3_F_5.grid(column=4,row=6+row_adj)
+    label3_m0_5.grid(column=5,row=6+row_adj)
+    space3_5.grid(column=6,row=6+row_adj)
+    date3_5_entry.grid(column=11, row=6+row_adj)
+    label3_d_5.grid(column=8,row=6+row_adj)
+    month3_5_entry.grid(column=9, row=6+row_adj)
+    label3_m_5.grid(column=10,row=6+row_adj)
+    year3_5_entry.grid(column=7, row=6+row_adj) # ISO format
+    space3_5_2.grid(column=12,row=6+row_adj,padx=5)
+    rad3_A_5.grid(column=13, row=6+row_adj, pady=5)
+    lbl3_A_5.grid(column=14, row=6+row_adj, pady=5)
+    spin3_A_5.grid(column=15,row=6+row_adj, pady=5)
+    label3_h1_5.grid(column=16,row=6+row_adj, pady=5)
+    spin3_B_5.grid(column=17,row=6+row_adj, pady=5)
+    label3_m1_5.grid(column=18,row=6+row_adj, pady=5)
+    lbl3_B_5.grid(column=19, row=6+row_adj, pady=5)
+    spin3_C_5.grid(column=20,row=6+row_adj, pady=5)
+    label3_h2_5.grid(column=21,row=6+row_adj, pady=5)
+    spin3_D_5.grid(column=22,row=6+row_adj, pady=5)
+    label3_m2_5.grid(column=23,row=6+row_adj, pady=5)
+    rad3_B_5.grid(column=24, row=6+row_adj, padx=15, pady=5)
+    rad3_C_5.grid(column=25, row=6+row_adj, pady=5)
     
         # phase 6 
     phaseLabel3_6 = Label(tab3, text='Phase 6')
@@ -10359,8 +10515,8 @@ if __name__ == '__main__':
     month3_6_entry.insert(0,'{:02d}'.format(day_phase6.month))
     year3_6_entry.delete(0,'end')
     year3_6_entry.insert(0,day_phase6.year)
-    label3_d_6 = Label(tab1, text= '/')
-    label3_m_6 = Label(tab1, text= '/')
+    label3_d_6 = Label(tab3, text= '/')
+    label3_m_6 = Label(tab3, text= '/')
     rad3_A_6 = Radiobutton(tab3, text='LD', variable=var3_6, value=1)
     lbl3_A_6 = Label(tab3, text= 'On:')
     spin3_A_6 = Spinbox(tab3, from_=00, to=24, width=3, format='%02.0f')
@@ -10410,7 +10566,7 @@ if __name__ == '__main__':
     rad3_B_6.grid(column=24, row=rowPhase6+row_adj, padx=15, pady=5)
     rad3_C_6.grid(column=25, row=rowPhase6+row_adj, pady=5)
     
-    # phase 6 
+    # phase 7
     phaseLabel3_7 = Label(tab3, text='Phase 7')
     fromLabel3_7 = Label(tab3, text='From:')
     space3_7 = Label(tab3, text=' ')
@@ -10434,8 +10590,8 @@ if __name__ == '__main__':
     month3_7_entry.insert(0,'{:02d}'.format(day_phase7.month))
     year3_7_entry.delete(0,'end')
     year3_7_entry.insert(0,day_phase7.year)
-    label3_d_7 = Label(tab1, text= '/')
-    label3_m_7 = Label(tab1, text= '/')
+    label3_d_7 = Label(tab3, text= '/')
+    label3_m_7 = Label(tab3, text= '/')
     rad3_A_7 = Radiobutton(tab3, text='LD', variable=var3_7, value=1)
     lbl3_A_7 = Label(tab3, text= 'On:')
     spin3_A_7 = Spinbox(tab3, from_=00, to=24, width=3, format='%02.0f')
@@ -10584,8 +10740,8 @@ if __name__ == '__main__':
     month3_9_entry.insert(0,'{:02d}'.format(day_phase9.month))
     year3_9_entry.delete(0,'end')
     year3_9_entry.insert(0,day_phase9.year)
-    label3_d_9 = Label(tab1, text= '/')
-    label3_m_9 = Label(tab1, text= '/')
+    label3_d_9 = Label(tab3, text= '/')
+    label3_m_9 = Label(tab3, text= '/')
     rad3_A_9 = Radiobutton(tab3, text='LD', variable=var3_9, value=1)
     lbl3_A_9 = Label(tab3, text= 'On:')
     spin3_A_9 = Spinbox(tab3, from_=00, to=24, width=3, format='%02.0f')
@@ -10659,8 +10815,8 @@ if __name__ == '__main__':
     month3_10_entry.insert(0,'{:02d}'.format(day_phase10.month))
     year3_10_entry.delete(0,'end')
     year3_10_entry.insert(0,day_phase10.year)
-    label3_d_10 = Label(tab1, text= '/')
-    label3_m_10 = Label(tab1, text= '/')
+    label3_d_10 = Label(tab3, text= '/')
+    label3_m_10 = Label(tab3, text= '/')
     rad3_A_10 = Radiobutton(tab3, text='LD', variable=var3_10, value=1)
     lbl3_A_10 = Label(tab3, text= 'On:')
     spin3_A_10 = Spinbox(tab3, from_=00, to=24, width=3, format='%02.0f')
@@ -10734,8 +10890,8 @@ if __name__ == '__main__':
     month3_11_entry.insert(0,'{:02d}'.format(day_phase11.month))
     year3_11_entry.delete(0,'end')
     year3_11_entry.insert(0,day_phase11.year)
-    label3_d_11 = Label(tab1, text= '/')
-    label3_m_11 = Label(tab1, text= '/')
+    label3_d_11 = Label(tab3, text= '/')
+    label3_m_11 = Label(tab3, text= '/')
     rad3_A_11 = Radiobutton(tab3, text='LD', variable=var3_11, value=1)
     lbl3_A_11 = Label(tab3, text= 'On:')
     spin3_A_11 = Spinbox(tab3, from_=00, to=24, width=3, format='%02.0f')
@@ -10809,8 +10965,8 @@ if __name__ == '__main__':
     month3_12_entry.insert(0,'{:02d}'.format(day_phase12.month))
     year3_12_entry.delete(0,'end')
     year3_12_entry.insert(0,day_phase12.year)
-    label3_d_12 = Label(tab1, text= '/')
-    label3_m_12 = Label(tab1, text= '/')
+    label3_d_12 = Label(tab3, text= '/')
+    label3_m_12 = Label(tab3, text= '/')
     rad3_A_12 = Radiobutton(tab3, text='LD', variable=var3_12, value=1)
     lbl3_A_12 = Label(tab3, text= 'On:')
     spin3_A_12 = Spinbox(tab3, from_=00, to=24, width=3, format='%02.0f')
@@ -10843,7 +10999,7 @@ if __name__ == '__main__':
     date3_12_entry.grid(column=11, row=rowPhase12+row_adj)
     label3_d_12.grid(column=8,row=rowPhase12+row_adj)
     month3_12_entry.grid(column=9, row=rowPhase12+row_adj)
-    label3_m_12.grid(column=12,row=rowPhase12+row_adj)
+    label3_m_12.grid(column=10,row=rowPhase12+row_adj)
     year3_12_entry.grid(column=7, row=rowPhase12+row_adj) # ISO format
     space3_12_2.grid(column=12,row=rowPhase12+row_adj,padx=5)
     rad3_A_12.grid(column=13, row=rowPhase12+row_adj, pady=5)
@@ -10865,20 +11021,21 @@ if __name__ == '__main__':
 
     
     
-    # Box4
+    # Box4 main
 
 
     tcyclelabel4 = Label(tab4, text='T-cycle length')
     tcyclelabel4.grid(column=26, row=1, padx=3, pady=5)
 
     for i in range(0,12): 
-        tcyclespinbox_arr[3,i] = Spinbox(tab4,from_=00, to=24, width=3)    
-        tcyclespinbox_arr[3,i].grid(column=26, row=i+1+row_adj, padx=3,pady=5)
-        tcyclespinbox_arr[3,i].delete(0,'end')
-        tcyclespinbox_arr[3,i].insert(0,24)
+        tcyclelength = Spinbox(tab4, from_=12, to=48, width=3) 
+        tcyclelength.grid(column=26, row=2+i+row_adj, padx=3,pady=5)
+        tcyclelength.delete(0,'end')
+        tcyclelength.insert(0,24)
+        tcyclespinbox_arr[3,i] = tcyclelength
         
-    
-    
+    tcyclespinbox_arr[3,0].grid(column=26, row=1+row_adj, pady=5)
+        
     
     tab4_title = Label(tab4, text= 'LED schedule', anchor='center')
     tab4_title.grid(column=12, row= 1, columnspan='27', sticky='we')
@@ -10953,6 +11110,16 @@ if __name__ == '__main__':
     month4_2_entry.insert(0,'{:02d}'.format(day_phase2.month))
     year4_2_entry.delete(0,'end')
     year4_2_entry.insert(0,day_phase2.year) # ISO format is YYYY/MM/DD
+
+    label3_d_0 = Label(tab4, text= 'Month')
+    label3_m_0 = Label(tab4, text= 'Date')
+    label3_m_0.grid(column=11,row=2+row_adj)
+    label3_d_0.grid(column=9,row=2+row_adj)
+    label3_d_1 = Label(tab4, text= '/')
+    label3_m_1 = Label(tab4, text= '/')
+    label3_d_1.grid(column=8,row=2+row_adj)
+    label3_m_1.grid(column=10,row=2+row_adj)
+
     label4_d_2 = Label(tab4, text= '/')
     label4_m_2 = Label(tab4, text= '/')
     rad4_A_2 = Radiobutton(tab4, text='LD', variable=var4_2, value=1)
@@ -10976,32 +11143,33 @@ if __name__ == '__main__':
     label4_m2_2 = Label(tab4, text='')
     rad4_B_2 = Radiobutton(tab4, text='DD', variable=var4_2, value=2)
     rad4_C_2 = Radiobutton(tab4, text='LL', variable=var4_2, value=3)
-    phaseLabel4_2.grid(column=0, row=2+row_adj, padx=15, pady=5)
-    fromLabel4_2.grid(column=1,row=2+row_adj)
-    spin4_E_2.grid(column=2,row=2+row_adj)
-    label4_h0_2.grid(column=3,row=2+row_adj)
-    spin4_F_2.grid(column=4,row=2+row_adj)
-    label4_m0_2.grid(column=5,row=2+row_adj)
-    space4_2.grid(column=6,row=2+row_adj)
-    date4_2_entry.grid(column=11, row=2+row_adj)
-    label4_d_2.grid(column=8,row=2+row_adj)
-    month4_2_entry.grid(column=9, row=2+row_adj)
-    label4_m_2.grid(column=10,row=2+row_adj)
-    year4_2_entry.grid(column=7, row=2+row_adj) # ISO format
-    space4_2_2.grid(column=12,row=2+row_adj,padx=5)
-    rad4_A_2.grid(column=13, row=2+row_adj, pady=5)
-    lbl4_A_2.grid(column=14, row=2+row_adj, pady=5)
-    spin4_A_2.grid(column=15,row=2+row_adj, pady=5)
-    label4_h1_2.grid(column=16,row=2+row_adj, pady=5)
-    spin4_B_2.grid(column=17,row=2+row_adj, pady=5)
-    label4_m1_2.grid(column=18,row=2+row_adj, pady=5)
-    lbl4_B_2.grid(column=19, row=2+row_adj, pady=5)
-    spin4_C_2.grid(column=20,row=2+row_adj, pady=5)
-    label4_h2_2.grid(column=21,row=2+row_adj, pady=5)
-    spin4_D_2.grid(column=22,row=2+row_adj, pady=5)
-    label4_m2_2.grid(column=23,row=2+row_adj, pady=5)
-    rad4_B_2.grid(column=24, row=2+row_adj, padx=15, pady=5)
-    rad4_C_2.grid(column=25, row=2+row_adj, pady=5)
+    phaseLabel4_2.grid(column=0, row=3+row_adj, padx=15, pady=5)
+    fromLabel4_2.grid(column=1,row=3+row_adj)
+    spin4_E_2.grid(column=2,row=3+row_adj)
+    label4_h0_2.grid(column=3,row=3+row_adj)
+    spin4_F_2.grid(column=4,row=3+row_adj)
+    label4_m0_2.grid(column=5,row=3+row_adj)
+    space4_2.grid(column=6,row=3+row_adj)
+    date4_2_entry.grid(column=11, row=3+row_adj)
+    label4_d_2.grid(column=8,row=3+row_adj)
+    month4_2_entry.grid(column=9, row=3+row_adj)
+    label4_m_2.grid(column=10,row=3+row_adj)
+    year4_2_entry.grid(column=7, row=3+row_adj) # ISO format
+    space4_2_2.grid(column=12,row=3+row_adj,padx=5)
+    rad4_A_2.grid(column=13, row=3+row_adj, pady=5)
+    lbl4_A_2.grid(column=14, row=3+row_adj, pady=5)
+    spin4_A_2.grid(column=15,row=3+row_adj, pady=5)
+    label4_h1_2.grid(column=16,row=3+row_adj, pady=5)
+    spin4_B_2.grid(column=17,row=3+row_adj, pady=5)
+    label4_m1_2.grid(column=18,row=3+row_adj, pady=5)
+    lbl4_B_2.grid(column=19, row=3+row_adj, pady=5)
+    spin4_C_2.grid(column=20,row=3+row_adj, pady=5)
+    label4_h2_2.grid(column=21,row=3+row_adj, pady=5)
+    spin4_D_2.grid(column=22,row=3+row_adj, pady=5)
+    label4_m2_2.grid(column=23,row=3+row_adj, pady=5)
+    rad4_B_2.grid(column=24, row=3+row_adj, padx=15, pady=5)
+    rad4_C_2.grid(column=25, row=3+row_adj, pady=5)
+
         # phase 3
     phaseLabel4_3 = Label(tab4, text='Phase 3')
     fromLabel4_3 = Label(tab4, text='From:')
@@ -11048,31 +11216,31 @@ if __name__ == '__main__':
     label4_m2_3 = Label(tab4, text='')
     rad4_B_3 = Radiobutton(tab4, text='DD', variable=var4_3, value=2)
     rad4_C_3 = Radiobutton(tab4, text='LL', variable=var4_3, value=3)
-    phaseLabel4_3.grid(column=0, row=3+row_adj, padx=15, pady=5)
-    fromLabel4_3.grid(column=1,row=3+row_adj)
-    spin4_E_3.grid(column=2,row=3+row_adj)
-    label4_h0_3.grid(column=3,row=3+row_adj)
-    spin4_F_3.grid(column=4,row=3+row_adj)
-    label4_m0_3.grid(column=5,row=3+row_adj)
-    space4_3.grid(column=6,row=3+row_adj)
-    date4_3_entry.grid(column=11, row=3+row_adj)
-    label4_d_3.grid(column=8,row=3+row_adj)
-    month4_3_entry.grid(column=9, row=3+row_adj)
-    label4_m_3.grid(column=10,row=3+row_adj)
-    year4_3_entry.grid(column=7, row=3+row_adj)
-    rad4_A_3.grid(column=13, row=3+row_adj, pady=5)
-    lbl4_A_3.grid(column=14, row=3+row_adj, pady=5)
-    spin4_A_3.grid(column=15,row=3+row_adj, pady=5)
-    label4_h1_3.grid(column=16,row=3+row_adj, pady=5)
-    spin4_B_3.grid(column=17,row=3+row_adj, pady=5)
-    label4_m1_3.grid(column=18,row=3+row_adj, pady=5)
-    lbl4_B_3.grid(column=19, row=3+row_adj, pady=5)
-    spin4_C_3.grid(column=20,row=3+row_adj, pady=5)
-    label4_h2_3.grid(column=21,row=3+row_adj, pady=5)
-    spin4_D_3.grid(column=22,row=3+row_adj, pady=5)
-    label4_m2_3.grid(column=23,row=3+row_adj, pady=5)
-    rad4_B_3.grid(column=24, row=3+row_adj, padx=15, pady=5)
-    rad4_C_3.grid(column=25, row=3+row_adj, pady=5)
+    phaseLabel4_3.grid(column=0, row=4+row_adj, padx=15, pady=5)
+    fromLabel4_3.grid(column=1,row=4+row_adj)
+    spin4_E_3.grid(column=2,row=4+row_adj)
+    label4_h0_3.grid(column=3,row=4+row_adj)
+    spin4_F_3.grid(column=4,row=4+row_adj)
+    label4_m0_3.grid(column=5,row=4+row_adj)
+    space4_3.grid(column=6,row=4+row_adj)
+    date4_3_entry.grid(column=11, row=4+row_adj)
+    label4_d_3.grid(column=8,row=4+row_adj)
+    month4_3_entry.grid(column=9, row=4+row_adj)
+    label4_m_3.grid(column=10,row=4+row_adj)
+    year4_3_entry.grid(column=7, row=4+row_adj)
+    rad4_A_3.grid(column=13, row=4+row_adj, pady=5)
+    lbl4_A_3.grid(column=14, row=4+row_adj, pady=5)
+    spin4_A_3.grid(column=15,row=4+row_adj, pady=5)
+    label4_h1_3.grid(column=16,row=4+row_adj, pady=5)
+    spin4_B_3.grid(column=17,row=4+row_adj, pady=5)
+    label4_m1_3.grid(column=18,row=4+row_adj, pady=5)
+    lbl4_B_3.grid(column=19, row=4+row_adj, pady=5)
+    spin4_C_3.grid(column=20,row=4+row_adj, pady=5)
+    label4_h2_3.grid(column=21,row=4+row_adj, pady=5)
+    spin4_D_3.grid(column=22,row=4+row_adj, pady=5)
+    label4_m2_3.grid(column=23,row=4+row_adj, pady=5)
+    rad4_B_3.grid(column=24, row=4+row_adj, padx=15, pady=5)
+    rad4_C_3.grid(column=25, row=4+row_adj, pady=5)
 
         # phase 4
     phaseLabel4_4 = Label(tab4, text='Phase 4')
@@ -11098,8 +11266,8 @@ if __name__ == '__main__':
     month4_4_entry.insert(0,'{:02d}'.format(day_phase4.month))
     year4_4_entry.delete(0,'end')
     year4_4_entry.insert(0,day_phase4.year)
-    label4_d_4 = Label(tab1, text= '/')
-    label4_m_4 = Label(tab1, text= '/')
+    label4_d_4 = Label(tab4, text= '/')
+    label4_m_4 = Label(tab4, text= '/')
     rad4_A_4 = Radiobutton(tab4, text='LD', variable=var4_4, value=1)
     lbl4_A_4 = Label(tab4, text= 'On:')
     spin4_A_4 = Spinbox(tab4, from_=00, to=24, width=3, format='%02.0f')
@@ -11121,32 +11289,32 @@ if __name__ == '__main__':
     label4_m2_4 = Label(tab4, text='')
     rad4_B_4 = Radiobutton(tab4, text='DD', variable=var4_4, value=2)
     rad4_C_4 = Radiobutton(tab4, text='LL', variable=var4_4, value=3)
-    phaseLabel4_4.grid(column=0, row=4+row_adj, padx=15, pady=5)
-    fromLabel4_4.grid(column=1,row=4+row_adj)
-    spin4_E_4.grid(column=2,row=4+row_adj)
-    label4_h0_4.grid(column=3,row=4+row_adj)
-    spin4_F_4.grid(column=4,row=4+row_adj)
-    label4_m0_4.grid(column=5,row=4+row_adj)
-    space4_4.grid(column=6,row=4+row_adj)
-    date4_4_entry.grid(column=11, row=4+row_adj)
-    label4_d_4.grid(column=8,row=4+row_adj)
-    month4_4_entry.grid(column=9, row=4+row_adj)
-    label4_m_4.grid(column=10,row=4+row_adj)
-    year4_4_entry.grid(column=7, row=4+row_adj) # ISO format
-    space4_4_2.grid(column=12,row=4+row_adj,padx=5)
-    rad4_A_4.grid(column=13, row=4+row_adj, pady=5)
-    lbl4_A_4.grid(column=14, row=4+row_adj, pady=5)
-    spin4_A_4.grid(column=15,row=4+row_adj, pady=5)
-    label4_h1_4.grid(column=16,row=4+row_adj, pady=5)
-    spin4_B_4.grid(column=17,row=4+row_adj, pady=5)
-    label4_m1_4.grid(column=18,row=4+row_adj, pady=5)
-    lbl4_B_4.grid(column=19, row=4+row_adj, pady=5)
-    spin4_C_4.grid(column=20,row=4+row_adj, pady=5)
-    label4_h2_4.grid(column=21,row=4+row_adj, pady=5)
-    spin4_D_4.grid(column=22,row=4+row_adj, pady=5)
-    label4_m2_4.grid(column=23,row=4+row_adj, pady=5)
-    rad4_B_4.grid(column=24, row=4+row_adj, padx=15, pady=5)
-    rad4_C_4.grid(column=25, row=4+row_adj, pady=5)
+    phaseLabel4_4.grid(column=0, row=5+row_adj, padx=15, pady=5)
+    fromLabel4_4.grid(column=1,row=5+row_adj)
+    spin4_E_4.grid(column=2,row=5+row_adj)
+    label4_h0_4.grid(column=3,row=5+row_adj)
+    spin4_F_4.grid(column=4,row=5+row_adj)
+    label4_m0_4.grid(column=5,row=5+row_adj)
+    space4_4.grid(column=6,row=5+row_adj)
+    date4_4_entry.grid(column=11, row=5+row_adj)
+    label4_d_4.grid(column=8,row=5+row_adj)
+    month4_4_entry.grid(column=9, row=5+row_adj)
+    label4_m_4.grid(column=10,row=5+row_adj)
+    year4_4_entry.grid(column=7, row=5+row_adj) # ISO format
+    space4_4_2.grid(column=12,row=5+row_adj,padx=5)
+    rad4_A_4.grid(column=13, row=5+row_adj, pady=5)
+    lbl4_A_4.grid(column=14, row=5+row_adj, pady=5)
+    spin4_A_4.grid(column=15,row=5+row_adj, pady=5)
+    label4_h1_4.grid(column=16,row=5+row_adj, pady=5)
+    spin4_B_4.grid(column=17,row=5+row_adj, pady=5)
+    label4_m1_4.grid(column=18,row=5+row_adj, pady=5)
+    lbl4_B_4.grid(column=19, row=5+row_adj, pady=5)
+    spin4_C_4.grid(column=20,row=5+row_adj, pady=5)
+    label4_h2_4.grid(column=21,row=5+row_adj, pady=5)
+    spin4_D_4.grid(column=22,row=5+row_adj, pady=5)
+    label4_m2_4.grid(column=23,row=5+row_adj, pady=5)
+    rad4_B_4.grid(column=24, row=5+row_adj, padx=15, pady=5)
+    rad4_C_4.grid(column=25, row=5+row_adj, pady=5)
 
     # phase 5
     phaseLabel4_5 = Label(tab4, text='Phase 5')
@@ -11172,8 +11340,8 @@ if __name__ == '__main__':
     month4_5_entry.insert(0,'{:02d}'.format(day_phase5.month))
     year4_5_entry.delete(0,'end')
     year4_5_entry.insert(0,day_phase4.year)
-    label4_d_5 = Label(tab1, text= '/')
-    label4_m_5 = Label(tab1, text= '/')
+    label4_d_5 = Label(tab4, text= '/')
+    label4_m_5 = Label(tab4, text= '/')
     rad4_A_5 = Radiobutton(tab4, text='LD', variable=var4_5, value=1)
     lbl4_A_5 = Label(tab4, text= 'On:')
     spin4_A_5 = Spinbox(tab4, from_=00, to=24, width=3, format='%02.0f')
@@ -11195,32 +11363,32 @@ if __name__ == '__main__':
     label4_m2_5 = Label(tab4, text='')
     rad4_B_5 = Radiobutton(tab4, text='DD', variable=var4_5, value=2)
     rad4_C_5 = Radiobutton(tab4, text='LL', variable=var4_5, value=3)
-    phaseLabel4_5.grid(column=0, row=5+row_adj, padx=15, pady=5)
-    fromLabel4_5.grid(column=1,row=5+row_adj)
-    spin4_E_5.grid(column=2,row=5+row_adj)
-    label4_h0_5.grid(column=3,row=5+row_adj)
-    spin4_F_5.grid(column=4,row=5+row_adj)
-    label4_m0_5.grid(column=5,row=5+row_adj)
-    space4_5.grid(column=6,row=5+row_adj)
-    date4_5_entry.grid(column=11, row=5+row_adj)
-    label4_d_5.grid(column=8,row=5+row_adj)
-    month4_5_entry.grid(column=9, row=5+row_adj)
-    label4_m_5.grid(column=10,row=5+row_adj)
-    year4_5_entry.grid(column=7, row=5+row_adj) # ISO format
-    space4_5_2.grid(column=12,row=5+row_adj,padx=5)
-    rad4_A_5.grid(column=13, row=5+row_adj, pady=5)
-    lbl4_A_5.grid(column=14, row=5+row_adj, pady=5)
-    spin4_A_5.grid(column=15,row=5+row_adj, pady=5)
-    label4_h1_5.grid(column=16,row=5+row_adj, pady=5)
-    spin4_B_5.grid(column=17,row=5+row_adj, pady=5)
-    label4_m1_5.grid(column=18,row=5+row_adj, pady=5)
-    lbl4_B_5.grid(column=19, row=5+row_adj, pady=5)
-    spin4_C_5.grid(column=20,row=5+row_adj, pady=5)
-    label4_h2_5.grid(column=21,row=5+row_adj, pady=5)
-    spin4_D_5.grid(column=22,row=5+row_adj, pady=5)
-    label4_m2_5.grid(column=23,row=5+row_adj, pady=5)
-    rad4_B_5.grid(column=24, row=5+row_adj, padx=15, pady=5)
-    rad4_C_5.grid(column=25, row=5+row_adj, pady=5)
+    phaseLabel4_5.grid(column=0, row=6+row_adj, padx=15, pady=5)
+    fromLabel4_5.grid(column=1,row=6+row_adj)
+    spin4_E_5.grid(column=2,row=6+row_adj)
+    label4_h0_5.grid(column=3,row=6+row_adj)
+    spin4_F_5.grid(column=4,row=6+row_adj)
+    label4_m0_5.grid(column=5,row=6+row_adj)
+    space4_5.grid(column=6,row=6+row_adj)
+    date4_5_entry.grid(column=11, row=6+row_adj)
+    label4_d_5.grid(column=8,row=6+row_adj)
+    month4_5_entry.grid(column=9, row=6+row_adj)
+    label4_m_5.grid(column=10,row=6+row_adj)
+    year4_5_entry.grid(column=7, row=6+row_adj) # ISO format
+    space4_5_2.grid(column=12,row=6+row_adj,padx=5)
+    rad4_A_5.grid(column=13, row=6+row_adj, pady=5)
+    lbl4_A_5.grid(column=14, row=6+row_adj, pady=5)
+    spin4_A_5.grid(column=15,row=6+row_adj, pady=5)
+    label4_h1_5.grid(column=16,row=6+row_adj, pady=5)
+    spin4_B_5.grid(column=17,row=6+row_adj, pady=5)
+    label4_m1_5.grid(column=18,row=6+row_adj, pady=5)
+    lbl4_B_5.grid(column=19, row=6+row_adj, pady=5)
+    spin4_C_5.grid(column=20,row=6+row_adj, pady=5)
+    label4_h2_5.grid(column=21,row=6+row_adj, pady=5)
+    spin4_D_5.grid(column=22,row=6+row_adj, pady=5)
+    label4_m2_5.grid(column=23,row=6+row_adj, pady=5)
+    rad4_B_5.grid(column=24, row=6+row_adj, padx=15, pady=5)
+    rad4_C_5.grid(column=25, row=6+row_adj, pady=5)
 
         # phase 6
     phaseLabel4_6 = Label(tab4, text='Phase 6')
@@ -11246,8 +11414,8 @@ if __name__ == '__main__':
     month4_6_entry.insert(0,'{:02d}'.format(day_phase6.month))
     year4_6_entry.delete(0,'end')
     year4_6_entry.insert(0,day_phase6.year)
-    label4_d_6 = Label(tab1, text= '/')
-    label4_m_6 = Label(tab1, text= '/')
+    label4_d_6 = Label(tab4, text= '/')
+    label4_m_6 = Label(tab4, text= '/')
     rad4_A_6 = Radiobutton(tab4, text='LD', variable=var4_6, value=1)
     lbl4_A_6 = Label(tab4, text= 'On:')
     spin4_A_6 = Spinbox(tab4, from_=00, to=24, width=3, format='%02.0f')
@@ -11322,8 +11490,8 @@ if __name__ == '__main__':
     month4_7_entry.insert(0,'{:02d}'.format(day_phase7.month))
     year4_7_entry.delete(0,'end')
     year4_7_entry.insert(0,day_phase7.year)
-    label4_d_7 = Label(tab1, text= '/')
-    label4_m_7 = Label(tab1, text= '/')
+    label4_d_7 = Label(tab4, text= '/')
+    label4_m_7 = Label(tab4, text= '/')
     rad4_A_7 = Radiobutton(tab4, text='LD', variable=var4_7, value=1)
     lbl4_A_7 = Label(tab4, text= 'On:')
     spin4_A_7 = Spinbox(tab4, from_=00, to=24, width=3, format='%02.0f')
@@ -11398,8 +11566,8 @@ if __name__ == '__main__':
     month4_8_entry.insert(0,'{:02d}'.format(day_phase8.month))
     year4_8_entry.delete(0,'end')
     year4_8_entry.insert(0,day_phase8.year)
-    label4_d_8 = Label(tab1, text= '/')
-    label4_m_8 = Label(tab1, text= '/')
+    label4_d_8 = Label(tab4, text= '/')
+    label4_m_8 = Label(tab4, text= '/')
     rad4_A_8 = Radiobutton(tab4, text='LD', variable=var4_8, value=1)
     lbl4_A_8 = Label(tab4, text= 'On:')
     spin4_A_8 = Spinbox(tab4, from_=00, to=24, width=3, format='%02.0f')
@@ -11474,8 +11642,8 @@ if __name__ == '__main__':
     month4_9_entry.insert(0,'{:02d}'.format(day_phase9.month))
     year4_9_entry.delete(0,'end')
     year4_9_entry.insert(0,day_phase9.year)
-    label4_d_9 = Label(tab1, text= '/')
-    label4_m_9 = Label(tab1, text= '/')
+    label4_d_9 = Label(tab4, text= '/')
+    label4_m_9 = Label(tab4, text= '/')
     rad4_A_9 = Radiobutton(tab4, text='LD', variable=var4_9, value=1)
     lbl4_A_9 = Label(tab4, text= 'On:')
     spin4_A_9 = Spinbox(tab4, from_=00, to=24, width=3, format='%02.0f')
@@ -11550,8 +11718,8 @@ if __name__ == '__main__':
     month4_10_entry.insert(0,'{:02d}'.format(day_phase10.month))
     year4_10_entry.delete(0,'end')
     year4_10_entry.insert(0,day_phase10.year)
-    label4_d_10 = Label(tab1, text= '/')
-    label4_m_10 = Label(tab1, text= '/')
+    label4_d_10 = Label(tab4, text= '/')
+    label4_m_10 = Label(tab4, text= '/')
     rad4_A_10 = Radiobutton(tab4, text='LD', variable=var4_10, value=1)
     lbl4_A_10 = Label(tab4, text= 'On:')
     spin4_A_10 = Spinbox(tab4, from_=00, to=24, width=3, format='%02.0f')
@@ -11626,8 +11794,8 @@ if __name__ == '__main__':
     month4_11_entry.insert(0,'{:02d}'.format(day_phase11.month))
     year4_11_entry.delete(0,'end')
     year4_11_entry.insert(0,day_phase11.year)
-    label4_d_11 = Label(tab1, text= '/')
-    label4_m_11 = Label(tab1, text= '/')
+    label4_d_11 = Label(tab4, text= '/')
+    label4_m_11 = Label(tab4, text= '/')
     rad4_A_11 = Radiobutton(tab4, text='LD', variable=var4_11, value=1)
     lbl4_A_11 = Label(tab4, text= 'On:')
     spin4_A_11 = Spinbox(tab4, from_=00, to=24, width=3, format='%02.0f')
@@ -11702,8 +11870,8 @@ if __name__ == '__main__':
     month4_12_entry.insert(0,'{:02d}'.format(day_phase12.month))
     year4_12_entry.delete(0,'end')
     year4_12_entry.insert(0,day_phase12.year)
-    label4_d_12 = Label(tab1, text= '/')
-    label4_m_12 = Label(tab1, text= '/')
+    label4_d_12 = Label(tab4, text= '/')
+    label4_m_12 = Label(tab4, text= '/')
     rad4_A_12 = Radiobutton(tab4, text='LD', variable=var4_12, value=1)
     lbl4_A_12 = Label(tab4, text= 'On:')
     spin4_A_12 = Spinbox(tab4, from_=00, to=24, width=3, format='%02.0f')
@@ -11737,7 +11905,7 @@ if __name__ == '__main__':
     date4_12_entry.grid(column=11, row=rowPhase12+row_adj)
     label4_d_12.grid(column=8,row=rowPhase12+row_adj)
     month4_12_entry.grid(column=9, row=rowPhase12+row_adj)
-    label4_m_12.grid(column=12,row=rowPhase12+row_adj)
+    label4_m_12.grid(column=10,row=rowPhase12+row_adj)
     year4_12_entry.grid(column=7, row=rowPhase12+row_adj) # ISO format
     space4_12_2.grid(column=12,row=rowPhase12+row_adj,padx=5)
     rad4_A_12.grid(column=13, row=rowPhase12+row_adj, pady=5)
@@ -11756,18 +11924,20 @@ if __name__ == '__main__':
 
     
     
-   
 
-    # Box5
+    # Box5 main
 
     tcyclelabel5 = Label(tab5, text='T-cycle length')
     tcyclelabel5.grid(column=26, row=1, padx=3, pady=5)
 
     for i in range(0,12): 
-        tcyclespinbox_arr[4,i] = Spinbox(tab5,from_=00, to=24, width=3)    
-        tcyclespinbox_arr[4,i].grid(column=26, row=i+1+row_adj, padx=3,pady=5)
-        tcyclespinbox_arr[4,i].delete(0,'end')
-        tcyclespinbox_arr[4,i].insert(0,24)
+        tcyclelength = Spinbox(tab5, from_=12, to=48, width=3)
+        tcyclelength.grid(column=26, row=2+i+row_adj, padx=3,pady=5)
+        tcyclelength.delete(0,'end')
+        tcyclelength.insert(0,24)
+        tcyclespinbox_arr[4,i] = tcyclelength
+        
+    tcyclespinbox_arr[4,0].grid(column=26, row=1+row_adj, pady=5)
         
     
     tab5_title = Label(tab5, text= 'LED schedule', anchor='center')
@@ -11843,6 +12013,16 @@ if __name__ == '__main__':
     month5_2_entry.insert(0,'{:02d}'.format(day_phase2.month))
     year5_2_entry.delete(0,'end')
     year5_2_entry.insert(0,day_phase2.year) # ISO format is YYYY/MM/DD
+
+    label3_d_0 = Label(tab5, text= 'Month')
+    label3_m_0 = Label(tab5, text= 'Date')
+    label3_m_0.grid(column=11,row=2+row_adj)
+    label3_d_0.grid(column=9,row=2+row_adj)
+    label3_d_1 = Label(tab5, text= '/')
+    label3_m_1 = Label(tab5, text= '/')
+    label3_d_1.grid(column=8,row=2+row_adj)
+    label3_m_1.grid(column=10,row=2+row_adj)
+
     label5_d_2 = Label(tab5, text= '/')
     label5_m_2 = Label(tab5, text= '/')
     rad5_A_2 = Radiobutton(tab5, text='LD', variable=var5_2, value=1)
@@ -11866,32 +12046,33 @@ if __name__ == '__main__':
     label5_m2_2 = Label(tab5, text='')
     rad5_B_2 = Radiobutton(tab5, text='DD', variable=var5_2, value=2)
     rad5_C_2 = Radiobutton(tab5, text='LL', variable=var5_2, value=3)
-    phaseLabel5_2.grid(column=0, row=2+row_adj, padx=15, pady=5)
-    fromLabel5_2.grid(column=1,row=2+row_adj)
-    spin5_E_2.grid(column=2,row=2+row_adj)
-    label5_h0_2.grid(column=3,row=2+row_adj)
-    spin5_F_2.grid(column=4,row=2+row_adj)
-    label5_m0_2.grid(column=5,row=2+row_adj)
-    space5_2.grid(column=6,row=2+row_adj)
-    date5_2_entry.grid(column=11, row=2+row_adj)
-    label5_d_2.grid(column=8,row=2+row_adj)
-    month5_2_entry.grid(column=9, row=2+row_adj)
-    label5_m_2.grid(column=10,row=2+row_adj)
-    year5_2_entry.grid(column=7, row=2+row_adj) # ISO format
-    space5_2_2.grid(column=12,row=2+row_adj,padx=5)
-    rad5_A_2.grid(column=13, row=2+row_adj, pady=5)
-    lbl5_A_2.grid(column=14, row=2+row_adj, pady=5)
-    spin5_A_2.grid(column=15,row=2+row_adj, pady=5)
-    label5_h1_2.grid(column=16,row=2+row_adj, pady=5)
-    spin5_B_2.grid(column=17,row=2+row_adj, pady=5)
-    label5_m1_2.grid(column=18,row=2+row_adj, pady=5)
-    lbl5_B_2.grid(column=19, row=2+row_adj, pady=5)
-    spin5_C_2.grid(column=20,row=2+row_adj, pady=5)
-    label5_h2_2.grid(column=21,row=2+row_adj, pady=5)
-    spin5_D_2.grid(column=22,row=2+row_adj, pady=5)
-    label5_m2_2.grid(column=23,row=2+row_adj, pady=5)
-    rad5_B_2.grid(column=24, row=2+row_adj, padx=15, pady=5)
-    rad5_C_2.grid(column=25, row=2+row_adj, pady=5)
+    phaseLabel5_2.grid(column=0, row=3+row_adj, padx=15, pady=5)
+    fromLabel5_2.grid(column=1,row=3+row_adj)
+    spin5_E_2.grid(column=2,row=3+row_adj)
+    label5_h0_2.grid(column=3,row=3+row_adj)
+    spin5_F_2.grid(column=4,row=3+row_adj)
+    label5_m0_2.grid(column=5,row=3+row_adj)
+    space5_2.grid(column=6,row=3+row_adj)
+    date5_2_entry.grid(column=11, row=3+row_adj)
+    label5_d_2.grid(column=8,row=3+row_adj)
+    month5_2_entry.grid(column=9, row=3+row_adj)
+    label5_m_2.grid(column=10,row=3+row_adj)
+    year5_2_entry.grid(column=7, row=3+row_adj) # ISO format
+    space5_2_2.grid(column=12,row=3+row_adj,padx=5)
+    rad5_A_2.grid(column=13, row=3+row_adj, pady=5)
+    lbl5_A_2.grid(column=14, row=3+row_adj, pady=5)
+    spin5_A_2.grid(column=15,row=3+row_adj, pady=5)
+    label5_h1_2.grid(column=16,row=3+row_adj, pady=5)
+    spin5_B_2.grid(column=17,row=3+row_adj, pady=5)
+    label5_m1_2.grid(column=18,row=3+row_adj, pady=5)
+    lbl5_B_2.grid(column=19, row=3+row_adj, pady=5)
+    spin5_C_2.grid(column=20,row=3+row_adj, pady=5)
+    label5_h2_2.grid(column=21,row=3+row_adj, pady=5)
+    spin5_D_2.grid(column=22,row=3+row_adj, pady=5)
+    label5_m2_2.grid(column=23,row=3+row_adj, pady=5)
+    rad5_B_2.grid(column=24, row=3+row_adj, padx=15, pady=5)
+    rad5_C_2.grid(column=25, row=3+row_adj, pady=5)
+
         # phase 3
     phaseLabel5_3 = Label(tab5, text='Phase 3')
     fromLabel5_3 = Label(tab5, text='From:')
@@ -11938,31 +12119,31 @@ if __name__ == '__main__':
     label5_m2_3 = Label(tab5, text='')
     rad5_B_3 = Radiobutton(tab5, text='DD', variable=var5_3, value=2)
     rad5_C_3 = Radiobutton(tab5, text='LL', variable=var5_3, value=3)
-    phaseLabel5_3.grid(column=0, row=3+row_adj, padx=15, pady=5)
-    fromLabel5_3.grid(column=1,row=3+row_adj)
-    spin5_E_3.grid(column=2,row=3+row_adj)
-    label5_h0_3.grid(column=3,row=3+row_adj)
-    spin5_F_3.grid(column=4,row=3+row_adj)
-    label5_m0_3.grid(column=5,row=3+row_adj)
-    space5_3.grid(column=6,row=3+row_adj)
-    date5_3_entry.grid(column=11, row=3+row_adj)
-    label5_d_3.grid(column=8,row=3+row_adj)
-    month5_3_entry.grid(column=9, row=3+row_adj)
-    label5_m_3.grid(column=10,row=3+row_adj)
-    year5_3_entry.grid(column=7, row=3+row_adj) # ISO format
-    rad5_A_3.grid(column=13, row=3+row_adj, pady=5)
-    lbl5_A_3.grid(column=14, row=3+row_adj, pady=5)
-    spin5_A_3.grid(column=15,row=3+row_adj, pady=5)
-    label5_h1_3.grid(column=16,row=3+row_adj, pady=5)
-    spin5_B_3.grid(column=17,row=3+row_adj, pady=5)
-    label5_m1_3.grid(column=18,row=3+row_adj, pady=5)
-    lbl5_B_3.grid(column=19, row=3+row_adj, pady=5)
-    spin5_C_3.grid(column=20,row=3+row_adj, pady=5)
-    label5_h2_3.grid(column=21,row=3+row_adj, pady=5)
-    spin5_D_3.grid(column=22,row=3+row_adj, pady=5)
-    label5_m2_3.grid(column=23,row=3+row_adj, pady=5)
-    rad5_B_3.grid(column=24, row=3+row_adj, padx=15, pady=5)
-    rad5_C_3.grid(column=25, row=3+row_adj, pady=5)
+    phaseLabel5_3.grid(column=0, row=4+row_adj, padx=15, pady=5)
+    fromLabel5_3.grid(column=1,row=4+row_adj)
+    spin5_E_3.grid(column=2,row=4+row_adj)
+    label5_h0_3.grid(column=3,row=4+row_adj)
+    spin5_F_3.grid(column=4,row=4+row_adj)
+    label5_m0_3.grid(column=5,row=4+row_adj)
+    space5_3.grid(column=6,row=4+row_adj)
+    date5_3_entry.grid(column=11, row=4+row_adj)
+    label5_d_3.grid(column=8,row=4+row_adj)
+    month5_3_entry.grid(column=9, row=4+row_adj)
+    label5_m_3.grid(column=10,row=4+row_adj)
+    year5_3_entry.grid(column=7, row=4+row_adj) # ISO format
+    rad5_A_3.grid(column=13, row=4+row_adj, pady=5)
+    lbl5_A_3.grid(column=14, row=4+row_adj, pady=5)
+    spin5_A_3.grid(column=15,row=4+row_adj, pady=5)
+    label5_h1_3.grid(column=16,row=4+row_adj, pady=5)
+    spin5_B_3.grid(column=17,row=4+row_adj, pady=5)
+    label5_m1_3.grid(column=18,row=4+row_adj, pady=5)
+    lbl5_B_3.grid(column=19, row=4+row_adj, pady=5)
+    spin5_C_3.grid(column=20,row=4+row_adj, pady=5)
+    label5_h2_3.grid(column=21,row=4+row_adj, pady=5)
+    spin5_D_3.grid(column=22,row=4+row_adj, pady=5)
+    label5_m2_3.grid(column=23,row=4+row_adj, pady=5)
+    rad5_B_3.grid(column=24, row=4+row_adj, padx=15, pady=5)
+    rad5_C_3.grid(column=25, row=4+row_adj, pady=5)
 
         # phase 4
     phaseLabel5_4 = Label(tab5, text='Phase 4')
@@ -11988,8 +12169,8 @@ if __name__ == '__main__':
     month5_4_entry.insert(0,'{:02d}'.format(day_phase4.month))
     year5_4_entry.delete(0,'end')
     year5_4_entry.insert(0,day_phase4.year)
-    label5_d_4 = Label(tab1, text= '/')
-    label5_m_4 = Label(tab1, text= '/')
+    label5_d_4 = Label(tab5, text= '/')
+    label5_m_4 = Label(tab5, text= '/')
     rad5_A_4 = Radiobutton(tab5, text='LD', variable=var5_4, value=1)
     lbl5_A_4 = Label(tab5, text= 'On:')
     spin5_A_4 = Spinbox(tab5, from_=00, to=24, width=3, format='%02.0f')
@@ -12011,32 +12192,32 @@ if __name__ == '__main__':
     label5_m2_4 = Label(tab5, text='')
     rad5_B_4 = Radiobutton(tab5, text='DD', variable=var5_4, value=2)
     rad5_C_4 = Radiobutton(tab5, text='LL', variable=var5_4, value=3)
-    phaseLabel5_4.grid(column=0, row=4+row_adj, padx=15, pady=5)
-    fromLabel5_4.grid(column=1,row=4+row_adj)
-    spin5_E_4.grid(column=2,row=4+row_adj)
-    label5_h0_4.grid(column=3,row=4+row_adj)
-    spin5_F_4.grid(column=4,row=4+row_adj)
-    label5_m0_4.grid(column=5,row=4+row_adj)
-    space5_4.grid(column=6,row=4+row_adj)
-    date5_4_entry.grid(column=11, row=4+row_adj)
-    label5_d_4.grid(column=8,row=4+row_adj)
-    month5_4_entry.grid(column=9, row=4+row_adj)
-    label5_m_4.grid(column=10,row=4+row_adj)
-    year5_4_entry.grid(column=7, row=4+row_adj) # ISO format
-    space5_4_2.grid(column=12,row=4+row_adj,padx=5)
-    rad5_A_4.grid(column=13, row=4+row_adj, pady=5)
-    lbl5_A_4.grid(column=14, row=4+row_adj, pady=5)
-    spin5_A_4.grid(column=15,row=4+row_adj, pady=5)
-    label5_h1_4.grid(column=16,row=4+row_adj, pady=5)
-    spin5_B_4.grid(column=17,row=4+row_adj, pady=5)
-    label5_m1_4.grid(column=18,row=4+row_adj, pady=5)
-    lbl5_B_4.grid(column=19, row=4+row_adj, pady=5)
-    spin5_C_4.grid(column=20,row=4+row_adj, pady=5)
-    label5_h2_4.grid(column=21,row=4+row_adj, pady=5)
-    spin5_D_4.grid(column=22,row=4+row_adj, pady=5)
-    label5_m2_4.grid(column=23,row=4+row_adj, pady=5)
-    rad5_B_4.grid(column=24, row=4+row_adj, padx=15, pady=5)
-    rad5_C_4.grid(column=25, row=4+row_adj, pady=5)
+    phaseLabel5_4.grid(column=0, row=5+row_adj, padx=15, pady=5)
+    fromLabel5_4.grid(column=1,row=5+row_adj)
+    spin5_E_4.grid(column=2,row=5+row_adj)
+    label5_h0_4.grid(column=3,row=5+row_adj)
+    spin5_F_4.grid(column=4,row=5+row_adj)
+    label5_m0_4.grid(column=5,row=5+row_adj)
+    space5_4.grid(column=6,row=5+row_adj)
+    date5_4_entry.grid(column=11, row=5+row_adj)
+    label5_d_4.grid(column=8,row=5+row_adj)
+    month5_4_entry.grid(column=9, row=5+row_adj)
+    label5_m_4.grid(column=10,row=5+row_adj)
+    year5_4_entry.grid(column=7, row=5+row_adj) # ISO format
+    space5_4_2.grid(column=12,row=5+row_adj,padx=5)
+    rad5_A_4.grid(column=13, row=5+row_adj, pady=5)
+    lbl5_A_4.grid(column=14, row=5+row_adj, pady=5)
+    spin5_A_4.grid(column=15,row=5+row_adj, pady=5)
+    label5_h1_4.grid(column=16,row=5+row_adj, pady=5)
+    spin5_B_4.grid(column=17,row=5+row_adj, pady=5)
+    label5_m1_4.grid(column=18,row=5+row_adj, pady=5)
+    lbl5_B_4.grid(column=19, row=5+row_adj, pady=5)
+    spin5_C_4.grid(column=20,row=5+row_adj, pady=5)
+    label5_h2_4.grid(column=21,row=5+row_adj, pady=5)
+    spin5_D_4.grid(column=22,row=5+row_adj, pady=5)
+    label5_m2_4.grid(column=23,row=5+row_adj, pady=5)
+    rad5_B_4.grid(column=24, row=5+row_adj, padx=15, pady=5)
+    rad5_C_4.grid(column=25, row=5+row_adj, pady=5)
 
     # phase 5
     phaseLabel5_5 = Label(tab5, text='Phase 5')
@@ -12062,8 +12243,8 @@ if __name__ == '__main__':
     month5_5_entry.insert(0,'{:02d}'.format(day_phase5.month))
     year5_5_entry.delete(0,'end')
     year5_5_entry.insert(0,day_phase5.year)
-    label5_d_5 = Label(tab1, text= '/')
-    label5_m_5 = Label(tab1, text= '/')
+    label5_d_5 = Label(tab5, text= '/')
+    label5_m_5 = Label(tab5, text= '/')
     rad5_A_5 = Radiobutton(tab5, text='LD', variable=var5_5, value=1)
     lbl5_A_5 = Label(tab5, text= 'On:')
     spin5_A_5 = Spinbox(tab5, from_=00, to=24, width=3, format='%02.0f')
@@ -12085,32 +12266,32 @@ if __name__ == '__main__':
     label5_m2_5 = Label(tab5, text='')
     rad5_B_5 = Radiobutton(tab5, text='DD', variable=var5_5, value=2)
     rad5_C_5 = Radiobutton(tab5, text='LL', variable=var5_5, value=3)
-    phaseLabel5_5.grid(column=0, row=5+row_adj, padx=15, pady=5)
-    fromLabel5_5.grid(column=1,row=5+row_adj)
-    spin5_E_5.grid(column=2,row=5+row_adj)
-    label5_h0_5.grid(column=3,row=5+row_adj)
-    spin5_F_5.grid(column=4,row=5+row_adj)
-    label5_m0_5.grid(column=5,row=5+row_adj)
-    space5_5.grid(column=6,row=5+row_adj)
-    date5_5_entry.grid(column=11, row=5+row_adj)
-    label5_d_5.grid(column=8,row=5+row_adj)
-    month5_5_entry.grid(column=9, row=5+row_adj)
-    label5_m_5.grid(column=10,row=5+row_adj)
-    year5_5_entry.grid(column=7, row=5+row_adj) # ISO format
-    space5_5_2.grid(column=12,row=5+row_adj,padx=5)
-    rad5_A_5.grid(column=13, row=5+row_adj, pady=5)
-    lbl5_A_5.grid(column=14, row=5+row_adj, pady=5)
-    spin5_A_5.grid(column=15,row=5+row_adj, pady=5)
-    label5_h1_5.grid(column=16,row=5+row_adj, pady=5)
-    spin5_B_5.grid(column=17,row=5+row_adj, pady=5)
-    label5_m1_5.grid(column=18,row=5+row_adj, pady=5)
-    lbl5_B_5.grid(column=19, row=5+row_adj, pady=5)
-    spin5_C_5.grid(column=20,row=5+row_adj, pady=5)
-    label5_h2_5.grid(column=21,row=5+row_adj, pady=5)
-    spin5_D_5.grid(column=22,row=5+row_adj, pady=5)
-    label5_m2_5.grid(column=23,row=5+row_adj, pady=5)
-    rad5_B_5.grid(column=24, row=5+row_adj, padx=15, pady=5)
-    rad5_C_5.grid(column=25, row=5+row_adj, pady=5)
+    phaseLabel5_5.grid(column=0, row=6+row_adj, padx=15, pady=5)
+    fromLabel5_5.grid(column=1,row=6+row_adj)
+    spin5_E_5.grid(column=2,row=6+row_adj)
+    label5_h0_5.grid(column=3,row=6+row_adj)
+    spin5_F_5.grid(column=4,row=6+row_adj)
+    label5_m0_5.grid(column=5,row=6+row_adj)
+    space5_5.grid(column=6,row=6+row_adj)
+    date5_5_entry.grid(column=11, row=6+row_adj)
+    label5_d_5.grid(column=8,row=6+row_adj)
+    month5_5_entry.grid(column=9, row=6+row_adj)
+    label5_m_5.grid(column=10,row=6+row_adj)
+    year5_5_entry.grid(column=7, row=6+row_adj) # ISO format
+    space5_5_2.grid(column=12,row=6+row_adj,padx=5)
+    rad5_A_5.grid(column=13, row=6+row_adj, pady=5)
+    lbl5_A_5.grid(column=14, row=6+row_adj, pady=5)
+    spin5_A_5.grid(column=15,row=6+row_adj, pady=5)
+    label5_h1_5.grid(column=16,row=6+row_adj, pady=5)
+    spin5_B_5.grid(column=17,row=6+row_adj, pady=5)
+    label5_m1_5.grid(column=18,row=6+row_adj, pady=5)
+    lbl5_B_5.grid(column=19, row=6+row_adj, pady=5)
+    spin5_C_5.grid(column=20,row=6+row_adj, pady=5)
+    label5_h2_5.grid(column=21,row=6+row_adj, pady=5)
+    spin5_D_5.grid(column=22,row=6+row_adj, pady=5)
+    label5_m2_5.grid(column=23,row=6+row_adj, pady=5)
+    rad5_B_5.grid(column=24, row=6+row_adj, padx=15, pady=5)
+    rad5_C_5.grid(column=25, row=6+row_adj, pady=5)
 
         # phase 6
     phaseLabel5_6 = Label(tab5, text='Phase 6')
@@ -12136,8 +12317,8 @@ if __name__ == '__main__':
     month5_6_entry.insert(0,'{:02d}'.format(day_phase6.month))
     year5_6_entry.delete(0,'end')
     year5_6_entry.insert(0,day_phase6.year)
-    label5_d_6 = Label(tab1, text= '/')
-    label5_m_6 = Label(tab1, text= '/')
+    label5_d_6 = Label(tab5, text= '/')
+    label5_m_6 = Label(tab5, text= '/')
     rad5_A_6 = Radiobutton(tab5, text='LD', variable=var5_6, value=1)
     lbl5_A_6 = Label(tab5, text= 'On:')
     spin5_A_6 = Spinbox(tab5, from_=00, to=24, width=3, format='%02.0f')
@@ -12212,8 +12393,8 @@ if __name__ == '__main__':
     month5_7_entry.insert(0,'{:02d}'.format(day_phase7.month))
     year5_7_entry.delete(0,'end')
     year5_7_entry.insert(0,day_phase7.year)
-    label5_d_7 = Label(tab1, text= '/')
-    label5_m_7 = Label(tab1, text= '/')
+    label5_d_7 = Label(tab5, text= '/')
+    label5_m_7 = Label(tab5, text= '/')
     rad5_A_7 = Radiobutton(tab5, text='LD', variable=var5_7, value=1)
     lbl5_A_7 = Label(tab5, text= 'On:')
     spin5_A_7 = Spinbox(tab5, from_=00, to=24, width=3, format='%02.0f')
@@ -12288,8 +12469,8 @@ if __name__ == '__main__':
     month5_8_entry.insert(0,'{:02d}'.format(day_phase8.month))
     year5_8_entry.delete(0,'end')
     year5_8_entry.insert(0,day_phase8.year)
-    label5_d_8 = Label(tab1, text= '/')
-    label5_m_8 = Label(tab1, text= '/')
+    label5_d_8 = Label(tab5, text= '/')
+    label5_m_8 = Label(tab5, text= '/')
     rad5_A_8 = Radiobutton(tab5, text='LD', variable=var5_8, value=1)
     lbl5_A_8 = Label(tab5, text= 'On:')
     spin5_A_8 = Spinbox(tab5, from_=00, to=24, width=3, format='%02.0f')
@@ -12364,8 +12545,8 @@ if __name__ == '__main__':
     month5_9_entry.insert(0,'{:02d}'.format(day_phase9.month))
     year5_9_entry.delete(0,'end')
     year5_9_entry.insert(0,day_phase9.year)
-    label5_d_9 = Label(tab1, text= '/')
-    label5_m_9 = Label(tab1, text= '/')
+    label5_d_9 = Label(tab5, text= '/')
+    label5_m_9 = Label(tab5, text= '/')
     rad5_A_9 = Radiobutton(tab5, text='LD', variable=var5_9, value=1)
     lbl5_A_9 = Label(tab5, text= 'On:')
     spin5_A_9 = Spinbox(tab5, from_=00, to=24, width=3, format='%02.0f')
@@ -12440,8 +12621,8 @@ if __name__ == '__main__':
     month5_10_entry.insert(0,'{:02d}'.format(day_phase10.month))
     year5_10_entry.delete(0,'end')
     year5_10_entry.insert(0,day_phase10.year)
-    label5_d_10 = Label(tab1, text= '/')
-    label5_m_10 = Label(tab1, text= '/')
+    label5_d_10 = Label(tab5, text= '/')
+    label5_m_10 = Label(tab5, text= '/')
     rad5_A_10 = Radiobutton(tab5, text='LD', variable=var5_10, value=1)
     lbl5_A_10 = Label(tab5, text= 'On:')
     spin5_A_10 = Spinbox(tab5, from_=00, to=24, width=3, format='%02.0f')
@@ -12516,8 +12697,8 @@ if __name__ == '__main__':
     month5_11_entry.insert(0,'{:02d}'.format(day_phase11.month))
     year5_11_entry.delete(0,'end')
     year5_11_entry.insert(0,day_phase11.year)
-    label5_d_11 = Label(tab1, text= '/')
-    label5_m_11 = Label(tab1, text= '/')
+    label5_d_11 = Label(tab5, text= '/')
+    label5_m_11 = Label(tab5, text= '/')
     rad5_A_11 = Radiobutton(tab5, text='LD', variable=var5_11, value=1)
     lbl5_A_11 = Label(tab5, text= 'On:')
     spin5_A_11 = Spinbox(tab5, from_=00, to=24, width=3, format='%02.0f')
@@ -12592,8 +12773,8 @@ if __name__ == '__main__':
     month5_12_entry.insert(0,'{:02d}'.format(day_phase12.month))
     year5_12_entry.delete(0,'end')
     year5_12_entry.insert(0,day_phase12.year)
-    label5_d_12 = Label(tab1, text= '/')
-    label5_m_12 = Label(tab1, text= '/')
+    label5_d_12 = Label(tab5, text= '/')
+    label5_m_12 = Label(tab5, text= '/')
     rad5_A_12 = Radiobutton(tab5, text='LD', variable=var5_12, value=1)
     lbl5_A_12 = Label(tab5, text= 'On:')
     spin5_A_12 = Spinbox(tab5, from_=00, to=24, width=3, format='%02.0f')
@@ -12627,7 +12808,7 @@ if __name__ == '__main__':
     date5_12_entry.grid(column=11, row=rowPhase12+row_adj)
     label5_d_12.grid(column=8,row=rowPhase12+row_adj)
     month5_12_entry.grid(column=9, row=rowPhase12+row_adj)
-    label5_m_12.grid(column=12,row=rowPhase12+row_adj)
+    label5_m_12.grid(column=10,row=rowPhase12+row_adj)
     year5_12_entry.grid(column=7, row=rowPhase12+row_adj) # ISO format
     space5_12_2.grid(column=12,row=rowPhase12+row_adj,padx=5)
     rad5_A_12.grid(column=13, row=rowPhase12+row_adj, pady=5)
