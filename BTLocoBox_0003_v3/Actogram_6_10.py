@@ -159,7 +159,7 @@ def plot_doubleplot(box, pir, led, filename):
             j = 0
             for name, group in dategroup:
                 (group[pir]*scale).plot.area(ax=axes[j, 0], sharey=True, sharex=True, cmap='gray', figsize=(3, 0.2*n_group))
-                ((1-group[led])*800).plot.area(linewidth=0, ax=axes[j, 0],
+                ((1-group[led])*1000).plot.area(linewidth=0, ax=axes[j, 0],
                                         cmap=my_cmap, sharey=True, sharex=True)
                 axes[j, 0].axes.set_yticklabels([])
                 axes[j, 0].axes.set_yticks([])
@@ -167,9 +167,10 @@ def plot_doubleplot(box, pir, led, filename):
                 axes[j, 0].xaxis.set_major_locator(loc)
                 fmt = mdates.DateFormatter("%H")
                 axes[j, 0].xaxis.set_major_formatter(fmt)
-                axes[j, 0].axes.set_ylim(1,800)
+                axes[j, 0].axes.set_ylim(1,1000)
                 axes[j, 0].axes.set_ylabel(
                     str(group[pir].index.date[0].month) + '/' + str(group[pir].index.date[0].day) + ' ', rotation=0, size=9)
+                
                 
                 axes[j, 0].axes.set_xlim([pd.to_datetime(group['MO/DY/YEAR'][0]+' ' + '00:00:00',
                                     format="%m/%d/%Y %H:%M:%S"), pd.to_datetime(group['MO/DY/YEAR'][0]+' ' + '23:59:00',
@@ -184,11 +185,14 @@ def plot_doubleplot(box, pir, led, filename):
             i = 0
             for name, group in dategroup2:
                 (group[pir]*scale).plot.area(ax=axes[i, 1], sharey=True, cmap='gray', figsize=(3, 0.2*n_group))
-                ((1-group[led])*800).plot.area(linewidth=0,
+                ((1-group[led])*1000).plot.area(linewidth=0,
                                         cmap=my_cmap, ax=axes[i, 1], sharey=True)
                 x_axis = axes[i, 1].axes.get_xaxis()
                 x_axis.set_visible(False)
-                axes[i, 1].axes.set_ylim(1,800)
+                axes[i, 1].axes.set_ylim(1,1000)
+                axes[i, 1].axes.set_xlim([pd.to_datetime(group['MO/DY/YEAR'][0]+' ' + '00:00:00',
+                                    format="%m/%d/%Y %H:%M:%S"), pd.to_datetime(group['MO/DY/YEAR'][0]+' ' + '23:59:00',
+                                    format="%m/%d/%Y %H:%M:%S")])
                 y_axis = axes[i, 1].axes.get_yaxis()
                 y_axis.set_visible(False)
                 i = i+1
