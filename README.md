@@ -27,7 +27,7 @@ The LocoBox (previously called LocomotorBox) GUI has been optimized for Windows,
 Development was performed on Ubuntu Linux, and some tests were conducted in a virtual Windows environment. The most current versions of Arduino, Python3, and libraries (numpy, pyserial, and RTC) were used, with specific versions to be specified upon release. Online actogram plotting (v2; data from the 5 latest days) and T-cycle entrainment functionality (v3) were included in this release.
 
 
-### Upload your Arduino script
+### Uploading the Arduino sketch to Arduino Mega 2560
 
 Before using the Python GUI, you will need to upload the Arduino sketch (*.ino) to your Arduino board.
 
