@@ -6303,6 +6303,7 @@ def getBox3Schedule():
 
     #Phase2
     global date3_2, month3_2, year3_2, hourFrom3_2, minuteFrom3_2, hourOn3_2, minOn3_2, hourOff3_2, minOff3_2, dark3_2, light3_2, tcycle_3_2
+
     date3_2 = date3_2_entry.get()
     month3_2 = month3_2_entry.get()
     year3_2 = year3_2_entry.get()
@@ -6736,9 +6737,14 @@ def getBox4Schedule():
 
     #Phase2
     global date4_2, month4_2, year4_2, hourFrom4_2, minuteFrom4_2, hourOn4_2, minOn4_2, hourOff4_2, minOff4_2, dark4_2, light4_2, tcycle_4_2
+
     date4_2 = date4_2_entry.get()
     month4_2 = month4_2_entry.get()
     year4_2 = year4_2_entry.get()
+
+    date4_2 = date4_4_entry.get()
+    month4_2 = month4_4_entry.get()
+    year4_2 = year4_4_entry.get()
     
     hourOn4_2=spin4_A_2.get()
     minOn4_2=spin4_B_2.get()
@@ -6773,9 +6779,11 @@ def getBox4Schedule():
     #phase3
     
     global date4_3, month4_3, year4_3, hourFrom4_3, minuteFrom4_3, hourOn4_3, minOn4_3, hourOff4_3, minOff4_3, dark4_3, light4_3, tcycle_4_3
+
     date4_3 = date4_3_entry.get()
     month4_3 = month4_3_entry.get()
     year4_3 = year4_3_entry.get()
+
     hourFrom4_3= spin4_E_3.get()
     minuteFrom4_3= spin4_F_3.get()
     hourOn4_3=spin4_A_3.get()
@@ -7169,6 +7177,7 @@ def getBox5Schedule():
 
     #Phase2
     global date5_2, month5_2, year5_2, hourFrom5_2, minuteFrom5_2, hourOn5_2, minOn5_2, hourOff5_2, minOff5_2, dark5_2, light5_2, tcycle_5_2
+
     date5_2 = date5_2_entry.get()
     month5_2 = month5_2_entry.get()
     year5_2 = year5_2_entry.get()
@@ -7206,9 +7215,11 @@ def getBox5Schedule():
     #phase3
     
     global date5_3, month5_3, year5_3, hourFrom5_3, minuteFrom5_3, hourOn5_3, minOn5_3, hourOff5_3, minOff5_3, dark5_3, light5_3, tcycle_5_3
+
     date5_3 = date5_3_entry.get()
     month5_3 = month5_3_entry.get()
     year5_3 = year5_3_entry.get()
+
     hourFrom5_3= spin5_E_3.get()
     minuteFrom5_3= spin5_F_3.get()
     hourOn5_3=spin5_A_3.get()
@@ -7243,9 +7254,11 @@ def getBox5Schedule():
     #phase4
 
     global date5_4, month5_4, year5_4, hourFrom5_4, minuteFrom5_4, hourOn5_4, minOn5_4, hourOff5_4, minOff5_4, dark5_4, light5_4, tcycle_5_4
+    
     date5_4 = date5_4_entry.get()
     month5_4 = month5_4_entry.get()
     year5_4 = year5_4_entry.get()
+
     hourFrom5_4= spin5_E_4.get()
     minuteFrom5_4= spin5_F_4.get()
     hourOn5_4=spin5_A_4.get()
