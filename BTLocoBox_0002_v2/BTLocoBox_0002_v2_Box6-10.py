@@ -157,8 +157,10 @@ def about():
     return messagebox.showinfo('About',
                                 '5-Box Schedule Setter\n'+
                                 'LocoBox.py\n\n'+
-                                'Version 0.3.00\n'+
-                                'Sep 22, 2023\n\n'+
+
+                                'Version 0.2.10\n'+
+                                'Oct 15, 2018\n\n'+
+
                                 'Jihwan Myung & Vuong Truong\n'+
                                 'Laboratory of Braintime\n\n'+
                                 'https://github.com/braintimelab/LocomotorBox')
