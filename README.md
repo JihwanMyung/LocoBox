@@ -31,14 +31,12 @@ Development was performed on Ubuntu Linux, and some tests were conducted in a vi
 
 Before using the Python GUI, you will need to upload the Arduino sketch (*.ino) to your Arduino board.
 
-
 <img width="649" alt="upload" src="https://github.com/JihwanMyung/LocoBox/assets/98081367/e157c039-5f43-4dab-999f-b6cffdc12c9b">
 
 
 ### Current GUI
 
 1. This is how the GUI appears when you start the Python program or run the executable.
-
 
 <img width="501" alt="init" src="https://github.com/JihwanMyung/LocoBox/assets/98081367/d3b8cde1-d6f5-4169-8e42-da2f27193e68">
 
@@ -54,14 +52,12 @@ Before using the Python GUI, you will need to upload the Arduino sketch (*.ino) 
 
 Remember to double-check the schedule tab before starting the recording.
 
-
 <img width="501" alt="schedule" src="https://github.com/JihwanMyung/LocoBox/assets/98081367/a2b42d6f-4441-4123-9518-e36b0bbd4bc3">
-
 
 While recording, you might want to press the 'Refresh Actogram' button on the lower right to plot the data from the 5 latest days (note that in this figure, the plot was incomplete as there were only 4 data points).
 
-3. The GUI can also be used solely for visualization (while not recording). To visualize a specific data file, please change the filename in the lower left and press 'Refresh Actogram'.
 
+3. The GUI can also be used solely for visualization (while not recording). To visualize a specific data file, please change the filename in the lower left and press 'Refresh Actogram'.
 
 <img width="501" alt="visualization" src="https://github.com/JihwanMyung/LocoBox/assets/98081367/0444b72c-920e-41b7-b6fb-115e02c8900c">
 
