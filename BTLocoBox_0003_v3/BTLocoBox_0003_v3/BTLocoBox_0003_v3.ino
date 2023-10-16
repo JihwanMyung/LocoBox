@@ -2796,10 +2796,10 @@ void printMeasurement(DateTime realtime)
   //  }
 
   // per-second sampling
-  //for (int i = 0; i < 5; i++)
-  //{
-  //  PIR[i] = digitalRead(DIn[i]);
-  //}
+  for (int i = 0; i < 5; i++)
+  {
+    PIR[i] = 0;
+  }
 
   // sensor value sampling for 1-min
   for (int i = 0; i < 299; i++)
