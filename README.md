@@ -81,10 +81,18 @@ The LocoBox software system requires an Arduino Mega 2560 for controlling either
 
 | Version | New features | RTC | No. of LocoBoxes | Status | Quality Control |
 |:----------|:----------|:-------------|:-------------|:-------------|:-------------|
-|BTLocoBox_0001_v0|  Legacy version | DS1307 | 10 | ✔️ | ✔️ |
+|BTLocoBox_0001_v0| Legacy version | DS1307 | 10 | ✔️ | ✔️ |
 |BTLocoBox_0001_v1| Photoperiod scheduling extended to 12 phases | DS3231 | 5 |  ✔️ | ✔️ |
 |BTLocoBox_0002_v2| Online actogram plotting| DS3231 | 5 | ✔️ | ✔️ |
-|BTLocoBox_0003_v3| T_cycle| DS3231 | 5 | ✔️ | ✔️ |
+|BTLocoBox_0003_v3*| T_cycle| DS3231 | 5 | ✔️ | ✔️ |
+
+*Published version (2023).
+
+
+## Reference
+
+Truong VH, Myung J. (2023). LocoBox: Modular Hardware and Open-Source Software for Circadian Entrainment and Behavioral Monitoring in Home Cages. _Sensors_. **23**:9469. 
+https://doi.org/10.3390/s23239469
 
 
 ## Authors
@@ -94,4 +102,4 @@ The LocoBox software system requires an Arduino Mega 2560 for controlling either
 * Firdani Rianda Putra - reduction to 5-box and extension to 12 phases
 * Zow Ormazabal - stabilization and GUI improvement
 
-See BraintimeLab for the official release version.
+See BraintimeLab (http://braintime.tmu.edu.tw) for the official release version.
