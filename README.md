@@ -95,7 +95,7 @@ Truong VH, Myung J. (2023). LocoBox: Modular Hardware and Open-Source Software f
 https://doi.org/10.3390/s23239469
 
 
-## Authors
+## Contributors
 
 * Jihwan Myung - initial work and further development
 * Vuong Truong - further development on Python GUI interface & online actogram plotting
