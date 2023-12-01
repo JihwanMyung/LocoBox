@@ -1736,20 +1736,10 @@ void loop()
           }
           else
           {
-            if (HourOff1[i] * 60 + MinuteOff1[i] <= now[i].hour() * 60 + now[i].minute() && light1[i] == 0 && dark1[i] == 0)
+            if (light1[i] == 0 && dark1[i] == 0)
             {
               digitalWrite(DOut[i], LOW);
               LightFlag[i] = 0;
-            }
-            if (now[i].hour() * 60 + now[i].minute() < HourOn1[i] * 60 + MinuteOn1[i] && light1[i] == 0 && dark1[i] == 0 && initLED[i] == 0)
-            {
-              digitalWrite(DOut[i], LOW);
-              LightFlag[i] = 0;
-            }
-            if (now[i].hour() * 60 + now[i].minute() < HourOn1[i] * 60 + MinuteOn1[i] && light1[i] == 0 && dark1[i] == 0 && initLED[i] == 1)
-            {
-              digitalWrite(DOut[i], LOW);
-              LightFlag[i] = 1;
             }
             if (light1[i] == 0 && dark1[i] == 1)
             {
@@ -1767,22 +1757,11 @@ void loop()
         {
           if (HourOn1[i] * 60 + MinuteOn1[i] <= now[i].hour() * 60 + now[i].minute() || now[i].hour() * 60 + now[i].minute() < HourOff1[i] * 60 + MinuteOff1[i]) // after ON or before OFF (DL cycle)
           {
-            if (HourOn1[i] * 60 + MinuteOn1[i] <= now[i].hour() * 60 + now[i].minute() && light1[i] == 0 && dark1[i] == 0)
+            if (light1[i] == 0 && dark1[i] == 0)
             {
               digitalWrite(DOut[i], HIGH);
               LightFlag[i] = 1;
             }
-            if (now[i].hour() * 60 + now[i].minute() < HourOff1[i] * 60 + MinuteOff1[i] && light1[i] == 0 && dark1[i] == 0 && initLED[i] == 0)
-            {
-              digitalWrite(DOut[i], HIGH);
-              LightFlag[i] = 0;
-            }
-            if (now[i].hour() * 60 + now[i].minute() < HourOff1[i] * 60 + MinuteOff1[i] && light1[i] == 0 && dark1[i] == 0 && initLED[i] == 1)
-            {
-              digitalWrite(DOut[i], HIGH);
-              LightFlag[i] = 1;
-            }
-
             if (light1[i] == 0 && dark1[i] == 1)
             {
               digitalWrite(DOut[i], LOW);
