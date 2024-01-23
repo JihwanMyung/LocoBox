@@ -3108,7 +3108,7 @@ void printMeasurement(DateTime realtime)
     //      }
 
     // millis_delay(90);
-    delay(300); // sampling 299 times per minute
+    delay(200); // sampling 200 times per minute
   }
 
   // 1-min summation (or mean)
@@ -3255,7 +3255,7 @@ void printTime(DateTime time_to_print)
 
 
 // Converting Vout into Lux (https://wiki.seeedstudio.com/Grove-Luminance_Sensor/)
-// The value 0.008 can be modified accordingly to the board and Arduino (This has been tested with the extension board Shield with Arduino Mega 2560 by the Vuong Truong)
+// The value 0.008 can be modified accordingly to the board and Arduino (This has been tested with Arduino Mega 2560 by the Vuong Truong)
 
 float readAPDS9002Vout(uint8_t analogpin)
 {
