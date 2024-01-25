@@ -1,0 +1,12 @@
+    HourFrom9[0] = getInt(lightIn10.substring(0, 2));
+    MinuteFrom9[0] = getInt(lightIn10.substring(2, 4));
+    HourFrom9[1] = getInt(lightIn10.substring(4, 6));
+    MinuteFrom9[1] = getInt(lightIn10.substring(6, 8));
+    HourFrom9[2] = getInt(lightIn10.substring(8, 10));
+    MinuteFrom9[2] = getInt(lightIn10.substring(10, 12));
+    HourFrom9[3] = getInt(lightIn10.substring(12, 14));
+    MinuteFrom9[3] = getInt(lightIn10.substring(14, 16));
+    HourFrom9[4] = getInt(lightIn10.substring(16, 18));
+    MinuteFrom9[4] = getInt(lightIn10.substring(18, 20));
+    HourFrom9[5] = getInt(lightIn10.substring(20, 22));
+    MinuteFrom9[5] = getInt(lightIn10.substring(22, 24));

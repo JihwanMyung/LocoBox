@@ -119,6 +119,7 @@ global hourOn2_12, minOn2_12, hourOff2_12, minOff2_12, dark2_12, light2_12, date
 global hourOn3_12, minOn3_12, hourOff3_12, minOff3_12, dark3_12, light3_12, date3_12, month3_12, year3_12, hourFrom3_12, minuteFrom3_12
 global hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12
 global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12
+
 global initLED1_str, initLED2_str, initLED3_str, initLED4_str , initLED5_str
 
 global value_mat, phase_delimiters
@@ -156,8 +157,8 @@ def about():
     return messagebox.showinfo('About',
                                 '5-Box Schedule Setter\n'+
                                 'LocoBox.py\n\n'+
-                                'Version 0.3.00\n'+
-                                'Sep 22, 2023\n\n'+
+                                'Version 0.2.10\n'+
+                                'Oct 15, 2018\n\n'+
                                 'Jihwan Myung & Vuong Truong\n'+
                                 'Laboratory of Braintime\n\n'+
                                 'https://github.com/braintimelab/LocomotorBox')
@@ -187,7 +188,7 @@ class StatusBar(Frame): # scan open serial ports
 
 #Initialize the windows size and name
 window = Tk()
-window.title('LocoBox (Box6-10)')
+window.title('LocoBox (Box1-5)')
 if sys.platform.startswith('win'):
     window.geometry('1000x780')
 elif sys.platform.startswith('darwin'):
@@ -556,7 +557,7 @@ def save_logs( counti, string2): #max 120 timepoints
 def get_values_for_actogram():
     tab = int(tab_control.index('current'))+1
     filename = './' + filename_entry.get()
-    box = 'BOX' + str(tab + 5)
+    box = 'BOX' + str(tab)
     pir = 'PIR0'  + str(tab)
     led = 'LED0'   + str(tab)
     plot_doubleplot(box, pir, led, filename)
@@ -568,7 +569,7 @@ def plot_double_acto(tab):
     
     global label_acto
     # Create an object of tkinter ImageTk
-    img = ImageTk.PhotoImage(Image.open("./BOX" + str(tab+5) + ".png"))
+    img = ImageTk.PhotoImage(Image.open("./BOX" + str(tab) + ".png"))
     label_acto.configure(image=img)
     label_acto.image = img
 
@@ -589,27 +590,27 @@ def set_log_text(log_text, log_mat, tab):
     history_str = ''
     for counti in range(0,120): #check if I can get rid of the loop
         
-        if tab == 1 or tab == 'Box6' :
+        if tab == 1 or tab == 'Box1' :
 
             phase_id = get_phase(1)
             
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str =  '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+ display_as_ON_OFF(str(log_mat[counti % 120,2]))+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
-        elif tab == 2 or tab == 'Box7':
+        elif tab == 2 or tab == 'Box2':
             phase_id = get_phase(2)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) + '   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,4]))+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
 
-        elif tab == 3 or tab == 'Box8':
+        elif tab == 3 or tab == 'Box3':
             phase_id = get_phase(3)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str =  '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) + '   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,6]))+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
                 
-        elif tab == 4 or tab == 'Box9':
+        elif tab == 4 or tab == 'Box4':
             phase_id = get_phase(4)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) + '   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,8]))+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
-        elif tab == 5 or tab == 'Box10':
+        elif tab == 5 or tab == 'Box5':
             phase_id = get_phase(5)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str =  '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,10]))+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
@@ -627,27 +628,27 @@ def restore_history(log_text, log_mat, tab):
     history_str = ''
     for counti in range(0,120):
         
-        if tab == 1 or tab == 'Box6' :
+        if tab == 1 or tab == 'Box1' :
 
             phase_id = get_phase(1)
             
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str =  history_str + '# '+str(log_mat[counti % 120,0])+ '   ' + display_LD(0, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,2]))+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
-        elif tab == 2 or tab == 'Box7':
+        elif tab == 2 or tab == 'Box2':
             phase_id = get_phase(2)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = history_str +'# '+str(log_mat[counti % 120,0])+'   ' +display_LD(1, phase_id-1) +'  Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,4]))+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
 
-        elif tab == 3 or tab == 'Box8':
+        elif tab == 3 or tab == 'Box3':
             phase_id = get_phase(3)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = history_str + '# '+str(log_mat[counti % 120,0])+'   ' +display_LD(2, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,6]))+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
                 
-        elif tab == 4 or tab == 'Box9':
+        elif tab == 4 or tab == 'Box4':
             phase_id = get_phase(4)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = history_str + '# '+str(log_mat[counti % 120,0])+'   ' +display_LD(3, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,8]))+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
-        elif tab == 5 or tab == 'Box10':
+        elif tab == 5 or tab == 'Box5':
             phase_id = get_phase(5)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = history_str + '# '+str(log_mat[counti % 120,0])+'   ' +display_LD(4, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,10]))+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
@@ -2471,6 +2472,7 @@ def read_conf(): # Read schedule configuration
         showinfo("Warning", "The file has less than 12 phases. The phases that are not included in the schedule file will be set to the default values.")
         
 
+
 #BOX1
 
 
@@ -4021,11 +4023,11 @@ def show_conf(): # Show schedule configuration
 
     #print("hourOn1_1" + str(hourOn1_1))
 
-    col11_1 = Label(tab11, text='Box 6')
-    col11_2 = Label(tab11, text='Box 7')
-    col11_3 = Label(tab11, text='Box 8')
-    col11_4 = Label(tab11, text='Box 9')
-    col11_5 = Label(tab11, text='Box 10')
+    col11_1 = Label(tab11, text='Box 1')
+    col11_2 = Label(tab11, text='Box 2')
+    col11_3 = Label(tab11, text='Box 3')
+    col11_4 = Label(tab11, text='Box 4')
+    col11_5 = Label(tab11, text='Box 5')
 
 
     row11_1 = Label(tab11, text='Phase 1 ')
@@ -6740,6 +6742,10 @@ def getBox4Schedule():
     date4_2 = date4_2_entry.get()
     month4_2 = month4_2_entry.get()
     year4_2 = year4_2_entry.get()
+
+    date4_2 = date4_4_entry.get()
+    month4_2 = month4_4_entry.get()
+    year4_2 = year4_4_entry.get()
     
     hourOn4_2=spin4_A_2.get()
     minOn4_2=spin4_B_2.get()
@@ -7249,7 +7255,7 @@ def getBox5Schedule():
     #phase4
 
     global date5_4, month5_4, year5_4, hourFrom5_4, minuteFrom5_4, hourOn5_4, minOn5_4, hourOff5_4, minOff5_4, dark5_4, light5_4, tcycle_5_4
-
+    
     date5_4 = date5_4_entry.get()
     month5_4 = month5_4_entry.get()
     year5_4 = year5_4_entry.get()
@@ -8144,10 +8150,10 @@ if __name__ == '__main__':
     filename_entry = Entry(f3, width = 25)
     filename_entry.place(x=80, y=ymidbtns)
     date_string = time.strftime('%Y%m%d') # predefine a default filename with ISO date    
-    filename_entry.insert(0,'BOX6-10-'+date_string+'.txt')
+    filename_entry.insert(0,'BOX1-5-'+date_string+'.txt')
     configfilename_entry = Entry(f3,width = 30)
     configfilename_entry.place(x=470, y=ymidbtns)
-    configfilename_entry.insert(0,'BOX6-10-sched-'+date_string+'.json')
+    configfilename_entry.insert(0,'BOX1-5-sched-'+date_string+'.json')
 
     #SHOW STATUS
     
