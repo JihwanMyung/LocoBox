@@ -26,7 +26,6 @@ except ImportError:
 import threading  # To run Arduino loop and tkinter loop alongside
 import traceback
 
-
 import numpy as np
 import pandas as pd
 import serial.tools.list_ports  # For identifying Arduino port
@@ -34,7 +33,7 @@ from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
                                                NavigationToolbar2Tk)
 
 
-from Actogram_1_5 import init_plot, plot_doubleplot
+from Actogram import init_plot, plot_doubleplot
 from BoxSchedule import (BoxSchedule, PhaseSchedule, getDarkLightValue,
                          inverseDarkLightValue)
 
@@ -53,72 +52,85 @@ global hourOn2_1, minOn2_1, hourOff2_1, minOff2_1, dark2_1, light2_1
 global hourOn3_1, minOn3_1, hourOff3_1, minOff3_1, dark3_1, light3_1
 global hourOn4_1, minOn4_1, hourOff4_1, minOff4_1, dark4_1, light4_1
 global hourOn5_1, minOn5_1, hourOff5_1, minOff5_1, dark5_1, light5_1
+global hourOn6_1, minOn6_1, hourOff6_1, minOff6_1, dark6_1, light6_1
 
 global hourOn1_2, minOn1_2, hourOff1_2, minOff1_2, date1_2, month1_2, year1_2, dark1_2, light1_2, hourFrom1_2, minuteFrom1_2
 global hourOn2_2, minOn2_2, hourOff2_2, minOff2_2, date2_2, month2_2, year2_2, dark2_2, light2_2, hourFrom2_2, minuteFrom2_2
 global hourOn3_2, minOn3_2, hourOff3_2, minOff3_2, date3_2, month3_2, year3_2, dark3_2, light3_2, hourFrom3_2, minuteFrom3_2
 global hourOn4_2, minOn4_2, hourOff4_2, minOff4_2, date4_2, month4_2, year4_2, dark4_2, light4_2, hourFrom4_2, minuteFrom4_2
 global hourOn5_2, minOn5_2, hourOff5_2, minOff5_2, date5_2, month5_2, year5_2, dark5_2, light5_2, hourFrom5_2, minuteFrom5_2
+global hourOn6_2, minOn6_2, hourOff6_2, minOff6_2, date6_2, month6_2, year6_2, dark6_2, light6_2, hourFrom6_2, minuteFrom6_2
 
 global hourOn1_3, minOn1_3, hourOff1_3, minOff1_3, dark1_3, light1_3, date1_3, month1_3, year1_3, hourFrom1_3, minuteFrom1_3
 global hourOn2_3, minOn2_3, hourOff2_3, minOff2_3, dark2_3, light2_3, date2_3, month2_3, year2_3, hourFrom2_3, minuteFrom2_3
 global hourOn3_3, minOn3_3, hourOff3_3, minOff3_3, dark3_3, light3_3, date3_3, month3_3, year3_3, hourFrom3_3, minuteFrom3_3
 global hourOn4_3, minOn4_3, hourOff4_3, minOff4_3, dark4_3, light4_3, date4_3, month4_3, year4_3, hourFrom4_3, minuteFrom4_3
 global hourOn5_3, minOn5_3, hourOff5_3, minOff5_3, dark5_3, light5_3, date5_3, month5_3, year5_3, hourFrom5_3, minuteFrom5_3
+global hourOn6_3, minOn6_3, hourOff6_3, minOff6_3, dark6_3, light6_3, date6_3, month6_3, year6_3, hourFrom6_3, minuteFrom6_3
 
 global hourOn1_4, minOn1_4, hourOff1_4, minOff1_4, dark1_4, light1_4, date1_4, month1_4, year1_4, hourFrom1_4, minuteFrom1_4
 global hourOn2_4, minOn2_4, hourOff2_4, minOff2_4, dark2_4, light2_4, date2_4, month2_4, year2_4, hourFrom2_4, minuteFrom2_4
 global hourOn3_4, minOn3_4, hourOff3_4, minOff3_4, dark3_4, light3_4, date3_4, month3_4, year3_4, hourFrom3_4, minuteFrom3_4
 global hourOn4_4, minOn4_4, hourOff4_4, minOff4_4, dark4_4, light4_4, date4_4, month4_4, year4_4, hourFrom4_4, minuteFrom4_4
 global hourOn5_4, minOn5_4, hourOff5_4, minOff5_4, dark5_4, light5_4, date5_4, month5_4, year5_4, hourFrom5_4, minuteFrom5_4
+global hourOn6_4, minOn6_4, hourOff6_4, minOff6_4, dark6_4, light6_4, date6_4, month6_4, year6_4, hourFrom6_4, minuteFrom6_4
 
 global hourOn1_5, minOn1_5, hourOff1_5, minOff1_5, dark1_5, light1_5, date1_5, month1_5, year1_5, hourFrom1_5, minuteFrom1_5
 global hourOn2_5, minOn2_5, hourOff2_5, minOff2_5, dark2_5, light2_5, date2_5, month2_5, year2_5, hourFrom2_5, minuteFrom2_5
 global hourOn3_5, minOn3_5, hourOff3_5, minOff3_5, dark3_5, light3_5, date3_5, month3_5, year3_5, hourFrom3_5, minuteFrom3_5
 global hourOn4_5, minOn4_5, hourOff4_5, minOff4_5, dark4_5, light4_5, date4_5, month4_5, year4_5, hourFrom4_5, minuteFrom4_5
 global hourOn5_5, minOn5_5, hourOff5_5, minOff5_5, dark5_5, light5_5, date5_5, month5_5, year5_5, hourFrom5_5, minuteFrom5_5
+global hourOn6_5, minOn6_5, hourOff6_5, minOff6_5, dark6_5, light6_5, date6_5, month6_5, year6_5, hourFrom6_5, minuteFrom6_5
 
 global hourOn1_6, minOn1_6, hourOff1_6, minOff1_6, dark1_6, light1_6, date1_6, month1_6, year1_6, hourFrom1_6, minuteFrom1_6
 global hourOn2_6, minOn2_6, hourOff2_6, minOff2_6, dark2_6, light2_6, date2_6, month2_6, year2_6, hourFrom2_6, minuteFrom2_6
 global hourOn3_6, minOn3_6, hourOff3_6, minOff3_6, dark3_6, light3_6, date3_6, month3_6, year3_6, hourFrom3_6, minuteFrom3_6
 global hourOn4_6, minOn4_6, hourOff4_6, minOff4_6, dark4_6, light4_6, date4_6, month4_6, year4_6, hourFrom4_6, minuteFrom4_6
 global hourOn5_6, minOn5_6, hourOff5_6, minOff5_6, dark5_6, light5_6, date5_6, month5_6, year5_6, hourFrom5_6, minuteFrom5_6
+global hourOn6_6, minOn6_6, hourOff6_6, minOff6_6, dark6_6, light6_6, date6_6, month6_6, year6_6, hourFrom6_6, minuteFrom6_6
 
 global hourOn1_7, minOn1_7, hourOff1_7, minOff1_7, dark1_7, light1_7, date1_7, month1_7, year1_7, hourFrom1_7, minuteFrom1_7
 global hourOn2_7, minOn2_7, hourOff2_7, minOff2_7, dark2_7, light2_7, date2_7, month2_7, year2_7, hourFrom2_7, minuteFrom2_7
 global hourOn3_7, minOn3_7, hourOff3_7, minOff3_7, dark3_7, light3_7, date3_7, month3_7, year3_7, hourFrom3_7, minuteFrom3_7
 global hourOn4_7, minOn4_7, hourOff4_7, minOff4_7, dark4_7, light4_7, date4_7, month4_7, year4_7, hourFrom4_7, minuteFrom4_7
 global hourOn5_7, minOn5_7, hourOff5_7, minOff5_7, dark5_7, light5_7, date5_7, month5_7, year5_7, hourFrom5_7, minuteFrom5_7
+global hourOn6_7, minOn6_7, hourOff6_7, minOff6_7, dark6_7, light6_7, date6_7, month6_7, year6_7, hourFrom6_7, minuteFrom6_7
 
 global hourOn1_8, minOn1_8, hourOff1_8, minOff1_8, dark1_8, light1_8, date1_8, month1_8, year1_8, hourFrom1_8, minuteFrom1_8
 global hourOn2_8, minOn2_8, hourOff2_8, minOff2_8, dark2_8, light2_8, date2_8, month2_8, year2_8, hourFrom2_8, minuteFrom2_8
 global hourOn3_8, minOn3_8, hourOff3_8, minOff3_8, dark3_8, light3_8, date3_8, month3_8, year3_8, hourFrom3_8, minuteFrom3_8
 global hourOn4_8, minOn4_8, hourOff4_8, minOff4_8, dark4_8, light4_8, date4_8, month4_8, year4_8, hourFrom4_8, minuteFrom4_8
 global hourOn5_8, minOn5_8, hourOff5_8, minOff5_8, dark5_8, light5_8, date5_8, month5_8, year5_8, hourFrom5_8, minuteFrom5_8
+global hourOn6_8, minOn6_8, hourOff6_8, minOff6_8, dark6_8, light6_8, date6_8, month6_8, year6_8, hourFrom6_8, minuteFrom6_8
 
 global hourOn1_9, minOn1_9, hourOff1_9, minOff1_9, dark1_9, light1_9, date1_9, month1_9, year1_9, hourFrom1_9, minuteFrom1_9
 global hourOn2_9, minOn2_9, hourOff2_9, minOff2_9, dark2_9, light2_9, date2_9, month2_9, year2_9, hourFrom2_9, minuteFrom2_9
 global hourOn3_9, minOn3_9, hourOff3_9, minOff3_9, dark3_9, light3_9, date3_9, month3_9, year3_9, hourFrom3_9, minuteFrom3_9
 global hourOn4_9, minOn4_9, hourOff4_9, minOff4_9, dark4_9, light4_9, date4_9, month4_9, year4_9, hourFrom4_9, minuteFrom4_9
 global hourOn5_9, minOn5_9, hourOff5_9, minOff5_9, dark5_9, light5_9, date5_9, month5_9, year5_9, hourFrom5_9, minuteFrom5_9
+global hourOn6_9, minOn6_9, hourOff6_9, minOff6_9, dark6_9, light6_9, date6_9, month6_9, year6_9, hourFrom6_9, minuteFrom6_9
 
 global hourOn1_10, minOn1_10, hourOff1_10, minOff1_10, dark1_10, light1_10, date1_10, month1_10, year1_10, hourFrom1_10, minuteFrom1_10
 global hourOn2_10, minOn2_10, hourOff2_10, minOff2_10, dark2_10, light2_10, date2_10, month2_10, year2_10, hourFrom2_10, minuteFrom2_10
 global hourOn3_10, minOn3_10, hourOff3_10, minOff3_10, dark3_10, light3_10, date3_10, month3_10, year3_10, hourFrom3_10, minuteFrom3_10
 global hourOn4_10, minOn4_10, hourOff4_10, minOff4_10, dark4_10, light4_10, date4_10, month4_10, year4_10, hourFrom4_10, minuteFrom4_10
 global hourOn5_10, minOn5_10, hourOff5_10, minOff5_10, dark5_10, light5_10, date5_10, month5_10, year5_10, hourFrom5_10, minuteFrom5_10
+global hourOn6_10, minOn6_10, hourOff6_10, minOff6_10, dark6_10, light6_10, date6_10, month6_10, year6_10, hourFrom6_10, minuteFrom6_10
 
 global hourOn1_11, minOn1_11, hourOff1_11, minOff1_11, dark1_11, light1_11, date1_11, month1_11, year1_11, hourFrom1_11, minuteFrom1_11
 global hourOn2_11, minOn2_11, hourOff2_11, minOff2_11, dark2_11, light2_11, date2_11, month2_11, year2_11, hourFrom2_11, minuteFrom2_11
 global hourOn3_11, minOn3_11, hourOff3_11, minOff3_11, dark3_11, light3_11, date3_11, month3_11, year3_11, hourFrom3_11, minuteFrom3_11
 global hourOn4_11, minOn4_11, hourOff4_11, minOff4_11, dark4_11, light4_11, date4_11, month4_11, year4_11, hourFrom4_11, minuteFrom4_11
 global hourOn5_11, minOn5_11, hourOff5_11, minOff5_11, dark5_11, light5_11, date5_11, month5_11, year5_11, hourFrom5_11, minuteFrom5_11
+global hourOn6_11, minOn6_11, hourOff6_11, minOff6_11, dark6_11, light6_11, date6_11, month6_11, year6_11, hourFrom6_11, minuteFrom6_11
 
 global hourOn1_12, minOn1_12, hourOff1_12, minOff1_12, dark1_12, light1_12, date1_12, month1_12, year1_12, hourFrom1_12, minuteFrom1_12
 global hourOn2_12, minOn2_12, hourOff2_12, minOff2_12, dark2_12, light2_12, date2_12, month2_12, year2_12, hourFrom2_12, minuteFrom2_12
 global hourOn3_12, minOn3_12, hourOff3_12, minOff3_12, dark3_12, light3_12, date3_12, month3_12, year3_12, hourFrom3_12, minuteFrom3_12
 global hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12
 global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12
+global hourOn6_12, minOn6_12, hourOff6_12, minOff6_12, dark6_12, light6_12, date6_12, month6_12, year6_12, hourFrom6_12, minuteFrom6_12
+
 global initLED1_str, initLED2_str, initLED3_str, initLED4_str , initLED5_str
 
 global value_mat, phase_delimiters
@@ -132,6 +144,7 @@ global tcycle_2_1, tcycle_2_2,tcycle_2_3, tcycle_2_4, tcycle_2_5, tcycle_2_6, tc
 global tcycle_3_1, tcycle_3_2,tcycle_3_3, tcycle_3_4, tcycle_3_5, tcycle_3_6, tcycle_3_7, tcycle_3_8, tcycle_3_9, tcycle_3_10, tcycle_3_11, tcycle_3_12
 global tcycle_4_1, tcycle_4_2,tcycle_4_3, tcycle_4_4, tcycle_4_5, tcycle_4_6, tcycle_4_7, tcycle_4_8, tcycle_4_9, tcycle_4_10, tcycle_4_11, tcycle_4_12
 global tcycle_5_1, tcycle_5_2,tcycle_5_3, tcycle_5_4, tcycle_5_5, tcycle_5_6, tcycle_5_7, tcycle_5_8, tcycle_5_9, tcycle_5_10, tcycle_5_11, tcycle_5_12
+global tcycle_6_1, tcycle_6_2,tcycle_6_3, tcycle_6_4, tcycle_6_5, tcycle_6_6, tcycle_6_7, tcycle_6_8, tcycle_6_9, tcycle_6_10, tcycle_6_11, tcycle_6_12
 
 
 #global savedBoxSchedule, BoxSchedule1, BoxSchedule2, BoxSchedule3, BoxSchedule4, BoxSchedule5
@@ -141,23 +154,23 @@ phase_delimiters = []
 #tcyclefactor = 24
 #initLED = 0
 
-
 # Preset values
 setBox1=0
 setBox2=0
 setBox3=0
 setBox4=0
 setBox5=0
+setBox6=0
 display_string = ''
 display_counter = 0
 
 # Version information
 def about():
     return messagebox.showinfo('About',
-                                '5-Box Schedule Setter\n'+
+                                '6-Box Schedule Setter\n'+
                                 'LocoBox.py\n\n'+
-                                'Version 0.3.00\n'+
-                                'Sep 22, 2023\n\n'+
+                                'Version 4.1\n'+
+                                'Dec 27, 2023\n\n'+
                                 'Jihwan Myung & Vuong Truong\n'+
                                 'Laboratory of Braintime\n\n'+
                                 'https://github.com/braintimelab/LocomotorBox')
@@ -169,7 +182,6 @@ def create_serial_obj(portPath, baud_rate, timeout):
     and returns a pyserial object.
     '''
     return serial.Serial(portPath, baud_rate, timeout=timeout)
-
 
 
 ###Classes
@@ -187,7 +199,7 @@ class StatusBar(Frame): # scan open serial ports
 
 #Initialize the windows size and name
 window = Tk()
-window.title('LocoBox (Box6-10)')
+window.title('LocoBox (Box1-6)')
 if sys.platform.startswith('win'):
     window.geometry('1000x780')
 elif sys.platform.startswith('darwin'):
@@ -244,264 +256,297 @@ def get_data(istate=0): # Start recording
 
                 phase_id = i-1
 
-                serial_obj.write(str.encode(str(initLED1_str) + str(initLED2_str) + str(initLED3_str)+ str(initLED4_str) + str(initLED5_str)))
+                serial_obj.write(str.encode(str(initLED1_str) + str(initLED2_str) + str(initLED3_str)+ str(initLED4_str) + str(initLED5_str)+ str(initLED6_str)))
 
             if i==2:
 
                 serial_obj.write(str.encode(hourOn1_1+minOn1_1+hourOff1_1+minOff1_1+hourOn2_1+minOn2_1+hourOff2_1+minOff2_1+
                                             hourOn3_1+minOn3_1+hourOff3_1+minOff3_1+hourOn4_1+minOn4_1+hourOff4_1+minOff4_1+
-                                            hourOn5_1+minOn5_1+hourOff5_1+minOff5_1))
+                                            hourOn5_1+minOn5_1+hourOff5_1+minOff5_1+hourOn6_1+minOn6_1+hourOff6_1+minOff6_1))
                 
             if i==3:    
                 serial_obj.write(str.encode(dark1_1+light1_1+dark2_1+light2_1+dark3_1+light3_1+dark4_1+light4_1+
-                                            dark5_1+light5_1))
+                                            dark5_1+light5_1+dark6_1+light6_1))
                 
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 1 schedules sent.')                              
             if i==4:
                 serial_obj.write(str.encode(hourOn1_2+minOn1_2+hourOff1_2+minOff1_2+hourOn2_2+minOn2_2+hourOff2_2+minOff2_2+
                                             hourOn3_2+minOn3_2+hourOff3_2+minOff3_2+hourOn4_2+minOn4_2+hourOff4_2+minOff4_2+
-                                            hourOn5_2+minOn5_2+hourOff5_2+minOff5_2))
+                                            hourOn5_2+minOn5_2+hourOff5_2+minOff5_2+hourOn6_2+minOn6_2+hourOff6_2+minOff6_2))
                 
             if i==5:
                 serial_obj.write(str.encode(dark1_2+light1_2+dark2_2+light2_2+dark3_2+light3_2+dark4_2+light4_2+
-                                            dark5_2+light5_2))
+                                            dark5_2+light5_2+dark6_2+light6_2))
                 
             if i==6:
                 serial_obj.write(str.encode(date1_2+month1_2+year1_2+date2_2+month2_2+year2_2+
                                             date3_2+month3_2+year3_2+date4_2+month4_2+year4_2+
-                                            date5_2+month5_2+year5_2+hourFrom1_2+minuteFrom1_2+
-                                            hourFrom2_2+minuteFrom2_2+hourFrom3_2+minuteFrom3_2+
-                                            hourFrom4_2+minuteFrom4_2+hourFrom5_2+minuteFrom5_2))
+                                            date5_2+month5_2+year5_2+date6_2+month6_2+year6_2))
+            if i==7:
+                serial_obj.write(str.encode(hourFrom1_2+minuteFrom1_2+hourFrom2_2+minuteFrom2_2+hourFrom3_2+minuteFrom3_2+
+                                            hourFrom4_2+minuteFrom4_2+hourFrom5_2+minuteFrom5_2+hourFrom6_2+minuteFrom6_2))
                
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 2 schedules sent.')    
-            if i==7:
+            if i==8:
                 serial_obj.write(str.encode(hourOn1_3+minOn1_3+hourOff1_3+minOff1_3+hourOn2_3+minOn2_3+hourOff2_3+minOff2_3+
                                             hourOn3_3+minOn3_3+hourOff3_3+minOff3_3+hourOn4_3+minOn4_3+hourOff4_3+minOff4_3+
-                                            hourOn5_3+minOn5_3+hourOff5_3+minOff5_3))
-                
-            if i==8:
-                serial_obj.write(str.encode(dark1_3+light1_3+dark2_3+light2_3+dark3_3+light3_3+
-                                            dark4_3+light4_3+dark5_3+light5_3))
+                                            hourOn5_3+minOn5_3+hourOff5_3+minOff5_3+hourOn6_3+minOn6_3+hourOff6_3+minOff6_3))
                 
             if i==9:
+                serial_obj.write(str.encode(dark1_3+light1_3+dark2_3+light2_3+dark3_3+light3_3+
+                                            dark4_3+light4_3+dark5_3+light5_3+dark6_3+light6_3))
+                
+            if i==10:
                 serial_obj.write(str.encode(date1_3+month1_3+year1_3+date2_3+month2_3+year2_3+
                                             date3_3+month3_3+year3_3+date4_3+month4_3+year4_3+
-                                            date5_3+month5_3+year5_3+hourFrom1_3+minuteFrom1_3+
-                                            hourFrom2_3+minuteFrom2_3+hourFrom3_3+minuteFrom3_3+
-                                            hourFrom4_3+minuteFrom4_3+hourFrom5_3+minuteFrom5_3))
+                                            date5_3+month5_3+year5_3+date6_3+month6_3+year6_3))
+            if i==11:
+                serial_obj.write(str.encode(hourFrom1_3+minuteFrom1_3+hourFrom2_3+minuteFrom2_3+hourFrom3_3+minuteFrom3_3+
+                                            hourFrom4_3+minuteFrom4_3+hourFrom5_3+minuteFrom5_3+hourFrom6_3+minuteFrom6_3))
                 
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 3 schedules sent.')
-            if i==10:
+            if i==12:
                 serial_obj.write(str.encode(hourOn1_4+minOn1_4+hourOff1_4+minOff1_4+hourOn2_4+minOn2_4+hourOff2_4+minOff2_4+
                                             hourOn3_4+minOn3_4+hourOff3_4+minOff3_4+hourOn4_4+minOn4_4+hourOff4_4+minOff4_4+
-                                            hourOn5_4+minOn5_4+hourOff5_4+minOff5_4))
+                                            hourOn5_4+minOn5_4+hourOff5_4+minOff5_4+ hourOn6_4+minOn6_4+hourOff6_4+minOff6_4))
                 
-            if i==11:
+            if i==13:
                 serial_obj.write(str.encode(dark1_4+light1_4+dark2_4+light2_4+dark3_4+light3_4+
-                                            dark4_4+light4_4+dark5_4+light5_4))
+                                            dark4_4+light4_4+dark5_4+light5_4+dark6_4+light6_4))
                 
-            if i==12:
+            if i==14:
                 serial_obj.write(str.encode(date1_4+month1_4+year1_4+date2_4+month2_4+year2_4+
                                             date3_4+month3_4+year3_4+date4_4+month4_4+year4_4+
-                                            date5_4+month5_4+year5_4+hourFrom1_4+minuteFrom1_4+
-                                            hourFrom2_4+minuteFrom2_4+hourFrom3_4+minuteFrom3_4+
-                                            hourFrom4_4+minuteFrom4_4+hourFrom5_4+minuteFrom5_4)) 
+                                            date5_4+month5_4+year5_4+date6_4+month6_4+year6_4))
+                
+            if i==15:
+                serial_obj.write(str.encode(hourFrom1_4+minuteFrom1_4+hourFrom2_4+minuteFrom2_4+hourFrom3_4+minuteFrom3_4+
+                                            hourFrom4_4+minuteFrom4_4+hourFrom5_4+minuteFrom5_4+hourFrom6_4+minuteFrom6_4)) 
                 
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 4 schedules sent.')
-            if i==13:
+            if i==16:
                 serial_obj.write(str.encode(hourOn1_5+minOn1_5+hourOff1_5+minOff1_5+hourOn2_5+minOn2_5+hourOff2_5+minOff2_5+
                                             hourOn3_5+minOn3_5+hourOff3_5+minOff3_5+hourOn4_5+minOn4_5+hourOff4_5+minOff4_5+
-                                            hourOn5_5+minOn5_5+hourOff5_5+minOff5_5))
+                                            hourOn5_5+minOn5_5+hourOff5_5+minOff5_5+hourOn6_5+minOn6_5+hourOff6_5+minOff6_5))
                
-            if i==14: 
+            if i==17: 
                 serial_obj.write(str.encode(dark1_5+light1_5+dark2_5+light2_5+dark3_5+light3_5+
-                                            dark4_5+light4_5+dark5_5+light5_5))
+                                            dark4_5+light4_5+dark5_5+light5_5+dark6_5+light6_5))
                
-            if i==15:
+            if i==18:
                 serial_obj.write(str.encode(date1_5+month1_5+year1_5+date2_5+month2_5+year2_5+
                                             date3_5+month3_5+year3_5+date4_5+month4_5+year4_5+
-                                            date5_5+month5_5+year5_5+hourFrom1_5+minuteFrom1_5+
-                                            hourFrom2_5+minuteFrom2_5+hourFrom3_5+minuteFrom3_5+
-                                            hourFrom4_5+minuteFrom4_5+hourFrom5_5+minuteFrom5_5))
+                                            date5_5+month5_5+year5_5+date6_5+month6_5+year6_5))
+                
+            if i==19:
+                serial_obj.write(str.encode(hourFrom1_5+minuteFrom1_5+hourFrom2_5+minuteFrom2_5+hourFrom3_5+minuteFrom3_5+
+                                            hourFrom4_5+minuteFrom4_5+hourFrom5_5+minuteFrom5_5+hourFrom6_5+minuteFrom6_5))
                
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 5 schedules sent.')
             #Phase 6
-            if i==16:
+            if i==20:
                 serial_obj.write(str.encode(hourOn1_6+minOn1_6+hourOff1_6+minOff1_6+hourOn2_6+minOn2_6+hourOff2_6+minOff2_6+
                                             hourOn3_6+minOn3_6+hourOff3_6+minOff3_6+hourOn4_6+minOn4_6+hourOff4_6+minOff4_6+
-                                            hourOn5_6+minOn5_6+hourOff5_6+minOff5_6))
+                                            hourOn5_6+minOn5_6+hourOff5_6+minOff5_6+hourOn6_6+minOn6_6+hourOff6_6+minOff6_6))
                 
-            if i==17: 
+            if i==21: 
                 serial_obj.write(str.encode(dark1_6+light1_6+dark2_6+light2_6+dark3_6+light3_6+
-                                            dark4_6+light4_6+dark5_6+light5_6))
+                                            dark4_6+light4_6+dark5_6+light5_6+dark6_6+light6_6))
                 
-            if i==18:
+            if i==22:
                 serial_obj.write(str.encode(date1_6+month1_6+year1_6+date2_6+month2_6+year2_6+
                                             date3_6+month3_6+year3_6+date4_6+month4_6+year4_6+
-                                            date5_6+month5_6+year5_6+hourFrom1_6+minuteFrom1_6+
-                                            hourFrom2_6+minuteFrom2_6+hourFrom3_6+minuteFrom3_6+
-                                            hourFrom4_6+minuteFrom4_6+hourFrom5_6+minuteFrom5_6))
+                                            date5_6+month5_6+year5_6+date6_6+month6_6+year6_6))
+                
+            if i==23:
+                serial_obj.write(str.encode(hourFrom1_6+minuteFrom1_6+hourFrom2_6+minuteFrom2_6+hourFrom3_6+minuteFrom3_6+
+                                            hourFrom4_6+minuteFrom4_6+hourFrom5_6+minuteFrom5_6+hourFrom6_6+minuteFrom6_6))
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 6 schedules sent.')
             #Phase 7
-            if i==19:
+            if i==24:
                 serial_obj.write(str.encode(hourOn1_7+minOn1_7+hourOff1_7+minOff1_7+hourOn2_7+minOn2_7+hourOff2_7+minOff2_7+
                                             hourOn3_7+minOn3_7+hourOff3_7+minOff3_7+hourOn4_7+minOn4_7+hourOff4_7+minOff4_7+
-                                            hourOn5_7+minOn5_7+hourOff5_7+minOff5_7))
+                                            hourOn5_7+minOn5_7+hourOff5_7+minOff5_7+hourOn6_7+minOn6_7+hourOff6_7+minOff6_7))
                 
-            if i==20: 
+            if i==25: 
                 serial_obj.write(str.encode(dark1_7+light1_7+dark2_7+light2_7+dark3_7+light3_7+
-                                            dark4_7+light4_7+dark5_7+light5_7))
+                                            dark4_7+light4_7+dark5_7+light5_7+dark6_7+light6_7))
                 
-            if i==21:
+            if i==26:
                 serial_obj.write(str.encode(date1_7+month1_7+year1_7+date2_7+month2_7+year2_7+
                                             date3_7+month3_7+year3_7+date4_7+month4_7+year4_7+
-                                            date5_7+month5_7+year5_7+hourFrom1_7+minuteFrom1_7+
-                                            hourFrom2_7+minuteFrom2_7+hourFrom3_7+minuteFrom3_7+
-                                            hourFrom4_7+minuteFrom4_7+hourFrom5_7+minuteFrom5_7))
+                                            date5_7+month5_7+year5_7+date6_7+month6_7+year6_7))
+                
+            if i==27:
+                serial_obj.write(str.encode(hourFrom1_7+minuteFrom1_7+hourFrom2_7+minuteFrom2_7+hourFrom3_7+minuteFrom3_7+
+                                            hourFrom4_7+minuteFrom4_7+hourFrom5_7+minuteFrom5_7+hourFrom6_7+minuteFrom6_7))
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 7 schedules sent.')
             #Phase 8
-            if i==22:
+            if i==28:
                 serial_obj.write(str.encode(hourOn1_8+minOn1_8+hourOff1_8+minOff1_8+hourOn2_8+minOn2_8+hourOff2_8+minOff2_8+
                                             hourOn3_8+minOn3_8+hourOff3_8+minOff3_8+hourOn4_8+minOn4_8+hourOff4_8+minOff4_8+
-                                            hourOn5_8+minOn5_8+hourOff5_8+minOff5_8))
+                                            hourOn5_8+minOn5_8+hourOff5_8+minOff5_8+hourOn6_8+minOn6_8+hourOff6_8+minOff6_8))
                 
-            if i==23: 
+            if i==29: 
                 serial_obj.write(str.encode(dark1_8+light1_8+dark2_8+light2_8+dark3_8+light3_8+
-                                            dark4_8+light4_8+dark5_8+light5_8))
+                                            dark4_8+light4_8+dark5_8+light5_8+dark6_8+light6_8))
                 
-            if i==24:
+            if i==30:
                 serial_obj.write(str.encode(date1_8+month1_8+year1_8+date2_8+month2_8+year2_8+
                                             date3_8+month3_8+year3_8+date4_8+month4_8+year4_8+
-                                            date5_8+month5_8+year5_8+hourFrom1_8+minuteFrom1_8+
-                                            hourFrom2_8+minuteFrom2_8+hourFrom3_8+minuteFrom3_8+
-                                            hourFrom4_8+minuteFrom4_8+hourFrom5_8+minuteFrom5_8))
+                                            date5_8+month5_8+year5_8+date6_8+month6_8+year6_8))
+                
+            if i==31:
+                serial_obj.write(str.encode(hourFrom1_8+minuteFrom1_8+hourFrom2_8+minuteFrom2_8+hourFrom3_8+minuteFrom3_8+
+                                            hourFrom4_8+minuteFrom4_8+hourFrom5_8+minuteFrom5_8+hourFrom6_8+minuteFrom6_8))
 
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 8 schedules sent.')
             #Phase 9
-            if i==25:
+            if i==32:
                 serial_obj.write(str.encode(hourOn1_9+minOn1_9+hourOff1_9+minOff1_9+hourOn2_9+minOn2_9+hourOff2_9+minOff2_9+
                                             hourOn3_9+minOn3_9+hourOff3_9+minOff3_9+hourOn4_9+minOn4_9+hourOff4_9+minOff4_9+
-                                            hourOn5_9+minOn5_9+hourOff5_9+minOff5_9))
+                                            hourOn5_9+minOn5_9+hourOff5_9+minOff5_9+hourOn6_9+minOn6_9+hourOff6_9+minOff6_9))
                 
-            if i==26: 
+            if i==33: 
                 serial_obj.write(str.encode(dark1_9+light1_9+dark2_9+light2_9+dark3_9+light3_9+
-                                            dark4_9+light4_9+dark5_9+light5_9))
+                                            dark4_9+light4_9+dark5_9+light5_9+dark6_9+light6_9))
                 
-            if i==27:
+            if i==34:
                 serial_obj.write(str.encode(date1_9+month1_9+year1_9+date2_9+month2_9+year2_9+
                                             date3_9+month3_9+year3_9+date4_9+month4_9+year4_9+
-                                            date5_9+month5_9+year5_9+hourFrom1_9+minuteFrom1_9+
-                                            hourFrom2_9+minuteFrom2_9+hourFrom3_9+minuteFrom3_9+
-                                            hourFrom4_9+minuteFrom4_9+hourFrom5_9+minuteFrom5_9))
+                                            date5_9+month5_9+year5_9+date6_9+month6_9+year6_9))
+                
+            if i==35:
+                serial_obj.write(str.encode(hourFrom1_9+minuteFrom1_9+hourFrom2_9+minuteFrom2_9+hourFrom3_9+minuteFrom3_9+
+                                            hourFrom4_9+minuteFrom4_9+hourFrom5_9+minuteFrom5_9+hourFrom6_9+minuteFrom6_9))
 
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 9 schedules sent.')
             #Phase 10
-            if i==28:
+            if i==36:
                 serial_obj.write(str.encode(hourOn1_10+minOn1_10+hourOff1_10+minOff1_10+hourOn2_10+minOn2_10+hourOff2_10+minOff2_10+
                                             hourOn3_10+minOn3_10+hourOff3_10+minOff3_10+hourOn4_10+minOn4_10+hourOff4_10+minOff4_10+
-                                            hourOn5_10+minOn5_10+hourOff5_10+minOff5_10))
+                                            hourOn5_10+minOn5_10+hourOff5_10+minOff5_10+hourOn6_10+minOn6_10+hourOff6_10+minOff6_10))
                 
-            if i==29: 
+            if i==37: 
                 serial_obj.write(str.encode(dark1_10+light1_10+dark2_10+light2_10+dark3_10+light3_10+
-                                            dark4_10+light4_10+dark5_10+light5_10))
+                                            dark4_10+light4_10+dark5_10+light5_10+dark6_10+light6_10))
                 
-            if i==30:
+            if i==38:
                 serial_obj.write(str.encode(date1_10+month1_10+year1_10+date2_10+month2_10+year2_10+
                                             date3_10+month3_10+year3_10+date4_10+month4_10+year4_10+
-                                            date5_10+month5_10+year5_10+hourFrom1_10+minuteFrom1_10+
-                                            hourFrom2_10+minuteFrom2_10+hourFrom3_10+minuteFrom3_10+
-                                            hourFrom4_10+minuteFrom4_10+hourFrom5_10+minuteFrom5_10))
+                                            date5_10+month5_10+year5_10+date6_10+month6_10+year6_10))
+                
+            if i==39:
+                serial_obj.write(str.encode(hourFrom1_10+minuteFrom1_10+hourFrom2_10+minuteFrom2_10+hourFrom3_10+minuteFrom3_10+
+                                            hourFrom4_10+minuteFrom4_10+hourFrom5_10+minuteFrom5_10+hourFrom6_10+minuteFrom6_10))
 
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 10 schedules sent.')
             #Phase 11
-            if i==31:
+            if i==40:
                 serial_obj.write(str.encode(hourOn1_11+minOn1_11+hourOff1_11+minOff1_11+hourOn2_11+minOn2_11+hourOff2_11+minOff2_11+
                                             hourOn3_11+minOn3_11+hourOff3_11+minOff3_11+hourOn4_11+minOn4_11+hourOff4_11+minOff4_11+
-                                            hourOn5_11+minOn5_11+hourOff5_11+minOff5_11))
+                                            hourOn5_11+minOn5_11+hourOff5_11+minOff5_11+hourOn6_11+minOn6_11+hourOff6_11+minOff6_11))
                 
-            if i==32: 
+            if i==41: 
                 serial_obj.write(str.encode(dark1_11+light1_11+dark2_11+light2_11+dark3_11+light3_11+
-                                            dark4_11+light4_11+dark5_11+light5_11))
+                                            dark4_11+light4_11+dark5_11+light5_11+dark6_11+light6_11))
                 
-            if i==33:
+            if i==42:
 
                 serial_obj.write(str.encode(date1_11+month1_11+year1_11+
                                             date2_11+month2_11+year2_11+
                                             date3_11+month3_11+year3_11+
                                             date4_11+month4_11+year4_11+
                                             date5_11+month5_11+year5_11+
-                                            hourFrom1_11+minuteFrom1_11+
+                                            date6_11+month6_11+year6_11))
+                
+            if i==43:
+
+                serial_obj.write(str.encode(hourFrom1_11+minuteFrom1_11+
                                             hourFrom2_11+minuteFrom2_11+
                                             hourFrom3_11+minuteFrom3_11+
                                             hourFrom4_11+minuteFrom4_11+
-                                            hourFrom5_11+minuteFrom5_11))
+                                            hourFrom5_11+minuteFrom5_11+
+                                            hourFrom6_11+minuteFrom6_11))
 
 
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 11 schedules sent.')
 
             #Phase 12
-            if i==34:
+            if i==44:
                 serial_obj.write(str.encode(hourOn1_12+minOn1_12+hourOff1_12+minOff1_12+hourOn2_12+minOn2_12+hourOff2_12+minOff2_12+
                                             hourOn3_12+minOn3_12+hourOff3_12+minOff3_12+hourOn4_12+minOn4_12+hourOff4_12+minOff4_12+
-                                            hourOn5_12+minOn5_12+hourOff5_12+minOff5_12))
+                                            hourOn5_12+minOn5_12+hourOff5_12+minOff5_12+hourOn6_12+minOn6_12+hourOff6_12+minOff6_12))
                 
-            if i==35: 
+            if i==45: 
                 serial_obj.write(str.encode(dark1_12+light1_12+dark2_12+light2_12+dark3_12+light3_12+
-                                            dark4_12+light4_12+dark5_12+light5_12))
+                                            dark4_12+light4_12+dark5_12+light5_12+dark6_12+light6_12))
                 
-            if i==36:
+            if i==46:
                 serial_obj.write(str.encode(date1_12+month1_12+year1_12+date2_12+month2_12+year2_12+
                                             date3_12+month3_12+year3_12+date4_12+month4_12+year4_12+
-                                            date5_12+month5_12+year5_12+hourFrom1_12+minuteFrom1_12+
-                                            hourFrom2_12+minuteFrom2_12+hourFrom3_12+minuteFrom3_12+
-                                            hourFrom4_12+minuteFrom4_12+hourFrom5_12+minuteFrom5_12))
+                                            date5_12+month5_12+year5_12+date6_12+month6_12+year6_12))
+                
+            if i==47:
+                serial_obj.write(str.encode(hourFrom1_12+minuteFrom1_12+hourFrom2_12+minuteFrom2_12+hourFrom3_12+minuteFrom3_12+
+                                            hourFrom4_12+minuteFrom4_12+hourFrom5_12+minuteFrom5_12+hourFrom6_12+minuteFrom6_12))
 
                 status.pack(side='bottom', fill='x')
                 status.set('Phase 12 schedules sent.')
                 
-            if i==37:
+            if i==48:
                 serial_obj.write(str.encode(tcycle_1_1 + tcycle_1_2 +tcycle_1_3 + tcycle_1_4 + tcycle_1_5 + tcycle_1_6 + tcycle_1_7 + tcycle_1_8 + tcycle_1_9 + tcycle_1_10 + tcycle_1_11 + tcycle_1_12 +
-                                            tcycle_2_1 + tcycle_2_2 +tcycle_2_3 + tcycle_2_4 + tcycle_2_5 + tcycle_2_6 + tcycle_2_7 + tcycle_2_8 + tcycle_2_9 + tcycle_2_10 + tcycle_2_11 + tcycle_2_12 +
-                                            tcycle_3_1 + tcycle_3_2 +tcycle_3_3 + tcycle_3_4 + tcycle_3_5 + tcycle_3_6))
+                                            tcycle_2_1 + tcycle_2_2 +tcycle_2_3 + tcycle_2_4 + tcycle_2_5 + tcycle_2_6))
+                                            
+            if i==49:
+                serial_obj.write(str.encode(tcycle_2_7 + tcycle_2_8 + tcycle_2_9 + tcycle_2_10 + tcycle_2_11 + tcycle_2_12 +
+                                            tcycle_3_1 + tcycle_3_2 +tcycle_3_3 + tcycle_3_4 + tcycle_3_5 + tcycle_3_6 +tcycle_3_7 + tcycle_3_8 + tcycle_3_9 + tcycle_3_10 + tcycle_3_11 + tcycle_3_12))
                 
-            if i==38:
+            if i==50:
                 serial_obj.write(str.encode(tcycle_4_1 + tcycle_4_2 +tcycle_4_3 + tcycle_4_4 + tcycle_4_5 + tcycle_4_6 + tcycle_4_7 + tcycle_4_8 + tcycle_4_9 + tcycle_4_10 + tcycle_4_11 + tcycle_4_12 + 
-                                            tcycle_5_1 + tcycle_5_2 +tcycle_5_3 + tcycle_5_4 + tcycle_5_5 + tcycle_5_6 + tcycle_5_7 + tcycle_5_8 + tcycle_5_9 + tcycle_5_10 + tcycle_5_11 + tcycle_5_12 +
-                                            tcycle_3_7 + tcycle_3_8 + tcycle_3_9 + tcycle_3_10 + tcycle_3_11 + tcycle_3_12))
+                                            tcycle_5_1 + tcycle_5_2 +tcycle_5_3 + tcycle_5_4 + tcycle_5_5 + tcycle_5_6))
+            if i==51:
+                serial_obj.write(str.encode(tcycle_5_7 + tcycle_5_8 + tcycle_5_9 + tcycle_5_10 + tcycle_5_11 + tcycle_5_12 +
+                                            tcycle_6_1 + tcycle_6_2 +tcycle_6_3 + tcycle_6_4 + tcycle_6_5 + tcycle_6_6 + tcycle_6_7 + tcycle_6_8 + tcycle_6_9 + tcycle_6_10 + tcycle_6_11 + tcycle_6_12))
+                
                 status.pack(side='bottom', fill='x')
                 status.set('T-cycle schedules sent.')
+
+            if i==52:
+                serial_obj.write(str.encode(DIn1 + DIn2 + DIn3 + DIn4 + DIn5 + DIn6 +
+                                            DOut1 + DOut2 +DOut3 + DOut4 + DOut5 + DOut6 + anIn1 + anIn2 + anIn3 + anIn4 + anIn5 + anIn6))
                 
-                status.set('All schedules transferred. Recording began.') 
+                status.pack(side='bottom', fill='x')
+                status.set('PinMode sent.')
                 
+                status.set('All schedules transferred. Recording began.')
                 
                 window.update_idletasks()
             i=i+1
+
+            #print(string2)
             
             if len(string2)>=79:     #set the id according to current tab
 
 
                 print(string2)
 
-                
                 display_string = string2
                 display_counter = counti
                 save_logs(counti, string2) 
                 on_tab_change(counti, string2)
                 #get_values_for_actogram()
-                    
-                       
-
                 window.update_idletasks()
              
                 counti = counti+1
@@ -556,7 +601,7 @@ def save_logs( counti, string2): #max 120 timepoints
 def get_values_for_actogram():
     tab = int(tab_control.index('current'))+1
     filename = './' + filename_entry.get()
-    box = 'BOX' + str(tab + 5)
+    box = 'BOX' + str(tab)
     pir = 'PIR0'  + str(tab)
     led = 'LED0'   + str(tab)
     plot_doubleplot(box, pir, led, filename)
@@ -568,7 +613,7 @@ def plot_double_acto(tab):
     
     global label_acto
     # Create an object of tkinter ImageTk
-    img = ImageTk.PhotoImage(Image.open("./BOX" + str(tab+5) + ".png"))
+    img = ImageTk.PhotoImage(Image.open("./BOX" + str(tab) + ".png"))
     label_acto.configure(image=img)
     label_acto.image = img
 
@@ -589,28 +634,32 @@ def set_log_text(log_text, log_mat, tab):
     history_str = ''
     for counti in range(0,120): #check if I can get rid of the loop
         
-        if tab == 1 or tab == 'Box6' :
+        if tab == 1 or tab == 'Box1' :
 
             phase_id = get_phase(1)
             
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str =  '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+ display_as_ON_OFF(str(log_mat[counti % 120,2]))+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
-        elif tab == 2 or tab == 'Box7':
+        elif tab == 2 or tab == 'Box2':
             phase_id = get_phase(2)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) + '   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,4]))+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
 
-        elif tab == 3 or tab == 'Box8':
+        elif tab == 3 or tab == 'Box3':
             phase_id = get_phase(3)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str =  '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) + '   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,6]))+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
                 
-        elif tab == 4 or tab == 'Box9':
+        elif tab == 4 or tab == 'Box4':
             phase_id = get_phase(4)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) + '   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,8]))+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
-        elif tab == 5 or tab == 'Box10':
+        elif tab == 5 or tab == 'Box5':
             phase_id = get_phase(5)
+            if str(log_mat[counti % 120,1]).strip() != '':
+                history_str =  '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,10]))+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
+        elif tab == 6 or tab == 'Box6':
+            phase_id = get_phase(6)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str =  '# '+str(log_mat[counti % 120,0])+'   ' + display_LD(tab-1, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,10]))+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
 
@@ -627,30 +676,35 @@ def restore_history(log_text, log_mat, tab):
     history_str = ''
     for counti in range(0,120):
         
-        if tab == 1 or tab == 'Box6' :
+        if tab == 1 or tab == 'Box1' :
 
             phase_id = get_phase(1)
             
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str =  history_str + '# '+str(log_mat[counti % 120,0])+ '   ' + display_LD(0, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,2]))+'    '+'PIR: '+str(log_mat[counti % 120,3]) + "\n"
-        elif tab == 2 or tab == 'Box7':
+        elif tab == 2 or tab == 'Box2':
             phase_id = get_phase(2)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = history_str +'# '+str(log_mat[counti % 120,0])+'   ' +display_LD(1, phase_id-1) +'  Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,4]))+'    '+'PIR: '+str(log_mat[counti % 120,5]) + "\n"
 
-        elif tab == 3 or tab == 'Box8':
+        elif tab == 3 or tab == 'Box3':
             phase_id = get_phase(3)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = history_str + '# '+str(log_mat[counti % 120,0])+'   ' +display_LD(2, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,6]))+'    '+'PIR: '+str(log_mat[counti % 120,7]) + "\n"
                 
-        elif tab == 4 or tab == 'Box9':
+        elif tab == 4 or tab == 'Box4':
             phase_id = get_phase(4)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = history_str + '# '+str(log_mat[counti % 120,0])+'   ' +display_LD(3, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,8]))+'    '+'PIR: '+str(log_mat[counti % 120,9]) + "\n"
-        elif tab == 5 or tab == 'Box10':
+        elif tab == 5 or tab == 'Box5':
             phase_id = get_phase(5)
             if str(log_mat[counti % 120,1]).strip() != '':
                 history_str = history_str + '# '+str(log_mat[counti % 120,0])+'   ' +display_LD(4, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,10]))+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
+        elif tab == 6 or tab == 'Box6':
+            phase_id = get_phase(5)
+            if str(log_mat[counti % 120,1]).strip() != '':
+                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'   ' +display_LD(5, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,10]))+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
+
 
     log_text.set(history_str)
     log_display.config(state="normal")
@@ -804,6 +858,11 @@ def save_conf(): # Save schedule configuration
     config['minOn5_1'] = minOn5_1
     config['hourOff5_1'] = hourOff5_1
     config['minOff5_1'] = minOff5_1
+    config['hourOn6_1'] = hourOn6_1
+    config['minOn6_1'] = minOn6_1
+    config['hourOff6_1'] = hourOff6_1
+    config['minOff6_1'] = minOff6_1
+
     
     config['dark1_1'] = dark1_1
     config['light1_1'] = light1_1
@@ -815,6 +874,8 @@ def save_conf(): # Save schedule configuration
     config['light4_1'] = light4_1
     config['dark5_1'] = dark5_1
     config['light5_1'] = light5_1
+    config['dark6_1'] = dark6_1
+    config['light6_1'] = light6_1
     
     config['hourOn1_2'] = hourOn1_2
     config['minOn1_2'] = minOn1_2
@@ -836,6 +897,10 @@ def save_conf(): # Save schedule configuration
     config['minOn5_2'] = minOn5_2
     config['hourOff5_2'] = hourOff5_2
     config['minOff5_2'] = minOff5_2
+    config['hourOn6_2'] = hourOn6_2
+    config['minOn6_2'] = minOn6_2
+    config['hourOff6_2'] = hourOff6_2
+    config['minOff6_2'] = minOff6_2
     
     config['dark1_2'] = dark1_2
     config['light1_2'] = light1_2
@@ -847,6 +912,8 @@ def save_conf(): # Save schedule configuration
     config['light4_2'] = light4_2
     config['dark5_2'] = dark5_2
     config['light5_2'] = light5_2
+    config['dark6_2'] = dark6_2
+    config['light6_2'] = light6_2
     
     config['date1_2'] = date1_2
     config['month1_2'] = month1_2
@@ -863,6 +930,10 @@ def save_conf(): # Save schedule configuration
     config['date5_2'] = date5_2
     config['month5_2'] = month5_2
     config['year5_2'] = year5_2
+    config['date6_2'] = date6_2
+    config['month6_2'] = month6_2
+    config['year6_2'] = year6_2
+
     config['hourFrom1_2'] = hourFrom1_2
     config['minuteFrom1_2'] = minuteFrom1_2
     config['hourFrom2_2'] = hourFrom2_2
@@ -873,6 +944,8 @@ def save_conf(): # Save schedule configuration
     config['minuteFrom4_2'] = minuteFrom4_2
     config['hourFrom5_2'] = hourFrom5_2
     config['minuteFrom5_2'] = minuteFrom5_2
+    config['hourFrom6_2'] = hourFrom6_2
+    config['minuteFrom6_2'] = minuteFrom6_2
     
     config['hourOn1_3'] = hourOn1_3
     config['minOn1_3'] = minOn1_3
@@ -894,6 +967,10 @@ def save_conf(): # Save schedule configuration
     config['minOn5_3'] = minOn5_3
     config['hourOff5_3'] = hourOff5_3
     config['minOff5_3'] = minOff5_3
+    config['hourOn6_3'] = hourOn6_3
+    config['minOn6_3'] = minOn6_3
+    config['hourOff6_3'] = hourOff6_3
+    config['minOff6_3'] = minOff6_3
     
     config['dark1_3'] = dark1_3
     config['light1_3'] = light1_3
@@ -905,6 +982,8 @@ def save_conf(): # Save schedule configuration
     config['light4_3'] = light4_3
     config['dark5_3'] = dark5_3
     config['light5_3'] = light5_3
+    config['dark6_3'] = dark6_3
+    config['light6_3'] = light6_3
     
     config['date1_3'] = date1_3
     config['month1_3'] = month1_3
@@ -921,6 +1000,10 @@ def save_conf(): # Save schedule configuration
     config['date5_3'] = date5_3
     config['month5_3'] = month5_3
     config['year5_3'] = year5_3
+    config['date6_3'] = date6_3
+    config['month6_3'] = month6_3
+    config['year6_3'] = year6_3
+
     config['hourFrom1_3'] = hourFrom1_3
     config['minuteFrom1_3'] = minuteFrom1_3
     config['hourFrom2_3'] = hourFrom2_3
@@ -931,6 +1014,8 @@ def save_conf(): # Save schedule configuration
     config['minuteFrom4_3'] = minuteFrom4_3
     config['hourFrom5_3'] = hourFrom5_3
     config['minuteFrom5_3'] = minuteFrom5_3
+    config['hourFrom6_3'] = hourFrom6_3
+    config['minuteFrom6_3'] = minuteFrom6_3
     
     #phase 4
     config['hourOn1_4'] = hourOn1_4
@@ -953,6 +1038,10 @@ def save_conf(): # Save schedule configuration
     config['minOn5_4'] = minOn5_4
     config['hourOff5_4'] = hourOff5_4
     config['minOff5_4'] = minOff5_4
+    config['hourOn6_4'] = hourOn6_4
+    config['minOn6_4'] = minOn6_4
+    config['hourOff6_4'] = hourOff6_4
+    config['minOff6_4'] = minOff6_4
     
     config['dark1_4'] = dark1_4
     config['light1_4'] = light1_4
@@ -964,6 +1053,8 @@ def save_conf(): # Save schedule configuration
     config['light4_4'] = light4_4
     config['dark5_4'] = dark5_4
     config['light5_4'] = light5_4
+    config['dark6_4'] = dark6_4
+    config['light6_4'] = light6_4
     
     config['date1_4'] = date1_4
     config['month1_4'] = month1_4
@@ -980,6 +1071,10 @@ def save_conf(): # Save schedule configuration
     config['date5_4'] = date5_4
     config['month5_4'] = month5_4
     config['year5_4'] = year5_4
+    config['date6_4'] = date6_4
+    config['month6_4'] = month6_4
+    config['year6_4'] = year6_4
+
     config['hourFrom1_4'] = hourFrom1_4
     config['minuteFrom1_4'] = minuteFrom1_4
     config['hourFrom2_4'] = hourFrom2_4
@@ -990,6 +1085,8 @@ def save_conf(): # Save schedule configuration
     config['minuteFrom4_4'] = minuteFrom4_4
     config['hourFrom5_4'] = hourFrom5_4
     config['minuteFrom5_4'] = minuteFrom5_4
+    config['hourFrom6_4'] = hourFrom6_4
+    config['minuteFrom6_4'] = minuteFrom6_4
 
     #phase5
     config['hourOn1_5'] = hourOn1_5
@@ -1012,6 +1109,10 @@ def save_conf(): # Save schedule configuration
     config['minOn5_5'] = minOn5_5
     config['hourOff5_5'] = hourOff5_5
     config['minOff5_5'] = minOff5_5
+    config['hourOn6_5'] = hourOn6_5
+    config['minOn6_5'] = minOn6_5
+    config['hourOff6_5'] = hourOff6_5
+    config['minOff6_5'] = minOff6_5
     
     config['dark1_5'] = dark1_5
     config['light1_5'] = light1_5
@@ -1023,6 +1124,8 @@ def save_conf(): # Save schedule configuration
     config['light4_5'] = light4_5
     config['dark5_5'] = dark5_5
     config['light5_5'] = light5_5
+    config['dark6_5'] = dark6_5
+    config['light6_5'] = light6_5
     
     config['date1_5'] = date1_5
     config['month1_5'] = month1_5
@@ -1039,6 +1142,10 @@ def save_conf(): # Save schedule configuration
     config['date5_5'] = date5_5
     config['month5_5'] = month5_5
     config['year5_5'] = year5_5
+    config['date6_5'] = date6_5
+    config['month6_5'] = month6_5
+    config['year6_5'] = year6_5
+
     config['hourFrom1_5'] = hourFrom1_5
     config['minuteFrom1_5'] = minuteFrom1_5
     config['hourFrom2_5'] = hourFrom2_5
@@ -1049,6 +1156,8 @@ def save_conf(): # Save schedule configuration
     config['minuteFrom4_5'] = minuteFrom4_5
     config['hourFrom5_5'] = hourFrom5_5
     config['minuteFrom5_5'] = minuteFrom5_5
+    config['hourFrom6_5'] = hourFrom6_5
+    config['minuteFrom6_5'] = minuteFrom6_5
     
     #phase6
     config['hourOn1_6'] = hourOn1_6
@@ -1071,6 +1180,10 @@ def save_conf(): # Save schedule configuration
     config['minOn5_6'] = minOn5_6
     config['hourOff5_6'] = hourOff5_6
     config['minOff5_6'] = minOff5_6
+    config['hourOn6_6'] = hourOn6_6
+    config['minOn6_6'] = minOn6_6
+    config['hourOff6_6'] = hourOff6_6
+    config['minOff6_6'] = minOff6_6
     
     config['dark1_6'] = dark1_6
     config['light1_6'] = light1_6
@@ -1082,6 +1195,8 @@ def save_conf(): # Save schedule configuration
     config['light4_6'] = light4_6
     config['dark5_6'] = dark5_6
     config['light5_6'] = light5_6
+    config['dark6_6'] = dark6_6
+    config['light6_6'] = light6_6
     
     config['date1_6'] = date1_6
     config['month1_6'] = month1_6
@@ -1098,6 +1213,10 @@ def save_conf(): # Save schedule configuration
     config['date5_6'] = date5_6
     config['month5_6'] = month5_6
     config['year5_6'] = year5_6
+    config['date6_6'] = date6_6
+    config['month6_6'] = month6_6
+    config['year6_6'] = year6_6
+
     config['hourFrom1_6'] = hourFrom1_6
     config['minuteFrom1_6'] = minuteFrom1_6
     config['hourFrom2_6'] = hourFrom2_6
@@ -1108,6 +1227,8 @@ def save_conf(): # Save schedule configuration
     config['minuteFrom4_6'] = minuteFrom4_6
     config['hourFrom5_6'] = hourFrom5_6
     config['minuteFrom5_6'] = minuteFrom5_6
+    config['hourFrom6_6'] = hourFrom6_6
+    config['minuteFrom6_6'] = minuteFrom6_6
 
 
     #phase7
@@ -1131,6 +1252,10 @@ def save_conf(): # Save schedule configuration
     config['minOn5_7'] = minOn5_7
     config['hourOff5_7'] = hourOff5_7
     config['minOff5_7'] = minOff5_7
+    config['hourOn6_7'] = hourOn6_7
+    config['minOn6_7'] = minOn6_7
+    config['hourOff6_7'] = hourOff6_7
+    config['minOff6_7'] = minOff6_7
     
     config['dark1_7'] = dark1_7
     config['light1_7'] = light1_7
@@ -1142,6 +1267,8 @@ def save_conf(): # Save schedule configuration
     config['light4_7'] = light4_7
     config['dark5_7'] = dark5_7
     config['light5_7'] = light5_7
+    config['dark6_7'] = dark6_7
+    config['light6_7'] = light6_7
     
     config['date1_7'] = date1_7
     config['month1_7'] = month1_7
@@ -1158,6 +1285,10 @@ def save_conf(): # Save schedule configuration
     config['date5_7'] = date5_7
     config['month5_7'] = month5_7
     config['year5_7'] = year5_7
+    config['date6_7'] = date6_7
+    config['month6_7'] = month6_7
+    config['year6_7'] = year6_7
+
     config['hourFrom1_7'] = hourFrom1_7
     config['minuteFrom1_7'] = minuteFrom1_7
     config['hourFrom2_7'] = hourFrom2_7
@@ -1168,6 +1299,8 @@ def save_conf(): # Save schedule configuration
     config['minuteFrom4_7'] = minuteFrom4_7
     config['hourFrom5_7'] = hourFrom5_7
     config['minuteFrom5_7'] = minuteFrom5_7
+    config['hourFrom6_7'] = hourFrom6_7
+    config['minuteFrom6_7'] = minuteFrom6_7
 
     #phase8
     config['hourOn1_8'] = hourOn1_8
@@ -1190,6 +1323,10 @@ def save_conf(): # Save schedule configuration
     config['minOn5_8'] = minOn5_8
     config['hourOff5_8'] = hourOff5_8
     config['minOff5_8'] = minOff5_8
+    config['hourOn6_8'] = hourOn6_8
+    config['minOn6_8'] = minOn6_8
+    config['hourOff6_8'] = hourOff6_8
+    config['minOff6_8'] = minOff6_8
     
     config['dark1_8'] = dark1_8
     config['light1_8'] = light1_8
@@ -1201,6 +1338,8 @@ def save_conf(): # Save schedule configuration
     config['light4_8'] = light4_8
     config['dark5_8'] = dark5_8
     config['light5_8'] = light5_8
+    config['dark6_8'] = dark6_8
+    config['light6_8'] = light6_8
     
     config['date1_8'] = date1_8
     config['month1_8'] = month1_8
@@ -1217,6 +1356,10 @@ def save_conf(): # Save schedule configuration
     config['date5_8'] = date5_8
     config['month5_8'] = month5_8
     config['year5_8'] = year5_8
+    config['date6_8'] = date6_8
+    config['month6_8'] = month6_8
+    config['year6_8'] = year6_8
+
     config['hourFrom1_8'] = hourFrom1_8
     config['minuteFrom1_8'] = minuteFrom1_8
     config['hourFrom2_8'] = hourFrom2_8
@@ -1227,6 +1370,8 @@ def save_conf(): # Save schedule configuration
     config['minuteFrom4_8'] = minuteFrom4_8
     config['hourFrom5_8'] = hourFrom5_8
     config['minuteFrom5_8'] = minuteFrom5_8
+    config['hourFrom6_8'] = hourFrom6_8
+    config['minuteFrom6_8'] = minuteFrom6_8
 
 
     #phase 9
@@ -1250,6 +1395,10 @@ def save_conf(): # Save schedule configuration
     config['minOn5_9'] = minOn5_9
     config['hourOff5_9'] = hourOff5_9
     config['minOff5_9'] = minOff5_9
+    config['hourOn6_9'] = hourOn6_9
+    config['minOn6_9'] = minOn6_9
+    config['hourOff6_9'] = hourOff6_9
+    config['minOff6_9'] = minOff6_9
     
     config['dark1_9'] = dark1_9
     config['light1_9'] = light1_9
@@ -1261,6 +1410,8 @@ def save_conf(): # Save schedule configuration
     config['light4_9'] = light4_9
     config['dark5_9'] = dark5_9
     config['light5_9'] = light5_9
+    config['dark6_9'] = dark6_9
+    config['light6_9'] = light6_9
     
     config['date1_9'] = date1_9
     config['month1_9'] = month1_9
@@ -1277,6 +1428,9 @@ def save_conf(): # Save schedule configuration
     config['date5_9'] = date5_9
     config['month5_9'] = month5_9
     config['year5_9'] = year5_9
+    config['date6_9'] = date6_9
+    config['month6_9'] = month6_9
+    config['year6_9'] = year6_9
     config['hourFrom1_9'] = hourFrom1_9
     config['minuteFrom1_9'] = minuteFrom1_9
     config['hourFrom2_9'] = hourFrom2_9
@@ -1287,7 +1441,8 @@ def save_conf(): # Save schedule configuration
     config['minuteFrom4_9'] = minuteFrom4_9
     config['hourFrom5_9'] = hourFrom5_9
     config['minuteFrom5_9'] = minuteFrom5_9
-
+    config['hourFrom6_9'] = hourFrom6_9
+    config['minuteFrom6_9'] = minuteFrom6_9
 
         #phase 10
     config['hourOn1_10'] = hourOn1_10
@@ -1310,6 +1465,10 @@ def save_conf(): # Save schedule configuration
     config['minOn5_10'] = minOn5_10
     config['hourOff5_10'] = hourOff5_10
     config['minOff5_10'] = minOff5_10
+    config['hourOn6_10'] = hourOn6_10
+    config['minOn6_10'] = minOn6_10
+    config['hourOff6_10'] = hourOff6_10
+    config['minOff6_10'] = minOff6_10
     
     config['dark1_10'] = dark1_10
     config['light1_10'] = light1_10
@@ -1321,6 +1480,8 @@ def save_conf(): # Save schedule configuration
     config['light4_10'] = light4_10
     config['dark5_10'] = dark5_10
     config['light5_10'] = light5_10
+    config['dark6_10'] = dark6_10
+    config['light6_10'] = light6_10
     
     config['date1_10'] = date1_10
     config['month1_10'] = month1_10
@@ -1337,6 +1498,9 @@ def save_conf(): # Save schedule configuration
     config['date5_10'] = date5_10
     config['month5_10'] = month5_10
     config['year5_10'] = year5_10
+    config['date6_10'] = date6_10
+    config['month6_10'] = month6_10
+    config['year6_10'] = year6_10
     config['hourFrom1_10'] = hourFrom1_10
     config['minuteFrom1_10'] = minuteFrom1_10
     config['hourFrom2_10'] = hourFrom2_10
@@ -1347,6 +1511,8 @@ def save_conf(): # Save schedule configuration
     config['minuteFrom4_10'] = minuteFrom4_10
     config['hourFrom5_10'] = hourFrom5_10
     config['minuteFrom5_10'] = minuteFrom5_10
+    config['hourFrom6_10'] = hourFrom6_10
+    config['minuteFrom6_10'] = minuteFrom6_10
 
 
         #phase11
@@ -1370,6 +1536,10 @@ def save_conf(): # Save schedule configuration
     config['minOn5_11'] = minOn5_11
     config['hourOff5_11'] = hourOff5_11
     config['minOff5_11'] = minOff5_11
+    config['hourOn6_11'] = hourOn6_11
+    config['minOn6_11'] = minOn6_11
+    config['hourOff6_11'] = hourOff6_11
+    config['minOff6_11'] = minOff6_11
     
     config['dark1_11'] = dark1_11
     config['light1_11'] = light1_11
@@ -1381,6 +1551,8 @@ def save_conf(): # Save schedule configuration
     config['light4_11'] = light4_11
     config['dark5_11'] = dark5_11
     config['light5_11'] = light5_11
+    config['dark6_11'] = dark6_11
+    config['light6_11'] = light6_11
     
     config['date1_11'] = date1_11
     config['month1_11'] = month1_11
@@ -1397,6 +1569,10 @@ def save_conf(): # Save schedule configuration
     config['date5_11'] = date5_11
     config['month5_11'] = month5_11
     config['year5_11'] = year5_11
+    config['date6_11'] = date6_11
+    config['month6_11'] = month6_11
+    config['year6_11'] = year6_11
+
     config['hourFrom1_11'] = hourFrom1_11
     config['minuteFrom1_11'] = minuteFrom1_11
     config['hourFrom2_11'] = hourFrom2_11
@@ -1407,6 +1583,8 @@ def save_conf(): # Save schedule configuration
     config['minuteFrom4_11'] = minuteFrom4_11
     config['hourFrom5_11'] = hourFrom5_11
     config['minuteFrom5_11'] = minuteFrom5_11
+    config['hourFrom6_11'] = hourFrom6_11
+    config['minuteFrom6_11'] = minuteFrom6_11
 
 
         #phase12
@@ -1430,6 +1608,10 @@ def save_conf(): # Save schedule configuration
     config['minOn5_12'] = minOn5_12
     config['hourOff5_12'] = hourOff5_12
     config['minOff5_12'] = minOff5_12
+    config['hourOn6_12'] = hourOn6_12
+    config['minOn6_12'] = minOn6_12
+    config['hourOff6_12'] = hourOff6_12
+    config['minOff6_12'] = minOff6_12
     
     config['dark1_12'] = dark1_12
     config['light1_12'] = light1_12
@@ -1441,6 +1623,8 @@ def save_conf(): # Save schedule configuration
     config['light4_12'] = light4_12
     config['dark5_12'] = dark5_12
     config['light5_12'] = light5_12
+    config['dark6_12'] = dark6_12
+    config['light6_12'] = light6_12
     
     config['date1_12'] = date1_12
     config['month1_12'] = month1_12
@@ -1457,6 +1641,10 @@ def save_conf(): # Save schedule configuration
     config['date5_12'] = date5_12
     config['month5_12'] = month5_12
     config['year5_12'] = year5_12
+    config['date6_12'] = date6_12
+    config['month6_12'] = month6_12
+    config['year6_12'] = year6_12
+
     config['hourFrom1_12'] = hourFrom1_12
     config['minuteFrom1_12'] = minuteFrom1_12
     config['hourFrom2_12'] = hourFrom2_12
@@ -1467,12 +1655,15 @@ def save_conf(): # Save schedule configuration
     config['minuteFrom4_12'] = minuteFrom4_12
     config['hourFrom5_12'] = hourFrom5_12
     config['minuteFrom5_12'] = minuteFrom5_12
+    config['hourFrom6_12'] = hourFrom6_12
+    config['minuteFrom6_12'] = minuteFrom6_12
 
     config['initLED1_str'] = initLED1_str
-    config['initLED2_str'] = initLED1_str
-    config['initLED3_str'] = initLED1_str
-    config['initLED4_str'] = initLED1_str
-    config['initLED5_str'] = initLED1_str
+    config['initLED2_str'] = initLED2_str
+    config['initLED3_str'] = initLED3_str
+    config['initLED4_str'] = initLED4_str
+    config['initLED5_str'] = initLED5_str
+    config['initLED6_str'] = initLED6_str
     
     config['tcycle_1_1'] = tcycle_1_1
     config['tcycle_1_2'] = tcycle_1_2
@@ -1540,6 +1731,19 @@ def save_conf(): # Save schedule configuration
     config['tcycle_5_11'] = tcycle_5_11
     config['tcycle_5_12'] = tcycle_5_12
 
+    config['tcycle_6_1'] = tcycle_6_1
+    config['tcycle_6_2'] = tcycle_6_2
+    config['tcycle_6_3'] = tcycle_6_3
+    config['tcycle_6_4'] = tcycle_6_4
+    config['tcycle_6_5'] = tcycle_6_5
+    config['tcycle_6_6'] = tcycle_6_6
+    config['tcycle_6_7'] = tcycle_6_7
+    config['tcycle_6_8'] = tcycle_6_8
+    config['tcycle_6_9'] = tcycle_6_9
+    config['tcycle_6_10'] = tcycle_6_10
+    config['tcycle_6_11'] = tcycle_6_11
+    config['tcycle_6_12'] = tcycle_6_12
+
     configfilename = configfilename_entry.get()
     writeToJSONFile(configfilename, config)
     status.pack(side='bottom', fill='x')
@@ -1565,103 +1769,113 @@ def read_conf(): # Read schedule configuration
 
     global hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, hourOn2_1, minOn2_1, hourOff2_1, minOff2_1 
     global hourOn3_1, minOn3_1, hourOff3_1, minOff3_1, hourOn4_1, minOn4_1, hourOff4_1, minOff4_1 
-    global hourOn5_1, minOn5_1, hourOff5_1, minOff5_1
-    global dark1_1, light1_1, dark2_1, light2_1, dark3_1, light3_1, dark4_1, light4_1, dark5_1, light5_1  
+    global hourOn5_1, minOn5_1, hourOff5_1, minOff5_1, hourOn6_1, minOn6_1, hourOff6_1, minOff6_1
+    global dark1_1, light1_1, dark2_1, light2_1, dark3_1, light3_1, dark4_1, light4_1, dark5_1, light5_1, dark6_1, light6_1  
 
     global hourOn1_2, minOn1_2, hourOff1_2, minOff1_2, hourOn2_2, minOn2_2, hourOff2_2, minOff2_2
     global hourOn3_2, minOn3_2, hourOff3_2, minOff3_2 , hourOn4_2, minOn4_2, hourOff4_2, minOff4_2 
-    global hourOn5_2, minOn5_2, hourOff5_2, minOff5_2  
-    global dark1_2, light1_2, dark2_2, light2_2, dark3_2, light3_2, dark4_2, light4_2, dark5_2, light5_2 
+    global hourOn5_2, minOn5_2, hourOff5_2, minOff5_2 , hourOn6_2, minOn6_2, hourOff6_2, minOff6_2
+    global dark1_2, light1_2, dark2_2, light2_2, dark3_2, light3_2, dark4_2, light4_2, dark5_2, light5_2, dark6_2, light6_2
     
     global date1_2, month1_2, year1_2, date2_2, month2_2, year2_2, date3_2, month3_2, year3_2, date4_2, month4_2, year4_2 
-    global date5_2, month5_2, year5_2
+    global date5_2, month5_2, year5_2, date6_2, month6_2, year6_2
     global hourFrom1_2, minuteFrom1_2, hourFrom2_2, minuteFrom2_2, hourFrom3_2, minuteFrom3_2, hourFrom4_2, minuteFrom4_2
-    global hourFrom5_2, minuteFrom5_2
+    global hourFrom5_2, minuteFrom5_2, hourFrom6_2, minuteFrom6_2
 
     global hourOn1_3, minOn1_3, hourOff1_3, minOff1_3, hourOn2_3, minOn2_3, hourOff2_3, minOff2_3
     global hourOn3_3, minOn3_3, hourOff3_3, minOff3_3, hourOn4_3, minOn4_3, hourOff4_3, minOff4_3 
-    global hourOn5_3, minOn5_3, hourOff5_3, minOff5_3  
+    global hourOn5_3, minOn5_3, hourOff5_3, minOff5_3, hourOn6_3, minOn6_3, hourOff6_3, minOff6_3 
     
     global dark1_3, light1_3, dark2_3, light2_3, dark3_3, light3_3, dark4_3, light4_3, dark5_3, light5_3
     global date1_3, month1_3, year1_3, date2_3, month2_3, year2_3, date3_3, month3_3, year3_3, date4_3, month4_3, year4_3 
-    global date5_3, month5_3, year5_3
+    global date5_3, month5_3, year5_3, date6_3, month6_3, year6_3
     global hourFrom1_3, minuteFrom1_3, hourFrom2_3, minuteFrom2_3, hourFrom3_3, minuteFrom3_3, hourFrom4_3, minuteFrom4_3 
-    global hourFrom5_3, minuteFrom5_3
+    global hourFrom5_3, minuteFrom5_3, hourFrom6_3, minuteFrom6_3
     
     global hourOn1_4, minOn1_4, hourOff1_4, minOff1_4, hourOn2_4, minOn2_4, hourOff2_4, minOff2_4
     global hourOn3_4, minOn3_4, hourOff3_4, minOff3_4, hourOn4_4, minOn4_4, hourOff4_4, minOff4_4 
-    global hourOn5_4, minOn5_4, hourOff5_4, minOff5_4 
+    global hourOn5_4, minOn5_4, hourOff5_4, minOff5_4, hourOn6_4, minOn6_4, hourOff6_4, minOff6_4 
     
-    global dark1_4, light1_4, dark2_4, light2_4, dark3_4, light3_4, dark4_4, light4_4, dark5_4, light5_4
+    global dark1_4, light1_4, dark2_4, light2_4, dark3_4, light3_4, dark4_4, light4_4, dark5_4, light5_4, dark6_4, light6_4
      
     global date1_4, month1_4, year1_4, date2_4, month2_4, year2_4, date3_4, month3_4, year3_4, date4_4, month4_4, year4_4 
-    global date5_4, month5_4, year5_4
+    global date5_4, month5_4, year5_4, date6_4, month6_4, year6_4
     
     global hourFrom1_4, minuteFrom1_4, hourFrom2_4, minuteFrom2_4, hourFrom3_4, minuteFrom3_4, hourFrom4_4, minuteFrom4_4 
-    global hourFrom5_4, minuteFrom5_4
+    global hourFrom5_4, minuteFrom5_4, hourFrom6_4, minuteFrom6_4
 
     #Phase 5
     global hourOn1_5, minOn1_5, hourOff1_5, minOff1_5, hourOn2_5, minOn2_5, hourOff2_5, minOff2_5
     global hourOn3_5, minOn3_5, hourOff3_5, minOff3_5, hourOn4_5, minOn4_5, hourOff4_5, minOff4_5 
-    global hourOn5_5, minOn5_5, hourOff5_5, minOff5_5 
+    global hourOn5_5, minOn5_5, hourOff5_5, minOff5_5, hourOn6_5, minOn6_5, hourOff6_5, minOff6_5 
     
-    global dark1_5, light1_5, dark2_5, light2_5, dark3_5, light3_5, dark4_5, light4_5, dark5_5, light5_5
+    global dark1_5, light1_5, dark2_5, light2_5, dark3_5, light3_5, dark4_5, light4_5, dark5_5, light5_5, dark6_5, light6_5
      
     global date1_5, month1_5, year1_5, date2_5, month2_5, year2_5, date3_5, month3_5, year3_5, date4_5, month4_5, year4_5 
-    global date5_5, month5_5, year5_5
+    global date5_5, month5_5, year5_5, date6_5, month6_5, year6_5
     
     global hourFrom1_5, minuteFrom1_5, hourFrom2_5, minuteFrom2_5, hourFrom3_5, minuteFrom3_5, hourFrom4_5, minuteFrom4_5 
-    global hourFrom5_5, minuteFrom5_5
+    global hourFrom5_5, minuteFrom5_5, hourFrom6_5, minuteFrom6_5
 
 
+    #Phase 6
     global hourOn1_6, minOn1_6, hourOff1_6, minOff1_6, dark1_6, light1_6, date1_6, month1_6, year1_6, hourFrom1_6, minuteFrom1_6
     global hourOn2_6, minOn2_6, hourOff2_6, minOff2_6, dark2_6, light2_6, date2_6, month2_6, year2_6, hourFrom2_6, minuteFrom2_6
     global hourOn3_6, minOn3_6, hourOff3_6, minOff3_6, dark3_6, light3_6, date3_6, month3_6, year3_6, hourFrom3_6, minuteFrom3_6
     global hourOn4_6, minOn4_6, hourOff4_6, minOff4_6, dark4_6, light4_6, date4_6, month4_6, year4_6, hourFrom4_6, minuteFrom4_6
     global hourOn5_6, minOn5_6, hourOff5_6, minOff5_6, dark5_6, light5_6, date5_6, month5_6, year5_6, hourFrom5_6, minuteFrom5_6
+    global hourOn6_6, minOn6_6, hourOff6_6, minOff6_6, dark6_6, light6_6, date6_6, month6_6, year6_6, hourFrom6_6, minuteFrom6_6
 
     global hourOn1_7, minOn1_7, hourOff1_7, minOff1_7, dark1_7, light1_7, date1_7, month1_7, year1_7, hourFrom1_7, minuteFrom1_7
     global hourOn2_7, minOn2_7, hourOff2_7, minOff2_7, dark2_7, light2_7, date2_7, month2_7, year2_7, hourFrom2_7, minuteFrom2_7
     global hourOn3_7, minOn3_7, hourOff3_7, minOff3_7, dark3_7, light3_7, date3_7, month3_7, year3_7, hourFrom3_7, minuteFrom3_7
     global hourOn4_7, minOn4_7, hourOff4_7, minOff4_7, dark4_7, light4_7, date4_7, month4_7, year4_7, hourFrom4_7, minuteFrom4_7
     global hourOn5_7, minOn5_7, hourOff5_7, minOff5_7, dark5_7, light5_7, date5_7, month5_7, year5_7, hourFrom5_7, minuteFrom5_7
+    global hourOn6_7, minOn6_7, hourOff6_7, minOff6_7, dark6_7, light6_7, date6_7, month6_7, year6_7, hourFrom6_7, minuteFrom6_7
 
     global hourOn1_8, minOn1_8, hourOff1_8, minOff1_8, dark1_8, light1_8, date1_8, month1_8, year1_8, hourFrom1_8, minuteFrom1_8
     global hourOn2_8, minOn2_8, hourOff2_8, minOff2_8, dark2_8, light2_8, date2_8, month2_8, year2_8, hourFrom2_8, minuteFrom2_8
     global hourOn3_8, minOn3_8, hourOff3_8, minOff3_8, dark3_8, light3_8, date3_8, month3_8, year3_8, hourFrom3_8, minuteFrom3_8
     global hourOn4_8, minOn4_8, hourOff4_8, minOff4_8, dark4_8, light4_8, date4_8, month4_8, year4_8, hourFrom4_8, minuteFrom4_8
     global hourOn5_8, minOn5_8, hourOff5_8, minOff5_8, dark5_8, light5_8, date5_8, month5_8, year5_8, hourFrom5_8, minuteFrom5_8
+    global hourOn6_8, minOn6_8, hourOff6_8, minOff6_8, dark6_8, light6_8, date6_8, month6_8, year6_8, hourFrom6_8, minuteFrom6_8
 
     global hourOn1_9, minOn1_9, hourOff1_9, minOff1_9, dark1_9, light1_9, date1_9, month1_9, year1_9, hourFrom1_9, minuteFrom1_9
     global hourOn2_9, minOn2_9, hourOff2_9, minOff2_9, dark2_9, light2_9, date2_9, month2_9, year2_9, hourFrom2_9, minuteFrom2_9
     global hourOn3_9, minOn3_9, hourOff3_9, minOff3_9, dark3_9, light3_9, date3_9, month3_9, year3_9, hourFrom3_9, minuteFrom3_9
     global hourOn4_9, minOn4_9, hourOff4_9, minOff4_9, dark4_9, light4_9, date4_9, month4_9, year4_9, hourFrom4_9, minuteFrom4_9
     global hourOn5_9, minOn5_9, hourOff5_9, minOff5_9, dark5_9, light5_9, date5_9, month5_9, year5_9, hourFrom5_9, minuteFrom5_9
+    global hourOn6_9, minOn6_9, hourOff6_9, minOff6_9, dark6_9, light6_9, date6_9, month6_9, year6_9, hourFrom6_9, minuteFrom6_9
 
     global hourOn1_10, minOn1_10, hourOff1_10, minOff1_10, dark1_10, light1_10, date1_10, month1_10, year1_10, hourFrom1_10, minuteFrom1_10
     global hourOn2_10, minOn2_10, hourOff2_10, minOff2_10, dark2_10, light2_10, date2_10, month2_10, year2_10, hourFrom2_10, minuteFrom2_10
     global hourOn3_10, minOn3_10, hourOff3_10, minOff3_10, dark3_10, light3_10, date3_10, month3_10, year3_10, hourFrom3_10, minuteFrom3_10
     global hourOn4_10, minOn4_10, hourOff4_10, minOff4_10, dark4_10, light4_10, date4_10, month4_10, year4_10, hourFrom4_10, minuteFrom4_10
     global hourOn5_10, minOn5_10, hourOff5_10, minOff5_10, dark5_10, light5_10, date5_10, month5_10, year5_10, hourFrom5_10, minuteFrom5_10
+    global hourOn6_10, minOn6_10, hourOff6_10, minOff6_10, dark6_10, light6_10, date6_10, month6_10, year6_10, hourFrom6_10, minuteFrom6_10
 
     global hourOn1_11, minOn1_11, hourOff1_11, minOff1_11, dark1_11, light1_11, date1_11, month1_11, year1_11, hourFrom1_11, minuteFrom1_11
     global hourOn2_11, minOn2_11, hourOff2_11, minOff2_11, dark2_11, light2_11, date2_11, month2_11, year2_11, hourFrom2_11, minuteFrom2_11
     global hourOn3_11, minOn3_11, hourOff3_11, minOff3_11, dark3_11, light3_11, date3_11, month3_11, year3_11, hourFrom3_11, minuteFrom3_11
     global hourOn4_11, minOn4_11, hourOff4_11, minOff4_11, dark4_11, light4_11, date4_11, month4_11, year4_11, hourFrom4_11, minuteFrom4_11
     global hourOn5_11, minOn5_11, hourOff5_11, minOff5_11, dark5_11, light5_11, date5_11, month5_11, year5_11, hourFrom5_11, minuteFrom5_11
+    global hourOn6_11, minOn6_11, hourOff6_11, minOff6_11, dark6_11, light6_11, date6_11, month6_11, year6_11, hourFrom6_11, minuteFrom6_11
 
     global hourOn1_12, minOn1_12, hourOff1_12, minOff1_12, dark1_12, light1_12, date1_12, month1_12, year1_12, hourFrom1_12, minuteFrom1_12
     global hourOn2_12, minOn2_12, hourOff2_12, minOff2_12, dark2_12, light2_12, date2_12, month2_12, year2_12, hourFrom2_12, minuteFrom2_12
     global hourOn3_12, minOn3_12, hourOff3_12, minOff3_12, dark3_12, light3_12, date3_12, month3_12, year3_12, hourFrom3_12, minuteFrom3_12
     global hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12
     global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12
+    global hourOn6_12, minOn6_12, hourOff6_12, minOff6_12, dark6_12, light6_12, date6_12, month6_12, year6_12, hourFrom6_12, minuteFrom6_12
 
-    global initLED1_str, initLED2_str, initLED3_str, initLED4_str , initLED5_str
+    global initLED1_str, initLED2_str, initLED3_str, initLED4_str , initLED5_str, initLED6_str
     global tcycle_1_1, tcycle_1_2,tcycle_1_3, tcycle_1_4, tcycle_1_5, tcycle_1_6, tcycle_1_7, tcycle_1_8, tcycle_1_9, tcycle_1_10, tcycle_1_11, tcycle_1_12
     global tcycle_2_1, tcycle_2_2,tcycle_2_3, tcycle_2_4, tcycle_2_5, tcycle_2_6, tcycle_2_7, tcycle_2_8, tcycle_2_9, tcycle_2_10, tcycle_2_11, tcycle_2_12
     global tcycle_3_1, tcycle_3_2,tcycle_3_3, tcycle_3_4, tcycle_3_5, tcycle_3_6, tcycle_3_7, tcycle_3_8, tcycle_3_9, tcycle_3_10, tcycle_3_11, tcycle_3_12
     global tcycle_4_1, tcycle_4_2,tcycle_4_3, tcycle_4_4, tcycle_4_5, tcycle_4_6, tcycle_4_7, tcycle_4_8, tcycle_4_9, tcycle_4_10, tcycle_4_11, tcycle_4_12
     global tcycle_5_1, tcycle_5_2,tcycle_5_3, tcycle_5_4, tcycle_5_5, tcycle_5_6, tcycle_5_7, tcycle_5_8, tcycle_5_9, tcycle_5_10, tcycle_5_11, tcycle_5_12
+    global tcycle_5_1, tcycle_5_2,tcycle_5_3, tcycle_5_4, tcycle_5_5, tcycle_5_6, tcycle_5_7, tcycle_5_8, tcycle_5_9, tcycle_5_10, tcycle_5_11, tcycle_5_12
+    global tcycle_6_1, tcycle_6_2,tcycle_6_3, tcycle_6_4, tcycle_6_5, tcycle_6_6, tcycle_6_7, tcycle_6_8, tcycle_6_9, tcycle_6_10, tcycle_6_11, tcycle_6_12
 
     try:
         minuteFrom5_12 = config['minuteFrom5_12'] 
@@ -1690,6 +1904,11 @@ def read_conf(): # Read schedule configuration
         minOn5_1 = config['minOn5_1'] 
         hourOff5_1 = config['hourOff5_1'] 
         minOff5_1 = config['minOff5_1'] 
+        hourOn6_1 = config['hourOn6_1']
+        minOn6_1 = config['minOn6_1'] 
+        hourOff6_1 = config['hourOff6_1'] 
+        minOff6_1 = config['minOff6_1'] 
+
         
         dark1_1 = config['dark1_1'] 
         light1_1 = config['light1_1']
@@ -1701,6 +1920,8 @@ def read_conf(): # Read schedule configuration
         light4_1 = config['light4_1'] 
         dark5_1 = config['dark5_1'] 
         light5_1 = config['light5_1'] 
+        dark6_1 = config['dark6_1'] 
+        light6_1 = config['light6_1'] 
 
         hourOn1_2 = config['hourOn1_2'] 
         minOn1_2 = config['minOn1_2'] 
@@ -1722,6 +1943,10 @@ def read_conf(): # Read schedule configuration
         minOn5_2 = config['minOn5_2'] 
         hourOff5_2 = config['hourOff5_2'] 
         minOff5_2 = config['minOff5_2'] 
+        hourOn6_2 = config['hourOn6_2'] 
+        minOn6_2 = config['minOn6_2'] 
+        hourOff6_2 = config['hourOff6_2'] 
+        minOff6_2 = config['minOff6_2'] 
         
         dark1_2 = config['dark1_2'] 
         light1_2 = config['light1_2'] 
@@ -1733,6 +1958,8 @@ def read_conf(): # Read schedule configuration
         light4_2 = config['light4_2'] 
         dark5_2 = config['dark5_2'] 
         light5_2 = config['light5_2'] 
+        dark6_2 = config['dark6_2'] 
+        light6_2 = config['light6_2'] 
         
         date1_2 = config['date1_2']
         month1_2 = config['month1_2'] 
@@ -1749,6 +1976,10 @@ def read_conf(): # Read schedule configuration
         date5_2 = config['date5_2'] 
         month5_2 = config['month5_2'] 
         year5_2 = config['year5_2'] 
+        date6_2 = config['date6_2'] 
+        month6_2 = config['month6_2'] 
+        year6_2 = config['year6_2'] 
+
         hourFrom1_2 = config['hourFrom1_2'] 
         minuteFrom1_2 = config['minuteFrom1_2'] 
         hourFrom2_2 = config['hourFrom2_2'] 
@@ -1759,6 +1990,8 @@ def read_conf(): # Read schedule configuration
         minuteFrom4_2 = config['minuteFrom4_2'] 
         hourFrom5_2 = config['hourFrom5_2'] 
         minuteFrom5_2 = config['minuteFrom5_2'] 
+        hourFrom6_2 = config['hourFrom6_2'] 
+        minuteFrom6_2 = config['minuteFrom6_2'] 
         
         hourOn1_3 = config['hourOn1_3'] 
         minOn1_3 = config['minOn1_3'] 
@@ -1780,6 +2013,10 @@ def read_conf(): # Read schedule configuration
         minOn5_3 = config['minOn5_3'] 
         hourOff5_3 = config['hourOff5_3'] 
         minOff5_3 = config['minOff5_3'] 
+        hourOn6_3 = config['hourOn6_3'] 
+        minOn6_3 = config['minOn6_3'] 
+        hourOff6_3 = config['hourOff6_3'] 
+        minOff6_3 = config['minOff6_3'] 
         
         dark1_3 = config['dark1_3'] 
         light1_3 = config['light1_3'] 
@@ -1791,6 +2028,8 @@ def read_conf(): # Read schedule configuration
         light4_3 = config['light4_3'] 
         dark5_3 = config['dark5_3'] 
         light5_3 = config['light5_3'] 
+        dark6_3 = config['dark6_3'] 
+        light6_3 = config['light6_3'] 
         
         date1_3 = config['date1_3']
         month1_3 = config['month1_3'] 
@@ -1807,6 +2046,10 @@ def read_conf(): # Read schedule configuration
         date5_3 = config['date5_3'] 
         month5_3 = config['month5_3'] 
         year5_3 = config['year5_3'] 
+        date6_3 = config['date6_3'] 
+        month6_3 = config['month6_3'] 
+        year6_3 = config['year6_3'] 
+
         hourFrom1_3 = config['hourFrom1_3'] 
         minuteFrom1_3 = config['minuteFrom1_3'] 
         hourFrom2_3 = config['hourFrom2_3'] 
@@ -1817,6 +2060,8 @@ def read_conf(): # Read schedule configuration
         minuteFrom4_3 = config['minuteFrom4_3'] 
         hourFrom5_3 = config['hourFrom5_3'] 
         minuteFrom5_3 = config['minuteFrom5_3'] 
+        hourFrom6_3 = config['hourFrom6_3'] 
+        minuteFrom6_3 = config['minuteFrom6_3'] 
         
         hourOn1_4 = config['hourOn1_4'] 
         minOn1_4 = config['minOn1_4'] 
@@ -1838,6 +2083,10 @@ def read_conf(): # Read schedule configuration
         minOn5_4 = config['minOn5_4'] 
         hourOff5_4 = config['hourOff5_4'] 
         minOff5_4 = config['minOff5_4'] 
+        hourOn6_4 = config['hourOn6_4'] 
+        minOn6_4 = config['minOn6_4'] 
+        hourOff6_4 = config['hourOff6_4'] 
+        minOff6_4 = config['minOff6_4'] 
         
         dark1_4 = config['dark1_4'] 
         light1_4 = config['light1_4'] 
@@ -1849,6 +2098,8 @@ def read_conf(): # Read schedule configuration
         light4_4 = config['light4_4'] 
         dark5_4 = config['dark5_4'] 
         light5_4 = config['light5_4'] 
+        dark6_4 = config['dark6_4'] 
+        light6_4 = config['light6_4'] 
         
         date1_4 = config['date1_4']
         month1_4 = config['month1_4'] 
@@ -1865,6 +2116,10 @@ def read_conf(): # Read schedule configuration
         date5_4 = config['date5_4'] 
         month5_4 = config['month5_4'] 
         year5_4 = config['year5_4'] 
+        date6_4 = config['date6_4'] 
+        month6_4 = config['month6_4'] 
+        year6_4 = config['year6_4'] 
+
         hourFrom1_4 = config['hourFrom1_4'] 
         minuteFrom1_4 = config['minuteFrom1_4'] 
         hourFrom2_4 = config['hourFrom2_4'] 
@@ -1875,6 +2130,8 @@ def read_conf(): # Read schedule configuration
         minuteFrom4_4 = config['minuteFrom4_4'] 
         hourFrom5_4 = config['hourFrom5_4'] 
         minuteFrom5_4 = config['minuteFrom5_4'] 
+        hourFrom6_4 = config['hourFrom6_4'] 
+        minuteFrom6_4 = config['minuteFrom6_4'] 
 
         
     #phase5
@@ -1899,6 +2156,10 @@ def read_conf(): # Read schedule configuration
         minOn5_5 = config['minOn5_5']
         hourOff5_5 =config['hourOff5_5']
         minOff5_5 =config['minOff5_5']  
+        hourOn6_5 = config['hourOn6_5']  
+        minOn6_5 = config['minOn6_5']
+        hourOff6_5 =config['hourOff6_5']
+        minOff6_5 =config['minOff6_5']  
         
         dark1_5 = config['dark1_5'] 
         light1_5 = config['light1_5'] 
@@ -1910,6 +2171,8 @@ def read_conf(): # Read schedule configuration
         light4_5 = config['light4_5'] 
         dark5_5 = config['dark5_5'] 
         light5_5 = config['light5_5'] 
+        dark6_5 = config['dark6_5'] 
+        light6_5 = config['light6_5'] 
         
         date1_5 = config['date1_5'] 
         month1_5 = config['month1_5']
@@ -1926,6 +2189,10 @@ def read_conf(): # Read schedule configuration
         date5_5 = config['date5_5'] 
         month5_5 = config['month5_5']
         year5_5 = config['year5_5'] 
+        date6_5 = config['date6_5'] 
+        month6_5 = config['month6_5']
+        year6_5 = config['year6_5'] 
+
         hourFrom1_5 = config['hourFrom1_5'] 
         minuteFrom1_5 = config['minuteFrom1_5'] 
         hourFrom2_5 = config['hourFrom2_5'] 
@@ -1936,7 +2203,8 @@ def read_conf(): # Read schedule configuration
         minuteFrom4_5 = config['minuteFrom4_5'] 
         hourFrom5_5 = config['hourFrom5_5'] 
         minuteFrom5_5 = config['minuteFrom5_5'] 
-
+        hourFrom6_5 = config['hourFrom6_5'] 
+        minuteFrom6_5 = config['minuteFrom6_5'] 
     
 
 
@@ -1962,7 +2230,11 @@ def read_conf(): # Read schedule configuration
         minOn5_6 = config['minOn5_6']
         hourOff5_6 =config['hourOff5_6']
         minOff5_6 =config['minOff5_6']  
-
+        hourOn6_6 = config['hourOn6_6']  
+        minOn6_6 = config['minOn6_6']
+        hourOff6_6 =config['hourOff6_6']
+        minOff6_6 =config['minOff6_6']  
+        
         dark1_6 = config['dark1_6'] 
         light1_6 = config['light1_6'] 
         dark2_6 = config['dark2_6'] 
@@ -1973,47 +2245,28 @@ def read_conf(): # Read schedule configuration
         light4_6 = config['light4_6'] 
         dark5_6 = config['dark5_6'] 
         light5_6 = config['light5_6'] 
-
+        dark6_6 = config['dark6_6'] 
+        light6_6 = config['light6_6'] 
+        
         date1_6 = config['date1_6'] 
         month1_6 = config['month1_6']
         year1_6 = config['year1_6'] 
-        hourOn1_6 =config['hourOn1_6']  
-        minOn1_6 = config['minOn1_6'] 
-        hourOff1_6 = config['hourOff1_6'] 
-        minOff1_6 =config['minOff1_6']  
-        hourOn2_6 = config['hourOn2_6']  
-        minOn2_6 = config['minOn2_6'] 
-        hourOff2_6 = config['hourOff2_6']
-        minOff2_6 = config['minOff2_6']  
-        hourOn3_6 = config['hourOn3_6']  
-        minOn3_6 = config['minOn3_6'] 
-        hourOff3_6 =config['hourOff3_6']
-        minOff3_6 = config['minOff3_6'] 
-        hourOn4_6 =config['hourOn4_6']  
-        minOn4_6 = config['minOn4_6']
-        hourOff4_6 = config['hourOff4_6']
-        minOff4_6 = config['minOff4_6']  
-        hourOn5_6 = config['hourOn5_6']  
-        minOn5_6 = config['minOn5_6']
-        hourOff5_6 =config['hourOff5_6']
-        minOff5_6 =config['minOff5_6']  
-
-        dark1_6 = config['dark1_6'] 
-        light1_6 = config['light1_6'] 
-        dark2_6 = config['dark2_6'] 
-        light2_6 = config['light2_6'] 
-        dark3_6 = config['dark3_6'] 
-        light3_6 = config['light3_6'] 
-        dark4_6 = config['dark4_6'] 
-        light4_6 = config['light4_6'] 
-        dark5_6 = config['dark5_6'] 
-        light5_6 = config['light5_6'] 
-
-        date1_6 = config['date1_6'] 
+        date2_6 = config['date2_6'] 
+        month2_6 = config['month2_6']
+        year2_6 = config['year2_6'] 
+        date3_6 = config['date3_6'] 
+        month3_6 = config['month3_6']
+        year3_6 = config['year3_6'] 
+        date4_6 = config['date4_6'] 
+        month4_6 = config['month4_6']
         year4_6 = config['year4_6'] 
         date5_6 = config['date5_6'] 
         month5_6 = config['month5_6']
         year5_6 = config['year5_6'] 
+        date6_6 = config['date6_6'] 
+        month6_6 = config['month6_6']
+        year6_6 = config['year6_6'] 
+
         hourFrom1_6 = config['hourFrom1_6'] 
         minuteFrom1_6 = config['minuteFrom1_6'] 
         hourFrom2_6 = config['hourFrom2_6'] 
@@ -2024,6 +2277,8 @@ def read_conf(): # Read schedule configuration
         minuteFrom4_6 = config['minuteFrom4_6'] 
         hourFrom5_6 = config['hourFrom5_6'] 
         minuteFrom5_6 = config['minuteFrom5_6'] 
+        hourFrom6_6 = config['hourFrom6_6'] 
+        minuteFrom6_6 = config['minuteFrom6_6'] 
     
 #Phase 7 
     
@@ -2047,6 +2302,10 @@ def read_conf(): # Read schedule configuration
         minOn5_7 = config['minOn5_7']
         hourOff5_7 =config['hourOff5_7']
         minOff5_7 =config['minOff5_7']  
+        hourOn6_7 = config['hourOn6_7']  
+        minOn6_7 = config['minOn6_7']
+        hourOff6_7 =config['hourOff6_7']
+        minOff6_7 =config['minOff6_7']  
         
         dark1_7 = config['dark1_7'] 
         light1_7 = config['light1_7'] 
@@ -2058,6 +2317,8 @@ def read_conf(): # Read schedule configuration
         light4_7 = config['light4_7'] 
         dark5_7 = config['dark5_7'] 
         light5_7 = config['light5_7'] 
+        dark6_7 = config['dark6_7'] 
+        light6_7 = config['light6_7'] 
         
         date1_7 = config['date1_7'] 
         month1_7 = config['month1_7']
@@ -2074,6 +2335,10 @@ def read_conf(): # Read schedule configuration
         date5_7 = config['date5_7'] 
         month5_7 = config['month5_7']
         year5_7 = config['year5_7'] 
+        date6_7 = config['date6_7'] 
+        month6_7 = config['month6_7']
+        year6_7 = config['year6_7'] 
+
         hourFrom1_7 = config['hourFrom1_7'] 
         minuteFrom1_7 = config['minuteFrom1_7'] 
         hourFrom2_7 = config['hourFrom2_7'] 
@@ -2084,6 +2349,8 @@ def read_conf(): # Read schedule configuration
         minuteFrom4_7 = config['minuteFrom4_7'] 
         hourFrom5_7 = config['hourFrom5_7'] 
         minuteFrom5_7 = config['minuteFrom5_7'] 
+        hourFrom6_7 = config['hourFrom6_7'] 
+        minuteFrom6_7 = config['minuteFrom6_7'] 
     
 
     #Phase 8
@@ -2108,6 +2375,10 @@ def read_conf(): # Read schedule configuration
         minOn5_8 = config['minOn5_8']
         hourOff5_8 =config['hourOff5_8']
         minOff5_8 =config['minOff5_8']  
+        hourOn6_8 = config['hourOn6_8']  
+        minOn6_8 = config['minOn6_8']
+        hourOff6_8 =config['hourOff6_8']
+        minOff6_8 =config['minOff6_8']  
         
         dark1_8 = config['dark1_8'] 
         light1_8 = config['light1_8'] 
@@ -2119,6 +2390,8 @@ def read_conf(): # Read schedule configuration
         light4_8 = config['light4_8'] 
         dark5_8 = config['dark5_8'] 
         light5_8 = config['light5_8'] 
+        dark6_8 = config['dark6_8'] 
+        light6_8 = config['light6_8'] 
         
         date1_8 = config['date1_8'] 
         month1_8 = config['month1_8']
@@ -2135,6 +2408,10 @@ def read_conf(): # Read schedule configuration
         date5_8 = config['date5_8'] 
         month5_8 = config['month5_8']
         year5_8 = config['year5_8'] 
+        date6_8 = config['date6_8'] 
+        month6_8 = config['month6_8']
+        year6_8 = config['year6_8'] 
+
         hourFrom1_8 = config['hourFrom1_8'] 
         minuteFrom1_8 = config['minuteFrom1_8'] 
         hourFrom2_8 = config['hourFrom2_8'] 
@@ -2145,6 +2422,8 @@ def read_conf(): # Read schedule configuration
         minuteFrom4_8 = config['minuteFrom4_8'] 
         hourFrom5_8 = config['hourFrom5_8'] 
         minuteFrom5_8 = config['minuteFrom5_8'] 
+        hourFrom6_8 = config['hourFrom6_8'] 
+        minuteFrom6_8 = config['minuteFrom6_8'] 
 
     
 
@@ -2171,6 +2450,10 @@ def read_conf(): # Read schedule configuration
         minOn5_9 = config['minOn5_9']
         hourOff5_9 =config['hourOff5_9']
         minOff5_9 =config['minOff5_9']  
+        hourOn6_9 = config['hourOn6_9']  
+        minOn6_9 = config['minOn6_9']
+        hourOff6_9 =config['hourOff6_9']
+        minOff6_9 =config['minOff6_9']  
         
         dark1_9 = config['dark1_9'] 
         light1_9 = config['light1_9'] 
@@ -2182,6 +2465,8 @@ def read_conf(): # Read schedule configuration
         light4_9 = config['light4_9'] 
         dark5_9 = config['dark5_9'] 
         light5_9 = config['light5_9'] 
+        dark6_9 = config['dark6_9'] 
+        light6_9 = config['light6_9'] 
         
         date1_9 = config['date1_9'] 
         month1_9 = config['month1_9']
@@ -2198,6 +2483,10 @@ def read_conf(): # Read schedule configuration
         date5_9 = config['date5_9'] 
         month5_9 = config['month5_9']
         year5_9 = config['year5_9'] 
+        date6_9 = config['date6_9'] 
+        month6_9 = config['month6_9']
+        year6_9 = config['year6_9'] 
+
         hourFrom1_9 = config['hourFrom1_9'] 
         minuteFrom1_9 = config['minuteFrom1_9'] 
         hourFrom2_9 = config['hourFrom2_9'] 
@@ -2208,6 +2497,8 @@ def read_conf(): # Read schedule configuration
         minuteFrom4_9 = config['minuteFrom4_9'] 
         hourFrom5_9 = config['hourFrom5_9'] 
         minuteFrom5_9 = config['minuteFrom5_9'] 
+        hourFrom6_9 = config['hourFrom6_9'] 
+        minuteFrom6_9 = config['minuteFrom6_9'] 
 
 
      
@@ -2235,6 +2526,10 @@ def read_conf(): # Read schedule configuration
         minOn5_10 = config['minOn5_10']
         hourOff5_10 =config['hourOff5_10']
         minOff5_10 =config['minOff5_10']  
+        hourOn6_10 = config['hourOn6_10']  
+        minOn6_10 = config['minOn6_10']
+        hourOff6_10 =config['hourOff6_10']
+        minOff6_10 =config['minOff6_10']  
         
         dark1_10 = config['dark1_10'] 
         light1_10 = config['light1_10'] 
@@ -2246,6 +2541,8 @@ def read_conf(): # Read schedule configuration
         light4_10 = config['light4_10'] 
         dark5_10 = config['dark5_10'] 
         light5_10 = config['light5_10'] 
+        dark6_10 = config['dark6_10'] 
+        light6_10 = config['light6_10'] 
         
         date1_10 = config['date1_10'] 
         month1_10 = config['month1_10']
@@ -2262,6 +2559,10 @@ def read_conf(): # Read schedule configuration
         date5_10 = config['date5_10'] 
         month5_10 = config['month5_10']
         year5_10 = config['year5_10'] 
+        date6_10 = config['date6_10'] 
+        month6_10 = config['month6_10']
+        year6_10 = config['year6_10'] 
+
         hourFrom1_10 = config['hourFrom1_10'] 
         minuteFrom1_10 = config['minuteFrom1_10'] 
         hourFrom2_10 = config['hourFrom2_10'] 
@@ -2272,6 +2573,8 @@ def read_conf(): # Read schedule configuration
         minuteFrom4_10 = config['minuteFrom4_10'] 
         hourFrom5_10 = config['hourFrom5_10'] 
         minuteFrom5_10 = config['minuteFrom5_10'] 
+        hourFrom6_10 = config['hourFrom6_10'] 
+        minuteFrom6_10 = config['minuteFrom6_10'] 
     
 
     #Phase 11
@@ -2296,6 +2599,10 @@ def read_conf(): # Read schedule configuration
         minOn5_11 = config['minOn5_11']
         hourOff5_11 =config['hourOff5_11']
         minOff5_11 =config['minOff5_11']  
+        hourOn6_11 = config['hourOn6_11']  
+        minOn6_11 = config['minOn6_11']
+        hourOff6_11 =config['hourOff6_11']
+        minOff6_11 =config['minOff6_11']  
         
         dark1_11 = config['dark1_11'] 
         light1_11 = config['light1_11'] 
@@ -2307,6 +2614,8 @@ def read_conf(): # Read schedule configuration
         light4_11 = config['light4_11'] 
         dark5_11 = config['dark5_11'] 
         light5_11 = config['light5_11'] 
+        dark6_11 = config['dark6_11'] 
+        light6_11 = config['light6_11'] 
         
         date1_11 = config['date1_11'] 
         month1_11 = config['month1_11']
@@ -2323,6 +2632,10 @@ def read_conf(): # Read schedule configuration
         date5_11 = config['date5_11'] 
         month5_11 = config['month5_11']
         year5_11 = config['year5_11'] 
+        date6_11 = config['date6_11'] 
+        month6_11 = config['month6_11']
+        year6_11 = config['year6_11'] 
+
         hourFrom1_11 = config['hourFrom1_11'] 
         minuteFrom1_11 = config['minuteFrom1_11'] 
         hourFrom2_11 = config['hourFrom2_11'] 
@@ -2333,6 +2646,8 @@ def read_conf(): # Read schedule configuration
         minuteFrom4_11 = config['minuteFrom4_11'] 
         hourFrom5_11 = config['hourFrom5_11'] 
         minuteFrom5_11 = config['minuteFrom5_11'] 
+        hourFrom6_11 = config['hourFrom6_11'] 
+        minuteFrom6_11 = config['minuteFrom6_11'] 
     
 
     #Phase 12
@@ -2357,6 +2672,10 @@ def read_conf(): # Read schedule configuration
         minOn5_12 = config['minOn5_12']
         hourOff5_12 =config['hourOff5_12']
         minOff5_12 =config['minOff5_12']  
+        hourOn6_12 = config['hourOn6_12']  
+        minOn6_12 = config['minOn6_12']
+        hourOff6_12 =config['hourOff6_12']
+        minOff6_12 =config['minOff6_12']  
         
         dark1_12 = config['dark1_12'] 
         light1_12 = config['light1_12'] 
@@ -2368,6 +2687,8 @@ def read_conf(): # Read schedule configuration
         light4_12 = config['light4_12'] 
         dark5_12 = config['dark5_12'] 
         light5_12 = config['light5_12'] 
+        dark6_12 = config['dark6_12'] 
+        light6_12 = config['light6_12'] 
         
         date1_12 = config['date1_12'] 
         month1_12 = config['month1_12']
@@ -2384,6 +2705,10 @@ def read_conf(): # Read schedule configuration
         date5_12 = config['date5_12'] 
         month5_12 = config['month5_12']
         year5_12 = config['year5_12'] 
+        date6_12 = config['date6_12'] 
+        month6_12 = config['month6_12']
+        year6_12 = config['year6_12'] 
+
         hourFrom1_12 = config['hourFrom1_12'] 
         minuteFrom1_12 = config['minuteFrom1_12'] 
         hourFrom2_12 = config['hourFrom2_12'] 
@@ -2393,13 +2718,18 @@ def read_conf(): # Read schedule configuration
         hourFrom4_12 =config['hourFrom4_12'] 
         minuteFrom4_12 = config['minuteFrom4_12'] 
         hourFrom5_12 = config['hourFrom5_12'] 
+        minuteFrom5_12 = config['minuteFrom5_12'] 
+        hourFrom6_12 = config['hourFrom6_12'] 
+        minuteFrom6_12 = config['minuteFrom6_12'] 
+
         
         initLED1_str = config['initLED1_str']
-        initLED1_str = config['initLED2_str']
-        initLED1_str = config['initLED3_str']
-        initLED1_str = config['initLED4_str']
-        initLED1_str = config['initLED5_str']
-        
+        initLED2_str = config['initLED2_str']
+        initLED3_str = config['initLED3_str']
+        initLED4_str = config['initLED4_str']
+        initLED5_str = config['initLED5_str']
+        initLED6_str = config['initLED6_str']
+
         tcycle_1_1 = config['tcycle_1_1']
         tcycle_1_2 = config['tcycle_1_2']
         tcycle_1_3 = config['tcycle_1_3']
@@ -2466,10 +2796,24 @@ def read_conf(): # Read schedule configuration
         tcycle_5_11 = config['tcycle_5_11']
         tcycle_5_12 = config['tcycle_5_12']
 
+        tcycle_6_1 = config['tcycle_6_1']
+        tcycle_6_2 = config['tcycle_6_2']
+        tcycle_6_3 = config['tcycle_6_3']
+        tcycle_6_4 = config['tcycle_6_4']
+        tcycle_6_5 = config['tcycle_6_5']
+        tcycle_6_6 = config['tcycle_6_6']
+        tcycle_6_7 = config['tcycle_6_7']
+        tcycle_6_8 = config['tcycle_6_8']
+        tcycle_6_9 = config['tcycle_6_9']
+        tcycle_6_10 = config['tcycle_6_10']
+        tcycle_6_11 = config['tcycle_6_11']
+        tcycle_6_12 = config['tcycle_6_12']
+
     except KeyError:
         
         showinfo("Warning", "The file has less than 12 phases. The phases that are not included in the schedule file will be set to the default values.")
         
+
 
 #BOX1
 
@@ -3920,8 +4264,296 @@ def read_conf(): # Read schedule configuration
     temp_var = inverseDarkLightValue(dark5_12, light5_12)
     var5_12.set(temp_var)
 
+    #BOX6
+
+    spin6_A_1.delete(0,'end')
+    spin6_A_1.insert(0,hourOn6_1)
+
+    spin6_B_1.delete(0,'end')
+    spin6_B_1.insert(0,minOn6_1)
+
+    spin6_C_1.delete(0,'end')
+    spin6_C_1.insert(0,hourOff6_1)
+
+    spin6_D_1.delete(0,'end')
+    spin6_D_1.insert(0,minOff6_1)
+
+    temp_var = inverseDarkLightValue(dark6_1, light6_1)
+    var6_1.set(temp_var)
+
+    spin6_E_2.delete(0,'end')
+    spin6_E_2.insert(0,hourFrom6_2)
+
+    spin6_F_2.delete(0,'end')
+    spin6_F_2.insert(0,minuteFrom6_2)
+
+    date6_2_entry.delete(0,'end')
+    today=datetime.date.today() # today
+    day_phase2 = today + datetime.timedelta(days=7) # calculate dates for 7 days after recording initiation
+    date6_2_entry.insert(0,'{:02d}'.format(day_phase2.day))
+    month6_2_entry.delete(0,'end')
+    month6_2_entry.insert(0,'{:02d}'.format(day_phase2.month))
+    year6_2_entry.delete(0,'end')
+    year6_2_entry.insert(0,day_phase2.year) # ISO format is YYYY/MM/DD
+
+    spin6_A_2.delete(0,'end')
+    spin6_A_2.insert(0,hourOn6_2)
+    spin6_B_2.delete(0,'end')
+    spin6_B_2.insert(0,minOn6_2)
+    spin6_C_2.delete(0,'end')
+    spin6_C_2.insert(0,hourOff6_2)
+    spin6_D_2.delete(0,'end')
+    spin6_D_2.insert(0,minOff6_2)
+
+    temp_var = inverseDarkLightValue(dark6_2, light6_2)
+    var6_2.set(temp_var)
 
 
+
+    spin6_E_3.delete(0,'end')
+    spin6_E_3.insert(0,hourFrom6_3)
+    spin6_F_3.delete(0,'end')
+    spin6_F_3.insert(0,minuteFrom6_3)
+    day_phase3 = day_phase2 + datetime.timedelta(days=7) # calculate dates for 14 days after recording initiation
+    date6_3_entry.delete(0,'end')
+    date6_3_entry.insert(0,'{:02d}'.format(day_phase3.day))
+    month6_3_entry.delete(0,'end')
+    month6_3_entry.insert(0,'{:02d}'.format(day_phase3.month))
+    year6_3_entry.delete(0,'end')
+    year6_3_entry.insert(0,day_phase3.year)
+
+    spin6_A_3.delete(0,'end')
+    spin6_A_3.insert(0,hourOn6_3)
+    spin6_B_3.delete(0,'end')
+    spin6_B_3.insert(0,minOn6_3)
+    spin6_C_3.delete(0,'end')
+    spin6_C_3.insert(0,hourOff6_3)
+    spin6_D_3.delete(0,'end')
+    spin6_D_3.insert(0,minOff6_3)
+    temp_var = inverseDarkLightValue(dark6_3, light6_3)
+    var6_3.set(temp_var)
+
+
+    #phase4
+
+    spin6_E_4.delete(0,'end')
+    spin6_E_4.insert(0,hourFrom6_4)
+    spin6_F_4.delete(0,'end')
+    spin6_F_4.insert(0,minuteFrom6_4)
+    date6_4_entry.delete(0,'end')
+    day_phase4 = day_phase3 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date6_4_entry.delete(0,'end')
+    date6_4_entry.insert(0,'{:02d}'.format(day_phase4.day))
+    month6_4_entry.delete(0,'end')
+    month6_4_entry.insert(0,'{:02d}'.format(day_phase4.month))
+    year6_4_entry.delete(0,'end')
+    year6_4_entry.insert(0,day_phase4.year)
+    spin6_A_4.delete(0,'end')
+    spin6_A_4.insert(0,hourOn6_4)
+    spin6_B_4.delete(0,'end')
+    spin6_B_4.insert(0,hourOn6_4)
+    spin6_C_4.delete(0,'end')
+    spin6_C_4.insert(0,hourOff6_4)
+    spin6_D_4.delete(0,'end')
+    spin6_D_4.insert(0,minOff6_4)
+    temp_var = inverseDarkLightValue(dark6_4, light6_4)
+    var6_4.set(temp_var)
+
+
+    #phase5
+    spin6_E_5.delete(0,'end')
+    spin6_E_5.insert(0,hourFrom6_5)
+    spin6_F_5.delete(0,'end')
+    spin6_F_5.insert(0,minuteFrom6_5)
+    date6_5_entry.delete(0,'end')
+
+    day_phase5 = day_phase4 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date6_5_entry.delete(0,'end')
+    date6_5_entry.insert(0,'{:02d}'.format(day_phase5.day))
+    month6_5_entry.delete(0,'end')
+    month6_5_entry.insert(0,'{:02d}'.format(day_phase5.month))
+    year6_5_entry.delete(0,'end')
+    year6_5_entry.insert(0,day_phase5.year)
+
+    spin6_A_5.delete(0,'end')
+    spin6_A_5.insert(0,hourOn6_5)
+    spin6_B_5.delete(0,'end')
+    spin6_B_5.insert(0,hourOn6_5)
+    spin6_C_5.delete(0,'end')
+    spin6_C_5.insert(0,hourOff6_5)
+    spin6_D_5.delete(0,'end')
+    spin6_D_5.insert(0,minOff6_5)
+    temp_var = inverseDarkLightValue(dark6_5, light6_5)
+    var6_5.set(temp_var)
+
+    #phase6
+    spin6_E_6.delete(0,'end')
+    spin6_E_6.insert(0,hourFrom6_6)
+    spin6_F_6.delete(0,'end')
+    spin6_F_6.insert(0,minuteFrom6_6)
+    date6_6_entry.delete(0,'end')
+
+    day_phase6 = day_phase5 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date6_6_entry.delete(0,'end')
+    date6_6_entry.insert(0,'{:02d}'.format(day_phase6.day))
+    month6_6_entry.delete(0,'end')
+    month6_6_entry.insert(0,'{:02d}'.format(day_phase6.month))
+    year6_6_entry.delete(0,'end')
+    year6_6_entry.insert(0,day_phase6.year)
+    spin6_A_6.delete(0,'end')
+    spin6_A_6.insert(0,hourOn6_6)
+    spin6_B_6.delete(0,'end')
+    spin6_B_6.insert(0,hourOn6_6)
+    spin6_C_6.delete(0,'end')
+    spin6_C_6.insert(0,hourOff6_6)
+    spin6_D_6.delete(0,'end')
+    spin6_D_6.insert(0,minOff6_6)
+    temp_var = inverseDarkLightValue(dark6_6, light6_6)
+    var6_6.set(temp_var)
+
+    #phase 7
+    spin6_E_7.delete(0,'end')
+    spin6_E_7.insert(0,hourFrom6_7)
+    spin6_F_7.delete(0,'end')
+    spin6_F_7.insert(0,minuteFrom6_7)
+    date6_7_entry.delete(0,'end')
+    day_phase7 = day_phase6 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date6_7_entry.delete(0,'end')
+    date6_7_entry.insert(0,'{:02d}'.format(day_phase7.day))
+    month6_7_entry.delete(0,'end')
+    month6_7_entry.insert(0,'{:02d}'.format(day_phase7.month))
+    year6_7_entry.delete(0,'end')
+    year6_7_entry.insert(0,day_phase7.year)
+    spin6_A_7.delete(0,'end')
+    spin6_A_7.insert(0,hourOn6_7)
+    spin6_B_7.delete(0,'end')
+    spin6_B_7.insert(0,hourOn6_7)
+    spin6_C_7.delete(0,'end')
+    spin6_C_7.insert(0,hourOff6_7)
+    spin6_D_7.delete(0,'end')
+    spin6_D_7.insert(0,minOff6_7)
+    temp_var = inverseDarkLightValue(dark6_7, light6_7)
+    var6_7.set(temp_var)
+
+    #phase8
+    spin6_E_8.delete(0,'end')
+    spin6_E_8.insert(0,hourFrom6_8)
+    spin6_F_8.delete(0,'end')
+    spin6_F_8.insert(0,minuteFrom6_8)
+    date6_8_entry.delete(0,'end')
+    day_phase8 = day_phase7 + datetime.timedelta(days=7)
+    date6_8_entry.insert(0,'{:02d}'.format(day_phase8.day))
+    month6_8_entry.delete(0,'end')
+    month6_8_entry.insert(0,'{:02d}'.format(day_phase8.month))
+    year6_8_entry.delete(0,'end')
+    year6_8_entry.insert(0,day_phase8.year)
+    spin6_A_8.delete(0,'end')
+    spin6_A_8.insert(0,hourOn6_8)
+    spin6_B_8.delete(0,'end')
+    spin6_B_8.insert(0,hourOn6_8)
+    spin6_C_8.delete(0,'end')
+    spin6_C_8.insert(0,hourOff6_8)
+    spin6_D_8.delete(0,'end')
+    spin6_D_8.insert(0,minOff6_8)
+    temp_var = inverseDarkLightValue(dark6_8, light6_8)
+    var6_8.set(temp_var)
+
+    #phase9
+
+    spin6_E_9.delete(0,'end')
+    spin6_E_9.insert(0,hourFrom6_9)
+    spin6_F_9.delete(0,'end')
+    spin6_F_9.insert(0,minuteFrom6_9)
+    date6_9_entry.delete(0,'end')
+    day_phase9 = day_phase8 + datetime.timedelta(days=7)
+    date6_9_entry.insert(0,'{:02d}'.format(day_phase9.day))
+    month6_9_entry.delete(0,'end')
+    month6_9_entry.insert(0,'{:02d}'.format(day_phase9.month))
+    year6_9_entry.delete(0,'end')
+    year6_9_entry.insert(0,day_phase9.year)
+    spin6_A_9.delete(0,'end')
+    spin6_A_9.insert(0,hourOn6_9)
+    spin6_B_9.delete(0,'end')
+    spin6_B_9.insert(0,hourOn6_9)
+    spin6_C_9.delete(0,'end')
+    spin6_C_9.insert(0,hourOff6_9)
+    spin6_D_9.delete(0,'end')
+    spin6_D_9.insert(0,minOff6_9)
+    temp_var = inverseDarkLightValue(dark6_9, light6_9)
+    var6_9.set(temp_var)
+
+
+    #phase10
+
+    spin6_E_10.delete(0,'end')
+    spin6_E_10.insert(0,hourFrom6_10)
+    spin6_F_10.delete(0,'end')
+    spin6_F_10.insert(0,minuteFrom6_10)
+    date6_10_entry.delete(0,'end')
+    day_phase10 = day_phase9 + datetime.timedelta(days=7)
+    date6_10_entry.insert(0,'{:02d}'.format(day_phase10.day))
+    month6_10_entry.delete(0,'end')
+    month6_10_entry.insert(0,'{:02d}'.format(day_phase10.month))
+    year6_10_entry.delete(0,'end')
+    year6_10_entry.insert(0,day_phase10.year)
+    spin6_A_10.delete(0,'end')
+    spin6_A_10.insert(0,hourOn6_10)
+    spin6_B_10.delete(0,'end')
+    spin6_B_10.insert(0,hourOn6_10)
+    spin6_C_10.delete(0,'end')
+    spin6_C_10.insert(0,hourOff6_10)
+    spin6_D_10.delete(0,'end')
+    spin6_D_10.insert(0,minOff6_10)
+    temp_var = inverseDarkLightValue(dark6_10, light6_10)
+    var6_10.set(temp_var)
+
+    #phase11
+
+    spin6_E_11.delete(0,'end')
+    spin6_E_11.insert(0,hourFrom6_11)
+    spin6_F_11.delete(0,'end')
+    spin6_F_11.insert(0,minuteFrom6_11)
+    date6_11_entry.delete(0,'end')
+    day_phase11 = day_phase10 + datetime.timedelta(days=7)
+    date6_11_entry.insert(0,'{:02d}'.format(day_phase10.day))
+    month6_11_entry.delete(0,'end')
+    month6_11_entry.insert(0,'{:02d}'.format(day_phase10.month))
+    year6_11_entry.delete(0,'end')
+    year6_11_entry.insert(0,day_phase10.year)
+    spin6_A_11.delete(0,'end')
+    spin6_A_11.insert(0,hourOn6_11)
+    spin6_B_11.delete(0,'end')
+    spin6_B_11.insert(0,hourOn6_11)
+    spin6_C_11.delete(0,'end')
+    spin6_C_11.insert(0,hourOff6_11)
+    spin6_D_11.delete(0,'end')
+    spin6_D_11.insert(0,minOff6_11)
+    temp_var = inverseDarkLightValue(dark6_11, light6_11)
+    var6_11.set(temp_var)
+
+    #phase12
+
+    spin6_E_12.delete(0,'end')
+    spin6_E_12.insert(0,hourFrom6_12)
+    spin6_F_12.delete(0,'end')
+    spin6_F_12.insert(0,minuteFrom6_12)
+    date6_12_entry.delete(0,'end')
+    day_phase12 = day_phase11 + datetime.timedelta(days=7)
+    date6_12_entry.insert(0,'{:02d}'.format(day_phase11.day))
+    month6_12_entry.delete(0,'end')
+    month6_12_entry.insert(0,'{:02d}'.format(day_phase11.month))
+    year6_12_entry.delete(0,'end')
+    year6_12_entry.insert(0,day_phase11.year)
+    spin6_A_12.delete(0,'end')
+    spin6_A_12.insert(0,hourOn6_12)
+    spin6_B_12.delete(0,'end')
+    spin6_B_12.insert(0,hourOn6_12)
+    spin6_C_12.delete(0,'end')
+    spin6_C_12.insert(0,hourOff6_12)
+    spin6_D_12.delete(0,'end')
+    spin6_D_12.insert(0,minOff6_12)
+    temp_var = inverseDarkLightValue(dark6_12, light6_12)
+    var6_12.set(temp_var)
 
 
 
@@ -3943,89 +4575,103 @@ def show_conf(): # Show schedule configuration
     global hourOn3_1, minOn3_1, hourOff3_1, minOff3_1, dark3_1, light3_1
     global hourOn4_1, minOn4_1, hourOff4_1, minOff4_1, dark4_1, light4_1
     global hourOn5_1, minOn5_1, hourOff5_1, minOff5_1, dark5_1, light5_1
+    global hourOn6_1, minOn6_1, hourOff6_1, minOff6_1, dark6_1, light6_1
 
     global hourOn1_2, minOn1_2, hourOff1_2, minOff1_2, date1_2, month1_2, year1_2, dark1_2, light1_2, hourFrom1_2, minuteFrom1_2
     global hourOn2_2, minOn2_2, hourOff2_2, minOff2_2, date2_2, month2_2, year2_2, dark2_2, light2_2, hourFrom2_2, minuteFrom2_2
     global hourOn3_2, minOn3_2, hourOff3_2, minOff3_2, date3_2, month3_2, year3_2, dark3_2, light3_2, hourFrom3_2, minuteFrom3_2
     global hourOn4_2, minOn4_2, hourOff4_2, minOff4_2, date4_2, month4_2, year4_2, dark4_2, light4_2, hourFrom4_2, minuteFrom4_2
     global hourOn5_2, minOn5_2, hourOff5_2, minOff5_2, date5_2, month5_2, year5_2, dark5_2, light5_2, hourFrom5_2, minuteFrom5_2
+    global hourOn6_2, minOn6_2, hourOff6_2, minOff6_2, date6_2, month6_2, year6_2, dark6_2, light6_2, hourFrom6_2, minuteFrom6_2
 
     global hourOn1_3, minOn1_3, hourOff1_3, minOff1_3, dark1_3, light1_3, date1_3, month1_3, year1_3, hourFrom1_3, minuteFrom1_3
     global hourOn2_3, minOn2_3, hourOff2_3, minOff2_3, dark2_3, light2_3, date2_3, month2_3, year2_3, hourFrom2_3, minuteFrom2_3
     global hourOn3_3, minOn3_3, hourOff3_3, minOff3_3, dark3_3, light3_3, date3_3, month3_3, year3_3, hourFrom3_3, minuteFrom3_3
     global hourOn4_3, minOn4_3, hourOff4_3, minOff4_3, dark4_3, light4_3, date4_3, month4_3, year4_3, hourFrom4_3, minuteFrom4_3
     global hourOn5_3, minOn5_3, hourOff5_3, minOff5_3, dark5_3, light5_3, date5_3, month5_3, year5_3, hourFrom5_3, minuteFrom5_3
+    global hourOn6_3, minOn6_3, hourOff6_3, minOff6_3, dark6_3, light6_3, date6_3, month6_3, year6_3, hourFrom6_3, minuteFrom6_3
 
     global hourOn1_4, minOn1_4, hourOff1_4, minOff1_4, dark1_4, light1_4, date1_4, month1_4, year1_4, hourFrom1_4, minuteFrom1_4
     global hourOn2_4, minOn2_4, hourOff2_4, minOff2_4, dark2_4, light2_4, date2_4, month2_4, year2_4, hourFrom2_4, minuteFrom2_4
     global hourOn3_4, minOn3_4, hourOff3_4, minOff3_4, dark3_4, light3_4, date3_4, month3_4, year3_4, hourFrom3_4, minuteFrom3_4
     global hourOn4_4, minOn4_4, hourOff4_4, minOff4_4, dark4_4, light4_4, date4_4, month4_4, year4_4, hourFrom4_4, minuteFrom4_4
     global hourOn5_4, minOn5_4, hourOff5_4, minOff5_4, dark5_4, light5_4, date5_4, month5_4, year5_4, hourFrom5_4, minuteFrom5_4
+    global hourOn6_4, minOn6_4, hourOff6_4, minOff6_4, dark6_4, light6_4, date6_4, month6_4, year6_4, hourFrom6_4, minuteFrom6_4
 
     global hourOn1_5, minOn1_5, hourOff1_5, minOff1_5, dark1_5, light1_5, date1_5, month1_5, year1_5, hourFrom1_5, minuteFrom1_5
     global hourOn2_5, minOn2_5, hourOff2_5, minOff2_5, dark2_5, light2_5, date2_5, month2_5, year2_5, hourFrom2_5, minuteFrom2_5
     global hourOn3_5, minOn3_5, hourOff3_5, minOff3_5, dark3_5, light3_5, date3_5, month3_5, year3_5, hourFrom3_5, minuteFrom3_5
     global hourOn4_5, minOn4_5, hourOff4_5, minOff4_5, dark4_5, light4_5, date4_5, month4_5, year4_5, hourFrom4_5, minuteFrom4_5
     global hourOn5_5, minOn5_5, hourOff5_5, minOff5_5, dark5_5, light5_5, date5_5, month5_5, year5_5, hourFrom5_5, minuteFrom5_5
+    global hourOn6_5, minOn6_5, hourOff6_5, minOff6_5, dark6_5, light6_5, date6_5, month6_5, year6_5, hourFrom6_5, minuteFrom6_5
 
     global hourOn1_6, minOn1_6, hourOff1_6, minOff1_6, dark1_6, light1_6, date1_6, month1_6, year1_6, hourFrom1_6, minuteFrom1_6
     global hourOn2_6, minOn2_6, hourOff2_6, minOff2_6, dark2_6, light2_6, date2_6, month2_6, year2_6, hourFrom2_6, minuteFrom2_6
     global hourOn3_6, minOn3_6, hourOff3_6, minOff3_6, dark3_6, light3_6, date3_6, month3_6, year3_6, hourFrom3_6, minuteFrom3_6
     global hourOn4_6, minOn4_6, hourOff4_6, minOff4_6, dark4_6, light4_6, date4_6, month4_6, year4_6, hourFrom4_6, minuteFrom4_6
     global hourOn5_6, minOn5_6, hourOff5_6, minOff5_6, dark5_6, light5_6, date5_6, month5_6, year5_6, hourFrom5_6, minuteFrom5_6
+    global hourOn6_6, minOn6_6, hourOff6_6, minOff6_6, dark6_6, light6_6, date6_6, month6_6, year6_6, hourFrom6_6, minuteFrom6_6
 
     global hourOn1_7, minOn1_7, hourOff1_7, minOff1_7, dark1_7, light1_7, date1_7, month1_7, year1_7, hourFrom1_7, minuteFrom1_7
     global hourOn2_7, minOn2_7, hourOff2_7, minOff2_7, dark2_7, light2_7, date2_7, month2_7, year2_7, hourFrom2_7, minuteFrom2_7
     global hourOn3_7, minOn3_7, hourOff3_7, minOff3_7, dark3_7, light3_7, date3_7, month3_7, year3_7, hourFrom3_7, minuteFrom3_7
     global hourOn4_7, minOn4_7, hourOff4_7, minOff4_7, dark4_7, light4_7, date4_7, month4_7, year4_7, hourFrom4_7, minuteFrom4_7
     global hourOn5_7, minOn5_7, hourOff5_7, minOff5_7, dark5_7, light5_7, date5_7, month5_7, year5_7, hourFrom5_7, minuteFrom5_7
+    global hourOn6_7, minOn6_7, hourOff6_7, minOff6_7, dark6_7, light6_7, date6_7, month6_7, year6_7, hourFrom6_7, minuteFrom6_7
 
     global hourOn1_8, minOn1_8, hourOff1_8, minOff1_8, dark1_8, light1_8, date1_8, month1_8, year1_8, hourFrom1_8, minuteFrom1_8
     global hourOn2_8, minOn2_8, hourOff2_8, minOff2_8, dark2_8, light2_8, date2_8, month2_8, year2_8, hourFrom2_8, minuteFrom2_8
     global hourOn3_8, minOn3_8, hourOff3_8, minOff3_8, dark3_8, light3_8, date3_8, month3_8, year3_8, hourFrom3_8, minuteFrom3_8
     global hourOn4_8, minOn4_8, hourOff4_8, minOff4_8, dark4_8, light4_8, date4_8, month4_8, year4_8, hourFrom4_8, minuteFrom4_8
     global hourOn5_8, minOn5_8, hourOff5_8, minOff5_8, dark5_8, light5_8, date5_8, month5_8, year5_8, hourFrom5_8, minuteFrom5_8
+    global hourOn6_8, minOn6_8, hourOff6_8, minOff6_8, dark6_8, light6_8, date6_8, month6_8, year6_8, hourFrom6_8, minuteFrom6_8
 
     global hourOn1_9, minOn1_9, hourOff1_9, minOff1_9, dark1_9, light1_9, date1_9, month1_9, year1_9, hourFrom1_9, minuteFrom1_9
     global hourOn2_9, minOn2_9, hourOff2_9, minOff2_9, dark2_9, light2_9, date2_9, month2_9, year2_9, hourFrom2_9, minuteFrom2_9
     global hourOn3_9, minOn3_9, hourOff3_9, minOff3_9, dark3_9, light3_9, date3_9, month3_9, year3_9, hourFrom3_9, minuteFrom3_9
     global hourOn4_9, minOn4_9, hourOff4_9, minOff4_9, dark4_9, light4_9, date4_9, month4_9, year4_9, hourFrom4_9, minuteFrom4_9
     global hourOn5_9, minOn5_9, hourOff5_9, minOff5_9, dark5_9, light5_9, date5_9, month5_9, year5_9, hourFrom5_9, minuteFrom5_9
+    global hourOn6_9, minOn6_9, hourOff6_9, minOff6_9, dark6_9, light6_9, date6_9, month6_9, year6_9, hourFrom6_9, minuteFrom6_9
 
     global hourOn1_10, minOn1_10, hourOff1_10, minOff1_10, dark1_10, light1_10, date1_10, month1_10, year1_10, hourFrom1_10, minuteFrom1_10
     global hourOn2_10, minOn2_10, hourOff2_10, minOff2_10, dark2_10, light2_10, date2_10, month2_10, year2_10, hourFrom2_10, minuteFrom2_10
     global hourOn3_10, minOn3_10, hourOff3_10, minOff3_10, dark3_10, light3_10, date3_10, month3_10, year3_10, hourFrom3_10, minuteFrom3_10
     global hourOn4_10, minOn4_10, hourOff4_10, minOff4_10, dark4_10, light4_10, date4_10, month4_10, year4_10, hourFrom4_10, minuteFrom4_10
     global hourOn5_10, minOn5_10, hourOff5_10, minOff5_10, dark5_10, light5_10, date5_10, month5_10, year5_10, hourFrom5_10, minuteFrom5_10
+    global hourOn6_10, minOn6_10, hourOff6_10, minOff6_10, dark6_10, light6_10, date6_10, month6_10, year6_10, hourFrom6_10, minuteFrom6_10v
 
     global hourOn1_11, minOn1_11, hourOff1_11, minOff1_11, dark1_11, light1_11, date1_11, month1_11, year1_11, hourFrom1_11, minuteFrom1_11
     global hourOn2_11, minOn2_11, hourOff2_11, minOff2_11, dark2_11, light2_11, date2_11, month2_11, year2_11, hourFrom2_11, minuteFrom2_11
     global hourOn3_11, minOn3_11, hourOff3_11, minOff3_11, dark3_11, light3_11, date3_11, month3_11, year3_11, hourFrom3_11, minuteFrom3_11
     global hourOn4_11, minOn4_11, hourOff4_11, minOff4_11, dark4_11, light4_11, date4_11, month4_11, year4_11, hourFrom4_11, minuteFrom4_11
     global hourOn5_11, minOn5_11, hourOff5_11, minOff5_11, dark5_11, light5_11, date5_11, month5_11, year5_11, hourFrom5_11, minuteFrom5_11
+    global hourOn6_11, minOn6_11, hourOff6_11, minOff6_11, dark6_11, light6_11, date6_11, month6_11, year6_11, hourFrom6_11, minuteFrom6_11
 
     global hourOn1_12, minOn1_12, hourOff1_12, minOff1_12, dark1_12, light1_12, date1_12, month1_12, year1_12, hourFrom1_12, minuteFrom1_12
     global hourOn2_12, minOn2_12, hourOff2_12, minOff2_12, dark2_12, light2_12, date2_12, month2_12, year2_12, hourFrom2_12, minuteFrom2_12
     global hourOn3_12, minOn3_12, hourOff3_12, minOff3_12, dark3_12, light3_12, date3_12, month3_12, year3_12, hourFrom3_12, minuteFrom3_12
     global hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12
     global hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12
+    global hourOn6_12, minOn6_12, hourOff6_12, minOff6_12, dark6_12, light6_12, date6_12, month6_12, year6_12, hourFrom6_12, minuteFrom6_12
 
-    global initLED1, initLED2, initLED3, initLED4, initLED5
+    global initLED1, initLED2, initLED3, initLED4, initLED5, initLED6
     global tcycle_1_1, tcycle_1_2,tcycle_1_3, tcycle_1_4, tcycle_1_5, tcycle_1_6, tcycle_1_7, tcycle_1_8, tcycle_1_9, tcycle_1_10, tcycle_1_11, tcycle_1_12
     global tcycle_2_1, tcycle_2_2,tcycle_2_3, tcycle_2_4, tcycle_2_5, tcycle_2_6, tcycle_2_7, tcycle_2_8, tcycle_2_9, tcycle_2_10, tcycle_2_11, tcycle_2_12
     global tcycle_3_1, tcycle_3_2,tcycle_3_3, tcycle_3_4, tcycle_3_5, tcycle_3_6, tcycle_3_7, tcycle_3_8, tcycle_3_9, tcycle_3_10, tcycle_3_11, tcycle_3_12
     global tcycle_4_1, tcycle_4_2,tcycle_4_3, tcycle_4_4, tcycle_4_5, tcycle_4_6, tcycle_4_7, tcycle_4_8, tcycle_4_9, tcycle_4_10, tcycle_4_11, tcycle_4_12
     global tcycle_5_1, tcycle_5_2,tcycle_5_3, tcycle_5_4, tcycle_5_5, tcycle_5_6, tcycle_5_7, tcycle_5_8, tcycle_5_9, tcycle_5_10, tcycle_5_11, tcycle_5_12
+    global tcycle_6_1, tcycle_6_2,tcycle_6_3, tcycle_6_4, tcycle_6_5, tcycle_6_6, tcycle_6_7, tcycle_6_8, tcycle_6_9, tcycle_6_10, tcycle_6_11, tcycle_6_12
 
 
 
     #print("hourOn1_1" + str(hourOn1_1))
 
-    col11_1 = Label(tab11, text='Box 6')
-    col11_2 = Label(tab11, text='Box 7')
-    col11_3 = Label(tab11, text='Box 8')
-    col11_4 = Label(tab11, text='Box 9')
-    col11_5 = Label(tab11, text='Box 10')
+    col11_1 = Label(tab11, text='Box 1')
+    col11_2 = Label(tab11, text='Box 2')
+    col11_3 = Label(tab11, text='Box 3')
+    col11_4 = Label(tab11, text='Box 4')
+    col11_5 = Label(tab11, text='Box 5')
+    col11_6 = Label(tab11, text='Box 6')
 
 
     row11_1 = Label(tab11, text='Phase 1 ')
@@ -4046,6 +4692,7 @@ def show_conf(): # Show schedule configuration
     col11_3.grid(column=6,row=0,padx=5)
     col11_4.grid(column=8,row=0,padx=5)
     col11_5.grid(column=10,row=0,padx=5)
+    col11_6.grid(column=12,row=0,padx=5)
 
     # schedSep = ttk.Separator(tab11, orient=HORIZONTAL)
     # schedSep.grid(column=0, row = 0, columnspan='50', sticky='we')
@@ -4059,6 +4706,8 @@ def show_conf(): # Show schedule configuration
     schedSep5.grid(column=7, row = 2, rowspan='20', sticky='ns')
     schedSep6 = ttk.Separator(tab11, orient=VERTICAL)
     schedSep6.grid(column=9, row = 2, rowspan='20', sticky='ns')
+    schedSep7 = ttk.Separator(tab11, orient=VERTICAL)
+    schedSep7.grid(column=11, row = 2, rowspan='20', sticky='ns')
     # schedSep7 = ttk.Separator(tab11, orient=VERTICAL)
     # schedSep7.grid(column=11, row = 2, rowspan='10', sticky='ns')
     # schedSep8 = ttk.Separator(tab11, orient=VERTICAL)
@@ -4342,6 +4991,55 @@ def show_conf(): # Show schedule configuration
     box5pha12_LD=Label(tab11, textvariable=box5pha12text, width=40, anchor="e", justify=LEFT)
     box5pha12_LD.grid(column=10,row=13,padx=2,pady=0)
 
+    box6pha1text=StringVar()
+    box6pha1text.set('                                ')
+    box6pha1_LD=Label(tab11, textvariable=box6pha1text, width=40, anchor="e", justify=LEFT)
+    box6pha1_LD.grid(column=12,row=2,padx=2,pady=0)
+    box6pha2text=StringVar()
+    box6pha2text.set('                                ')
+    box6pha2_LD=Label(tab11, textvariable=box6pha2text, width=40, anchor="e", justify=LEFT)
+    box6pha2_LD.grid(column=12,row=3,padx=2,pady=0)
+    box6pha3text=StringVar()
+    box6pha3text.set('                                ')
+    box6pha3_LD=Label(tab11, textvariable=box6pha3text, width=40, anchor="e", justify=LEFT)
+    box6pha3_LD.grid(column=12,row=4,padx=2,pady=0)
+    box6pha4text=StringVar()
+    box6pha4text.set('                                ')
+    box6pha4_LD=Label(tab11, textvariable=box6pha4text, width=40, anchor="e", justify=LEFT)
+    box6pha4_LD.grid(column=12,row=5,padx=2,pady=0)
+    box6pha5text=StringVar()
+    box6pha5text.set('                                ')
+    box6pha5_LD=Label(tab11, textvariable=box6pha5text, width=40, anchor="e", justify=LEFT)
+    box6pha5_LD.grid(column=12,row=6,padx=2,pady=0)
+    box6pha6text=StringVar()
+    box6pha6text.set('                                ')
+    box6pha6_LD=Label(tab11, textvariable=box6pha6text, width=40, anchor="e", justify=LEFT)
+    box6pha6_LD.grid(column=12,row=7,padx=2,pady=0)
+    box6pha7text=StringVar()
+    box6pha7text.set('                                ')
+    box6pha7_LD=Label(tab11, textvariable=box6pha7text, width=40, anchor="e", justify=LEFT)
+    box6pha7_LD.grid(column=12,row=8,padx=2,pady=0)
+    box6pha8text=StringVar()
+    box6pha8text.set('                                ')
+    box6pha8_LD=Label(tab11, textvariable=box6pha8text, width=40, anchor="e", justify=LEFT)
+    box6pha8_LD.grid(column=12,row=9,padx=2,pady=0)
+    box6pha9text=StringVar()
+    box6pha9text.set('                                ')
+    box6pha9_LD=Label(tab11, textvariable=box6pha9text, width=40, anchor="e", justify=LEFT)
+    box6pha9_LD.grid(column=12,row=10,padx=2,pady=0)
+    box6pha10text=StringVar()
+    box6pha10text.set('                                ')
+    box6pha10_LD=Label(tab11, textvariable=box6pha10text, width=40, anchor="e", justify=LEFT)
+    box6pha10_LD.grid(column=12,row=11,padx=2,pady=0)
+    box6pha11text=StringVar()
+    box6pha11text.set('                                ')
+    box6pha11_LD=Label(tab11, textvariable=box6pha11text, width=40, anchor="e", justify=LEFT)
+    box6pha11_LD.grid(column=12,row=12,padx=2,pady=0)
+    box6pha12text=StringVar()
+    box6pha12text.set('                                ')
+    box6pha12_LD=Label(tab11, textvariable=box6pha12text, width=40, anchor="e", justify=LEFT)
+    box6pha12_LD.grid(column=12,row=13,padx=2,pady=0)
+
     if initLED1.get() == 1: 
         LED_state1 = 'ON'
     else:
@@ -4366,6 +5064,11 @@ def show_conf(): # Show schedule configuration
         LED_state5 = 'ON'
     else:
         LED_state5 = 'OFF'
+
+    if initLED6.get()== 1: 
+        LED_state6 = 'ON'
+    else:
+        LED_state6 = 'OFF'
 
     #1 Phase
     if light1_1=='0' and dark1_1=='0':
@@ -4447,6 +5150,21 @@ def show_conf(): # Show schedule configuration
         box5pha1text.set('                                ')
         
         box5pha1text.set('Init LED: ' + str(LED_state5) +' from record onset'+' | '+'LL'+ ' (' + tcycle_5_1 + 'h)')
+
+    if light6_1=='0' and dark6_1=='0':
+        box6pha1text.set('                                ')
+        
+        box6pha1text.set('Init LED: ' + str(LED_state6)+ ' from record onset'+' | '+hourOn6_1+':'+minOn6_1+' on>'+hourOff6_1+':'+minOff6_1+' off'+ ' (' + tcycle_6_1 + 'h)')
+        
+    if light6_1=='0' and dark6_1=='1':
+        box6pha1text.set('                                ')
+        
+        box6pha1text.set('Init LED: ' + str(LED_state6) +' from record onset'+' | '+'DD'+ ' (' + tcycle_6_1 + 'h)')
+        
+    if light6_1=='1' and dark6_1=='0':
+        box6pha1text.set('                                ')
+        
+        box6pha1text.set('Init LED: ' + str(LED_state6) +' from record onset'+' | '+'LL'+ ' (' + tcycle_6_1 + 'h)')
         
 
     #2 Phase
@@ -4528,7 +5246,21 @@ def show_conf(): # Show schedule configuration
         box5pha2text.set('                                ')
         
         box5pha2text.set(year5_2+'/'+month5_2+'/'+date5_2+' '+hourFrom5_2+':'+minuteFrom5_2+' | '+'LL'+ ' (' + tcycle_5_2 + 'h)')
+
+    if light6_2=='0' and dark6_2=='0':
+        box6pha2text.set('                                ')
         
+        box6pha2text.set(year6_2+'/'+month6_2+'/'+date6_2+' '+hourFrom6_2+':'+minuteFrom6_2+' | '+hourOn6_2+':'+minOn6_2+' on>'+hourOff6_2+':'+minOff6_2+' off'+ ' (' + tcycle_6_2 + 'h)')
+        
+    if light6_2=='0' and dark6_2=='1':
+        box6pha2text.set('                                ')
+        
+        box6pha2text.set(year6_2+'/'+month6_2+'/'+date6_2+' '+hourFrom6_2+':'+minuteFrom6_2+' | '+'DD'+ ' (' + tcycle_6_2 + 'h)')
+        
+    if light6_2=='1' and dark6_2=='0':
+        box6pha2text.set('                                ')
+        
+        box6pha2text.set(year6_2+'/'+month6_2+'/'+date6_2+' '+hourFrom6_2+':'+minuteFrom6_2+' | '+'LL'+ ' (' + tcycle_6_2 + 'h)')    
 
     #3 Phase
     if light1_3=='0' and dark1_3=='0':
@@ -4610,6 +5342,20 @@ def show_conf(): # Show schedule configuration
         
         box5pha3text.set(year5_3+'/'+month5_3+'/'+date5_3+' '+hourFrom5_3+':'+minuteFrom5_3+' | '+'LL'+ ' (' + tcycle_5_3 + 'h)')
         
+    if light6_3=='0' and dark6_3=='0':
+        box6pha3text.set('                                ')
+        
+        box6pha3text.set(year6_3+'/'+month6_3+'/'+date6_3+' '+hourFrom6_3+':'+minuteFrom6_3+' | '+hourOn6_3+':'+minOn6_3+' on>'+hourOff6_3+':'+minOff6_3+' off'+ ' (' + tcycle_6_3 + 'h)')
+        
+    if light6_3=='0' and dark6_3=='1':
+        box6pha3text.set('                                ')
+        
+        box6pha3text.set(year6_3+'/'+month6_3+'/'+date6_3+' '+hourFrom6_3+':'+minuteFrom6_3+' | '+'DD'+ ' (' + tcycle_6_3 + 'h)')
+        
+    if light6_3=='1' and dark6_3=='0':
+        box6pha3text.set('                                 ')
+        
+        box6pha3text.set(year6_3+'/'+month6_3+'/'+date6_3+' '+hourFrom6_3+':'+minuteFrom6_3+' | '+'LL'+ ' (' + tcycle_6_3 + 'h)')
 
     # 4 Phase
     if light1_4=='0' and dark1_4=='0':
@@ -4691,7 +5437,20 @@ def show_conf(): # Show schedule configuration
         
         box5pha4text.set(year5_4+'/'+month5_4+'/'+date5_4+' '+hourFrom5_4+':'+minuteFrom5_4+' | '+'LL'+ ' (' + tcycle_5_4 + 'h)')
         
-
+    if light6_4=='0' and dark6_4=='0':
+        box6pha4text.set('                                ')
+        
+        box6pha4text.set(year6_4+'/'+month6_4+'/'+date6_4+' '+hourFrom6_4+':'+minuteFrom6_4+' | '+hourOn6_4+':'+minOn6_4+' on>'+hourOff6_4+':'+minOff6_4+' off'+ ' (' + tcycle_6_4 + 'h)')
+        
+    if light6_4=='0' and dark6_4=='1':
+        box6pha4text.set('                                ')
+        
+        box6pha4text.set(year6_4+'/'+month6_4+'/'+date6_4+' '+hourFrom6_4+':'+minuteFrom6_4+' | '+'DD'+ ' (' + tcycle_6_4 + 'h)')
+        
+    if light6_4=='1' and dark6_4=='0':
+        box6pha4text.set('                                 ')
+        
+        box6pha4text.set(year6_4+'/'+month6_4+'/'+date6_4+' '+hourFrom6_4+':'+minuteFrom6_4+' | '+'LL'+ ' (' + tcycle_6_4 + 'h)')
     
 
     # 5 Phase
@@ -4774,6 +5533,21 @@ def show_conf(): # Show schedule configuration
         box5pha5text.set('                                 ')
         
         box5pha5text.set(year5_5+'/'+month5_5+'/'+date5_5+' '+hourFrom5_5+':'+minuteFrom5_5+' | '+'LL'+ ' (' + tcycle_5_5 + 'h)')
+
+    if light6_5=='0' and dark6_5=='0':
+        box6pha5text.set('                                ')
+        
+        box6pha5text.set(year6_5+'/'+month6_5+'/'+date6_5+' '+hourFrom6_5+':'+minuteFrom6_5+' | '+hourOn6_5+':'+minOn6_5+' on>'+hourOff6_5+':'+minOff6_5+' off'+ ' (' + tcycle_6_5 + 'h)')
+        
+    if light6_5=='0' and dark6_5=='1':
+        box6pha5text.set('                                ')
+        
+        box6pha5text.set(year6_5+'/'+month6_5+'/'+date6_5+' '+hourFrom6_5+':'+minuteFrom6_5+' | '+'DD'+ ' (' + tcycle_6_5 + 'h)')
+        
+    if light6_5=='1' and dark6_5=='0':
+        box6pha5text.set('                                 ')
+        
+        box6pha5text.set(year6_5+'/'+month6_5+'/'+date6_5+' '+hourFrom6_5+':'+minuteFrom6_5+' | '+'LL'+ ' (' + tcycle_6_5 + 'h)')
         
 
     #6 Phase
@@ -4856,6 +5630,20 @@ def show_conf(): # Show schedule configuration
         
         box5pha6text.set(year5_6+'/'+month5_6+'/'+date5_6+' '+hourFrom5_6+':'+minuteFrom5_6+' | '+'LL'+ ' (' + tcycle_5_6 + 'h)')
         
+    if light6_6=='0' and dark6_6=='0':
+        box6pha6text.set('                                ')
+        
+        box6pha6text.set(year6_6+'/'+month6_6+'/'+date6_6+' '+hourFrom6_6+':'+minuteFrom6_6+' | '+hourOn6_6+':'+minOn6_6+' on>'+hourOff6_6+':'+minOff6_6+' off'+ ' (' + tcycle_6_6 + 'h)')
+        
+    if light6_6=='0' and dark6_6=='1':
+        box6pha6text.set('                                ')
+        
+        box6pha6text.set(year6_6+'/'+month6_6+'/'+date6_6+' '+hourFrom6_6+':'+minuteFrom6_6+' | '+'DD'+ ' (' + tcycle_6_6 + 'h)')
+        
+    if light6_6=='1' and dark6_6=='0':
+        box6pha6text.set('                                 ')
+        
+        box6pha6text.set(year6_6+'/'+month6_6+'/'+date6_6+' '+hourFrom6_6+':'+minuteFrom6_6+' | '+'LL'+ ' (' + tcycle_6_6 + 'h)')
 
     #7 Phase
     if light1_7=='0' and dark1_7=='0':
@@ -4937,6 +5725,20 @@ def show_conf(): # Show schedule configuration
         
         box5pha7text.set(year5_7+'/'+month5_7+'/'+date5_7+' '+hourFrom5_7+':'+minuteFrom5_7+' | '+'LL'+ ' (' + tcycle_5_7 + 'h)')
            
+    if light6_7=='0' and dark6_7=='0':
+        box6pha7text.set('                                ')
+        
+        box6pha7text.set(year6_7+'/'+month6_7+'/'+date6_7+' '+hourFrom6_7+':'+minuteFrom6_7+' | '+hourOn6_7+':'+minOn6_7+' on>'+hourOff6_7+':'+minOff6_7+' off'+ ' (' + tcycle_6_7 + 'h)')
+        
+    if light6_7=='0' and dark6_7=='1':
+        box6pha7text.set('                                ')
+        
+        box6pha7text.set(year6_7+'/'+month6_7+'/'+date6_7+' '+hourFrom6_7+':'+minuteFrom6_7+' | '+'DD'+ ' (' + tcycle_6_7 + 'h)')
+        
+    if light6_7=='1' and dark6_7=='0':
+        box6pha7text.set('                                 ')
+        
+        box6pha7text.set(year6_7+'/'+month6_7+'/'+date6_7+' '+hourFrom6_7+':'+minuteFrom6_7+' | '+'LL'+ ' (' + tcycle_6_7 + 'h)')
 
     #8 Phase
     if light1_8=='0' and dark1_8=='0':
@@ -5017,7 +5819,21 @@ def show_conf(): # Show schedule configuration
         box5pha8text.set('                                 ')
         
         box5pha8text.set(year5_8+'/'+month5_8+'/'+date5_8+' '+hourFrom5_8+':'+minuteFrom5_8+' | '+'LL'+ ' (' + tcycle_5_8 + 'h)')
-            
+
+    if light6_8=='0' and dark6_8=='0':
+        box6pha8text.set('                                ')
+        
+        box6pha8text.set(year6_8+'/'+month6_8+'/'+date6_8+' '+hourFrom6_8+':'+minuteFrom6_8+' | '+hourOn6_8+':'+minOn6_8+' on>'+hourOff6_8+':'+minOff6_8+' off'+ ' (' + tcycle_6_8 + 'h)')
+        
+    if light6_8=='0' and dark6_8=='1':
+        box6pha8text.set('                                ')
+        
+        box6pha8text.set(year6_8+'/'+month6_8+'/'+date6_8+' '+hourFrom6_8+':'+minuteFrom6_8+' | '+'DD'+ ' (' + tcycle_6_8 + 'h)')
+        
+    if light6_8=='1' and dark6_8=='0':
+        box6pha8text.set('                                 ')
+        
+        box6pha8text.set(year6_8+'/'+month6_8+'/'+date6_8+' '+hourFrom6_8+':'+minuteFrom6_8+' | '+'LL'+ ' (' + tcycle_6_8 + 'h)')        
       
     #9 Phase
     if light1_9=='0' and dark1_9=='0':
@@ -5099,6 +5915,20 @@ def show_conf(): # Show schedule configuration
         
         box5pha9text.set(year5_9+'/'+month5_9+'/'+date5_9+' '+hourFrom5_9+':'+minuteFrom5_9+' | '+'LL'+ ' (' + tcycle_5_9 + 'h)')
            
+    if light6_9=='0' and dark6_9=='0':
+        box6pha9text.set('                                ')
+        
+        box6pha9text.set(year6_9+'/'+month6_9+'/'+date6_9+' '+hourFrom6_9+':'+minuteFrom6_9+' | '+hourOn6_9+':'+minOn6_9+' on>'+hourOff6_9+':'+minOff6_9+' off'+ ' (' + tcycle_6_9 + 'h)')
+        
+    if light6_9=='0' and dark6_9=='1':
+        box6pha9text.set('                                ')
+        
+        box6pha9text.set(year6_9+'/'+month6_9+'/'+date6_9+' '+hourFrom6_9+':'+minuteFrom6_9+' | '+'DD'+ ' (' + tcycle_6_9 + 'h)')
+        
+    if light6_9=='1' and dark6_9=='0':
+        box6pha9text.set('                                 ')
+        
+        box6pha9text.set(year6_9+'/'+month6_9+'/'+date6_9+' '+hourFrom6_9+':'+minuteFrom6_9+' | '+'LL'+ ' (' + tcycle_6_9 + 'h)')
 
     #10 Phase
     if light1_10=='0' and dark1_10=='0':
@@ -5179,6 +6009,21 @@ def show_conf(): # Show schedule configuration
         box5pha10text.set('                                 ')
         
         box5pha10text.set(year5_10+'/'+month5_10+'/'+date5_10+' '+hourFrom5_10+':'+minuteFrom5_10+' | '+'LL'+ ' (' + tcycle_5_10 + 'h)')
+
+    if light6_10=='0' and dark6_10=='0':
+        box6pha10text.set('                                ')
+        
+        box6pha10text.set(year6_10+'/'+month6_10+'/'+date6_10+' '+hourFrom6_10+':'+minuteFrom6_10+' | '+hourOn6_10+':'+minOn6_10+' on>'+hourOff6_10+':'+minOff6_10+' off'+ ' (' + tcycle_6_10 + 'h)')
+        
+    if light6_10=='0' and dark6_10=='1':
+        box6pha10text.set('                                ')
+        
+        box6pha10text.set(year6_10+'/'+month6_10+'/'+date6_10+' '+hourFrom6_10+':'+minuteFrom6_10+' | '+'DD'+ ' (' + tcycle_6_10 + 'h)')
+        
+    if light6_10=='1' and dark6_10=='0':
+        box6pha10text.set('                                 ')
+        
+        box6pha10text.set(year6_10+'/'+month6_10+'/'+date6_10+' '+hourFrom6_10+':'+minuteFrom6_10+' | '+'LL'+ ' (' + tcycle_6_10 + 'h)')
           
 
     #11 Phase
@@ -5261,6 +6106,20 @@ def show_conf(): # Show schedule configuration
         
         box5pha11text.set(year5_11+'/'+month5_11+'/'+date5_11+' '+hourFrom5_11+':'+minuteFrom5_11+' | '+'LL'+ ' (' + tcycle_5_11 + 'h)')
           
+    if light6_11=='0' and dark6_11=='0':
+        box6pha11text.set('                                ')
+        
+        box6pha11text.set(year6_11+'/'+month6_11+'/'+date6_11+' '+hourFrom6_11+':'+minuteFrom6_11+' | '+hourOn6_11+':'+minOn6_11+' on>'+hourOff6_11+':'+minOff6_11+' off'+ ' (' + tcycle_6_11 + 'h)')
+        
+    if light6_11=='0' and dark6_11=='1':
+        box6pha11text.set('                                ')
+        
+        box6pha11text.set(year6_11+'/'+month6_11+'/'+date6_11+' '+hourFrom6_11+':'+minuteFrom6_11+' | '+'DD'+ ' (' + tcycle_6_11 + 'h)')
+        
+    if light6_11=='1' and dark6_11=='0':
+        box6pha11text.set('                                 ')
+        
+        box6pha11text.set(year6_11+'/'+month6_11+'/'+date6_11+' '+hourFrom6_11+':'+minuteFrom6_11+' | '+'LL'+ ' (' + tcycle_6_11 + 'h)')
 
     #12 Phase
     if light1_12=='0' and dark1_12=='0':
@@ -5342,6 +6201,21 @@ def show_conf(): # Show schedule configuration
         
         box5pha12text.set(year5_12+'/'+month5_12+'/'+date5_12+' '+hourFrom5_12+':'+minuteFrom5_12+' | '+'LL'+ ' (' + tcycle_5_12 + 'h)')
         
+    if light6_12=='0' and dark6_12=='0':
+        box6pha12text.set('                                ')
+        
+        box6pha12text.set(year6_12+'/'+month6_12+'/'+date6_12+' '+hourFrom6_12+':'+minuteFrom6_12+' | '+hourOn6_12+':'+minOn6_12+' on>'+hourOff6_12+':'+minOff6_12+' off'+ ' (' + tcycle_6_12 + 'h)')
+        
+    if light6_12=='0' and dark6_12=='1':
+        box6pha12text.set('                                ')
+        
+        box6pha12text.set(year6_12+'/'+month6_12+'/'+date6_12+' '+hourFrom6_12+':'+minuteFrom6_12+' | '+'DD'+ ' (' + tcycle_6_12 + 'h)')
+        
+    if light6_12=='1' and dark6_12=='0':
+        box6pha12text.set('                                 ')
+        
+        box6pha12text.set(year6_12+'/'+month6_12+'/'+date6_12+' '+hourFrom6_12+':'+minuteFrom6_12+' | '+'LL'+ ' (' + tcycle_6_12 + 'h)')
+
     window.update_idletasks()   
 
     
@@ -5396,6 +6270,9 @@ def OnButtonClick(button_id):
         getBox4Schedule()
         setBox4=1
     elif button_id == 5:
+        getBox5Schedule()
+        setBox5=1
+    elif button_id == 6:
         getBox5Schedule()
         setBox5=1
 
@@ -6740,6 +7617,10 @@ def getBox4Schedule():
     date4_2 = date4_2_entry.get()
     month4_2 = month4_2_entry.get()
     year4_2 = year4_2_entry.get()
+
+    date4_2 = date4_2_entry.get()
+    month4_2 = month4_2_entry.get()
+    year4_2 = year4_2_entry.get()
     
     hourOn4_2=spin4_A_2.get()
     minOn4_2=spin4_B_2.get()
@@ -7249,7 +8130,7 @@ def getBox5Schedule():
     #phase4
 
     global date5_4, month5_4, year5_4, hourFrom5_4, minuteFrom5_4, hourOn5_4, minOn5_4, hourOff5_4, minOff5_4, dark5_4, light5_4, tcycle_5_4
-
+    
     date5_4 = date5_4_entry.get()
     month5_4 = month5_4_entry.get()
     year5_4 = year5_4_entry.get()
@@ -7572,31 +8453,467 @@ def getBox5Schedule():
 
     status.pack(side='bottom', fill='x')
     status.set('Box5 schedule is set.')
+
+
+def getBox6Schedule(): 
+    global setBox6, tcyclespinbox_arr
+    setBox6=1
     
-    if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
+    global hourOn6_1, minOn6_1, hourOff6_1, minOff6_1, dark6_1, light6_1, tcycle_6_1
+    hourOn6_1=spin6_A_1.get()
+    minOn6_1=spin6_B_1.get()
+    hourOff6_1=spin6_C_1.get()
+    minOff6_1=spin6_D_1.get()        
+    tcycle_6_1 = int(tcyclespinbox_arr[5,0].get())
+    
+    hourOn6_1 = time_to_str(hourOn6_1)
+    minOn6_1 = time_to_str(minOn6_1)
+    hourOff6_1=time_to_str(hourOff6_1)
+    minOff6_1=time_to_str(minOff6_1)
+    
+    tcycle_6_1=time_to_str(tcycle_6_1)
+
+    if var6_1.get()==1:
+        dark6_1='0'
+        light6_1='0'
+    if var6_1.get()==2:
+        dark6_1='1'
+        light6_1='0'
+    if var6_1.get()==3:
+        dark6_1='0'
+        light6_1='1'
+
+    #Phase2
+    global date6_2, month6_2, year6_2, hourFrom6_2, minuteFrom6_2, hourOn6_2, minOn6_2, hourOff6_2, minOff6_2, dark6_2, light6_2, tcycle_6_2
+
+    date6_2 = date6_2_entry.get()
+    month6_2 = month6_2_entry.get()
+    year6_2 = year6_2_entry.get()
+    
+    hourOn6_2=spin6_A_2.get()
+    minOn6_2=spin6_B_2.get()
+    hourOff6_2=spin6_C_2.get()
+    minOff6_2=spin6_D_2.get()     
+    hourFrom6_2= spin6_E_2.get()
+    minuteFrom6_2= spin6_F_2.get()
+
+    tcycle_6_2 = int(tcyclespinbox_arr[5,1].get())
+  
+    hourOn6_2 = time_to_str(hourOn6_2)    
+    minOn6_2 = time_to_str(minOn6_2)
+    hourOff6_2=time_to_str(hourOff6_2)
+    minOff6_2=time_to_str(minOff6_2)
+    
+    tcycle_6_2 = time_to_str(tcycle_6_2)
+
+    date6_2 = time_to_str(date6_2)
+    month6_2 = time_to_str(month6_2)
+    year6_2 = time_to_str(year6_2)
+
+    if var6_2.get()==1:
+        dark6_2='0'
+        light6_2='0'
+    if var6_2.get()==2:
+        dark6_2='1'
+        light6_2='0'
+    if var6_2.get()==3:
+        dark6_2='0'
+        light6_2='1'
+
+    #phase3
+    
+    global date6_3, month6_3, year6_3, hourFrom6_3, minuteFrom6_3, hourOn6_3, minOn6_3, hourOff6_3, minOff6_3, dark6_3, light6_3, tcycle_6_3
+
+    date6_3 = date6_3_entry.get()
+    month6_3 = month6_3_entry.get()
+    year6_3 = year6_3_entry.get()
+
+    hourFrom6_3= spin6_E_3.get()
+    minuteFrom6_3= spin6_F_3.get()
+    hourOn6_3=spin6_A_3.get()
+    minOn6_3=spin6_B_3.get()
+    hourOff6_3=spin6_C_3.get()
+    minOff6_3=spin6_D_3.get()   
+
+    tcycle_6_3 = int(tcyclespinbox_arr[5,2].get())
+  
+    hourOn6_3 = time_to_str(hourOn6_3)    
+    minOn6_3 = time_to_str(minOn6_3)
+    hourOff6_3=time_to_str(hourOff6_3)
+    minOff6_3=time_to_str(minOff6_3)
+    
+    tcycle_6_3 = time_to_str(tcycle_6_3)
+    
+    date6_3 = time_to_str(date6_3)
+    month6_3 = time_to_str(month6_3)
+    year6_3 = time_to_str(year6_3)
+
+
+    if var6_3.get()==1:
+        dark6_3='0'
+        light6_3='0'
+    if var6_3.get()==2:
+        dark6_3='1'
+        light6_3='0'
+    if var6_3.get()==3:
+        dark6_3='0'
+        light6_3='1'
+    
+    #phase4
+
+    global date6_4, month6_4, year6_4, hourFrom6_4, minuteFrom6_4, hourOn6_4, minOn6_4, hourOff6_4, minOff6_4, dark6_4, light6_4, tcycle_6_4
+    
+    date6_4 = date6_4_entry.get()
+    month6_4 = month6_4_entry.get()
+    year6_4 = year6_4_entry.get()
+
+    hourFrom6_4= spin6_E_4.get()
+    minuteFrom6_4= spin6_F_4.get()
+    hourOn6_4=spin6_A_4.get()
+    minOn6_4=spin6_B_4.get()
+    hourOff6_4=spin6_C_4.get()
+    minOff6_4=spin6_D_4.get() 
+
+    tcycle_6_4 = int(tcyclespinbox_arr[5,3].get())
+  
+    hourOn6_4 = time_to_str(hourOn6_4)    
+    minOn6_4 = time_to_str(minOn6_4)
+    hourOff6_4=time_to_str(hourOff6_4)
+    minOff6_4=time_to_str(minOff6_4)
+    
+    tcycle_6_4=time_to_str(tcycle_6_4)
+
+    date6_4 = time_to_str(date6_4)
+    month6_4 = time_to_str(month6_4)
+    year6_4 = time_to_str(year6_4)
+
+    if var6_4.get()==1:
+        dark6_4='0'
+        light6_4='0'
+    if var6_4.get()==2:
+        dark6_4='1'
+        light6_4='0'
+    if var6_4.get()==3:
+        dark6_4='0'
+        light6_4='1'
+    
+    #phase 5
+    
+    global date6_5, month6_5, year6_5, hourFrom6_5, minuteFrom6_5, hourOn6_5, minOn6_5, hourOff6_5, minOff6_5, dark6_5, light6_5, tcycle_6_5
+    date6_5 = date6_5_entry.get()
+    month6_5 = month6_5_entry.get()
+    year6_5 = year6_5_entry.get()
+    hourFrom6_5= spin6_E_5.get()
+    minuteFrom6_5= spin6_F_5.get()
+    hourOn6_5=spin6_A_5.get()
+    minOn6_5=spin6_B_5.get()
+    hourOff6_5=spin6_C_5.get()
+    minOff6_5=spin6_D_5.get()  
+
+    tcycle_6_5 = int(tcyclespinbox_arr[5,4].get())
+   
+    hourOn6_5 = time_to_str(hourOn6_5)    
+    minOn6_5 = time_to_str(minOn6_5)
+    hourOff6_5 = time_to_str(hourOff6_5)
+    minOff6_5 = time_to_str(minOff6_5)
+    
+    tcycle_6_5 =time_to_str(tcycle_6_5)
+
+    date6_5 = time_to_str(date6_5)
+    month6_5 = time_to_str(month6_5)
+    year6_5 = time_to_str(year6_5)
+
+
+    if var6_5.get()==1:
+        dark6_5='0'
+        light6_5='0'
+    if var6_5.get()==2:
+        dark6_5='1'
+        light6_5='0'
+    if var6_5.get()==3:
+        dark6_5='0'
+        light6_5='1'
+
+    # phase 6
+    global date6_6, month6_6, year6_6, hourFrom6_6, minuteFrom6_6, hourOn6_6, minOn6_6, hourOff6_6, minOff6_6, dark6_6, light6_6, tcycle_6_6
+    date6_6 = date6_6_entry.get()
+    month6_6 = month6_6_entry.get()
+    year6_6 = year6_6_entry.get()
+    hourFrom6_6= spin6_E_6.get()
+    minuteFrom6_6= spin6_F_6.get()
+    hourOn6_6=spin6_A_6.get()
+    minOn6_6=spin6_B_6.get()
+    hourOff6_6=spin6_C_6.get()
+    minOff6_6=spin6_D_6.get()  
+
+    tcycle_6_6 = int(tcyclespinbox_arr[5,5].get())
+   
+    hourOn6_6 = time_to_str(hourOn6_6)    
+    minOn6_6 = time_to_str(minOn6_6)
+    hourOff6_6=time_to_str(hourOff6_6)
+    minOff6_6=time_to_str(minOff6_6)
+    
+    tcycle_6_6=time_to_str(tcycle_6_6)
+
+    date6_6 = time_to_str(date6_6)
+    month6_6 = time_to_str(month6_6)
+    year6_6 = time_to_str(year6_6)
+
+    if var6_6.get()==1:
+        dark6_6='0'
+        light6_6='0'
+    if var6_6.get()==2:
+        dark6_6='1'
+        light6_6='0'
+    if var6_6.get()==3:
+        dark6_6='0'
+        light6_6='1'
+  
+    #phase 7
+    global date6_7, month6_7, year6_7, hourFrom6_7, minuteFrom6_7, hourOn6_7, minOn6_7, hourOff6_7, minOff6_7, dark6_7, light6_7, tcycle_6_7
+    date6_7 = date6_7_entry.get()
+    month6_7 = month6_7_entry.get()
+    year6_7 = year6_7_entry.get()
+    hourFrom6_7= spin6_E_7.get()
+    minuteFrom6_7= spin6_F_7.get()
+    hourOn6_7=spin6_A_7.get()
+    minOn6_7=spin6_B_7.get()
+    hourOff6_7=spin6_C_7.get()
+    minOff6_7=spin6_D_7.get()
+
+    tcycle_6_7 = int(tcyclespinbox_arr[5,6].get())
+ 
+    hourOn6_7 = time_to_str(hourOn6_7)    
+    minOn6_7 = time_to_str(minOn6_7)
+    hourOff6_7=time_to_str(hourOff6_7)
+    minOff6_7=time_to_str(minOff6_7)
+    
+    tcycle_6_7=time_to_str(tcycle_6_7)
+
+    date6_7 = time_to_str(date6_7)
+    month6_7 = time_to_str(month6_7)
+    year6_7 = time_to_str(year6_7)
+
+    if var6_7.get()==1:
+        dark6_7='0'
+        light6_7='0'
+    if var6_7.get()==2:
+        dark6_7='1'
+        light6_7='0'
+    if var6_7.get()==3:
+        dark6_7='0'
+        light6_7='1'
+
+    #phase 8
+    global date6_8, month6_8, year6_8, hourFrom6_8, minuteFrom6_8, hourOn6_8, minOn6_8, hourOff6_8, minOff6_8, dark6_8, light6_8, tcycle_6_8
+    date6_8 = date6_8_entry.get()
+    month6_8 = month6_8_entry.get()
+    year6_8 = year6_8_entry.get()
+    hourFrom6_8= spin6_E_8.get()
+    minuteFrom6_8= spin6_F_8.get()
+    hourOn6_8=spin6_A_8.get()
+    minOn6_8=spin6_B_8.get()
+    hourOff6_8=spin6_C_8.get()
+    minOff6_8=spin6_D_8.get()  
+
+    tcycle_6_8 = int(tcyclespinbox_arr[5,7].get())
+  
+    hourOn6_8 = time_to_str(hourOn6_8)    
+    minOn6_8 = time_to_str(minOn6_8)
+    hourOff6_8=time_to_str(hourOff6_8)
+    minOff6_8=time_to_str(minOff6_8)
+    
+    tcycle_6_8=time_to_str(tcycle_6_8)
+
+    date6_8 = time_to_str(date6_8)
+    month6_8 = time_to_str(month6_8)
+    year6_8 = time_to_str(year6_8)
+
+
+    if var6_8.get()==1:
+        dark6_8='0'
+        light6_8='0'
+    if var6_8.get()==2:
+        dark6_8='1'
+        light6_8='0'
+    if var6_8.get()==3:
+        dark6_8='0'
+        light6_8='1'
+    
+    #phase 9
+    global date6_9, month6_9, year6_9, hourFrom6_9, minuteFrom6_9, hourOn6_9, minOn6_9, hourOff6_9, minOff6_9, dark6_9, light6_9, tcycle_6_9
+    date6_9 = date6_9_entry.get()
+    month6_9 = month6_9_entry.get()
+    year6_9 = year6_9_entry.get()
+    hourFrom6_9= spin6_E_9.get()
+    minuteFrom6_9= spin6_F_9.get()
+    hourOn6_9=spin6_A_9.get()
+    minOn6_9=spin6_B_9.get()
+    hourOff6_9=spin6_C_9.get()
+    minOff6_9=spin6_D_9.get()    
+
+    tcycle_6_9 = int(tcyclespinbox_arr[5,8].get())
+  
+    hourOn6_9 = time_to_str(hourOn6_9)    
+    minOn6_9 = time_to_str(minOn6_9)
+    hourOff6_9=time_to_str(hourOff6_9)
+    minOff6_9=time_to_str(minOff6_9)
+    
+    tcycle_6_9=time_to_str(tcycle_6_9)
+
+    date6_9 = time_to_str(date6_9)
+    month6_9 = time_to_str(month6_9)
+    year6_9 = time_to_str(year6_9)
+
+
+    if var6_9.get()==1:
+        dark6_9='0'
+        light6_9='0'
+    if var6_9.get()==2:
+        dark6_9='1'
+        light6_9='0'
+    if var6_9.get()==3:
+        dark6_9='0'
+        light6_9='1'
+
+    #phase 10
+    global date6_10, month6_10, year6_10, hourFrom6_10, minuteFrom6_10, hourOn6_10, minOn6_10, hourOff6_10, minOff6_10, dark6_10, light6_10, tcycle_6_10
+    date6_10 = date6_10_entry.get()
+    month6_10 = month6_10_entry.get()
+    year6_10 = year6_10_entry.get()
+    hourFrom6_10= spin6_E_10.get()
+    minuteFrom6_10= spin6_F_10.get()
+    hourOn6_10=spin6_A_10.get()
+    minOn6_10=spin6_B_10.get()
+    hourOff6_10=spin6_C_10.get()
+    minOff6_10=spin6_D_10.get()   
+
+    tcycle_6_10 = int(tcyclespinbox_arr[5,9].get())
+  
+    hourOn6_10 = time_to_str(hourOn6_10)    
+    minOn6_10 = time_to_str(minOn6_10)
+    hourOff6_10=time_to_str(hourOff6_10)
+    minOff6_10=time_to_str(minOff6_10)
+    
+    tcycle_6_10 = time_to_str(tcycle_6_10)
+
+    date6_10 = time_to_str(date6_10)
+    month6_10 = time_to_str(month6_10)
+    year6_10 = time_to_str(year6_10)
+
+
+    if var6_10.get()==1:
+        dark6_10='0'
+        light6_10='0'
+    if var6_10.get()==2:
+        dark6_10='1'
+        light6_10='0'
+    if var6_10.get()==3:
+        dark6_10='0'
+        light6_10='1'
+
+    #phase 11
+    global date6_11, month6_11, year6_11, hourFrom6_11, minuteFrom6_11, hourOn6_11, minOn6_11, hourOff6_11, minOff6_11, dark6_11, light6_11, tcycle_6_11
+    
+    date6_11 = date6_11_entry.get()
+    month6_11 = month6_11_entry.get()
+    year6_11 = year6_11_entry.get()
+    hourFrom6_11= spin6_E_11.get()
+    minuteFrom6_11= spin6_F_11.get()
+    hourOn6_11=spin6_A_11.get()
+    minOn6_11=spin6_B_11.get()
+    hourOff6_11=spin6_C_11.get()
+    minOff6_11=spin6_D_11.get() 
+
+    tcycle_6_11 = int(tcyclespinbox_arr[5,10].get())
+  
+    hourOn6_11 = time_to_str(hourOn6_11)    
+    minOn6_11 = time_to_str(minOn6_11)
+    hourOff6_11=time_to_str(hourOff6_11)
+    minOff6_11=time_to_str(minOff6_11)
+    
+    tcycle_6_11=time_to_str(tcycle_6_11)
+
+    date6_11 = time_to_str(date6_11)
+    month6_11 = time_to_str(month6_11)
+    year6_11 = time_to_str(year6_11)
+
+    if var6_11.get()==1:
+        dark6_11='0'
+        light6_11='0'
+    if var6_11.get()==2:
+        dark6_11='1'
+        light6_11='0'
+    if var6_11.get()==3:
+        dark6_11='0'
+        light6_11='1'
+
+    #phase 12
+    global date6_12, month6_12, year6_12, hourFrom6_12, minuteFrom6_12, hourOn6_12, minOn6_12, hourOff6_12, minOff6_12, dark6_12, light6_12, tcycle_6_12
+    date6_12 = date6_12_entry.get()
+    month6_12 = month6_12_entry.get()
+    year6_12 = year6_12_entry.get()
+    hourFrom6_12= spin6_E_12.get()
+    minuteFrom6_12= spin6_F_12.get()
+    hourOn6_12=spin6_A_12.get()
+    minOn6_12=spin6_B_12.get()
+    hourOff6_12=spin6_C_12.get()
+    minOff6_12=spin6_D_12.get()
+
+    tcycle_6_12 = int(tcyclespinbox_arr[5,11].get())
+ 
+    hourOn6_12 = time_to_str(hourOn6_12)    
+    minOn6_12 = time_to_str(minOn6_12)
+    hourOff6_12=time_to_str(hourOff6_12)
+    minOff6_12=time_to_str(minOff6_12)
+    
+    tcycle_6_12=time_to_str(tcycle_6_12)
+
+    date6_12 = time_to_str(date6_12)
+    month6_12 = time_to_str(month6_12)
+    year6_12 = time_to_str(year6_12)
+
+    if var6_12.get()==1:
+        dark6_12='0'
+        light6_12='0'
+    if var6_12.get()==2:
+        dark6_12='1'
+        light6_12='0'
+    if var6_12.get()==3:
+        dark6_12='0'
+        light6_12='1'
+
+    status.pack(side='bottom', fill='x')
+    status.set('Box6 schedule is set.')
+    
+    if setBox1+setBox2+setBox3+setBox4+setBox5+setBox6 == 6:
         btnSave['state']='normal'
         btnRun['state']='normal'  
         recordingmenu.entryconfig('Start new', state='normal')
         show_conf()
     window.update_idletasks()
 
+
+
 def getAllBoxSchedule(): 
 
     global value_mat, phase_delimiters
-    global initLED1_str, initLED2_str, initLED3_str, initLED4_str , initLED5_str
-    global initLED1, initLED2, initLED3, initLED4 , initLED5
+    global initLED1_str, initLED2_str, initLED3_str, initLED4_str , initLED5_str, initLED6_str
+    global initLED1, initLED2, initLED3, initLED4 , initLED5, initLED6
 
     getBox1Schedule()
     getBox2Schedule()
     getBox3Schedule()
     getBox4Schedule()
     getBox5Schedule()
+    getBox6Schedule()
 
     initLED1_str = initLED1.get()
     initLED2_str = initLED2.get()
     initLED3_str = initLED3.get()
     initLED4_str = initLED4.get()
     initLED5_str = initLED5.get()
+    initLED6_str = initLED6.get()
 
     today=datetime.date.today()
     day = today.day
@@ -7622,66 +8939,89 @@ def getAllBoxSchedule():
     hourOn3_1, minOn3_1, hourOff3_1, minOff3_1, dark3_1, light3_1,day,thismonth, thisyear, thishour, thismin,
     hourOn4_1, minOn4_1, hourOff4_1, minOff4_1, dark4_1, light4_1,day,thismonth, thisyear, thishour, thismin,
     hourOn5_1, minOn5_1, hourOff5_1, minOff5_1, dark5_1, light5_1, day,thismonth, thisyear, thishour, thismin,
+    hourOn6_1, minOn6_1, hourOff6_1, minOff6_1, dark6_1, light6_1, day,thismonth, thisyear, thishour, thismin,
+
     hourOn1_2, minOn1_2, hourOff1_2, minOff1_2, dark1_2, light1_2, date1_2, month1_2, year1_2, hourFrom1_2, minuteFrom1_2,
     hourOn2_2, minOn2_2, hourOff2_2, minOff2_2, dark2_2, light2_2, date2_2, month2_2, year2_2, hourFrom2_2, minuteFrom2_2,
     hourOn3_2, minOn3_2, hourOff3_2, minOff3_2, dark3_2, light3_2, date3_2, month3_2, year3_2, hourFrom3_2, minuteFrom3_2,
     hourOn4_2, minOn4_2, hourOff4_2, minOff4_2, dark4_2, light4_2, date4_2, month4_2, year4_2, hourFrom4_2, minuteFrom4_2,
     hourOn5_2, minOn5_2, hourOff5_2, minOff5_2, dark5_2, light5_2, date5_2, month5_2, year5_2, hourFrom5_2, minuteFrom5_2,
+    hourOn6_2, minOn6_2, hourOff6_2, minOff6_2, dark6_2, light6_2, date6_2, month6_2, year6_2, hourFrom6_2, minuteFrom6_2,
+
     hourOn1_3, minOn1_3, hourOff1_3, minOff1_3, dark1_3, light1_3, date1_3, month1_3, year1_3, hourFrom1_3, minuteFrom1_3,
     hourOn2_3, minOn2_3, hourOff2_3, minOff2_3, dark2_3, light2_3, date2_3, month2_3, year2_3, hourFrom2_3, minuteFrom2_3,
     hourOn3_3, minOn3_3, hourOff3_3, minOff3_3, dark3_3, light3_3, date3_3, month3_3, year3_3, hourFrom3_3, minuteFrom3_3,
     hourOn4_3, minOn4_3, hourOff4_3, minOff4_3, dark4_3, light4_3, date4_3, month4_3, year4_3, hourFrom4_3, minuteFrom4_3,
     hourOn5_3, minOn5_3, hourOff5_3, minOff5_3, dark5_3, light5_3, date5_3, month5_3, year5_3, hourFrom5_3, minuteFrom5_3,
+    hourOn6_3, minOn6_3, hourOff6_3, minOff6_3, dark6_3, light6_3, date6_3, month6_3, year6_3, hourFrom6_3, minuteFrom6_3,
+
     hourOn1_4, minOn1_4, hourOff1_4, minOff1_4, dark1_4, light1_4, date1_4, month1_4, year1_4, hourFrom1_4, minuteFrom1_4,
     hourOn2_4, minOn2_4, hourOff2_4, minOff2_4, dark2_4, light2_4, date2_4, month2_4, year2_4, hourFrom2_4, minuteFrom2_4,
     hourOn3_4, minOn3_4, hourOff3_4, minOff3_4, dark3_4, light3_4, date3_4, month3_4, year3_4, hourFrom3_4, minuteFrom3_4,
     hourOn4_4, minOn4_4, hourOff4_4, minOff4_4, dark4_4, light4_4, date4_4, month4_4, year4_4, hourFrom4_4, minuteFrom4_4,
     hourOn5_4, minOn5_4, hourOff5_4, minOff5_4, dark5_4, light5_4, date5_4, month5_4, year5_4, hourFrom5_4, minuteFrom5_4,
+    hourOn6_4, minOn6_4, hourOff6_4, minOff6_4, dark6_4, light6_4, date6_4, month6_4, year6_4, hourFrom6_4, minuteFrom6_4,
+
     hourOn1_5, minOn1_5, hourOff1_5, minOff1_5, dark1_5, light1_5, date1_5, month1_5, year1_5, hourFrom1_5, minuteFrom1_5,
     hourOn2_5, minOn2_5, hourOff2_5, minOff2_5, dark2_5, light2_5, date2_5, month2_5, year2_5, hourFrom2_5, minuteFrom2_5,
     hourOn3_5, minOn3_5, hourOff3_5, minOff3_5, dark3_5, light3_5, date3_5, month3_5, year3_5, hourFrom3_5, minuteFrom3_5,
     hourOn4_5, minOn4_5, hourOff4_5, minOff4_5, dark4_5, light4_5, date4_5, month4_5, year4_5, hourFrom4_5, minuteFrom4_5,
     hourOn5_5, minOn5_5, hourOff5_5, minOff5_5, dark5_5, light5_5, date5_5, month5_5, year5_5, hourFrom5_5, minuteFrom5_5,
+    hourOn6_5, minOn6_5, hourOff6_5, minOff6_5, dark6_5, light6_5, date6_5, month6_5, year6_5, hourFrom6_5, minuteFrom6_5,
+
     hourOn1_6, minOn1_6, hourOff1_6, minOff1_6, dark1_6, light1_6, date1_6, month1_6, year1_6, hourFrom1_6, minuteFrom1_6,
     hourOn2_6, minOn2_6, hourOff2_6, minOff2_6, dark2_6, light2_6, date2_6, month2_6, year2_6, hourFrom2_6, minuteFrom2_6,
     hourOn3_6, minOn3_6, hourOff3_6, minOff3_6, dark3_6, light3_6, date3_6, month3_6, year3_6, hourFrom3_6, minuteFrom3_6,
     hourOn4_6, minOn4_6, hourOff4_6, minOff4_6, dark4_6, light4_6, date4_6, month4_6, year4_6, hourFrom4_6, minuteFrom4_6,
     hourOn5_6, minOn5_6, hourOff5_6, minOff5_6, dark5_6, light5_6, date5_6, month5_6, year5_6, hourFrom5_6, minuteFrom5_6,
+    hourOn6_6, minOn6_6, hourOff6_6, minOff6_6, dark6_6, light6_6, date6_6, month6_6, year6_6, hourFrom6_6, minuteFrom6_6,
+
     hourOn1_7, minOn1_7, hourOff1_7, minOff1_7, dark1_7, light1_7, date1_7, month1_7, year1_7, hourFrom1_7, minuteFrom1_7,
     hourOn2_7, minOn2_7, hourOff2_7, minOff2_7, dark2_7, light2_7, date2_7, month2_7, year2_7, hourFrom2_7, minuteFrom2_7,
     hourOn3_7, minOn3_7, hourOff3_7, minOff3_7, dark3_7, light3_7, date3_7, month3_7, year3_7, hourFrom3_7, minuteFrom3_7,
     hourOn4_7, minOn4_7, hourOff4_7, minOff4_7, dark4_7, light4_7, date4_7, month4_7, year4_7, hourFrom4_7, minuteFrom4_7,
     hourOn5_7, minOn5_7, hourOff5_7, minOff5_7, dark5_7, light5_7, date5_7, month5_7, year5_7, hourFrom5_7, minuteFrom5_7,
+    hourOn6_7, minOn6_7, hourOff6_7, minOff6_7, dark6_7, light6_7, date6_7, month6_7, year6_7, hourFrom6_7, minuteFrom6_7,
+
     hourOn1_8, minOn1_8, hourOff1_8, minOff1_8, dark1_8, light1_8, date1_8, month1_8, year1_8, hourFrom1_8, minuteFrom1_8,
     hourOn2_8, minOn2_8, hourOff2_8, minOff2_8, dark2_8, light2_8, date2_8, month2_8, year2_8, hourFrom2_8, minuteFrom2_8,
     hourOn3_8, minOn3_8, hourOff3_8, minOff3_8, dark3_8, light3_8, date3_8, month3_8, year3_8, hourFrom3_8, minuteFrom3_8,
     hourOn4_8, minOn4_8, hourOff4_8, minOff4_8, dark4_8, light4_8, date4_8, month4_8, year4_8, hourFrom4_8, minuteFrom4_8,
     hourOn5_8, minOn5_8, hourOff5_8, minOff5_8, dark5_8, light5_8, date5_8, month5_8, year5_8, hourFrom5_8, minuteFrom5_8,
+    hourOn6_8, minOn6_8, hourOff6_8, minOff6_8, dark6_8, light6_8, date6_8, month6_8, year6_8, hourFrom6_8, minuteFrom6_8,
+
     hourOn1_9, minOn1_9, hourOff1_9, minOff1_9, dark1_9, light1_9, date1_9, month1_9, year1_9, hourFrom1_9, minuteFrom1_9,
     hourOn2_9, minOn2_9, hourOff2_9, minOff2_9, dark2_9, light2_9, date2_9, month2_9, year2_9, hourFrom2_9, minuteFrom2_9,
     hourOn3_9, minOn3_9, hourOff3_9, minOff3_9, dark3_9, light3_9, date3_9, month3_9, year3_9, hourFrom3_9, minuteFrom3_9,
     hourOn4_9, minOn4_9, hourOff4_9, minOff4_9, dark4_9, light4_9, date4_9, month4_9, year4_9, hourFrom4_9, minuteFrom4_9,
     hourOn5_9, minOn5_9, hourOff5_9, minOff5_9, dark5_9, light5_9, date5_9, month5_9, year5_9, hourFrom5_9, minuteFrom5_9,
+    hourOn6_9, minOn6_9, hourOff6_9, minOff6_9, dark6_9, light6_9, date6_9, month6_9, year6_9, hourFrom6_9, minuteFrom6_9,
+
     hourOn1_10, minOn1_10, hourOff1_10, minOff1_10, dark1_10, light1_10, date1_10, month1_10, year1_10, hourFrom1_10, minuteFrom1_10,
     hourOn2_10, minOn2_10, hourOff2_10, minOff2_10, dark2_10, light2_10, date2_10, month2_10, year2_10, hourFrom2_10, minuteFrom2_10,
     hourOn3_10, minOn3_10, hourOff3_10, minOff3_10, dark3_10, light3_10, date3_10, month3_10, year3_10, hourFrom3_10, minuteFrom3_10,
     hourOn4_10, minOn4_10, hourOff4_10, minOff4_10, dark4_10, light4_10, date4_10, month4_10, year4_10, hourFrom4_10, minuteFrom4_10,
     hourOn5_10, minOn5_10, hourOff5_10, minOff5_10, dark5_10, light5_10, date5_10, month5_10, year5_10, hourFrom5_10, minuteFrom5_10,
+    hourOn6_10, minOn6_10, hourOff6_10, minOff6_10, dark6_10, light6_10, date6_10, month6_10, year6_10, hourFrom6_10, minuteFrom6_10,
+
     hourOn1_11, minOn1_11, hourOff1_11, minOff1_11, dark1_11, light1_11, date1_11, month1_11, year1_11, hourFrom1_11, minuteFrom1_11,
     hourOn2_11, minOn2_11, hourOff2_11, minOff2_11, dark2_11, light2_11, date2_11, month2_11, year2_11, hourFrom2_11, minuteFrom2_11,
     hourOn3_11, minOn3_11, hourOff3_11, minOff3_11, dark3_11, light3_11, date3_11, month3_11, year3_11, hourFrom3_11, minuteFrom3_11,
     hourOn4_11, minOn4_11, hourOff4_11, minOff4_11, dark4_11, light4_11, date4_11, month4_11, year4_11, hourFrom4_11, minuteFrom4_11,
     hourOn5_11, minOn5_11, hourOff5_11, minOff5_11, dark5_11, light5_11, date5_11, month5_11, year5_11, hourFrom5_11, minuteFrom5_11,
+    hourOn6_11, minOn6_11, hourOff6_11, minOff6_11, dark6_11, light6_11, date6_11, month6_11, year6_11, hourFrom6_11, minuteFrom6_11,
+
     hourOn1_12, minOn1_12, hourOff1_12, minOff1_12, dark1_12, light1_12, date1_12, month1_12, year1_12, hourFrom1_12, minuteFrom1_12,
     hourOn2_12, minOn2_12, hourOff2_12, minOff2_12, dark2_12, light2_12, date2_12, month2_12, year2_12, hourFrom2_12, minuteFrom2_12,
     hourOn3_12, minOn3_12, hourOff3_12, minOff3_12, dark3_12, light3_12, date3_12, month3_12, year3_12, hourFrom3_12, minuteFrom3_12,
     hourOn4_12, minOn4_12, hourOff4_12, minOff4_12, dark4_12, light4_12, date4_12, month4_12, year4_12, hourFrom4_12, minuteFrom4_12,
-    hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12]
+    hourOn5_12, minOn5_12, hourOff5_12, minOff5_12, dark5_12, light5_12, date5_12, month5_12, year5_12, hourFrom5_12, minuteFrom5_12,
+    hourOn6_12, minOn6_12, hourOff6_12, minOff6_12, dark6_12, light6_12, date6_12, month6_12, year6_12, hourFrom6_12, minuteFrom6_12]
 
     
     value_mat = np.asarray(value_mat)
     
-    value_mat = value_mat.reshape(5,12,11)
+    value_mat = value_mat.reshape(6,12,11)
 
     #np.save("value_mat.npy", value_mat)
 
@@ -7711,10 +9051,12 @@ def copyScheduletoAll(tab_index):
     elif current_frame == 5:
         temp_savedBoxSchedule = copyBox5()
     elif current_frame == 6:
+        temp_savedBoxSchedule = copyBox6()
+    elif current_frame == 7:
         pass
     
     
-    for ind in range(1,6):
+    for ind in range(1,7):
         temp_savedBoxSchedule.pasteSchedule(ind, input_mat) #box_index_to be pasted, global_mat
    
 
@@ -7807,11 +9149,27 @@ def copyBox5():
     temp_savedBoxSchedule.addPhase(hourOn = spin5_A_12.get(), minOn= spin5_B_12.get(), hourOff = spin5_C_12.get(), minOff = spin5_D_12.get(), var=var5_12, date = date5_12_entry.get(), month =  month5_12_entry.get(),year =year5_12_entry.get(), hourFrom= spin5_E_12.get(),  minuteFrom = spin5_F_12.get())
     return temp_savedBoxSchedule
     
+def copyBox6():
+    temp_savedBoxSchedule = BoxSchedule()
+    #PhaseSchedule(hourOn, minOn, hourOff, minOff, dark, light, date, month, year, hourFrom, minuteFrom #add 12 phases
+    temp_savedBoxSchedule.addPhase1(spin6_A_1.get(),spin6_B_1.get(),spin6_C_1.get(),spin6_D_1.get(), var6_1) #Phase 1 has less vars
+    temp_savedBoxSchedule.addPhase(hourOn = spin6_A_2.get(), minOn= spin6_B_2.get(), hourOff = spin6_C_2.get(), minOff = spin6_D_2.get(), var=var6_2, date = date6_2_entry.get(), month =  month6_2_entry.get(),year =year6_2_entry.get(), hourFrom= spin6_E_2.get(),  minuteFrom = spin6_F_2.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin6_A_3.get(), minOn= spin6_B_3.get(), hourOff = spin6_C_3.get(), minOff = spin6_D_3.get(), var=var6_3, date = date6_3_entry.get(), month =  month6_3_entry.get(),year =year6_3_entry.get(), hourFrom= spin6_E_3.get(),  minuteFrom = spin6_F_3.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin6_A_4.get(), minOn= spin6_B_4.get(), hourOff = spin6_C_4.get(), minOff = spin6_D_4.get(), var=var6_4, date = date6_4_entry.get(), month =  month6_4_entry.get(),year =year6_4_entry.get(), hourFrom= spin6_E_4.get(),  minuteFrom = spin6_F_4.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin6_A_5.get(), minOn= spin6_B_5.get(), hourOff = spin6_C_5.get(), minOff = spin6_D_5.get(), var=var6_5, date = date6_5_entry.get(), month =  month6_5_entry.get(),year =year6_5_entry.get(), hourFrom= spin6_E_5.get(),  minuteFrom = spin6_F_5.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin6_A_6.get(), minOn= spin6_B_6.get(), hourOff = spin6_C_6.get(), minOff = spin6_D_6.get(), var=var6_6, date = date6_6_entry.get(), month =  month6_6_entry.get(),year =year6_6_entry.get(), hourFrom= spin6_E_6.get(),  minuteFrom = spin6_F_6.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin6_A_7.get(), minOn= spin6_B_7.get(), hourOff = spin6_C_7.get(), minOff = spin6_D_7.get(), var=var6_7, date = date6_7_entry.get(), month =  month6_7_entry.get(),year =year6_7_entry.get(), hourFrom= spin6_E_7.get(),  minuteFrom = spin6_F_7.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin6_A_8.get(), minOn= spin6_B_8.get(), hourOff = spin6_C_8.get(), minOff = spin6_D_8.get(), var=var6_8, date = date6_8_entry.get(), month =  month6_8_entry.get(),year =year6_8_entry.get(), hourFrom= spin6_E_8.get(),  minuteFrom = spin6_F_8.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin6_A_9.get(), minOn= spin6_B_9.get(), hourOff = spin6_C_9.get(), minOff = spin6_D_9.get(), var=var6_9, date = date6_9_entry.get(), month =  month6_9_entry.get(),year =year6_9_entry.get(), hourFrom= spin6_E_9.get(),  minuteFrom = spin6_F_9.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin6_A_10.get(), minOn= spin6_B_10.get(), hourOff = spin6_C_10.get(), minOff = spin6_D_10.get(), var=var6_10, date = date6_10_entry.get(), month =  month6_10_entry.get(),year =year6_10_entry.get(), hourFrom= spin6_E_10.get(),  minuteFrom = spin6_F_10.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin6_A_11.get(), minOn= spin6_B_11.get(), hourOff = spin6_C_11.get(), minOff = spin6_D_11.get(), var=var6_11, date = date6_11_entry.get(), month =  month6_11_entry.get(),year =year6_11_entry.get(), hourFrom= spin6_E_11.get(),  minuteFrom = spin6_F_11.get())
+    temp_savedBoxSchedule.addPhase(hourOn = spin6_A_12.get(), minOn= spin6_B_12.get(), hourOff = spin6_C_12.get(), minOff = spin6_D_12.get(), var=var6_12, date = date6_12_entry.get(), month =  month6_12_entry.get(),year =year6_12_entry.get(), hourFrom= spin6_E_12.get(),  minuteFrom = spin6_F_12.get())
+    return temp_savedBoxSchedule
 
 def copyBoxn(n, input_mat):
     temp_savedBoxSchedule = BoxSchedule()
     
-    temp_savedBoxSchedule.addPhase1(input_mat[n, 0,0],input_mat[n, 0,1], input_mat[n, 0,2], input_mat[n, 0,3], input_mat[n, 0,4])
+    temp_savedBoxSchedule.addPhase1(input_mat[n, 0,0],input_mat[n, 0,1], input_mat[n, 0,2], input_mat[n, 0,3], input_mat[n, 0,4],input_mat[n, 0,5])
     for phase_ind in range(1,12):
         temp_savedBoxSchedule.addPhase(*input_mat[n, phase_ind])
 
@@ -7841,75 +9199,87 @@ if __name__ == '__main__':
     var3_1 = IntVar(value=1)
     var4_1 = IntVar(value=1)
     var5_1 = IntVar(value=1)
+    var6_1 = IntVar(value=1)
 
     var1_2 = IntVar(value=1)
     var2_2 = IntVar(value=1)
     var3_2 = IntVar(value=1)
     var4_2 = IntVar(value=1)
     var5_2 = IntVar(value=1)
+    var6_2 = IntVar(value=1)
 
     var1_3 = IntVar(value=1)
     var2_3 = IntVar(value=1)
     var3_3 = IntVar(value=1)
     var4_3 = IntVar(value=1)
     var5_3 = IntVar(value=1)
+    var6_3 = IntVar(value=1)
 
     var1_4 = IntVar(value=1)
     var2_4 = IntVar(value=1)
     var3_4 = IntVar(value=1)
     var4_4 = IntVar(value=1)
     var5_4 = IntVar(value=1)
+    var6_4 = IntVar(value=1)
 
     var1_5 = IntVar(value=1)
     var2_5 = IntVar(value=1)
     var3_5 = IntVar(value=1)
     var4_5 = IntVar(value=1)
     var5_5 = IntVar(value=1)
+    var6_5 = IntVar(value=1)
     
     var1_6 = IntVar(value=1)
     var2_6 = IntVar(value=1)
     var3_6 = IntVar(value=1)
     var4_6 = IntVar(value=1)
     var5_6 = IntVar(value=1)  
+    var6_6 = IntVar(value=1)  
 
     var1_7 = IntVar(value=1)
     var2_7 = IntVar(value=1)
     var3_7 = IntVar(value=1)
     var4_7 = IntVar(value=1)
     var5_7 = IntVar(value=1)
+    var6_7 = IntVar(value=1)
 
     var1_8 = IntVar(value=1)
     var2_8 = IntVar(value=1)
     var3_8 = IntVar(value=1)
     var4_8 = IntVar(value=1)
     var5_8 = IntVar(value=1)  
+    var6_8 = IntVar(value=1)  
 
     var1_9 = IntVar(value=1)
     var2_9 = IntVar(value=1)
     var3_9 = IntVar(value=1)
     var4_9 = IntVar(value=1)
     var5_9 = IntVar(value=1)
+    var6_9 = IntVar(value=1)
 
     var1_10 = IntVar(value=1)
     var2_10 = IntVar(value=1)
     var3_10 = IntVar(value=1)
     var4_10 = IntVar(value=1)
     var5_10 = IntVar(value=1)
+    var6_10 = IntVar(value=1)
 
     var1_11 = IntVar(value=1)
     var2_11 = IntVar(value=1)
     var3_11 = IntVar(value=1)
     var4_11 = IntVar(value=1)
     var5_11 = IntVar(value=1)
+    var6_11 = IntVar(value=1)
 
     var1_12 = IntVar(value=1)
     var2_12 = IntVar(value=1)
     var3_12 = IntVar(value=1)
     var4_12 = IntVar(value=1)
     var5_12 = IntVar(value=1)
+    var6_12 = IntVar(value=1)
 
     log_mat =np.empty((120,12), dtype="<U10")
-    tcyclespinbox_arr =  np.empty((5,12), dtype= object)
+    tcyclespinbox_arr =  np.empty((6,12), dtype= object)
     
     #Create file menu
     filemenu = Menu(menu)
@@ -7962,12 +9332,16 @@ if __name__ == '__main__':
     ParentFrame3 = ttk.Frame(tab_control)
     ParentFrame4 = ttk.Frame(tab_control)
     ParentFrame5 = ttk.Frame(tab_control)
+    ParentFrame6 = ttk.Frame(tab_control)
     ParentFrame11 = ttk.Frame(tab_control)
+
+
     tab_control.add(ParentFrame1, text='Box1')
     tab_control.add(ParentFrame2, text='Box2')
     tab_control.add(ParentFrame3, text='Box3')
     tab_control.add(ParentFrame4, text='Box4')
     tab_control.add(ParentFrame5, text='Box5')
+    tab_control.add(ParentFrame6, text='Box6')
     tab_control.add(ParentFrame11, text='Schedules')
     
 
@@ -8080,6 +9454,27 @@ if __name__ == '__main__':
     canvas5.create_window(400, 175, window=tab5)
     
 
+#tab 6
+    canvas6 = Canvas(ParentFrame6, width=900, height=220, scrollregion=(0,0,900,300))
+    scroll6 = Scrollbar(ParentFrame6, orient=VERTICAL, command=canvas6.yview)
+    canvas6.grid(row=0, column=0)
+    scroll6.grid(row=0, column=1, sticky='ns')
+    scrollx6 = Scrollbar(ParentFrame6, orient=HORIZONTAL, command=canvas6.xview)
+    scrollx6.grid(row=1, column=0, sticky='ew')
+    # scrollx5.pack(expand=1, fill=X, side=BOTTOM)
+    # scroll5.pack(side = RIGHT, fill = Y, expand=1)
+    # canvas5.pack(side=LEFT,expand=True,fill=BOTH)
+    canvas6.config(yscrollcommand=scroll6.set, xscrollcommand=scrollx6.set)
+    tab6 = Frame(canvas6, width=200, height=150)
+    tab6.bind(
+    "<Configure>",
+    lambda e: canvas6.configure(
+        scrollregion=canvas6.bbox("all")
+        )
+    )
+    canvas6.create_window(400, 175, window=tab6)
+
+#schedule tab
 
     canvas11 = Canvas(ParentFrame11, width=900, height=220, scrollregion=(0,0,900,300)) #, highlightbackground="red", highlightthickness=2
     scroll11 = Scrollbar(ParentFrame11, orient=VERTICAL, command=canvas11.yview)
@@ -8144,10 +9539,10 @@ if __name__ == '__main__':
     filename_entry = Entry(f3, width = 25)
     filename_entry.place(x=80, y=ymidbtns)
     date_string = time.strftime('%Y%m%d') # predefine a default filename with ISO date    
-    filename_entry.insert(0,'BOX6-10-'+date_string+'.txt')
+    filename_entry.insert(0,'BOX1-6-'+date_string+'.txt')
     configfilename_entry = Entry(f3,width = 30)
     configfilename_entry.place(x=470, y=ymidbtns)
-    configfilename_entry.insert(0,'BOX6-10-sched-'+date_string+'.json')
+    configfilename_entry.insert(0,'BOX1-6-sched-'+date_string+'.json')
 
     #SHOW STATUS
     
@@ -8189,8 +9584,8 @@ if __name__ == '__main__':
     btnRefresh = Button(f2, text=' Refresh actogram', command= refresh_plot)
     
   
-    # if box settings of all 5 boxes are done, activate save and run buttons
-    if setBox1+setBox2+setBox3+setBox4+setBox5 == 5:
+    # if box settings of all 6 boxes are done, activate save and run buttons
+    if setBox1+setBox2+setBox3+setBox4+setBox5+setBox6 == 6:
         btnSave['state']='normal'
         btnRun['state']='normal'
         
@@ -8250,10 +9645,36 @@ if __name__ == '__main__':
     
     #runSeparator.pack(fill='x')
 
-   #INIT LED
-    
-   
 
+    # PIN LOCATION
+
+    pinlabel1 = Label(tab1, text='PIR-LED-LUM pins')
+    pinlabel1.grid(column=2, row=3, padx=1, pady=5)
+
+    pinsep1_1 = Label(tab1, text='-')
+    pinsep1_1.grid(column=8, row=3, padx=3, pady=5)
+
+    pinsep1_2 = Label(tab1, text='-')
+    pinsep1_2.grid(column=10, row=3, padx=3, pady=5)
+
+
+    DIn_box1 = Spinbox(tab1,from_=00, to=99, width=3, format='%02.0f')
+    DIn_box1.delete(0,'end')
+    DIn_box1.insert(0,'02')
+    DIn_box1.grid(column=7, row=3, pady=5)
+
+    DOut_box1 = Spinbox(tab1,from_=00, to=99, width=3, format='%02.0f')
+    DOut_box1.delete(0,'end')
+    DOut_box1.insert(0,'03')
+    DOut_box1.grid(column=9, row=3, pady=5)
+
+    anIn_box1 = Spinbox(tab1,from_=0, to=9, width=2, format='%01.0f')
+    anIn_box1.delete(0,'end')
+    anIn_box1.insert(0,1)
+    anIn_box1.grid(column=11, row=3, pady=5)
+
+
+    #INIT LED
     initLED1 = IntVar(value=0)
     rad_ON1 = Radiobutton(tab1, text='ON', variable=initLED1, value=1)
     rad_OFF1 = Radiobutton(tab1, text='OFF', variable=initLED1, value=0)
@@ -8284,6 +9705,12 @@ if __name__ == '__main__':
     rad_ON5.grid(column=9, row=1+row_adj, padx=15, pady=5)
     rad_OFF5.grid(column=11, row=1+row_adj, pady=5)
 
+    initLED6 = IntVar(value=0)
+    rad_ON6 = Radiobutton(tab6, text='ON', variable=initLED6, value=1)
+    rad_OFF6 = Radiobutton(tab6, text='OFF', variable=initLED6, value=0)
+    rad_ON6.grid(column=9, row=1+row_adj, padx=15, pady=5)
+    rad_OFF6.grid(column=11, row=1+row_adj, pady=5)
+
     initLEDlabel1 = Label(tab1, text='Initial LED')
     initLEDlabel1.grid(column=7, row=1+row_adj, padx=13, pady=5)
 
@@ -8298,6 +9725,9 @@ if __name__ == '__main__':
 
     initLEDlabel5 = Label(tab5, text='Initial LED')
     initLEDlabel5.grid(column=7, row=1+row_adj, padx=13, pady=5)
+
+    initLEDlabel6 = Label(tab6, text='Initial LED')
+    initLEDlabel6.grid(column=7, row=1+row_adj, padx=13, pady=5)
 
  # Box1 main
 
@@ -12834,6 +14264,906 @@ if __name__ == '__main__':
     rad5_B_12.grid(column=24, row=rowPhase12+row_adj, padx=15, pady=5)
     rad5_C_12.grid(column=25, row=rowPhase12+row_adj, pady=5)
 
+    # box6 main
+
+    tcyclelabel6 = Label(tab6, text='T-cycle length')
+    tcyclelabel6.grid(column=26, row=1, padx=3, pady=5)
+
+    for i in range(0,12): 
+        tcyclelength = Spinbox(tab6, from_=12, to=48, width=3)
+        tcyclelength.grid(column=26, row=2+i+row_adj, padx=3,pady=5)
+        tcyclelength.delete(0,'end')
+        tcyclelength.insert(0,24)
+        tcyclespinbox_arr[5,i] = tcyclelength
+        
+    tcyclespinbox_arr[5,0].grid(column=26, row=1+row_adj, pady=5)
+        
+    
+    tab6_title = Label(tab6, text= 'LED schedule', anchor='center')
+    tab6_title.grid(column=12, row= 1, columnspan='27', sticky='we')
+    # capSep5 = ttk.Separator(tab6, orient=HORIZONTAL)
+    # capSep5.grid(column=0, row = row_adj+5, columnspan='27', sticky='we')
+    box6sched_text=StringVar()
+    box6sched_text.set('Schedule not set.')
+    box6sched_stat=Label(tab6, textvariable=box6sched_text, anchor=W, justify=LEFT)
+        # phase 1
+    phaseLabel6_1 = Label(tab6, text='Phase 1')
+    dateLabel = time.strftime('%H:%M   %Y/%m/%d') # reads time for Phase 1 start-time
+    fromLabel6_1 = Label(tab6, text='From:')
+    date_label6 = Label(tab6, text=dateLabel)
+    rad6_A_1 = Radiobutton(tab6, text='LD', variable=var6_1, value=1)
+    lbl6_A_1 = Label(tab6, text= 'On:')
+    spin6_A_1 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_B_1 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_A_1.delete(0,'end')
+    spin6_A_1.insert(0,'07')
+    spin6_B_1.delete(0,'end')
+    spin6_B_1.insert(0,'00')
+    label6_h1_1 = Label(tab6, text=':')
+    label6_m1_1 = Label(tab6, text='')
+    lbl6_B_1 = Label(tab6, text= 'Off:')
+    spin6_C_1 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_D_1 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_C_1.delete(0,'end')
+    spin6_C_1.insert(0,'19')
+    spin6_D_1.delete(0,'end')
+    spin6_D_1.insert(0,'00')
+    label6_h2_1 = Label(tab6, text=':')
+    label6_m2_1 = Label(tab6, text='')
+    rad6_B_1 = Radiobutton(tab6, text='DD', variable=var6_1, value=2)
+    rad6_C_1 = Radiobutton(tab6, text='LL', variable=var6_1, value=3)
+    phaseLabel6_1.grid(column=0, row=1+row_adj, padx=15, pady=5)
+    fromLabel6_1.grid(column=1,row=1+row_adj)
+    date_label6.grid(column=2, row=1+row_adj, columnspan='10', sticky='w')
+    rad6_A_1.grid(column=13, row=1+row_adj, pady=5)
+    lbl6_A_1.grid(column=14, row=1+row_adj, pady=5)
+    spin6_A_1.grid(column=15,row=1+row_adj, pady=5)
+    label6_h1_1.grid(column=16,row=1+row_adj, pady=5, sticky='w')
+    spin6_B_1.grid(column=17,row=1+row_adj, pady=5)
+    label6_m1_1.grid(column=18,row=1+row_adj, pady=5, sticky='w')
+    lbl6_B_1.grid(column=19, row=1+row_adj, pady=5)
+    spin6_C_1.grid(column=20,row=1+row_adj, pady=5)
+    label6_h2_1.grid(column=21,row=1+row_adj, pady=5, sticky='w')
+    spin6_D_1.grid(column=22,row=1+row_adj, pady=5)
+    label6_m2_1.grid(column=23,row=1+row_adj, pady=5, sticky='w')
+    rad6_B_1.grid(column=24, row=1+row_adj, padx=15, pady=5)
+    rad6_C_1.grid(column=25, row=1+row_adj, pady=5)
+        # phase 2
+    phaseLabel6_2 = Label(tab6, text='Phase 2')
+    fromLabel6_2 = Label(tab6, text='From:')
+    space6_2 = Label(tab6, text=' ')
+    space6_2_2 = Label(tab6, text=' ')
+    spin6_E_2 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_F_2 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_E_2.delete(0,'end')
+    spin6_E_2.insert(0,'07')
+    spin6_F_2.delete(0,'end')
+    spin6_F_2.insert(0,'00')
+    label6_h0_2 = Label(tab6, text=':')
+    label6_m0_2 = Label(tab6, text='')
+    date6_2_entry = Spinbox(tab6, from_=00, to=31, width=3, format='%02.0f')
+    month6_2_entry = Spinbox(tab6, from_=00, to=12, width=3, format='%02.0f')
+    year6_2_entry = Spinbox(tab6, from_=2018, to=2030, width=5)
+    date6_2_entry.delete(0,'end')
+    today=datetime.date.today() # today
+    day_phase2 = today + datetime.timedelta(days=7) # calculate dates for 7 days after recording initiation
+    date6_2_entry.insert(0,'{:02d}'.format(day_phase2.day))
+    month6_2_entry.delete(0,'end')
+    month6_2_entry.insert(0,'{:02d}'.format(day_phase2.month))
+    year6_2_entry.delete(0,'end')
+    year6_2_entry.insert(0,day_phase2.year) # ISO format is YYYY/MM/DD
+
+    label3_d_0 = Label(tab6, text= 'Month')
+    label3_m_0 = Label(tab6, text= 'Date')
+    label3_m_0.grid(column=11,row=2+row_adj)
+    label3_d_0.grid(column=9,row=2+row_adj)
+    label3_d_1 = Label(tab6, text= '/')
+    label3_m_1 = Label(tab6, text= '/')
+    label3_d_1.grid(column=8,row=2+row_adj)
+    label3_m_1.grid(column=10,row=2+row_adj)
+
+    label6_d_2 = Label(tab6, text= '/')
+    label6_m_2 = Label(tab6, text= '/')
+    rad6_A_2 = Radiobutton(tab6, text='LD', variable=var6_2, value=1)
+    lbl6_A_2 = Label(tab6, text= 'On:')
+    spin6_A_2 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_B_2 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_A_2.delete(0,'end')
+    spin6_A_2.insert(0,'07')
+    spin6_B_2.delete(0,'end')
+    spin6_B_2.insert(0,'00')
+    label6_h1_2 = Label(tab6, text=':')
+    label6_m1_2 = Label(tab6, text='')
+    lbl6_B_2 = Label(tab6, text= 'Off:')
+    spin6_C_2 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_D_2 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_C_2.delete(0,'end')
+    spin6_C_2.insert(0,'19')
+    spin6_D_2.delete(0,'end')
+    spin6_D_2.insert(0,'00')
+    label6_h2_2 = Label(tab6, text=':')
+    label6_m2_2 = Label(tab6, text='')
+    rad6_B_2 = Radiobutton(tab6, text='DD', variable=var6_2, value=2)
+    rad6_C_2 = Radiobutton(tab6, text='LL', variable=var6_2, value=3)
+    phaseLabel6_2.grid(column=0, row=3+row_adj, padx=15, pady=5)
+    fromLabel6_2.grid(column=1,row=3+row_adj)
+    spin6_E_2.grid(column=2,row=3+row_adj)
+    label6_h0_2.grid(column=3,row=3+row_adj)
+    spin6_F_2.grid(column=4,row=3+row_adj)
+    label6_m0_2.grid(column=5,row=3+row_adj)
+    space6_2.grid(column=6,row=3+row_adj)
+    date6_2_entry.grid(column=11, row=3+row_adj)
+    label6_d_2.grid(column=8,row=3+row_adj)
+    month6_2_entry.grid(column=9, row=3+row_adj)
+    label6_m_2.grid(column=10,row=3+row_adj)
+    year6_2_entry.grid(column=7, row=3+row_adj) # ISO format
+    space6_2_2.grid(column=12,row=3+row_adj,padx=5)
+    rad6_A_2.grid(column=13, row=3+row_adj, pady=5)
+    lbl6_A_2.grid(column=14, row=3+row_adj, pady=5)
+    spin6_A_2.grid(column=15,row=3+row_adj, pady=5)
+    label6_h1_2.grid(column=16,row=3+row_adj, pady=5)
+    spin6_B_2.grid(column=17,row=3+row_adj, pady=5)
+    label6_m1_2.grid(column=18,row=3+row_adj, pady=5)
+    lbl6_B_2.grid(column=19, row=3+row_adj, pady=5)
+    spin6_C_2.grid(column=20,row=3+row_adj, pady=5)
+    label6_h2_2.grid(column=21,row=3+row_adj, pady=5)
+    spin6_D_2.grid(column=22,row=3+row_adj, pady=5)
+    label6_m2_2.grid(column=23,row=3+row_adj, pady=5)
+    rad6_B_2.grid(column=24, row=3+row_adj, padx=15, pady=5)
+    rad6_C_2.grid(column=25, row=3+row_adj, pady=5)
+
+        # phase 3
+    phaseLabel6_3 = Label(tab6, text='Phase 3')
+    fromLabel6_3 = Label(tab6, text='From:')
+    space6_3 = Label(tab6, text=' ')
+    spin6_E_3 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_F_3 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_E_3.delete(0,'end')
+    spin6_E_3.insert(0,'07')
+    spin6_F_3.delete(0,'end')
+    spin6_F_3.insert(0,'00')
+    label6_h0_3 = Label(tab6, text=':')
+    label6_m0_3 = Label(tab6, text='')
+    date6_3_entry = Spinbox(tab6, from_=00, to=31, width=3, format='%02.0f')
+    month6_3_entry = Spinbox(tab6, from_=00, to=12, width=3, format='%02.0f')
+    year6_3_entry = Spinbox(tab6, from_=2018, to=2030, width=5)
+    today=datetime.date.today() # today
+    day_phase3 = day_phase2 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date6_3_entry.delete(0,'end')
+    date6_3_entry.insert(0,'{:02d}'.format(day_phase3.day))
+    month6_3_entry.delete(0,'end')
+    month6_3_entry.insert(0,'{:02d}'.format(day_phase3.month))
+    year6_3_entry.delete(0,'end')
+    year6_3_entry.insert(0,day_phase3.year)
+    label6_d_3 = Label(tab6, text= '/')
+    label6_m_3 = Label(tab6, text= '/')
+    rad6_A_3 = Radiobutton(tab6, text='LD', variable=var6_3, value=1)
+    lbl6_A_3 = Label(tab6, text= 'On:')
+    spin6_A_3 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_B_3 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_A_3.delete(0,'end')
+    spin6_A_3.insert(0,'07')
+    spin6_B_3.delete(0,'end')
+    spin6_B_3.insert(0,'00')
+    label6_h1_3 = Label(tab6, text=':')
+    label6_m1_3 = Label(tab6, text='')
+    lbl6_B_3 = Label(tab6, text= 'Off:')
+    spin6_C_3 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_D_3 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_C_3.delete(0,'end')
+    spin6_C_3.insert(0,'19')
+    spin6_D_3.delete(0,'end')
+    spin6_D_3.insert(0,'00')
+    label6_h2_3 = Label(tab6, text=':')
+    label6_m2_3 = Label(tab6, text='')
+    rad6_B_3 = Radiobutton(tab6, text='DD', variable=var6_3, value=2)
+    rad6_C_3 = Radiobutton(tab6, text='LL', variable=var6_3, value=3)
+    phaseLabel6_3.grid(column=0, row=4+row_adj, padx=15, pady=5)
+    fromLabel6_3.grid(column=1,row=4+row_adj)
+    spin6_E_3.grid(column=2,row=4+row_adj)
+    label6_h0_3.grid(column=3,row=4+row_adj)
+    spin6_F_3.grid(column=4,row=4+row_adj)
+    label6_m0_3.grid(column=5,row=4+row_adj)
+    space6_3.grid(column=6,row=4+row_adj)
+    date6_3_entry.grid(column=11, row=4+row_adj)
+    label6_d_3.grid(column=8,row=4+row_adj)
+    month6_3_entry.grid(column=9, row=4+row_adj)
+    label6_m_3.grid(column=10,row=4+row_adj)
+    year6_3_entry.grid(column=7, row=4+row_adj) # ISO format
+    rad6_A_3.grid(column=13, row=4+row_adj, pady=5)
+    lbl6_A_3.grid(column=14, row=4+row_adj, pady=5)
+    spin6_A_3.grid(column=15,row=4+row_adj, pady=5)
+    label6_h1_3.grid(column=16,row=4+row_adj, pady=5)
+    spin6_B_3.grid(column=17,row=4+row_adj, pady=5)
+    label6_m1_3.grid(column=18,row=4+row_adj, pady=5)
+    lbl6_B_3.grid(column=19, row=4+row_adj, pady=5)
+    spin6_C_3.grid(column=20,row=4+row_adj, pady=5)
+    label6_h2_3.grid(column=21,row=4+row_adj, pady=5)
+    spin6_D_3.grid(column=22,row=4+row_adj, pady=5)
+    label6_m2_3.grid(column=23,row=4+row_adj, pady=5)
+    rad6_B_3.grid(column=24, row=4+row_adj, padx=15, pady=5)
+    rad6_C_3.grid(column=25, row=4+row_adj, pady=5)
+
+        # phase 4
+    phaseLabel6_4 = Label(tab6, text='Phase 4')
+    fromLabel6_4 = Label(tab6, text='From:')
+    space6_4 = Label(tab6, text=' ')
+    space6_4_2 = Label(tab6, text=' ')
+    spin6_E_4 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_F_4 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_E_4.delete(0,'end')
+    spin6_E_4.insert(0,'07')
+    spin6_F_4.delete(0,'end')
+    spin6_F_4.insert(0,'00')
+    label6_h0_4 = Label(tab6, text=':')
+    label6_m0_4 = Label(tab6, text='')
+    date6_4_entry = Spinbox(tab6, from_=00, to=31, width=3, format='%02.0f')
+    month6_4_entry = Spinbox(tab6, from_=00, to=12, width=3, format='%02.0f')
+    year6_4_entry = Spinbox(tab6, from_=2018, to=2030, width=5)
+    today=datetime.date.today() # today
+    day_phase4 = day_phase3 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date6_4_entry.delete(0,'end')
+    date6_4_entry.insert(0,'{:02d}'.format(day_phase4.day))
+    month6_4_entry.delete(0,'end')
+    month6_4_entry.insert(0,'{:02d}'.format(day_phase4.month))
+    year6_4_entry.delete(0,'end')
+    year6_4_entry.insert(0,day_phase4.year)
+    label6_d_4 = Label(tab6, text= '/')
+    label6_m_4 = Label(tab6, text= '/')
+    rad6_A_4 = Radiobutton(tab6, text='LD', variable=var6_4, value=1)
+    lbl6_A_4 = Label(tab6, text= 'On:')
+    spin6_A_4 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_B_4 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_A_4.delete(0,'end')
+    spin6_A_4.insert(0,'07')
+    spin6_B_4.delete(0,'end')
+    spin6_B_4.insert(0,'00')
+    label6_h1_4 = Label(tab6, text=':')
+    label6_m1_4 = Label(tab6, text='')
+    lbl6_B_4 = Label(tab6, text= 'Off:')
+    spin6_C_4 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_D_4 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_C_4.delete(0,'end')
+    spin6_C_4.insert(0,'19')
+    spin6_D_4.delete(0,'end')
+    spin6_D_4.insert(0,'00')
+    label6_h2_4 = Label(tab6, text=':')
+    label6_m2_4 = Label(tab6, text='')
+    rad6_B_4 = Radiobutton(tab6, text='DD', variable=var6_4, value=2)
+    rad6_C_4 = Radiobutton(tab6, text='LL', variable=var6_4, value=3)
+    phaseLabel6_4.grid(column=0, row=5+row_adj, padx=15, pady=5)
+    fromLabel6_4.grid(column=1,row=5+row_adj)
+    spin6_E_4.grid(column=2,row=5+row_adj)
+    label6_h0_4.grid(column=3,row=5+row_adj)
+    spin6_F_4.grid(column=4,row=5+row_adj)
+    label6_m0_4.grid(column=5,row=5+row_adj)
+    space6_4.grid(column=6,row=5+row_adj)
+    date6_4_entry.grid(column=11, row=5+row_adj)
+    label6_d_4.grid(column=8,row=5+row_adj)
+    month6_4_entry.grid(column=9, row=5+row_adj)
+    label6_m_4.grid(column=10,row=5+row_adj)
+    year6_4_entry.grid(column=7, row=5+row_adj) # ISO format
+    space6_4_2.grid(column=12,row=5+row_adj,padx=5)
+    rad6_A_4.grid(column=13, row=5+row_adj, pady=5)
+    lbl6_A_4.grid(column=14, row=5+row_adj, pady=5)
+    spin6_A_4.grid(column=15,row=5+row_adj, pady=5)
+    label6_h1_4.grid(column=16,row=5+row_adj, pady=5)
+    spin6_B_4.grid(column=17,row=5+row_adj, pady=5)
+    label6_m1_4.grid(column=18,row=5+row_adj, pady=5)
+    lbl6_B_4.grid(column=19, row=5+row_adj, pady=5)
+    spin6_C_4.grid(column=20,row=5+row_adj, pady=5)
+    label6_h2_4.grid(column=21,row=5+row_adj, pady=5)
+    spin6_D_4.grid(column=22,row=5+row_adj, pady=5)
+    label6_m2_4.grid(column=23,row=5+row_adj, pady=5)
+    rad6_B_4.grid(column=24, row=5+row_adj, padx=15, pady=5)
+    rad6_C_4.grid(column=25, row=5+row_adj, pady=5)
+
+    # phase 5
+    phaseLabel6_5 = Label(tab6, text='Phase 5')
+    fromLabel6_5 = Label(tab6, text='From:')
+    space6_5 = Label(tab6, text=' ')
+    space6_5_2 = Label(tab6, text=' ')
+    spin6_E_5 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_F_5 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_E_5.delete(0,'end')
+    spin6_E_5.insert(0,'07')
+    spin6_F_5.delete(0,'end')
+    spin6_F_5.insert(0,'00')
+    label6_h0_5 = Label(tab6, text=':')
+    label6_m0_5 = Label(tab6, text='')
+    date6_5_entry = Spinbox(tab6, from_=00, to=31, width=3, format='%02.0f')
+    month6_5_entry = Spinbox(tab6, from_=00, to=12, width=3, format='%02.0f')
+    year6_5_entry = Spinbox(tab6, from_=2018, to=2030, width=5)
+    today=datetime.date.today() # today
+    day_phase5 = day_phase4 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date6_5_entry.delete(0,'end')
+    date6_5_entry.insert(0,'{:02d}'.format(day_phase5.day))
+    month6_5_entry.delete(0,'end')
+    month6_5_entry.insert(0,'{:02d}'.format(day_phase5.month))
+    year6_5_entry.delete(0,'end')
+    year6_5_entry.insert(0,day_phase5.year)
+    label6_d_5 = Label(tab6, text= '/')
+    label6_m_5 = Label(tab6, text= '/')
+    rad6_A_5 = Radiobutton(tab6, text='LD', variable=var6_5, value=1)
+    lbl6_A_5 = Label(tab6, text= 'On:')
+    spin6_A_5 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_B_5 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_A_5.delete(0,'end')
+    spin6_A_5.insert(0,'07')
+    spin6_B_5.delete(0,'end')
+    spin6_B_5.insert(0,'00')
+    label6_h1_5 = Label(tab6, text=':')
+    label6_m1_5 = Label(tab6, text='')
+    lbl6_B_5 = Label(tab6, text= 'Off:')
+    spin6_C_5 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_D_5 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_C_5.delete(0,'end')
+    spin6_C_5.insert(0,'19')
+    spin6_D_5.delete(0,'end')
+    spin6_D_5.insert(0,'00')
+    label6_h2_5 = Label(tab6, text=':')
+    label6_m2_5 = Label(tab6, text='')
+    rad6_B_5 = Radiobutton(tab6, text='DD', variable=var6_5, value=2)
+    rad6_C_5 = Radiobutton(tab6, text='LL', variable=var6_5, value=3)
+    phaseLabel6_5.grid(column=0, row=6+row_adj, padx=15, pady=5)
+    fromLabel6_5.grid(column=1,row=6+row_adj)
+    spin6_E_5.grid(column=2,row=6+row_adj)
+    label6_h0_5.grid(column=3,row=6+row_adj)
+    spin6_F_5.grid(column=4,row=6+row_adj)
+    label6_m0_5.grid(column=5,row=6+row_adj)
+    space6_5.grid(column=6,row=6+row_adj)
+    date6_5_entry.grid(column=11, row=6+row_adj)
+    label6_d_5.grid(column=8,row=6+row_adj)
+    month6_5_entry.grid(column=9, row=6+row_adj)
+    label6_m_5.grid(column=10,row=6+row_adj)
+    year6_5_entry.grid(column=7, row=6+row_adj) # ISO format
+    space6_5_2.grid(column=12,row=6+row_adj,padx=5)
+    rad6_A_5.grid(column=13, row=6+row_adj, pady=5)
+    lbl6_A_5.grid(column=14, row=6+row_adj, pady=5)
+    spin6_A_5.grid(column=15,row=6+row_adj, pady=5)
+    label6_h1_5.grid(column=16,row=6+row_adj, pady=5)
+    spin6_B_5.grid(column=17,row=6+row_adj, pady=5)
+    label6_m1_5.grid(column=18,row=6+row_adj, pady=5)
+    lbl6_B_5.grid(column=19, row=6+row_adj, pady=5)
+    spin6_C_5.grid(column=20,row=6+row_adj, pady=5)
+    label6_h2_5.grid(column=21,row=6+row_adj, pady=5)
+    spin6_D_5.grid(column=22,row=6+row_adj, pady=5)
+    label6_m2_5.grid(column=23,row=6+row_adj, pady=5)
+    rad6_B_5.grid(column=24, row=6+row_adj, padx=15, pady=5)
+    rad6_C_5.grid(column=25, row=6+row_adj, pady=5)
+
+        # phase 6
+    phaseLabel6_6 = Label(tab6, text='Phase 6')
+    fromLabel6_6 = Label(tab6, text='From:')
+    space6_6 = Label(tab6, text=' ')
+    space6_6_2 = Label(tab6, text=' ')
+    spin6_E_6 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_F_6 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_E_6.delete(0,'end')
+    spin6_E_6.insert(0,'07')
+    spin6_F_6.delete(0,'end')
+    spin6_F_6.insert(0,'00')
+    label6_h0_6 = Label(tab6, text=':')
+    label6_m0_6 = Label(tab6, text='')
+    date6_6_entry = Spinbox(tab6, from_=00, to=31, width=3, format='%02.0f')
+    month6_6_entry = Spinbox(tab6, from_=00, to=12, width=3, format='%02.0f')
+    year6_6_entry = Spinbox(tab6, from_=2018, to=2030, width=5)
+    today=datetime.date.today() # today
+    day_phase6 = day_phase5 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date6_6_entry.delete(0,'end')
+    date6_6_entry.insert(0,'{:02d}'.format(day_phase6.day))
+    month6_6_entry.delete(0,'end')
+    month6_6_entry.insert(0,'{:02d}'.format(day_phase6.month))
+    year6_6_entry.delete(0,'end')
+    year6_6_entry.insert(0,day_phase6.year)
+    label6_d_6 = Label(tab6, text= '/')
+    label6_m_6 = Label(tab6, text= '/')
+    rad6_A_6 = Radiobutton(tab6, text='LD', variable=var6_6, value=1)
+    lbl6_A_6 = Label(tab6, text= 'On:')
+    spin6_A_6 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_B_6 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_A_6.delete(0,'end')
+    spin6_A_6.insert(0,'07')
+    spin6_B_6.delete(0,'end')
+    spin6_B_6.insert(0,'00')
+    label6_h1_6 = Label(tab6, text=':')
+    label6_m1_6 = Label(tab6, text='')
+    lbl6_B_6 = Label(tab6, text= 'Off:')
+    spin6_C_6 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_D_6 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_C_6.delete(0,'end')
+    spin6_C_6.insert(0,'19')
+    spin6_D_6.delete(0,'end')
+    spin6_D_6.insert(0,'00')
+    label6_h2_6 = Label(tab6, text=':')
+    label6_m2_6 = Label(tab6, text='')
+    rad6_B_6 = Radiobutton(tab6, text='DD', variable=var6_6, value=2)
+    rad6_C_6 = Radiobutton(tab6, text='LL', variable=var6_6, value=3)
+    
+    
+    phaseLabel6_6.grid(column=0, row=rowPhase6+row_adj, padx=15, pady=5)
+    fromLabel6_6.grid(column=1,row=rowPhase6+row_adj)
+    spin6_E_6.grid(column=2,row=rowPhase6+row_adj)
+    label6_h0_6.grid(column=3,row=rowPhase6+row_adj)
+    spin6_F_6.grid(column=4,row=rowPhase6+row_adj)
+    label6_m0_6.grid(column=5,row=rowPhase6+row_adj)
+    space6_6.grid(column=6,row=rowPhase6+row_adj)
+    date6_6_entry.grid(column=11, row=rowPhase6+row_adj)
+    label6_d_6.grid(column=8,row=rowPhase6+row_adj)
+    month6_6_entry.grid(column=9, row=rowPhase6+row_adj)
+    label6_m_6.grid(column=10,row=rowPhase6+row_adj)
+    year6_6_entry.grid(column=7, row=rowPhase6+row_adj) # ISO format
+    space6_6_2.grid(column=12,row=rowPhase6+row_adj,padx=5)
+    rad6_A_6.grid(column=13, row=rowPhase6+row_adj, pady=5)
+    lbl6_A_6.grid(column=14, row=rowPhase6+row_adj, pady=5)
+    spin6_A_6.grid(column=15,row=rowPhase6+row_adj, pady=5)
+    label6_h1_6.grid(column=16,row=rowPhase6+row_adj, pady=5)
+    spin6_B_6.grid(column=17,row=rowPhase6+row_adj, pady=5)
+    label6_m1_6.grid(column=18,row=rowPhase6+row_adj, pady=5)
+    lbl6_B_6.grid(column=19, row=rowPhase6+row_adj, pady=5)
+    spin6_C_6.grid(column=20,row=rowPhase6+row_adj, pady=5)
+    label6_h2_6.grid(column=21,row=rowPhase6+row_adj, pady=5)
+    spin6_D_6.grid(column=22,row=rowPhase6+row_adj, pady=5)
+    label6_m2_6.grid(column=23,row=rowPhase6+row_adj, pady=5)
+    rad6_B_6.grid(column=24, row=rowPhase6+row_adj, padx=15, pady=5)
+    rad6_C_6.grid(column=25, row=rowPhase6+row_adj, pady=5)
+
+        # phase 7
+    phaseLabel6_7 = Label(tab6, text='Phase 7')
+    fromLabel6_7 = Label(tab6, text='From:')
+    space6_7 = Label(tab6, text=' ')
+    space6_7_2 = Label(tab6, text=' ')
+    spin6_E_7 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_F_7 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_E_7.delete(0,'end')
+    spin6_E_7.insert(0,'07')
+    spin6_F_7.delete(0,'end')
+    spin6_F_7.insert(0,'00')
+    label6_h0_7 = Label(tab6, text=':')
+    label6_m0_7 = Label(tab6, text='')
+    date6_7_entry = Spinbox(tab6, from_=00, to=31, width=3, format='%02.0f')
+    month6_7_entry = Spinbox(tab6, from_=00, to=12, width=3, format='%02.0f')
+    year6_7_entry = Spinbox(tab6, from_=2018, to=2030, width=5)
+    today=datetime.date.today() # today
+    day_phase7 = day_phase6 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date6_7_entry.delete(0,'end')
+    date6_7_entry.insert(0,'{:02d}'.format(day_phase7.day))
+    month6_7_entry.delete(0,'end')
+    month6_7_entry.insert(0,'{:02d}'.format(day_phase7.month))
+    year6_7_entry.delete(0,'end')
+    year6_7_entry.insert(0,day_phase7.year)
+    label6_d_7 = Label(tab6, text= '/')
+    label6_m_7 = Label(tab6, text= '/')
+    rad6_A_7 = Radiobutton(tab6, text='LD', variable=var6_7, value=1)
+    lbl6_A_7 = Label(tab6, text= 'On:')
+    spin6_A_7 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_B_7 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_A_7.delete(0,'end')
+    spin6_A_7.insert(0,'07')
+    spin6_B_7.delete(0,'end')
+    spin6_B_7.insert(0,'00')
+    label6_h1_7 = Label(tab6, text=':')
+    label6_m1_7 = Label(tab6, text='')
+    lbl6_B_7 = Label(tab6, text= 'Off:')
+    spin6_C_7 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_D_7 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_C_7.delete(0,'end')
+    spin6_C_7.insert(0,'19')
+    spin6_D_7.delete(0,'end')
+    spin6_D_7.insert(0,'00')
+    label6_h2_7 = Label(tab6, text=':')
+    label6_m2_7 = Label(tab6, text='')
+    rad6_B_7 = Radiobutton(tab6, text='DD', variable=var6_7, value=2)
+    rad6_C_7 = Radiobutton(tab6, text='LL', variable=var6_7, value=3)
+    
+    
+    phaseLabel6_7.grid(column=0, row=rowPhase7+row_adj, padx=15, pady=5)
+    fromLabel6_7.grid(column=1,row=rowPhase7+row_adj)
+    spin6_E_7.grid(column=2,row=rowPhase7+row_adj)
+    label6_h0_7.grid(column=3,row=rowPhase7+row_adj)
+    spin6_F_7.grid(column=4,row=rowPhase7+row_adj)
+    label6_m0_7.grid(column=5,row=rowPhase7+row_adj)
+    space6_7.grid(column=7,row=rowPhase7+row_adj)
+    date6_7_entry.grid(column=11, row=rowPhase7+row_adj)
+    label6_d_7.grid(column=8,row=rowPhase7+row_adj)
+    month6_7_entry.grid(column=9, row=rowPhase7+row_adj)
+    label6_m_7.grid(column=10,row=rowPhase7+row_adj)
+    year6_7_entry.grid(column=7, row=rowPhase7+row_adj) # ISO format
+    space6_7_2.grid(column=12,row=rowPhase7+row_adj,padx=5)
+    rad6_A_7.grid(column=13, row=rowPhase7+row_adj, pady=5)
+    lbl6_A_7.grid(column=14, row=rowPhase7+row_adj, pady=5)
+    spin6_A_7.grid(column=15,row=rowPhase7+row_adj, pady=5)
+    label6_h1_7.grid(column=16,row=rowPhase7+row_adj, pady=5)
+    spin6_B_7.grid(column=17,row=rowPhase7+row_adj, pady=5)
+    label6_m1_7.grid(column=18,row=rowPhase7+row_adj, pady=5)
+    lbl6_B_7.grid(column=19, row=rowPhase7+row_adj, pady=5)
+    spin6_C_7.grid(column=20,row=rowPhase7+row_adj, pady=5)
+    label6_h2_7.grid(column=21,row=rowPhase7+row_adj, pady=5)
+    spin6_D_7.grid(column=22,row=rowPhase7+row_adj, pady=5)
+    label6_m2_7.grid(column=23,row=rowPhase7+row_adj, pady=5)
+    rad6_B_7.grid(column=24, row=rowPhase7+row_adj, padx=15, pady=5)
+    rad6_C_7.grid(column=25, row=rowPhase7+row_adj, pady=5)
+
+    # phase 8
+    phaseLabel6_8 = Label(tab6, text='Phase 8')
+    fromLabel6_8 = Label(tab6, text='From:')
+    space6_8 = Label(tab6, text=' ')
+    space6_8_2 = Label(tab6, text=' ')
+    spin6_E_8 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_F_8 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_E_8.delete(0,'end')
+    spin6_E_8.insert(0,'07')
+    spin6_F_8.delete(0,'end')
+    spin6_F_8.insert(0,'00')
+    label6_h0_8 = Label(tab6, text=':')
+    label6_m0_8 = Label(tab6, text='')
+    date6_8_entry = Spinbox(tab6, from_=00, to=31, width=3, format='%02.0f')
+    month6_8_entry = Spinbox(tab6, from_=00, to=12, width=3, format='%02.0f')
+    year6_8_entry = Spinbox(tab6, from_=2018, to=2030, width=5)
+    today=datetime.date.today() # today
+    day_phase8 = day_phase7 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date6_8_entry.delete(0,'end')
+    date6_8_entry.insert(0,'{:02d}'.format(day_phase8.day))
+    month6_8_entry.delete(0,'end')
+    month6_8_entry.insert(0,'{:02d}'.format(day_phase8.month))
+    year6_8_entry.delete(0,'end')
+    year6_8_entry.insert(0,day_phase8.year)
+    label6_d_8 = Label(tab6, text= '/')
+    label6_m_8 = Label(tab6, text= '/')
+    rad6_A_8 = Radiobutton(tab6, text='LD', variable=var6_8, value=1)
+    lbl6_A_8 = Label(tab6, text= 'On:')
+    spin6_A_8 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_B_8 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_A_8.delete(0,'end')
+    spin6_A_8.insert(0,'07')
+    spin6_B_8.delete(0,'end')
+    spin6_B_8.insert(0,'00')
+    label6_h1_8 = Label(tab6, text=':')
+    label6_m1_8 = Label(tab6, text='')
+    lbl6_B_8 = Label(tab6, text= 'Off:')
+    spin6_C_8 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_D_8 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_C_8.delete(0,'end')
+    spin6_C_8.insert(0,'19')
+    spin6_D_8.delete(0,'end')
+    spin6_D_8.insert(0,'00')
+    label6_h2_8 = Label(tab6, text=':')
+    label6_m2_8 = Label(tab6, text='')
+    rad6_B_8 = Radiobutton(tab6, text='DD', variable=var6_8, value=2)
+    rad6_C_8 = Radiobutton(tab6, text='LL', variable=var6_8, value=3)
+    
+    
+    phaseLabel6_8.grid(column=0, row=rowPhase8+row_adj, padx=15, pady=5)
+    fromLabel6_8.grid(column=1,row=rowPhase8+row_adj)
+    spin6_E_8.grid(column=2,row=rowPhase8+row_adj)
+    label6_h0_8.grid(column=3,row=rowPhase8+row_adj)
+    spin6_F_8.grid(column=4,row=rowPhase8+row_adj)
+    label6_m0_8.grid(column=5,row=rowPhase8+row_adj)
+    space6_8.grid(column=7,row=rowPhase8+row_adj)
+    date6_8_entry.grid(column=11, row=rowPhase8+row_adj)
+    label6_d_8.grid(column=8,row=rowPhase8+row_adj)
+    month6_8_entry.grid(column=9, row=rowPhase8+row_adj)
+    label6_m_8.grid(column=10,row=rowPhase8+row_adj)
+    year6_8_entry.grid(column=7, row=rowPhase8+row_adj) # ISO format
+    space6_8_2.grid(column=12,row=rowPhase8+row_adj,padx=5)
+    rad6_A_8.grid(column=13, row=rowPhase8+row_adj, pady=5)
+    lbl6_A_8.grid(column=14, row=rowPhase8+row_adj, pady=5)
+    spin6_A_8.grid(column=15,row=rowPhase8+row_adj, pady=5)
+    label6_h1_8.grid(column=16,row=rowPhase8+row_adj, pady=5)
+    spin6_B_8.grid(column=17,row=rowPhase8+row_adj, pady=5)
+    label6_m1_8.grid(column=18,row=rowPhase8+row_adj, pady=5)
+    lbl6_B_8.grid(column=19, row=rowPhase8+row_adj, pady=5)
+    spin6_C_8.grid(column=20,row=rowPhase8+row_adj, pady=5)
+    label6_h2_8.grid(column=21,row=rowPhase8+row_adj, pady=5)
+    spin6_D_8.grid(column=22,row=rowPhase8+row_adj, pady=5)
+    label6_m2_8.grid(column=23,row=rowPhase8+row_adj, pady=5)
+    rad6_B_8.grid(column=24, row=rowPhase8+row_adj, padx=15, pady=5)
+    rad6_C_8.grid(column=25, row=rowPhase8+row_adj, pady=5)
+
+    # phase 9
+    phaseLabel6_9 = Label(tab6, text='Phase 9')
+    fromLabel6_9 = Label(tab6, text='From:')
+    space6_9 = Label(tab6, text=' ')
+    space6_9_2 = Label(tab6, text=' ')
+    spin6_E_9 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_F_9 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_E_9.delete(0,'end')
+    spin6_E_9.insert(0,'07')
+    spin6_F_9.delete(0,'end')
+    spin6_F_9.insert(0,'00')
+    label6_h0_9 = Label(tab6, text=':')
+    label6_m0_9 = Label(tab6, text='')
+    date6_9_entry = Spinbox(tab6, from_=00, to=31, width=3, format='%02.0f')
+    month6_9_entry = Spinbox(tab6, from_=00, to=12, width=3, format='%02.0f')
+    year6_9_entry = Spinbox(tab6, from_=2018, to=2030, width=5)
+    today=datetime.date.today() # today
+    day_phase9 = day_phase8 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date6_9_entry.delete(0,'end')
+    date6_9_entry.insert(0,'{:02d}'.format(day_phase9.day))
+    month6_9_entry.delete(0,'end')
+    month6_9_entry.insert(0,'{:02d}'.format(day_phase9.month))
+    year6_9_entry.delete(0,'end')
+    year6_9_entry.insert(0,day_phase9.year)
+    label6_d_9 = Label(tab6, text= '/')
+    label6_m_9 = Label(tab6, text= '/')
+    rad6_A_9 = Radiobutton(tab6, text='LD', variable=var6_9, value=1)
+    lbl6_A_9 = Label(tab6, text= 'On:')
+    spin6_A_9 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_B_9 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_A_9.delete(0,'end')
+    spin6_A_9.insert(0,'07')
+    spin6_B_9.delete(0,'end')
+    spin6_B_9.insert(0,'00')
+    label6_h1_9 = Label(tab6, text=':')
+    label6_m1_9 = Label(tab6, text='')
+    lbl6_B_9 = Label(tab6, text= 'Off:')
+    spin6_C_9 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_D_9 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_C_9.delete(0,'end')
+    spin6_C_9.insert(0,'19')
+    spin6_D_9.delete(0,'end')
+    spin6_D_9.insert(0,'00')
+    label6_h2_9 = Label(tab6, text=':')
+    label6_m2_9 = Label(tab6, text='')
+    rad6_B_9 = Radiobutton(tab6, text='DD', variable=var6_9, value=2)
+    rad6_C_9 = Radiobutton(tab6, text='LL', variable=var6_9, value=3)
+    
+    
+    phaseLabel6_9.grid(column=0, row=rowPhase9+row_adj, padx=15, pady=5)
+    fromLabel6_9.grid(column=1,row=rowPhase9+row_adj)
+    spin6_E_9.grid(column=2,row=rowPhase9+row_adj)
+    label6_h0_9.grid(column=3,row=rowPhase9+row_adj)
+    spin6_F_9.grid(column=4,row=rowPhase9+row_adj)
+    label6_m0_9.grid(column=5,row=rowPhase9+row_adj)
+    space6_9.grid(column=7,row=rowPhase9+row_adj)
+    date6_9_entry.grid(column=11, row=rowPhase9+row_adj)
+    label6_d_9.grid(column=8,row=rowPhase9+row_adj)
+    month6_9_entry.grid(column=9, row=rowPhase9+row_adj)
+    label6_m_9.grid(column=10,row=rowPhase9+row_adj)
+    year6_9_entry.grid(column=7, row=rowPhase9+row_adj) # ISO format
+    space6_9_2.grid(column=12,row=rowPhase9+row_adj,padx=5)
+    rad6_A_9.grid(column=13, row=rowPhase9+row_adj, pady=5)
+    lbl6_A_9.grid(column=14, row=rowPhase9+row_adj, pady=5)
+    spin6_A_9.grid(column=15,row=rowPhase9+row_adj, pady=5)
+    label6_h1_9.grid(column=16,row=rowPhase9+row_adj, pady=5)
+    spin6_B_9.grid(column=17,row=rowPhase9+row_adj, pady=5)
+    label6_m1_9.grid(column=18,row=rowPhase9+row_adj, pady=5)
+    lbl6_B_9.grid(column=19, row=rowPhase9+row_adj, pady=5)
+    spin6_C_9.grid(column=20,row=rowPhase9+row_adj, pady=5)
+    label6_h2_9.grid(column=21,row=rowPhase9+row_adj, pady=5)
+    spin6_D_9.grid(column=22,row=rowPhase9+row_adj, pady=5)
+    label6_m2_9.grid(column=23,row=rowPhase9+row_adj, pady=5)
+    rad6_B_9.grid(column=24, row=rowPhase9+row_adj, padx=15, pady=5)
+    rad6_C_9.grid(column=25, row=rowPhase9+row_adj, pady=5)
+
+    # phase 10
+    phaseLabel6_10 = Label(tab6, text='Phase 10')
+    fromLabel6_10 = Label(tab6, text='From:')
+    space6_10 = Label(tab6, text=' ')
+    space6_10_2 = Label(tab6, text=' ')
+    spin6_E_10 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_F_10 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_E_10.delete(0,'end')
+    spin6_E_10.insert(0,'07')
+    spin6_F_10.delete(0,'end')
+    spin6_F_10.insert(0,'00')
+    label6_h0_10 = Label(tab6, text=':')
+    label6_m0_10 = Label(tab6, text='')
+    date6_10_entry = Spinbox(tab6, from_=00, to=31, width=3, format='%02.0f')
+    month6_10_entry = Spinbox(tab6, from_=00, to=12, width=3, format='%02.0f')
+    year6_10_entry = Spinbox(tab6, from_=2018, to=2030, width=5)
+    today=datetime.date.today() # today
+    day_phase10 = day_phase9 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date6_10_entry.delete(0,'end')
+    date6_10_entry.insert(0,'{:02d}'.format(day_phase10.day))
+    month6_10_entry.delete(0,'end')
+    month6_10_entry.insert(0,'{:02d}'.format(day_phase10.month))
+    year6_10_entry.delete(0,'end')
+    year6_10_entry.insert(0,day_phase10.year)
+    label6_d_10 = Label(tab6, text= '/')
+    label6_m_10 = Label(tab6, text= '/')
+    rad6_A_10 = Radiobutton(tab6, text='LD', variable=var6_10, value=1)
+    lbl6_A_10 = Label(tab6, text= 'On:')
+    spin6_A_10 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_B_10 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_A_10.delete(0,'end')
+    spin6_A_10.insert(0,'07')
+    spin6_B_10.delete(0,'end')
+    spin6_B_10.insert(0,'00')
+    label6_h1_10 = Label(tab6, text=':')
+    label6_m1_10 = Label(tab6, text='')
+    lbl6_B_10 = Label(tab6, text= 'Off:')
+    spin6_C_10 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_D_10 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_C_10.delete(0,'end')
+    spin6_C_10.insert(0,'19')
+    spin6_D_10.delete(0,'end')
+    spin6_D_10.insert(0,'00')
+    label6_h2_10 = Label(tab6, text=':')
+    label6_m2_10 = Label(tab6, text='')
+    rad6_B_10 = Radiobutton(tab6, text='DD', variable=var6_10, value=2)
+    rad6_C_10 = Radiobutton(tab6, text='LL', variable=var6_10, value=3)
+    
+    
+    phaseLabel6_10.grid(column=0, row=rowPhase10+row_adj, padx=15, pady=5)
+    fromLabel6_10.grid(column=1,row=rowPhase10+row_adj)
+    spin6_E_10.grid(column=2,row=rowPhase10+row_adj)
+    label6_h0_10.grid(column=3,row=rowPhase10+row_adj)
+    spin6_F_10.grid(column=4,row=rowPhase10+row_adj)
+    label6_m0_10.grid(column=5,row=rowPhase10+row_adj)
+    space6_10.grid(column=7,row=rowPhase10+row_adj)
+    date6_10_entry.grid(column=11, row=rowPhase10+row_adj)
+    label6_d_10.grid(column=8,row=rowPhase10+row_adj)
+    month6_10_entry.grid(column=9, row=rowPhase10+row_adj)
+    label6_m_10.grid(column=10,row=rowPhase10+row_adj)
+    year6_10_entry.grid(column=7, row=rowPhase10+row_adj) # ISO format
+    space6_10_2.grid(column=12,row=rowPhase10+row_adj,padx=5)
+    rad6_A_10.grid(column=13, row=rowPhase10+row_adj, pady=5)
+    lbl6_A_10.grid(column=14, row=rowPhase10+row_adj, pady=5)
+    spin6_A_10.grid(column=15,row=rowPhase10+row_adj, pady=5)
+    label6_h1_10.grid(column=16,row=rowPhase10+row_adj, pady=5)
+    spin6_B_10.grid(column=17,row=rowPhase10+row_adj, pady=5)
+    label6_m1_10.grid(column=18,row=rowPhase10+row_adj, pady=5)
+    lbl6_B_10.grid(column=19, row=rowPhase10+row_adj, pady=5)
+    spin6_C_10.grid(column=20,row=rowPhase10+row_adj, pady=5)
+    label6_h2_10.grid(column=21,row=rowPhase10+row_adj, pady=5)
+    spin6_D_10.grid(column=22,row=rowPhase10+row_adj, pady=5)
+    label6_m2_10.grid(column=23,row=rowPhase10+row_adj, pady=5)
+    rad6_B_10.grid(column=24, row=rowPhase10+row_adj, padx=15, pady=5)
+    rad6_C_10.grid(column=25, row=rowPhase10+row_adj, pady=5)
+
+    # phase 11
+    phaseLabel6_11 = Label(tab6, text='Phase 11')
+    fromLabel6_11 = Label(tab6, text='From:')
+    space6_11 = Label(tab6, text=' ')
+    space6_11_2 = Label(tab6, text=' ')
+    spin6_E_11 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_F_11 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_E_11.delete(0,'end')
+    spin6_E_11.insert(0,'07')
+    spin6_F_11.delete(0,'end')
+    spin6_F_11.insert(0,'00')
+    label6_h0_11 = Label(tab6, text=':')
+    label6_m0_11 = Label(tab6, text='')
+    date6_11_entry = Spinbox(tab6, from_=00, to=31, width=3, format='%02.0f')
+    month6_11_entry = Spinbox(tab6, from_=00, to=12, width=3, format='%02.0f')
+    year6_11_entry = Spinbox(tab6, from_=2018, to=2030, width=5)
+    today=datetime.date.today() # today
+    day_phase11 = day_phase10 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date6_11_entry.delete(0,'end')
+    date6_11_entry.insert(0,'{:02d}'.format(day_phase11.day))
+    month6_11_entry.delete(0,'end')
+    month6_11_entry.insert(0,'{:02d}'.format(day_phase11.month))
+    year6_11_entry.delete(0,'end')
+    year6_11_entry.insert(0,day_phase11.year)
+    label6_d_11 = Label(tab6, text= '/')
+    label6_m_11 = Label(tab6, text= '/')
+    rad6_A_11 = Radiobutton(tab6, text='LD', variable=var6_11, value=1)
+    lbl6_A_11 = Label(tab6, text= 'On:')
+    spin6_A_11 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_B_11 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_A_11.delete(0,'end')
+    spin6_A_11.insert(0,'07')
+    spin6_B_11.delete(0,'end')
+    spin6_B_11.insert(0,'00')
+    label6_h1_11 = Label(tab6, text=':')
+    label6_m1_11 = Label(tab6, text='')
+    lbl6_B_11 = Label(tab6, text= 'Off:')
+    spin6_C_11 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_D_11 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_C_11.delete(0,'end')
+    spin6_C_11.insert(0,'19')
+    spin6_D_11.delete(0,'end')
+    spin6_D_11.insert(0,'00')
+    label6_h2_11 = Label(tab6, text=':')
+    label6_m2_11 = Label(tab6, text='')
+    rad6_B_11 = Radiobutton(tab6, text='DD', variable=var6_11, value=2)
+    rad6_C_11 = Radiobutton(tab6, text='LL', variable=var6_11, value=3)
+    
+    
+    phaseLabel6_11.grid(column=0, row=rowPhase11+row_adj, padx=15, pady=5)
+    fromLabel6_11.grid(column=1,row=rowPhase11+row_adj)
+    spin6_E_11.grid(column=2,row=rowPhase11+row_adj)
+    label6_h0_11.grid(column=3,row=rowPhase11+row_adj)
+    spin6_F_11.grid(column=4,row=rowPhase11+row_adj)
+    label6_m0_11.grid(column=5,row=rowPhase11+row_adj)
+    space6_11.grid(column=7,row=rowPhase11+row_adj)
+    date6_11_entry.grid(column=11, row=rowPhase11+row_adj)
+    label6_d_11.grid(column=8,row=rowPhase11+row_adj)
+    month6_11_entry.grid(column=9, row=rowPhase11+row_adj)
+    label6_m_11.grid(column=10,row=rowPhase11+row_adj)
+    year6_11_entry.grid(column=7, row=rowPhase11+row_adj) # ISO format
+    space6_11_2.grid(column=12,row=rowPhase11+row_adj,padx=5)
+    rad6_A_11.grid(column=13, row=rowPhase11+row_adj, pady=5)
+    lbl6_A_11.grid(column=14, row=rowPhase11+row_adj, pady=5)
+    spin6_A_11.grid(column=15,row=rowPhase11+row_adj, pady=5)
+    label6_h1_11.grid(column=16,row=rowPhase11+row_adj, pady=5)
+    spin6_B_11.grid(column=17,row=rowPhase11+row_adj, pady=5)
+    label6_m1_11.grid(column=18,row=rowPhase11+row_adj, pady=5)
+    lbl6_B_11.grid(column=19, row=rowPhase11+row_adj, pady=5)
+    spin6_C_11.grid(column=20,row=rowPhase11+row_adj, pady=5)
+    label6_h2_11.grid(column=21,row=rowPhase11+row_adj, pady=5)
+    spin6_D_11.grid(column=22,row=rowPhase11+row_adj, pady=5)
+    label6_m2_11.grid(column=23,row=rowPhase11+row_adj, pady=5)
+    rad6_B_11.grid(column=24, row=rowPhase11+row_adj, padx=15, pady=5)
+    rad6_C_11.grid(column=25, row=rowPhase11+row_adj, pady=5)
+
+    # phase 12
+    phaseLabel6_12 = Label(tab6, text='Phase 12')
+    fromLabel6_12 = Label(tab6, text='From:')
+    space6_12 = Label(tab6, text=' ')
+    space6_12_2 = Label(tab6, text=' ')
+    spin6_E_12 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_F_12 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_E_12.delete(0,'end')
+    spin6_E_12.insert(0,'07')
+    spin6_F_12.delete(0,'end')
+    spin6_F_12.insert(0,'00')
+    label6_h0_12 = Label(tab6, text=':')
+    label6_m0_12 = Label(tab6, text='')
+    date6_12_entry = Spinbox(tab6, from_=00, to=31, width=3, format='%02.0f')
+    month6_12_entry = Spinbox(tab6, from_=00, to=12, width=3, format='%02.0f')
+    year6_12_entry = Spinbox(tab6, from_=2018, to=2030, width=5)
+    today=datetime.date.today() # today
+    day_phase12 = day_phase11 + datetime.timedelta(days=7) # calculate dates for 21 days after recording initiation
+    date6_12_entry.delete(0,'end')
+    date6_12_entry.insert(0,'{:02d}'.format(day_phase12.day))
+    month6_12_entry.delete(0,'end')
+    month6_12_entry.insert(0,'{:02d}'.format(day_phase12.month))
+    year6_12_entry.delete(0,'end')
+    year6_12_entry.insert(0,day_phase12.year)
+    label6_d_12 = Label(tab6, text= '/')
+    label6_m_12 = Label(tab6, text= '/')
+    rad6_A_12 = Radiobutton(tab6, text='LD', variable=var6_12, value=1)
+    lbl6_A_12 = Label(tab6, text= 'On:')
+    spin6_A_12 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_B_12 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_A_12.delete(0,'end')
+    spin6_A_12.insert(0,'07')
+    spin6_B_12.delete(0,'end')
+    spin6_B_12.insert(0,'00')
+    label6_h1_12 = Label(tab6, text=':')
+    label6_m1_12 = Label(tab6, text='')
+    lbl6_B_12 = Label(tab6, text= 'Off:')
+    spin6_C_12 = Spinbox(tab6, from_=00, to=24, width=3, format='%02.0f')
+    spin6_D_12 = Spinbox(tab6, from_=00, to=59, width=3, format='%02.0f')
+    spin6_C_12.delete(0,'end')
+    spin6_C_12.insert(0,'19')
+    spin6_D_12.delete(0,'end')
+    spin6_D_12.insert(0,'00')
+    label6_h2_12 = Label(tab6, text=':')
+    label6_m2_12 = Label(tab6, text='')
+    rad6_B_12 = Radiobutton(tab6, text='DD', variable=var6_12, value=2)
+    rad6_C_12 = Radiobutton(tab6, text='LL', variable=var6_12, value=3)
+    
+    
+    phaseLabel6_12.grid(column=0, row=rowPhase12+row_adj, padx=15, pady=5)
+    fromLabel6_12.grid(column=1,row=rowPhase12+row_adj)
+    spin6_E_12.grid(column=2,row=rowPhase12+row_adj)
+    label6_h0_12.grid(column=3,row=rowPhase12+row_adj)
+    spin6_F_12.grid(column=4,row=rowPhase12+row_adj)
+    label6_m0_12.grid(column=5,row=rowPhase12+row_adj)
+    space6_12.grid(column=7,row=rowPhase12+row_adj)
+    date6_12_entry.grid(column=11, row=rowPhase12+row_adj)
+    label6_d_12.grid(column=8,row=rowPhase12+row_adj)
+    month6_12_entry.grid(column=9, row=rowPhase12+row_adj)
+    label6_m_12.grid(column=10,row=rowPhase12+row_adj)
+    year6_12_entry.grid(column=7, row=rowPhase12+row_adj) # ISO format
+    space6_12_2.grid(column=12,row=rowPhase12+row_adj,padx=5)
+    rad6_A_12.grid(column=13, row=rowPhase12+row_adj, pady=5)
+    lbl6_A_12.grid(column=14, row=rowPhase12+row_adj, pady=5)
+    spin6_A_12.grid(column=15,row=rowPhase12+row_adj, pady=5)
+    label6_h1_12.grid(column=16,row=rowPhase12+row_adj, pady=5)
+    spin6_B_12.grid(column=17,row=rowPhase12+row_adj, pady=5)
+    label6_m1_12.grid(column=18,row=rowPhase12+row_adj, pady=5)
+    lbl6_B_12.grid(column=19, row=rowPhase12+row_adj, pady=5)
+    spin6_C_12.grid(column=20,row=rowPhase12+row_adj, pady=5)
+    label6_h2_12.grid(column=21,row=rowPhase12+row_adj, pady=5)
+    spin6_D_12.grid(column=22,row=rowPhase12+row_adj, pady=5)
+    label6_m2_12.grid(column=23,row=rowPhase12+row_adj, pady=5)
+    rad6_B_12.grid(column=24, row=rowPhase12+row_adj, padx=15, pady=5)
+    rad6_C_12.grid(column=25, row=rowPhase12+row_adj, pady=5)
+
     #hourOn1_2, minOn1_2, hourOff1_2, minOff1_2, dark1_2, light1_2, date1_2, month1_2, year1_2, hourFrom1_2, minuteFrom1_2,
     
     input_mat = [spin1_A_1, spin1_B_1, spin1_C_1, spin1_D_1, var1_1, 0, 0,0, 0, 0,
@@ -12895,10 +15225,23 @@ if __name__ == '__main__':
     spin5_A_9, spin5_B_9, spin5_C_9, spin5_D_9, var5_9, date5_9_entry, month5_9_entry,year5_9_entry, spin5_E_9, spin5_F_9,
     spin5_A_10, spin5_B_10, spin5_C_10, spin5_D_10, var5_10, date5_10_entry, month5_10_entry,year5_10_entry, spin5_E_10, spin5_F_10,
     spin5_A_11, spin5_B_11, spin5_C_11, spin5_D_11, var5_11, date5_11_entry, month5_11_entry,year5_11_entry, spin5_E_11, spin5_F_11,
-    spin5_A_12, spin5_B_12, spin5_C_12, spin5_D_12, var5_12, date5_12_entry, month5_12_entry,year5_12_entry, spin5_E_12, spin5_F_12]
+    spin5_A_12, spin5_B_12, spin5_C_12, spin5_D_12, var5_12, date5_12_entry, month5_12_entry,year5_12_entry, spin5_E_12, spin5_F_12,
+    spin6_A_1, spin6_B_1, spin6_C_1, spin6_D_1, var6_1, 0, 0,0, 0, 0,
+    spin6_A_2, spin6_B_2, spin6_C_2, spin6_D_2, var6_2, date6_2_entry, month6_2_entry,year6_2_entry, spin6_E_2, spin6_F_2,
+    spin6_A_3, spin6_B_3, spin6_C_3, spin6_D_3, var6_3, date6_3_entry, month6_3_entry,year6_3_entry, spin6_E_3, spin6_F_3,
+    spin6_A_4, spin6_B_4, spin6_C_4, spin6_D_4, var6_4, date6_4_entry, month6_4_entry,year6_4_entry, spin6_E_4, spin6_F_4,
+    spin6_A_5, spin6_B_5, spin6_C_5, spin6_D_5, var6_5, date6_5_entry, month6_5_entry,year6_5_entry, spin6_E_5, spin6_F_5,
+    spin6_A_6, spin6_B_6, spin6_C_6, spin6_D_6, var6_6, date6_6_entry, month6_6_entry,year6_6_entry, spin6_E_6, spin6_F_6,
+    spin6_A_7, spin6_B_7, spin6_C_7, spin6_D_7, var6_7, date6_7_entry, month6_7_entry,year6_7_entry, spin6_E_7, spin6_F_7,
+    spin6_A_8, spin6_B_8, spin6_C_8, spin6_D_8, var6_8, date6_8_entry, month6_8_entry,year6_8_entry, spin6_E_8, spin6_F_8,
+    spin6_A_9, spin6_B_9, spin6_C_9, spin6_D_9, var6_9, date6_9_entry, month6_9_entry,year6_9_entry, spin6_E_9, spin6_F_9,
+    spin6_A_10, spin6_B_10, spin6_C_10, spin6_D_10, var6_10, date6_10_entry, month6_10_entry,year6_10_entry, spin6_E_10, spin6_F_10,
+    spin6_A_11, spin6_B_11, spin6_C_11, spin6_D_11, var6_11, date6_11_entry, month6_11_entry,year6_11_entry, spin6_E_11, spin6_F_11,
+    spin6_A_12, spin6_B_12, spin6_C_12, spin6_D_12, var6_12, date6_12_entry, month6_12_entry,year6_12_entry, spin6_E_12, spin6_F_12]
+
     input_mat = np.asarray(input_mat)
 
-    input_mat = input_mat.reshape(5,12,10)
+    input_mat = input_mat.reshape(6,12,10)
 
     #phaseLabels1
     #phaseLabel1_6

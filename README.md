@@ -85,7 +85,7 @@ The LocoBox software system requires an Arduino Mega 2560 for controlling either
 |BTLocoBox_0001_v1| Photoperiod scheduling extended to 12 phases | DS3231 | 5 |  ✔️ | ✔️ |
 |BTLocoBox_0002_v2| Online actogram plotting| DS3231 | 5 | ✔️ | ✔️ |
 |BTLocoBox_0003_v3| T_cycle| DS3231 | 5 | ✔️ | ✔️ |
-
+|BTLocoBox_0004_v4| Luminance sensor| DS3231 | 5 or 6 | ✔️ | ✔️ |
 
 ## Authors
 

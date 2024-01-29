@@ -527,22 +527,18 @@ def get_data(istate=0): # Start recording
                 window.update_idletasks()
             i=i+1
 
-            print(string2)
+            #print(string2)
             
             if len(string2)>=79:     #set the id according to current tab
 
 
-                # print(string2)
+                print(string2)
 
-                
                 display_string = string2
                 display_counter = counti
                 save_logs(counti, string2) 
                 on_tab_change(counti, string2)
                 #get_values_for_actogram()
-                    
-                       
-
                 window.update_idletasks()
              
                 counti = counti+1
@@ -699,7 +695,7 @@ def restore_history(log_text, log_mat, tab):
         elif tab == 6 or tab == 'Box6':
             phase_id = get_phase(5)
             if str(log_mat[counti % 120,1]).strip() != '':
-                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'   ' +display_LD(4, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,10]))+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
+                history_str = history_str + '# '+str(log_mat[counti % 120,0])+'   ' +display_LD(5, phase_id-1) +'   Phase: ' + str(phase_id) +'    Time: '+str(log_mat[counti % 120,1])+'    LED: '+display_as_ON_OFF(str(log_mat[counti % 120,10]))+'    '+'PIR: '+str(log_mat[counti % 120,11]) + "\n"
 
 
     log_text.set(history_str)
@@ -5022,7 +5018,7 @@ def show_conf(): # Show schedule configuration
     box6pha9text=StringVar()
     box6pha9text.set('                                ')
     box6pha9_LD=Label(tab11, textvariable=box6pha9text, width=40, anchor="e", justify=LEFT)
-    box6pha9_LD.grid(column=12,row=12,padx=2,pady=0)
+    box6pha9_LD.grid(column=12,row=10,padx=2,pady=0)
     box6pha10text=StringVar()
     box6pha10text.set('                                ')
     box6pha10_LD=Label(tab11, textvariable=box6pha10text, width=40, anchor="e", justify=LEFT)
@@ -9533,10 +9529,10 @@ if __name__ == '__main__':
     filename_entry = Entry(f3, width = 25)
     filename_entry.place(x=80, y=ymidbtns)
     date_string = time.strftime('%Y%m%d') # predefine a default filename with ISO date    
-    filename_entry.insert(0,'BOX1-5-'+date_string+'.txt')
+    filename_entry.insert(0,'BOX1-6-'+date_string+'.txt')
     configfilename_entry = Entry(f3,width = 30)
     configfilename_entry.place(x=470, y=ymidbtns)
-    configfilename_entry.insert(0,'BOX1-5-sched-'+date_string+'.json')
+    configfilename_entry.insert(0,'BOX1-6-sched-'+date_string+'.json')
 
     #SHOW STATUS
     

@@ -94,11 +94,11 @@ def plot_doubleplot(box, pir, led, filename):
 
         n_group = dategroup.ngroups
         ### Double-plot actogram
-        fig = plt.figure()
+        #fig = plt.figure()
         
         # if there is only data from day 1, plot only one column
         if n_group == 1:
-            axes = fig.subplots(nrows=n_group, ncols=1)
+            fig,axes = plt.subplots(n_group, 1)
 
             # Half-opaque grayscale colormap 
             # by Bart https://stackoverflow.com/questions/37327308/add-alpha-to-an-existing-matplotlib-colormap
@@ -142,7 +142,7 @@ def plot_doubleplot(box, pir, led, filename):
 
         # plot two columns when there are enough data
         elif n_group>1: 
-            axes = fig.subplots(nrows=n_group, ncols=2)
+            fig,axes = plt.subplots(n_group, 2)
 
             # Half-opaque grayscale colormap 
             # by Bart https://stackoverflow.com/questions/37327308/add-alpha-to-an-existing-matplotlib-colormap
@@ -170,7 +170,6 @@ def plot_doubleplot(box, pir, led, filename):
                 axes[j, 0].axes.set_ylim(1,1000)
                 axes[j, 0].axes.set_ylabel(
                     str(group[pir].index.date[0].month) + '/' + str(group[pir].index.date[0].day) + ' ', rotation=0, size=9)
-                
                 
                 axes[j, 0].axes.set_xlim([pd.to_datetime(group['MO/DY/YEAR'][0]+' ' + '00:00:00',
                                     format="%m/%d/%Y %H:%M:%S"), pd.to_datetime(group['MO/DY/YEAR'][0]+' ' + '23:59:00',
