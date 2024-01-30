@@ -9796,7 +9796,7 @@ if __name__ == '__main__':
 
     anIn_box1 = Spinbox(tab1,from_=0, to=9, width=3, format='%02.0f')
     anIn_box1.delete(0,'end')
-    anIn_box1.insert(0,1)
+    anIn_box1.insert(0,'01')
     anIn_box1.grid(column=11, row=3, pady=5)
 
 
@@ -9823,7 +9823,7 @@ if __name__ == '__main__':
 
     anIn_box2 = Spinbox(tab2,from_=0, to=9, width=3, format='%02.0f')
     anIn_box2.delete(0,'end')
-    anIn_box2.insert(0,1)
+    anIn_box2.insert(0,'02')
     anIn_box2.grid(column=11, row=3, pady=5)
 
 
@@ -9850,7 +9850,7 @@ if __name__ == '__main__':
 
     anIn_box3 = Spinbox(tab3,from_=0, to=9, width=3, format='%02.0f')
     anIn_box3.delete(0,'end')
-    anIn_box3.insert(0,3)
+    anIn_box3.insert(0,'03')
     anIn_box3.grid(column=11, row=3, pady=5)
 
     # PIN LOCATION 4
@@ -9876,7 +9876,7 @@ if __name__ == '__main__':
 
     anIn_box4 = Spinbox(tab4,from_=0, to=9, width=3, format='%02.0f')
     anIn_box4.delete(0,'end')
-    anIn_box4.insert(0,4)
+    anIn_box4.insert(0,'04')
     anIn_box4.grid(column=11, row=3, pady=5)
 
     # PIN LOCATION 5
@@ -9902,7 +9902,7 @@ if __name__ == '__main__':
 
     anIn_box5 = Spinbox(tab5,from_=0, to=9, width=3, format='%02.0f')
     anIn_box5.delete(0,'end')
-    anIn_box5.insert(0,5)
+    anIn_box5.insert(0,'05')
     anIn_box5.grid(column=11, row=3, pady=5)
 
     # PIN LOCATION 6
@@ -9928,7 +9928,7 @@ if __name__ == '__main__':
 
     anIn_box6 = Spinbox(tab6,from_=0, to=9, width=3, format='%02.0f')
     anIn_box6.delete(0,'end')
-    anIn_box6.insert(0,6)
+    anIn_box6.insert(0,'06')
     anIn_box6.grid(column=11, row=3, pady=5)
 
     #INIT LED
