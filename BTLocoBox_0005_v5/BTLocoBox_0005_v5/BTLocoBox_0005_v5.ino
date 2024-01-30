@@ -240,6 +240,7 @@ DateTime realtime;
 int DIn[6] = {2, 4, 6, 8, 10, 12};  // PIR evens number digital use pinMode
 int DOut[6] = {3, 5, 7, 9, 11, 13}; // LED odds number digital use pinMode
 uint8_t anIn[6] = {A1, A2, A3, A4, A5, A6};  // Luminance sensor evens number analog use pinMode
+uint8_t anIn_list[16] = {A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15};  // Luminance sensor evens number analog use pinMode
 
 // Analog In
 //int AIn[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}; // line breaker
@@ -306,12 +307,12 @@ void setup()
   // start the connexion to the RTC
 
   // rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-  for (int i = 0; i < 6; i++)
-  {
-    pinMode(DIn[i], INPUT);   // PIR
-    pinMode(DOut[i], OUTPUT); // LED
-    pinMode(anIn[i], INPUT);
-  }
+  // for (int i = 0; i < 6; i++)
+  // {
+  //   pinMode(DIn[i], INPUT);   // PIR
+  //   pinMode(DOut[i], OUTPUT); // LED
+  //   pinMode(anIn[i], INPUT);
+  // }
 
   if (!rtc.begin())
   {
@@ -1880,12 +1881,12 @@ void loop()
     DOut[4] = getInt(lightIn13.substring(20, 22));
     DOut[5] = getInt(lightIn13.substring(22, 24));
 
-    anIn[0] = getInt(lightIn13.substring(24, 26));
-    anIn[1] = getInt(lightIn13.substring(26, 28));
-    anIn[2] = getInt(lightIn13.substring(28, 30));
-    anIn[3] = getInt(lightIn13.substring(30, 32));
-    anIn[4] = getInt(lightIn13.substring(32, 34));
-    anIn[5] = getInt(lightIn13.substring(34, 36));
+    anIn[0] = anIn_list[getInt(lightIn13.substring(24, 26))];
+    anIn[1] = anIn_list[getInt(lightIn13.substring(26, 28))];
+    anIn[2] = anIn_list[getInt(lightIn13.substring(28, 30))];
+    anIn[3] = anIn_list[getInt(lightIn13.substring(30, 32))];
+    anIn[4] = anIn_list[getInt(lightIn13.substring(32, 34))];
+    anIn[5] = anIn_list[getInt(lightIn13.substring(34, 36))];
 
     Serial.println(lightIn14);
     PinSet = 1;
@@ -1894,11 +1895,10 @@ void loop()
     {
       pinMode(DIn[i], INPUT);   // PIR
       pinMode(DOut[i], OUTPUT); // LED
-      pinMode(anIn[i], INPUT);
+      pinMode(anIn[i], INPUT); // LUM
     }
 
   }
-
   
   // Begin to print the headers and set light flag
   if (InitialFlag == 0 && TimeSet == 1 && LightSet[50] == 1 && PinSet == 1)

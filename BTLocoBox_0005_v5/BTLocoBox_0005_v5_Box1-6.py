@@ -146,6 +146,9 @@ global tcycle_4_1, tcycle_4_2,tcycle_4_3, tcycle_4_4, tcycle_4_5, tcycle_4_6, tc
 global tcycle_5_1, tcycle_5_2,tcycle_5_3, tcycle_5_4, tcycle_5_5, tcycle_5_6, tcycle_5_7, tcycle_5_8, tcycle_5_9, tcycle_5_10, tcycle_5_11, tcycle_5_12
 global tcycle_6_1, tcycle_6_2,tcycle_6_3, tcycle_6_4, tcycle_6_5, tcycle_6_6, tcycle_6_7, tcycle_6_8, tcycle_6_9, tcycle_6_10, tcycle_6_11, tcycle_6_12
 
+global DIn1, DIn2, DIn3, DIn4, DIn5, DIn6
+global DOut1, DOut2, DOut3, DOut4, DOut5, DOut6
+global anIn1, anIn2, anIn3, anIn4, anIn5, anIn6 
 
 #global savedBoxSchedule, BoxSchedule1, BoxSchedule2, BoxSchedule3, BoxSchedule4, BoxSchedule5
 
@@ -1744,6 +1747,29 @@ def save_conf(): # Save schedule configuration
     config['tcycle_6_11'] = tcycle_6_11
     config['tcycle_6_12'] = tcycle_6_12
 
+    config['DIn1'] = DIn1
+    config['DIn2'] = DIn2
+    config['DIn3'] = DIn3
+    config['DIn4'] = DIn4
+    config['DIn5'] = DIn5
+    config['DIn6'] = DIn6
+
+    config['DOut1'] = DOut1
+    config['DOut2'] = DOut2
+    config['DOut3'] = DOut3
+    config['DOut4'] = DOut4
+    config['DOut5'] = DOut5
+    config['DOut6'] = DOut6
+
+    config['anIn1'] = anIn1
+    config['anIn2'] = anIn2
+    config['anIn3'] = anIn3
+    config['anIn4'] = anIn4
+    config['anIn5'] = anIn5
+    config['anIn6'] = anIn6
+
+
+
     configfilename = configfilename_entry.get()
     writeToJSONFile(configfilename, config)
     status.pack(side='bottom', fill='x')
@@ -1876,6 +1902,10 @@ def read_conf(): # Read schedule configuration
     global tcycle_5_1, tcycle_5_2,tcycle_5_3, tcycle_5_4, tcycle_5_5, tcycle_5_6, tcycle_5_7, tcycle_5_8, tcycle_5_9, tcycle_5_10, tcycle_5_11, tcycle_5_12
     global tcycle_5_1, tcycle_5_2,tcycle_5_3, tcycle_5_4, tcycle_5_5, tcycle_5_6, tcycle_5_7, tcycle_5_8, tcycle_5_9, tcycle_5_10, tcycle_5_11, tcycle_5_12
     global tcycle_6_1, tcycle_6_2,tcycle_6_3, tcycle_6_4, tcycle_6_5, tcycle_6_6, tcycle_6_7, tcycle_6_8, tcycle_6_9, tcycle_6_10, tcycle_6_11, tcycle_6_12
+
+    global DIn1, DIn2, DIn3, DIn4, DIn5, DIn6
+    global DOut1, DOut2, DOut3, DOut4, DOut5, DOut6
+    global anIn1, anIn2, anIn3, anIn4, anIn5, anIn6 
 
     try:
         minuteFrom5_12 = config['minuteFrom5_12'] 
@@ -2808,6 +2838,27 @@ def read_conf(): # Read schedule configuration
         tcycle_6_10 = config['tcycle_6_10']
         tcycle_6_11 = config['tcycle_6_11']
         tcycle_6_12 = config['tcycle_6_12']
+
+        DIn1 =  config['DIn1']
+        DIn2 =  config['DIn2']
+        DIn3 =  config['DIn3']
+        DIn4 =  config['DIn4']
+        DIn5 =  config['DIn5']
+        DIn6 =  config['DIn6']
+
+        DOut1 =  config['DOut1']
+        DOut2 =  config['DOut2']
+        DOut3 =  config['DOut3']
+        DOut4 =  config['DOut4']
+        DOut5 =  config['DOut5']
+        DOut6 =  config['DOut6']
+
+        anIn1 =  config['anIn1']
+        anIn2 =  config['anIn2']
+        anIn3 =  config['anIn3']
+        anIn4 =  config['anIn4']
+        anIn5 =  config['anIn5']
+        anIn6 =  config['anIn6']
 
     except KeyError:
         
@@ -4662,7 +4713,9 @@ def show_conf(): # Show schedule configuration
     global tcycle_5_1, tcycle_5_2,tcycle_5_3, tcycle_5_4, tcycle_5_5, tcycle_5_6, tcycle_5_7, tcycle_5_8, tcycle_5_9, tcycle_5_10, tcycle_5_11, tcycle_5_12
     global tcycle_6_1, tcycle_6_2,tcycle_6_3, tcycle_6_4, tcycle_6_5, tcycle_6_6, tcycle_6_7, tcycle_6_8, tcycle_6_9, tcycle_6_10, tcycle_6_11, tcycle_6_12
 
-
+    global DIn1, DIn2, DIn3, DIn4, DIn5, DIn6
+    global DOut1, DOut2, DOut3, DOut4, DOut5, DOut6
+    global anIn1, anIn2, anIn3, anIn4, anIn5, anIn6 
 
     #print("hourOn1_1" + str(hourOn1_1))
 
@@ -4693,6 +4746,37 @@ def show_conf(): # Show schedule configuration
     col11_4.grid(column=8,row=0,padx=5)
     col11_5.grid(column=10,row=0,padx=5)
     col11_6.grid(column=12,row=0,padx=5)
+
+
+    box1pintext=StringVar()
+    box1pintext.set('Pin number for PIR: D' + str(DIn1) + ' - LED: D' + str(DOut1) + ' - LUM: A' + str(anIn1))
+    box1pindisp=Label(tab11, textvariable=box1pintext, width=40, anchor="w", justify=RIGHT)
+    box1pindisp.grid(column=2,row=1,padx=3,pady=0)
+
+    box2pintext=StringVar()
+    box2pintext.set('Pin number for PIR: D' + str(DIn2) + ' - LED: D' + str(DOut2) + ' - LUM: A' + str(anIn2))
+    box2pindisp=Label(tab11, textvariable=box2pintext, width=40, anchor="w", justify=RIGHT)
+    box2pindisp.grid(column=4,row=1,padx=3,pady=0)
+
+    box3pintext=StringVar()
+    box3pintext.set('Pin number for PIR: D' + str(DIn3) + ' - LED: D' + str(DOut3) + ' - LUM: A' + str(anIn3))
+    box3pindisp=Label(tab11, textvariable=box3pintext, width=40, anchor="w", justify=RIGHT)
+    box3pindisp.grid(column=6,row=1,padx=3,pady=0)
+
+    box4pintext=StringVar()
+    box4pintext.set('Pin number for PIR: D' + str(DIn4) + ' - LED: D' + str(DOut4) + ' - LUM: A' + str(anIn4))
+    box4pindisp=Label(tab11, textvariable=box4pintext, width=40, anchor="w", justify=RIGHT)
+    box4pindisp.grid(column=8,row=1,padx=3,pady=0)
+
+    box5pintext=StringVar()
+    box5pintext.set('Pin number for PIR: D' + str(DIn5) + ' - LED: D' + str(DOut5) + ' - LUM: A' + str(anIn5))
+    box5pindisp=Label(tab11, textvariable=box5pintext, width=40, anchor="w", justify=RIGHT)
+    box5pindisp.grid(column=10,row=1,padx=3,pady=0)
+
+    box6pintext=StringVar()
+    box6pintext.set('Pin number for PIR: D' + str(DIn6) + ' - LED: D' + str(DOut6) + ' - LUM: A' + str(anIn6))
+    box6pindisp=Label(tab11, textvariable=box6pintext, width=40, anchor="w", justify=RIGHT)
+    box6pindisp.grid(column=12,row=1,padx=3,pady=0)
 
     # schedSep = ttk.Separator(tab11, orient=HORIZONTAL)
     # schedSep.grid(column=0, row = 0, columnspan='50', sticky='we')
@@ -5071,6 +5155,7 @@ def show_conf(): # Show schedule configuration
         LED_state6 = 'OFF'
 
     #1 Phase
+
     if light1_1=='0' and dark1_1=='0':
         box1pha1text.set('                                ')
         
@@ -6287,12 +6372,16 @@ def getBox1Schedule():
     global setBox1, tcyclespinbox_arr
     setBox1=1
     
-    global hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, dark1_1, light1_1, tcycle_1_1
+    global hourOn1_1, minOn1_1, hourOff1_1, minOff1_1, dark1_1, light1_1, tcycle_1_1, DIn1, DOut1, anIn1
     hourOn1_1=spin1_A_1.get()
     minOn1_1=spin1_B_1.get()
     hourOff1_1=spin1_C_1.get()
     minOff1_1=spin1_D_1.get()        
     tcycle_1_1 = int(tcyclespinbox_arr[0,0].get())
+
+    DIn1 = DIn_box1.get()
+    DOut1 = DOut_box1.get()
+    anIn1 = anIn_box1.get()
     
     hourOn1_1 = time_to_str(hourOn1_1)
     minOn1_1 = time_to_str(minOn1_1)
@@ -6300,6 +6389,9 @@ def getBox1Schedule():
     minOff1_1=time_to_str(minOff1_1)
     
     tcycle_1_1=time_to_str(tcycle_1_1)
+    DIn1=time_to_str(DIn1)
+    DOut1=time_to_str(DOut1)
+    anIn1=time_to_str(anIn1)
 
     if var1_1.get()==1:
         dark1_1='0'
@@ -6720,12 +6812,16 @@ def getBox2Schedule():
     global setBox2, tcyclespinbox_arr
     setBox2=1
     
-    global hourOn2_1, minOn2_1, hourOff2_1, minOff2_1, dark2_1, light2_1, tcycle_2_1
+    global hourOn2_1, minOn2_1, hourOff2_1, minOff2_1, dark2_1, light2_1, tcycle_2_1, DIn2, DOut2, anIn2
     hourOn2_1=spin2_A_1.get()
     minOn2_1=spin2_B_1.get()
     hourOff2_1=spin2_C_1.get()
     minOff2_1=spin2_D_1.get()        
     tcycle_2_1 = int(tcyclespinbox_arr[1,0].get())
+
+    DIn2 = DIn_box2.get()
+    DOut2 = DOut_box2.get()
+    anIn2 = anIn_box2.get()
     
     hourOn2_1 = time_to_str(hourOn2_1)
     minOn2_1 = time_to_str(minOn2_1)
@@ -6733,6 +6829,9 @@ def getBox2Schedule():
     minOff2_1=time_to_str(minOff2_1)
     
     tcycle_2_1=time_to_str(tcycle_2_1)
+    DIn2=time_to_str(DIn2)
+    DOut2=time_to_str(DOut2)
+    anIn2=time_to_str(anIn2)
 
     if var2_1.get()==1:
         dark2_1='0'
@@ -7153,19 +7252,26 @@ def getBox3Schedule():
     global setBox3, tcyclespinbox_arr
     setBox3=1
     
-    global hourOn3_1, minOn3_1, hourOff3_1, minOff3_1, dark3_1, light3_1, tcycle_3_1
+    global hourOn3_1, minOn3_1, hourOff3_1, minOff3_1, dark3_1, light3_1, tcycle_3_1, DIn3, DOut3, anIn3
     hourOn3_1=spin3_A_1.get()
     minOn3_1=spin3_B_1.get()
     hourOff3_1=spin3_C_1.get()
     minOff3_1=spin3_D_1.get()        
     tcycle_3_1 = int(tcyclespinbox_arr[2,0].get())
     
+    DIn3 = DIn_box3.get()
+    DOut3 = DOut_box3.get()
+    anIn3 = anIn_box3.get()
+
     hourOn3_1 = time_to_str(hourOn3_1)
     minOn3_1 = time_to_str(minOn3_1)
     hourOff3_1=time_to_str(hourOff3_1)
     minOff3_1=time_to_str(minOff3_1)
     
     tcycle_3_1=time_to_str(tcycle_3_1)
+    DIn3=time_to_str(DIn3)
+    DOut3=time_to_str(DOut3)
+    anIn3=time_to_str(anIn3)
 
     if var3_1.get()==1:
         dark3_1='0'
@@ -7587,12 +7693,16 @@ def getBox4Schedule():
     global setBox4, tcyclespinbox_arr
     setBox4=1
     
-    global hourOn4_1, minOn4_1, hourOff4_1, minOff4_1, dark4_1, light4_1, tcycle_4_1
+    global hourOn4_1, minOn4_1, hourOff4_1, minOff4_1, dark4_1, light4_1, tcycle_4_1, DIn4, DOut4, anIn4
     hourOn4_1=spin4_A_1.get()
     minOn4_1=spin4_B_1.get()
     hourOff4_1=spin4_C_1.get()
     minOff4_1=spin4_D_1.get()        
     tcycle_4_1 = int(tcyclespinbox_arr[3,0].get())
+
+    DIn4 = DIn_box4.get()
+    DOut4 = DOut_box4.get()
+    anIn4 = anIn_box4.get()    
     
     hourOn4_1 = time_to_str(hourOn4_1)
     minOn4_1 = time_to_str(minOn4_1)
@@ -7600,6 +7710,9 @@ def getBox4Schedule():
     minOff4_1=time_to_str(minOff4_1)
     
     tcycle_4_1=time_to_str(tcycle_4_1)
+    DIn4=time_to_str(DIn4)
+    DOut4=time_to_str(DOut4)
+    anIn4=time_to_str(anIn4)
 
     if var4_1.get()==1:
         dark4_1='0'
@@ -8027,12 +8140,16 @@ def getBox5Schedule():
     global setBox5, tcyclespinbox_arr
     setBox5=1
     
-    global hourOn5_1, minOn5_1, hourOff5_1, minOff5_1, dark5_1, light5_1, tcycle_5_1
+    global hourOn5_1, minOn5_1, hourOff5_1, minOff5_1, dark5_1, light5_1, tcycle_5_1, DIn5, DOut5, anIn5
     hourOn5_1=spin5_A_1.get()
     minOn5_1=spin5_B_1.get()
     hourOff5_1=spin5_C_1.get()
     minOff5_1=spin5_D_1.get()        
     tcycle_5_1 = int(tcyclespinbox_arr[4,0].get())
+
+    DIn5 = DIn_box5.get()
+    DOut5 = DOut_box5.get()
+    anIn5 = anIn_box5.get()
     
     hourOn5_1 = time_to_str(hourOn5_1)
     minOn5_1 = time_to_str(minOn5_1)
@@ -8040,6 +8157,9 @@ def getBox5Schedule():
     minOff5_1=time_to_str(minOff5_1)
     
     tcycle_5_1=time_to_str(tcycle_5_1)
+    DIn5=time_to_str(DIn5)
+    DOut5=time_to_str(DOut5)
+    anIn5=time_to_str(anIn5)
 
     if var5_1.get()==1:
         dark5_1='0'
@@ -8459,12 +8579,16 @@ def getBox6Schedule():
     global setBox6, tcyclespinbox_arr
     setBox6=1
     
-    global hourOn6_1, minOn6_1, hourOff6_1, minOff6_1, dark6_1, light6_1, tcycle_6_1
+    global hourOn6_1, minOn6_1, hourOff6_1, minOff6_1, dark6_1, light6_1, tcycle_6_1, DIn6, DOut6, anIn6
     hourOn6_1=spin6_A_1.get()
     minOn6_1=spin6_B_1.get()
     hourOff6_1=spin6_C_1.get()
     minOff6_1=spin6_D_1.get()        
     tcycle_6_1 = int(tcyclespinbox_arr[5,0].get())
+
+    DIn6 = DIn_box6.get()
+    DOut6 = DOut_box6.get()
+    anIn6 = anIn_box6.get()
     
     hourOn6_1 = time_to_str(hourOn6_1)
     minOn6_1 = time_to_str(minOn6_1)
@@ -8472,6 +8596,9 @@ def getBox6Schedule():
     minOff6_1=time_to_str(minOff6_1)
     
     tcycle_6_1=time_to_str(tcycle_6_1)
+    DIn6=time_to_str(DIn6)
+    DOut6=time_to_str(DOut6)
+    anIn6=time_to_str(anIn6)
 
     if var6_1.get()==1:
         dark6_1='0'
@@ -9646,7 +9773,7 @@ if __name__ == '__main__':
     #runSeparator.pack(fill='x')
 
 
-    # PIN LOCATION
+    # PIN LOCATION 1
 
     pinlabel1 = Label(tab1, text='PIR-LED-LUM pins')
     pinlabel1.grid(column=2, row=3, padx=1, pady=5)
@@ -9656,7 +9783,6 @@ if __name__ == '__main__':
 
     pinsep1_2 = Label(tab1, text='-')
     pinsep1_2.grid(column=10, row=3, padx=3, pady=5)
-
 
     DIn_box1 = Spinbox(tab1,from_=00, to=99, width=3, format='%02.0f')
     DIn_box1.delete(0,'end')
@@ -9668,11 +9794,142 @@ if __name__ == '__main__':
     DOut_box1.insert(0,'03')
     DOut_box1.grid(column=9, row=3, pady=5)
 
-    anIn_box1 = Spinbox(tab1,from_=0, to=9, width=2, format='%01.0f')
+    anIn_box1 = Spinbox(tab1,from_=0, to=9, width=3, format='%02.0f')
     anIn_box1.delete(0,'end')
     anIn_box1.insert(0,1)
     anIn_box1.grid(column=11, row=3, pady=5)
 
+
+    # PIN LOCATION 2
+
+    pinlabel2 = Label(tab2, text='PIR-LED-LUM pins')
+    pinlabel2.grid(column=2, row=3, padx=1, pady=5)
+
+    pinsep2_1 = Label(tab2, text='-')
+    pinsep2_1.grid(column=8, row=3, padx=3, pady=5)
+
+    pinsep2_2 = Label(tab2, text='-')
+    pinsep2_2.grid(column=10, row=3, padx=3, pady=5)
+
+    DIn_box2 = Spinbox(tab2,from_=00, to=99, width=3, format='%02.0f')
+    DIn_box2.delete(0,'end')
+    DIn_box2.insert(0,'02')
+    DIn_box2.grid(column=7, row=3, pady=5)
+
+    DOut_box2 = Spinbox(tab2,from_=00, to=99, width=3, format='%02.0f')
+    DOut_box2.delete(0,'end')
+    DOut_box2.insert(0,'03')
+    DOut_box2.grid(column=9, row=3, pady=5)
+
+    anIn_box2 = Spinbox(tab2,from_=0, to=9, width=3, format='%02.0f')
+    anIn_box2.delete(0,'end')
+    anIn_box2.insert(0,1)
+    anIn_box2.grid(column=11, row=3, pady=5)
+
+
+    # PIN LOCATION 3
+    
+    pinlabel3 = Label(tab3, text='PIR-LED-LUM pins')
+    pinlabel3.grid(column=2, row=3, padx=1, pady=5)
+
+    pinsep3_1 = Label(tab3, text='-')
+    pinsep3_1.grid(column=8, row=3, padx=3, pady=5)
+
+    pinsep3_2 = Label(tab3, text='-')
+    pinsep3_2.grid(column=10, row=3, padx=3, pady=5)
+
+    DIn_box3 = Spinbox(tab3,from_=00, to=99, width=3, format='%02.0f')
+    DIn_box3.delete(0,'end')
+    DIn_box3.insert(0,'06')
+    DIn_box3.grid(column=7, row=3, pady=5)
+
+    DOut_box3 = Spinbox(tab3,from_=00, to=99, width=3, format='%02.0f')
+    DOut_box3.delete(0,'end')
+    DOut_box3.insert(0,'07')
+    DOut_box3.grid(column=9, row=3, pady=5)
+
+    anIn_box3 = Spinbox(tab3,from_=0, to=9, width=3, format='%02.0f')
+    anIn_box3.delete(0,'end')
+    anIn_box3.insert(0,3)
+    anIn_box3.grid(column=11, row=3, pady=5)
+
+    # PIN LOCATION 4
+    
+    pinlabel4 = Label(tab4, text='PIR-LED-LUM pins')
+    pinlabel4.grid(column=2, row=3, padx=1, pady=5)
+
+    pinsep4_1 = Label(tab4, text='-')
+    pinsep4_1.grid(column=8, row=3, padx=3, pady=5)
+
+    pinsep4_2 = Label(tab4, text='-')
+    pinsep4_2.grid(column=10, row=3, padx=3, pady=5)
+
+    DIn_box4 = Spinbox(tab4,from_=00, to=99, width=3, format='%02.0f')
+    DIn_box4.delete(0,'end')
+    DIn_box4.insert(0,'08')
+    DIn_box4.grid(column=7, row=3, pady=5)
+
+    DOut_box4 = Spinbox(tab4,from_=00, to=99, width=3, format='%02.0f')
+    DOut_box4.delete(0,'end')
+    DOut_box4.insert(0,'09')
+    DOut_box4.grid(column=9, row=3, pady=5)
+
+    anIn_box4 = Spinbox(tab4,from_=0, to=9, width=3, format='%02.0f')
+    anIn_box4.delete(0,'end')
+    anIn_box4.insert(0,4)
+    anIn_box4.grid(column=11, row=3, pady=5)
+
+    # PIN LOCATION 5
+    
+    pinlabel5 = Label(tab5, text='PIR-LED-LUM pins')
+    pinlabel5.grid(column=2, row=3, padx=1, pady=5)
+
+    pinsep5_1 = Label(tab5, text='-')
+    pinsep5_1.grid(column=8, row=3, padx=3, pady=5)
+
+    pinsep5_2 = Label(tab5, text='-')
+    pinsep5_2.grid(column=10, row=3, padx=3, pady=5)
+
+    DIn_box5 = Spinbox(tab5,from_=00, to=99, width=3, format='%02.0f')
+    DIn_box5.delete(0,'end')
+    DIn_box5.insert(0,'10')
+    DIn_box5.grid(column=7, row=3, pady=5)
+
+    DOut_box5 = Spinbox(tab5,from_=00, to=99, width=3, format='%02.0f')
+    DOut_box5.delete(0,'end')
+    DOut_box5.insert(0,'11')
+    DOut_box5.grid(column=9, row=3, pady=5)
+
+    anIn_box5 = Spinbox(tab5,from_=0, to=9, width=3, format='%02.0f')
+    anIn_box5.delete(0,'end')
+    anIn_box5.insert(0,5)
+    anIn_box5.grid(column=11, row=3, pady=5)
+
+    # PIN LOCATION 6
+    
+    pinlabel6 = Label(tab6, text='PIR-LED-LUM pins')
+    pinlabel6.grid(column=2, row=3, padx=1, pady=5)
+
+    pinsep6_1 = Label(tab6, text='-')
+    pinsep6_1.grid(column=8, row=3, padx=3, pady=5)
+
+    pinsep6_2 = Label(tab6, text='-')
+    pinsep6_2.grid(column=10, row=3, padx=3, pady=5)
+
+    DIn_box6 = Spinbox(tab6,from_=00, to=99, width=3, format='%02.0f')
+    DIn_box6.delete(0,'end')
+    DIn_box6.insert(0,'12')
+    DIn_box6.grid(column=7, row=3, pady=5)
+
+    DOut_box6 = Spinbox(tab6,from_=00, to=99, width=3, format='%02.0f')
+    DOut_box6.delete(0,'end')
+    DOut_box6.insert(0,'13')
+    DOut_box6.grid(column=9, row=3, pady=5)
+
+    anIn_box6 = Spinbox(tab6,from_=0, to=9, width=3, format='%02.0f')
+    anIn_box6.delete(0,'end')
+    anIn_box6.insert(0,6)
+    anIn_box6.grid(column=11, row=3, pady=5)
 
     #INIT LED
     initLED1 = IntVar(value=0)
@@ -9793,7 +10050,6 @@ if __name__ == '__main__':
     label1_m2_1.grid(column=23, row=1+row_adj, pady=5, sticky='w')
     rad1_B_1.grid(column=24, row=1+row_adj, padx=15, pady=5)
     rad1_C_1.grid(column=25, row=1+row_adj, pady=5)
-
 
 
         # phase 2
@@ -11557,8 +11813,6 @@ if __name__ == '__main__':
     rad2_B_12.grid(column=24, row=rowPhase12+row_adj, padx=15, pady=5)
     rad2_C_12.grid(column=25, row=rowPhase12+row_adj, pady=5)
 
-    
-   
    
 
     # Box3 main
