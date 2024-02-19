@@ -511,8 +511,8 @@ void loop()
     light2[3] = getInt(lightIn2.substring(7, 8));
     dark2[4] = getInt(lightIn2.substring(8, 9));
     light2[4] = getInt(lightIn2.substring(9, 10));
-    dark2[4] = getInt(lightIn2.substring(10, 11));
-    light2[4] = getInt(lightIn2.substring(11, 12));
+    dark2[5] = getInt(lightIn2.substring(10, 11));
+    light2[5] = getInt(lightIn2.substring(11, 12));
 
     Serial.println(lightIn2);
     LightSet[4] = 1;
