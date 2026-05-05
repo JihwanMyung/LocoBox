@@ -8,7 +8,16 @@ from matplotlib.colors import ListedColormap
 from matplotlib.pyplot import figure
 import matplotlib.dates as mdates
 
-# style.use('seaborn-colorblind')
+def use_colorblind_style():
+    for style_name in ('seaborn-v0_8-colorblind', 'seaborn-colorblind'):
+        try:
+            style.use(style_name)
+            return
+        except OSError:
+            pass
+
+
+use_colorblind_style()
 pd.set_option("display.max_rows", None)
 
 
@@ -128,8 +137,8 @@ def plot_doubleplot(box, pir, led, filename):
                 axes.axes.set_ylabel(
                     str(group[pir].index.date[0].month) + '/' + str(group[pir].index.date[0].day) + ' ', rotation=0, size=9)
 
-                axes.axes.set_xlim([pd.to_datetime(group['MO/DY/YEAR'][0]+' ' + '00:00:00',
-                                    format="%m/%d/%Y %H:%M:%S"), pd.to_datetime(group['MO/DY/YEAR'][0]+' ' + '23:59:00',
+                axes.axes.set_xlim([pd.to_datetime(group['MO/DY/YEAR'].iloc[0]+' ' + '00:00:00',
+                                    format="%m/%d/%Y %H:%M:%S"), pd.to_datetime(group['MO/DY/YEAR'].iloc[0]+' ' + '23:59:00',
                                     format="%m/%d/%Y %H:%M:%S")])
                 axes.yaxis.set_label_coords(-0.125,0.0)
                 j = j+1
@@ -171,8 +180,8 @@ def plot_doubleplot(box, pir, led, filename):
                 axes[j, 0].axes.set_ylabel(
                     str(group[pir].index.date[0].month) + '/' + str(group[pir].index.date[0].day) + ' ', rotation=0, size=9)
 
-                axes[j, 0].axes.set_xlim([pd.to_datetime(group['MO/DY/YEAR'][0]+' ' + '00:00:00',
-                                    format="%m/%d/%Y %H:%M:%S"), pd.to_datetime(group['MO/DY/YEAR'][0]+' ' + '23:59:00',
+                axes[j, 0].axes.set_xlim([pd.to_datetime(group['MO/DY/YEAR'].iloc[0]+' ' + '00:00:00',
+                                    format="%m/%d/%Y %H:%M:%S"), pd.to_datetime(group['MO/DY/YEAR'].iloc[0]+' ' + '23:59:00',
                                     format="%m/%d/%Y %H:%M:%S")])
                 axes[j, 0].yaxis.set_label_coords(-0.125,0.0)
                 if j < n_group-1:
@@ -189,8 +198,8 @@ def plot_doubleplot(box, pir, led, filename):
                 x_axis = axes[i, 1].axes.get_xaxis()
                 x_axis.set_visible(False)
                 axes[i, 1].axes.set_ylim(1,1000)
-                axes[i, 1].axes.set_xlim([pd.to_datetime(group['MO/DY/YEAR'][0]+' ' + '00:00:00',
-                                    format="%m/%d/%Y %H:%M:%S"), pd.to_datetime(group['MO/DY/YEAR'][0]+' ' + '23:59:00',
+                axes[i, 1].axes.set_xlim([pd.to_datetime(group['MO/DY/YEAR'].iloc[0]+' ' + '00:00:00',
+                                    format="%m/%d/%Y %H:%M:%S"), pd.to_datetime(group['MO/DY/YEAR'].iloc[0]+' ' + '23:59:00',
                                     format="%m/%d/%Y %H:%M:%S")])
                 y_axis = axes[i, 1].axes.get_yaxis()
                 y_axis.set_visible(False)

@@ -71,6 +71,36 @@ Run the Python GUI by double-clicking the .py file or using the command line wit
 
 Note: For a specific version of the software, the necessary .ino and .py files should have matching nomenclature, e.g., BTLocoBox_0001_v1.ino and BTLocoBox_0001_v1.py.
 
+### Current software instructions
+
+For the newest 6-box GUI, use:
+
+```
+cd BTLocoBox_0005_v5
+python3 BTLocoBox_0005_v5_Box1-6.py
+```
+
+Upload the matching Arduino sketch before recording:
+
+```
+BTLocoBox_0005_v5/BTLocoBox_0005_v5/BTLocoBox_0005_v5.ino
+```
+
+For the T-cycle decimal workflow, use:
+
+```
+cd BTLocoBox_0004_v4_TD
+python3 BTLocoBox_0004_v4_Box1-6_TD.py
+```
+
+Install the Python packages used by the current GUIs before running from source:
+
+```
+python3 -m pip install numpy pandas matplotlib pillow pyserial
+```
+
+If the GUI cannot connect to the Arduino, first confirm the Port, Baud, and Timeout fields. The current GUI reports invalid serial settings in the status bar. If actogram refresh takes time on a large data file, the plot refresh now runs in a background thread and updates the displayed image when the plot is ready.
+
 
 ## Deployment
 
