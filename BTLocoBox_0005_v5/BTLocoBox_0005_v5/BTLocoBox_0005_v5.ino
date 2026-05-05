@@ -1839,25 +1839,25 @@ void loop()
   {
     lightIn14 = Serial.readString(); 
 
-    Tcycle7[4] = getInt(lightIn13.substring(0, 2));
-    Tcycle8[4] = getInt(lightIn13.substring(2, 4));
-    Tcycle9[4] = getInt(lightIn13.substring(4, 6));
-    Tcycle10[4] = getInt(lightIn13.substring(6, 8));
-    Tcycle11[4] = getInt(lightIn13.substring(8, 10));
-    Tcycle12[4] = getInt(lightIn13.substring(10, 12));
+    Tcycle7[4] = getInt(lightIn14.substring(0, 2));
+    Tcycle8[4] = getInt(lightIn14.substring(2, 4));
+    Tcycle9[4] = getInt(lightIn14.substring(4, 6));
+    Tcycle10[4] = getInt(lightIn14.substring(6, 8));
+    Tcycle11[4] = getInt(lightIn14.substring(8, 10));
+    Tcycle12[4] = getInt(lightIn14.substring(10, 12));
 
-    Tcycle1[5] = getInt(lightIn13.substring(12, 14));
-    Tcycle2[5] = getInt(lightIn13.substring(14, 16));
-    Tcycle3[5] = getInt(lightIn13.substring(16, 18));
-    Tcycle4[5] = getInt(lightIn13.substring(18, 20));
-    Tcycle5[5] = getInt(lightIn13.substring(20, 22));
-    Tcycle6[5] = getInt(lightIn13.substring(22, 24));
-    Tcycle7[5] = getInt(lightIn13.substring(24, 26));
-    Tcycle8[5] = getInt(lightIn13.substring(26, 28));
-    Tcycle9[5] = getInt(lightIn13.substring(28, 30));
-    Tcycle10[5] = getInt(lightIn13.substring(30, 32));
-    Tcycle11[5] = getInt(lightIn13.substring(32, 34));
-    Tcycle12[5] = getInt(lightIn13.substring(34, 36));
+    Tcycle1[5] = getInt(lightIn14.substring(12, 14));
+    Tcycle2[5] = getInt(lightIn14.substring(14, 16));
+    Tcycle3[5] = getInt(lightIn14.substring(16, 18));
+    Tcycle4[5] = getInt(lightIn14.substring(18, 20));
+    Tcycle5[5] = getInt(lightIn14.substring(20, 22));
+    Tcycle6[5] = getInt(lightIn14.substring(22, 24));
+    Tcycle7[5] = getInt(lightIn14.substring(24, 26));
+    Tcycle8[5] = getInt(lightIn14.substring(26, 28));
+    Tcycle9[5] = getInt(lightIn14.substring(28, 30));
+    Tcycle10[5] = getInt(lightIn14.substring(30, 32));
+    Tcycle11[5] = getInt(lightIn14.substring(32, 34));
+    Tcycle12[5] = getInt(lightIn14.substring(34, 36));
 
     Serial.println(lightIn14);
     LightSet[50] = 1;
