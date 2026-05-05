@@ -608,7 +608,7 @@ def get_values_for_actogram():
     plot_doubleplot(box, pir, led, filename)
     # print(filename)
     # print(pir)
-    plot_double_acto(tab)
+    window.after(0, lambda: plot_double_acto(tab))
 
 def plot_double_acto(tab):
     
@@ -621,10 +621,9 @@ def plot_double_acto(tab):
 def refresh_plot():
     global t_acto
     print("refreshing plot")
-    t_acto = threading.Thread(target=get_values_for_actogram())
+    t_acto = threading.Thread(target=get_values_for_actogram)
     t_acto.daemon = True
     t_acto.start()
-    t_acto.join()
 
 
 def set_log_text(log_text, log_mat, tab):
@@ -6224,15 +6223,15 @@ def show_conf(): # Show schedule configuration
 def connect():  # Start to connect and call get_data - Link to Start in Recording menu
     port = port_entry.get()
     baud = baud_entry.get()
-    timeout = int(timeout_entry.get())
     global serial_obj   
     global dead
     dead = False
     try:
+        timeout = int(timeout_entry.get())
         serial_obj = create_serial_obj(port, baud, timeout=timeout)
-    except NameError:
+    except (NameError, ValueError, serial.SerialException, OSError) as e:
         status.pack(side='bottom', fill='x')
-        status.set('Missing baud rate and port number.')
+        status.set('Unable to open serial port: ' + str(e))
         return
     t1 = threading.Thread(target=lambda:get_data(0))
     t1.daemon = True
