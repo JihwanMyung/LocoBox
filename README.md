@@ -86,6 +86,7 @@ The LocoBox software system requires an Arduino Mega 2560 for controlling either
 |BTLocoBox_0002_v2| Online actogram plotting| DS3231 | 5 | ✔️ | ✔️ |
 |BTLocoBox_0003_v3| T_cycle| DS3231 | 5 | ✔️ | ✔️ |
 |BTLocoBox_0004_v4| Luminance sensor| DS3231 | 5 or 6 | ✔️ | ✔️ |
+|BTLocoBox_0004_v4_TD| T_cycle decimal| DS3231 | 5 or 6 | ✔️ | ✔️ |
 
 ## Authors
 
