@@ -1,7 +1,7 @@
 # LocoBox
 
-The LocoBox software is a set of an Arduino sketch and a Python-based GUI that operates either 5 or 10 circadian entrainment chambers, known as 'LocoBoxes'. 
-These chambers control internal lighting with pre-set schedules and monitor general locomotor activities within. 
+The LocoBox software is a set of an Arduino sketch and a Python-based GUI that operates either 5 or 10 circadian entrainment chambers, known as 'LocoBoxes'.
+These chambers control internal lighting with pre-set schedules and monitor general locomotor activities within.
 The GUI is available as a stand-alone executable.
 
 
@@ -13,7 +13,7 @@ Arduino: Arduino 1.8.7
 
 Python: Python 3.7.0, Pyserial 3.4
 
-RTC library: 
+RTC library:
 
 (1) Legacy version: RTC library 'DS1307' (https://github.com/Seeed-Studio/RTC_DS1307/archive/master.zip)
 
@@ -85,14 +85,14 @@ The LocoBox software system requires an Arduino Mega 2560 for controlling either
 |BTLocoBox_0001_v1| Photoperiod scheduling extended to 12 phases | DS3231 | 5 |  ✔️ | ✔️ |
 |BTLocoBox_0002_v2| Online actogram plotting| DS3231 | 5 | ✔️ | ✔️ |
 |BTLocoBox_0003_v3*| T_cycle| DS3231 | 5 | ✔️ | ✔️ |
-|BTLocoBox_0003_v4| Luminance sensor| DS3231 | 6 | ✔️ | ✔️ |
+|BTLocoBox_0004_v4| Luminance sensor| DS3231 | 5 or 6 | ✔️ | ✔️ |
+|BTLocoBox_0004_v4_TD| T_cycle decimal| DS3231 | 5 or 6 | ✔️ | ✔️ |
 
 *Published version (2023).
 
-
 ## Reference
 
-Truong VH, Myung J. (2023). LocoBox: Modular Hardware and Open-Source Software for Circadian Entrainment and Behavioral Monitoring in Home Cages. _Sensors_. **23**:9469. 
+Truong VH, Myung J. (2023). LocoBox: Modular Hardware and Open-Source Software for Circadian Entrainment and Behavioral Monitoring in Home Cages. _Sensors_. **23**:9469.
 https://doi.org/10.3390/s23239469
 
 
