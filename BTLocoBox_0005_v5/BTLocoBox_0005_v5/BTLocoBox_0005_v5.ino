@@ -240,6 +240,7 @@ DateTime realtime;
 int DIn[6] = {2, 4, 6, 8, 10, 12};  // PIR evens number digital use pinMode
 int DOut[6] = {3, 5, 7, 9, 11, 13}; // LED odds number digital use pinMode
 uint8_t anIn[6] = {A1, A2, A3, A4, A5, A6};  // Luminance sensor evens number analog use pinMode
+uint8_t anIn_list[16] = {A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15};  // Luminance sensor evens number analog use pinMode
 
 // Analog In
 //int AIn[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}; // line breaker
@@ -247,10 +248,11 @@ uint8_t anIn[6] = {A1, A2, A3, A4, A5, A6};  // Luminance sensor evens number an
 //int ASensi[10] = {990, 990, 990, 990, 990, 990, 990, 990, 990, 990};
 
 // Light flags
-int LightFlag[6] = {0, 0, 0, 0, 0, 0};
+int LightFlag[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 int TimeSet = 0;
 int initSet = 0;
 int LightSet[51] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; // add/subtract(4) for phase checkpoints
+int PinSet = 0;
 int InitialFlag = 0;
 
 // Interval (note the use of long)
@@ -305,12 +307,12 @@ void setup()
   // start the connexion to the RTC
 
   // rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-  for (int i = 0; i < 6; i++)
-  {
-    pinMode(DIn[i], INPUT);   // PIR
-    pinMode(DOut[i], OUTPUT); // LED
-    pinMode(anIn[i], INPUT);
-  }
+  // for (int i = 0; i < 6; i++)
+  // {
+  //   pinMode(DIn[i], INPUT);   // PIR
+  //   pinMode(DOut[i], OUTPUT); // LED
+  //   pinMode(anIn[i], INPUT);
+  // }
 
   if (!rtc.begin())
   {
@@ -1814,7 +1816,6 @@ void loop()
     Tcycle4[3] = getInt(lightIn14.substring(6, 8));
     Tcycle5[3] = getInt(lightIn14.substring(8, 10));
     Tcycle6[3] = getInt(lightIn14.substring(10, 12));
-
     Tcycle7[3] = getInt(lightIn14.substring(12, 14));
     Tcycle8[3] = getInt(lightIn14.substring(14, 16));
     Tcycle9[3] = getInt(lightIn14.substring(16, 18));
@@ -1851,7 +1852,6 @@ void loop()
     Tcycle4[5] = getInt(lightIn14.substring(18, 20));
     Tcycle5[5] = getInt(lightIn14.substring(20, 22));
     Tcycle6[5] = getInt(lightIn14.substring(22, 24));
-    
     Tcycle7[5] = getInt(lightIn14.substring(24, 26));
     Tcycle8[5] = getInt(lightIn14.substring(26, 28));
     Tcycle9[5] = getInt(lightIn14.substring(28, 30));
@@ -1863,9 +1863,45 @@ void loop()
     LightSet[50] = 1;
   }
 
+  if (Serial.available() == 36 && InitialFlag == 0 && TimeSet == 1 && LightSet[50] == 1 && PinSet == 0)
+  {
+    lightIn14 = Serial.readString(); 
+
+    DIn[0] = getInt(lightIn13.substring(0, 2));
+    DIn[1] = getInt(lightIn13.substring(2, 4));
+    DIn[2] = getInt(lightIn13.substring(4, 6));
+    DIn[3] = getInt(lightIn13.substring(6, 8));
+    DIn[4] = getInt(lightIn13.substring(8, 10));
+    DIn[5] = getInt(lightIn13.substring(10, 12));
+
+    DOut[0] = getInt(lightIn13.substring(12, 14));
+    DOut[1] = getInt(lightIn13.substring(14, 16));
+    DOut[2] = getInt(lightIn13.substring(16, 18));
+    DOut[3] = getInt(lightIn13.substring(18, 20));
+    DOut[4] = getInt(lightIn13.substring(20, 22));
+    DOut[5] = getInt(lightIn13.substring(22, 24));
+
+    anIn[0] = anIn_list[getInt(lightIn13.substring(24, 26))];
+    anIn[1] = anIn_list[getInt(lightIn13.substring(26, 28))];
+    anIn[2] = anIn_list[getInt(lightIn13.substring(28, 30))];
+    anIn[3] = anIn_list[getInt(lightIn13.substring(30, 32))];
+    anIn[4] = anIn_list[getInt(lightIn13.substring(32, 34))];
+    anIn[5] = anIn_list[getInt(lightIn13.substring(34, 36))];
+
+    Serial.println(lightIn14);
+    PinSet = 1;
+
+    for (int i = 0; i < 6; i++)
+    {
+      pinMode(DIn[i], INPUT);   // PIR
+      pinMode(DOut[i], OUTPUT); // LED
+      pinMode(anIn[i], INPUT); // LUM
+    }
+
+  }
   
   // Begin to print the headers and set light flag
-  if (InitialFlag == 0 && TimeSet == 1 && LightSet[50] == 1)
+  if (InitialFlag == 0 && TimeSet == 1 && LightSet[50] == 1 && PinSet == 1)
   {
     //    Serial.println("HH:MM:SS MO/DY/YEAR LED01 PIR01 ANG011 ANG012 LED02 PIR02 ANG021 ANG022 LED03 PIR03 ANG031 ANG032 LED04 PIR04 ANG041 ANG042 LED05 PIR05 ANG051 ANG052");
     Serial.println("HH:MM:SS MO/DY/YEAR LED01 PIR01 LUM01 LED02 PIR02 LUM02 LED03 PIR03 LUM03 LED04 PIR04 LUM04 LED05 PIR05 LUM05 LED06 PIR06 LUM06");
@@ -1907,7 +1943,7 @@ void loop()
     //     End phase 1 when
     for (int i = 0; i < 6; i++)
     {
-      if (phase1[i] == 0 && realtime.day() >= date2[i] && realtime.month() >= month2[i] && realtime.year() >= year2[i] && realtime.hour() * 60 + realtime.minute() >= HourFrom2[i] * 60 + MinuteFrom2[i])
+      if (phase1[i] == 0 && realtime.day() == date2[i] && realtime.month() == month2[i] && realtime.year() == year2[i] && realtime.hour() * 60 + realtime.minute() >= HourFrom2[i] * 60 + MinuteFrom2[i])
       {
         phase1[i] = 1;
         Tcycle[i] = Tcycle2[i];
@@ -1918,7 +1954,7 @@ void loop()
     // End phase 2 when
     for (int i = 0; i < 6; i++)
     {
-      if (phase1[i] == 1 && phase2[i] == 0 && realtime.day() >= date3[i] && realtime.month() >= month3[i] && realtime.year() >= year3[i] && realtime.hour() * 60 + realtime.minute() >= HourFrom3[i] * 60 + MinuteFrom3[i])
+      if (phase1[i] == 1 && realtime.day() == date3[i] && realtime.month() == month3[i] && realtime.year() == year3[i] && realtime.hour() * 60 + realtime.minute() >= HourFrom3[i] * 60 + MinuteFrom3[i])
       {
         phase2[i] = 1;
         Tcycle[i] = Tcycle3[i];
@@ -1928,7 +1964,7 @@ void loop()
     // End phase 3 when
     for (int i = 0; i < 6; i++)
     {
-      if (phase2[i] == 1 && phase3[i] == 0 && realtime.day() >= date4[i] && realtime.month() >= month4[i] && realtime.year() >= year4[i] && realtime.hour() * 60 + realtime.minute() >= HourFrom4[i] * 60 + MinuteFrom4[i])
+      if (phase1[i] == 1 && phase2[i] == 1 && realtime.day() == date4[i] && realtime.month() == month4[i] && realtime.year() == year4[i] && realtime.hour() * 60 + realtime.minute() >= HourFrom4[i] * 60 + MinuteFrom4[i])
       {
         phase3[i] = 1;
         Tcycle[i] = Tcycle4[i];
@@ -1938,7 +1974,7 @@ void loop()
     // End phase 4 when
     for (int i = 0; i < 6; i++)
     {
-      if (phase3[i] == 1 && phase4[i] == 0 && realtime.day() >= date5[i] && realtime.month() >= month5[i] && realtime.year() >= year5[i] && realtime.hour() * 60 + realtime.minute() >= HourFrom5[i] * 60 + MinuteFrom5[i])
+      if (phase1[i] == 1 && phase2[i] && phase3[i] == 1 && realtime.day() == date5[i] && realtime.month() == month5[i] && realtime.year() == year5[i] && realtime.hour() * 60 + realtime.minute() >= HourFrom5[i] * 60 + MinuteFrom5[i])
       {
         phase4[i] = 1;
         Tcycle[i] = Tcycle5[i];
@@ -1948,7 +1984,7 @@ void loop()
     // End phase 5 when
     for (int i = 0; i < 6; i++)
     {
-      if (phase4[i] == 1 && phase5[i] == 0 && realtime.day() >= date6[i] && realtime.month() >= month6[i] && realtime.year() >= year6[i] && realtime.hour() * 60 + realtime.minute() >= HourFrom6[i] * 60 + MinuteFrom6[i])
+      if (phase1[i] == 1 && phase2[i] && phase3[i] == 1 && phase4[i] == 1 && realtime.day() == date6[i] && realtime.month() == month6[i] && realtime.year() == year6[i] && realtime.hour() * 60 + realtime.minute() >= HourFrom6[i] * 60 + MinuteFrom6[i])
       {
         phase5[i] = 1;
         Tcycle[i] = Tcycle6[i];
@@ -1958,7 +1994,7 @@ void loop()
     // End phase 6 when
     for (int i = 0; i < 6; i++)
     {
-      if (phase5[i] == 1 && phase6[i] == 0 && realtime.day() >= date7[i] && realtime.month() >= month7[i] && realtime.year() >= year7[i] && realtime.hour() * 60 + realtime.minute() >= HourFrom7[i] * 60 + MinuteFrom7[i])
+      if (phase1[i] == 1 && phase3[i] && phase4[i] == 1 && phase5[i] == 1 && realtime.day() == date7[i] && realtime.month() == month7[i] && realtime.year() == year7[i] && realtime.hour() * 60 + realtime.minute() >= HourFrom7[i] * 60 + MinuteFrom7[i])
       {
         phase6[i] = 1;
         Tcycle[i] = Tcycle7[i];
@@ -1968,7 +2004,7 @@ void loop()
     // End phase 7 when
     for (int i = 0; i < 6; i++)
     {
-      if (phase6[i] == 1 && phase7[i] == 0 && realtime.day() >= date8[i] && realtime.month() >= month8[i] && realtime.year() >= year8[i] && realtime.hour() * 60 + realtime.minute() >= HourFrom8[i] * 60 + MinuteFrom8[i])
+      if (phase1[i] == 1 && phase4[i] && phase5[i] == 1 && phase6[i] == 1 && realtime.day() == date8[i] && realtime.month() == month8[i] && realtime.year() == year8[i] && realtime.hour() * 60 + realtime.minute() >= HourFrom8[i] * 60 + MinuteFrom8[i])
       {
         phase7[i] = 1;
         Tcycle[i] = Tcycle8[i];
@@ -1978,7 +2014,7 @@ void loop()
     // End phase 8 when
     for (int i = 0; i < 6; i++)
     {
-      if (phase7[i] == 1 && phase8[i] == 0 && realtime.day() >= date9[i] && realtime.month() >= month9[i] && realtime.year() >= year9[i] && realtime.hour() * 60 + realtime.minute() >= HourFrom9[i] * 60 + MinuteFrom9[i])
+      if (phase1[i] == 1 && phase5[i] && phase6[i] == 1 && phase7[i] == 1 && realtime.day() == date9[i] && realtime.month() == month9[i] && realtime.year() == year9[i] && realtime.hour() * 60 + realtime.minute() >= HourFrom9[i] * 60 + MinuteFrom9[i])
       {
         phase8[i] = 1;
         Tcycle[i] = Tcycle9[i];
@@ -1988,7 +2024,7 @@ void loop()
     // End phase 9 when
     for (int i = 0; i < 6; i++)
     {
-      if (phase8[i] == 1 && phase9[i] == 0 && realtime.day() >= date10[i] && realtime.month() >= month10[i] && realtime.year() >= year10[i] && realtime.hour() * 60 + realtime.minute() >= HourFrom10[i] * 60 + MinuteFrom10[i])
+      if (phase1[i] == 1 && phase6[i] && phase7[i] == 1 && phase8[i] == 1 && realtime.day() == date10[i] && realtime.month() == month10[i] && realtime.year() == year10[i] && realtime.hour() * 60 + realtime.minute() >= HourFrom10[i] * 60 + MinuteFrom10[i])
       {
         phase9[i] = 1;
         Tcycle[i] = Tcycle10[i];
@@ -1998,7 +2034,7 @@ void loop()
     // End phase 10 when
     for (int i = 0; i < 6; i++)
     {
-      if (phase9[i] == 1 && phase10[i] == 0 && realtime.day() >= date11[i] && realtime.month() >= month11[i] && realtime.year() >= year11[i] && realtime.hour() * 60 + realtime.minute() >= HourFrom11[i] * 60 + MinuteFrom11[i])
+      if (phase1[i] == 1 && phase7[i] && phase8[i] == 1 && phase9[i] == 1 && realtime.day() == date11[i] && realtime.month() == month11[i] && realtime.year() == year11[i] && realtime.hour() * 60 + realtime.minute() >= HourFrom11[i] * 60 + MinuteFrom11[i])
       {
         phase10[i] = 1;
         Tcycle[i] = Tcycle11[i];
@@ -2008,7 +2044,7 @@ void loop()
     // End phase 11 when
     for (int i = 0; i < 6; i++)
     {
-      if (phase10[i] == 1 && phase11[i] == 0 && realtime.day() >= date12[i] && realtime.month() >= month12[i] && realtime.year() >= year12[i] && realtime.hour() * 60 + realtime.minute() >= HourFrom12[i] * 60 + MinuteFrom12[i])
+      if (phase1[i] == 1 && phase8[i] && phase9[i] == 1 && phase10[i] == 1 && realtime.day() == date12[i] && realtime.month() == month12[i] && realtime.year() == year12[i] && realtime.hour() * 60 + realtime.minute() >= HourFrom12[i] * 60 + MinuteFrom12[i])
       {
         phase11[i] = 1;
         Tcycle[i] = Tcycle12[i];
@@ -2020,7 +2056,7 @@ void loop()
     // LED CONTROL
     //-----------------------
     // Phase 1 Logic Schedule
-    for (int i = 0; i < 6; i++) // loop for 6 boxes
+    for (int i = 0; i < 6; i++) // loop for 5 boxes
     {
       if (phase1[i] == 0)                                                      //&& (int)dd2 <= date2 && (int)mo2 == month2 && (int)yy2 <= year2
       {                                                                         // Serial.print("Phase1 HourOn1: "); Serial.print(HourOn1[0]); Serial.print(" "); Serial.print(MinuteOn1[0]); Serial.print("-Phase1HourOff");Serial.print(HourOff1[0]);Serial.print(" ");Serial.print(MinuteOff1[0]);
@@ -2280,7 +2316,7 @@ void loop()
     // Phase 4 Logic Schedule
     for (int i = 0; i < 6; i++)
     {
-      if (phase1[i] == 1 && phase2[i] == 1 && phase3[i] == 1 && phase4[i] == 0)
+      if (phase1[i] == 1 && phase2[i] == 1 && phase3[i] == 1)
       {
         if (HourOn4[i] * 60 + MinuteOn4[i] < HourOff4[i] * 60 + MinuteOff4[i]) // am to pm condition Turn On
         {
@@ -2366,7 +2402,7 @@ void loop()
     // Phase 5 Logic Schedule
     for (int i = 0; i < 6; i++)
     {
-      if (phase1[i] == 1 && phase2[i] == 1 && phase3[i] == 1 && phase4[i] == 1 && phase5[i] == 0)
+      if (phase1[i] == 1 && phase2[i] == 1 && phase3[i] == 1 && phase4[i] == 1)
       {
         if (HourOn5[i] * 60 + MinuteOn5[i] < HourOff5[i] * 60 + MinuteOff5[i]) // am to pm condition Turn On
         {

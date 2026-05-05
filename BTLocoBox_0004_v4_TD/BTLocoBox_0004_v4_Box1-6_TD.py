@@ -506,25 +506,34 @@ def get_data(istate=0): # Start recording
                 status.set('Phase 12 schedules sent.')
                 
             if i==48:
-                serial_obj.write(str.encode(tcycle_1_1 + tcycle_1_2 +tcycle_1_3 + tcycle_1_4 + tcycle_1_5 + tcycle_1_6 + tcycle_1_7 + tcycle_1_8 + tcycle_1_9 + tcycle_1_10 + tcycle_1_11 + tcycle_1_12 +
-                                            tcycle_2_1 + tcycle_2_2 +tcycle_2_3 + tcycle_2_4 + tcycle_2_5 + tcycle_2_6))
+                serial_obj.write(str.encode(tcycle_1_1 + tcycle_1_2 + tcycle_1_3 + tcycle_1_4 + tcycle_1_5 + tcycle_1_6 + 
+                                            tcycle_1_7 + tcycle_1_8 + tcycle_1_9 + tcycle_1_10 + tcycle_1_11 + tcycle_1_12))
                                             
             if i==49:
-                serial_obj.write(str.encode(tcycle_2_7 + tcycle_2_8 + tcycle_2_9 + tcycle_2_10 + tcycle_2_11 + tcycle_2_12 +
-                                            tcycle_3_1 + tcycle_3_2 +tcycle_3_3 + tcycle_3_4 + tcycle_3_5 + tcycle_3_6 +tcycle_3_7 + tcycle_3_8 + tcycle_3_9 + tcycle_3_10 + tcycle_3_11 + tcycle_3_12))
+                serial_obj.write(str.encode(tcycle_2_1 + tcycle_2_2 + tcycle_2_3 + tcycle_2_4 + tcycle_2_5 + tcycle_2_6 + 
+                                            tcycle_2_7 + tcycle_2_8 + tcycle_2_9 + tcycle_2_10 + tcycle_2_11 + tcycle_2_12))
                 
             if i==50:
-                serial_obj.write(str.encode(tcycle_4_1 + tcycle_4_2 +tcycle_4_3 + tcycle_4_4 + tcycle_4_5 + tcycle_4_6 + tcycle_4_7 + tcycle_4_8 + tcycle_4_9 + tcycle_4_10 + tcycle_4_11 + tcycle_4_12 + 
-                                            tcycle_5_1 + tcycle_5_2 +tcycle_5_3 + tcycle_5_4 + tcycle_5_5 + tcycle_5_6))
+                serial_obj.write(str.encode(tcycle_3_1 + tcycle_3_2 + tcycle_3_3 + tcycle_3_4 + tcycle_3_5 + tcycle_3_6 +
+                                            tcycle_3_7 + tcycle_3_8 + tcycle_3_9 + tcycle_3_10 + tcycle_3_11 + tcycle_3_12))
             if i==51:
-                serial_obj.write(str.encode(tcycle_5_7 + tcycle_5_8 + tcycle_5_9 + tcycle_5_10 + tcycle_5_11 + tcycle_5_12 +
-                                            tcycle_6_1 + tcycle_6_2 +tcycle_6_3 + tcycle_6_4 + tcycle_6_5 + tcycle_6_6 + tcycle_6_7 + tcycle_6_8 + tcycle_6_9 + tcycle_6_10 + tcycle_6_11 + tcycle_6_12))
+                serial_obj.write(str.encode(tcycle_4_1 + tcycle_4_2 + tcycle_4_3 + tcycle_4_4 + tcycle_4_5 + tcycle_4_6 + 
+                                            tcycle_4_7 + tcycle_4_8 + tcycle_4_9 + tcycle_4_10 + tcycle_4_11 + tcycle_4_12))
+            if i==52:
+                serial_obj.write(str.encode(tcycle_5_1 + tcycle_5_2 + tcycle_5_3 + tcycle_5_4 + tcycle_5_5 + tcycle_5_6 + 
+                                            tcycle_5_7 + tcycle_5_8 + tcycle_5_9 + tcycle_5_10 + tcycle_5_11 + tcycle_5_12))
+                
+            if i==53:
+                serial_obj.write(str.encode(tcycle_6_1 + tcycle_6_2 + tcycle_6_3 + tcycle_6_4 + tcycle_6_5 + tcycle_6_6 + 
+                                            tcycle_6_7 + tcycle_6_8 + tcycle_6_9 + tcycle_6_10 + tcycle_6_11 + tcycle_6_12))
+
                 status.pack(side='bottom', fill='x')
                 status.set('T-cycle schedules sent.')
                 
                 status.set('All schedules transferred. Recording began.')
                 
                 window.update_idletasks()
+
             i=i+1
 
             #print(string2)
@@ -6284,14 +6293,14 @@ def getBox1Schedule():
     minOn1_1=spin1_B_1.get()
     hourOff1_1=spin1_C_1.get()
     minOff1_1=spin1_D_1.get()        
-    tcycle_1_1 = int(tcyclespinbox_arr[0,0].get())
+    tcycle_1_1 = tcyclespinbox_arr[0,0].get()
     
     hourOn1_1 = time_to_str(hourOn1_1)
     minOn1_1 = time_to_str(minOn1_1)
     hourOff1_1=time_to_str(hourOff1_1)
     minOff1_1=time_to_str(minOff1_1)
     
-    tcycle_1_1=time_to_str(tcycle_1_1)
+    # tcycle_1_1=time_to_str(tcycle_1_1)
 
     if var1_1.get()==1:
         dark1_1='0'
@@ -6316,14 +6325,14 @@ def getBox1Schedule():
     hourFrom1_2= spin1_E_2.get()
     minuteFrom1_2= spin1_F_2.get()
 
-    tcycle_1_2 = int(tcyclespinbox_arr[0,1].get())
+    tcycle_1_2 = tcyclespinbox_arr[0,1].get()
   
     hourOn1_2 = time_to_str(hourOn1_2)    
     minOn1_2 = time_to_str(minOn1_2)
     hourOff1_2=time_to_str(hourOff1_2)
     minOff1_2=time_to_str(minOff1_2)
     
-    tcycle_1_2 = time_to_str(tcycle_1_2)
+    # tcycle_1_2 = time_to_str(tcycle_1_2)
 
     date1_2 = time_to_str(date1_2)
     month1_2 = time_to_str(month1_2)
@@ -6352,14 +6361,14 @@ def getBox1Schedule():
     hourOff1_3=spin1_C_3.get()
     minOff1_3=spin1_D_3.get()   
 
-    tcycle_1_3 = int(tcyclespinbox_arr[0,2].get())
+    tcycle_1_3 = tcyclespinbox_arr[0,2].get()
   
     hourOn1_3 = time_to_str(hourOn1_3)    
     minOn1_3 = time_to_str(minOn1_3)
     hourOff1_3=time_to_str(hourOff1_3)
     minOff1_3=time_to_str(minOff1_3)
     
-    tcycle_1_3 = time_to_str(tcycle_1_3)
+    # tcycle_1_3 = time_to_str(tcycle_1_3)
     
     date1_3 = time_to_str(date1_3)
     month1_3 = time_to_str(month1_3)
@@ -6389,14 +6398,14 @@ def getBox1Schedule():
     hourOff1_4=spin1_C_4.get()
     minOff1_4=spin1_D_4.get() 
 
-    tcycle_1_4 = int(tcyclespinbox_arr[0,3].get())
+    tcycle_1_4 = tcyclespinbox_arr[0,3].get()
   
     hourOn1_4 = time_to_str(hourOn1_4)    
     minOn1_4 = time_to_str(minOn1_4)
     hourOff1_4=time_to_str(hourOff1_4)
     minOff1_4=time_to_str(minOff1_4)
     
-    tcycle_1_4=time_to_str(tcycle_1_4)
+    # tcycle_1_4=time_to_str(tcycle_1_4)
 
     date1_4 = time_to_str(date1_4)
     month1_4 = time_to_str(month1_4)
@@ -6425,14 +6434,14 @@ def getBox1Schedule():
     hourOff1_5=spin1_C_5.get()
     minOff1_5=spin1_D_5.get()  
 
-    tcycle_1_5 = int(tcyclespinbox_arr[0,4].get())
+    tcycle_1_5 = tcyclespinbox_arr[0,4].get()
    
     hourOn1_5 = time_to_str(hourOn1_5)    
     minOn1_5 = time_to_str(minOn1_5)
     hourOff1_5 = time_to_str(hourOff1_5)
     minOff1_5 = time_to_str(minOff1_5)
     
-    tcycle_1_5 =time_to_str(tcycle_1_5)
+    # tcycle_1_5 =time_to_str(tcycle_1_5)
 
     date1_5 = time_to_str(date1_5)
     month1_5 = time_to_str(month1_5)
@@ -6461,14 +6470,14 @@ def getBox1Schedule():
     hourOff1_6=spin1_C_6.get()
     minOff1_6=spin1_D_6.get()  
 
-    tcycle_1_6 = int(tcyclespinbox_arr[0,5].get())
+    tcycle_1_6 = tcyclespinbox_arr[0,5].get()
    
     hourOn1_6 = time_to_str(hourOn1_6)    
     minOn1_6 = time_to_str(minOn1_6)
     hourOff1_6=time_to_str(hourOff1_6)
     minOff1_6=time_to_str(minOff1_6)
     
-    tcycle_1_6=time_to_str(tcycle_1_6)
+    # tcycle_1_6=time_to_str(tcycle_1_6)
 
     date1_6 = time_to_str(date1_6)
     month1_6 = time_to_str(month1_6)
@@ -6496,14 +6505,14 @@ def getBox1Schedule():
     hourOff1_7=spin1_C_7.get()
     minOff1_7=spin1_D_7.get()
 
-    tcycle_1_7 = int(tcyclespinbox_arr[0,6].get())
+    tcycle_1_7 = tcyclespinbox_arr[0,6].get()
  
     hourOn1_7 = time_to_str(hourOn1_7)    
     minOn1_7 = time_to_str(minOn1_7)
     hourOff1_7=time_to_str(hourOff1_7)
     minOff1_7=time_to_str(minOff1_7)
     
-    tcycle_1_7=time_to_str(tcycle_1_7)
+    # tcycle_1_7=time_to_str(tcycle_1_7)
 
     date1_7 = time_to_str(date1_7)
     month1_7 = time_to_str(month1_7)
@@ -6531,14 +6540,14 @@ def getBox1Schedule():
     hourOff1_8=spin1_C_8.get()
     minOff1_8=spin1_D_8.get()  
 
-    tcycle_1_8 = int(tcyclespinbox_arr[0,7].get())
+    tcycle_1_8 = tcyclespinbox_arr[0,7].get()
   
     hourOn1_8 = time_to_str(hourOn1_8)    
     minOn1_8 = time_to_str(minOn1_8)
     hourOff1_8=time_to_str(hourOff1_8)
     minOff1_8=time_to_str(minOff1_8)
     
-    tcycle_1_8=time_to_str(tcycle_1_8)
+    # tcycle_1_8=time_to_str(tcycle_1_8)
 
     date1_8 = time_to_str(date1_8)
     month1_8 = time_to_str(month1_8)
@@ -6567,14 +6576,14 @@ def getBox1Schedule():
     hourOff1_9=spin1_C_9.get()
     minOff1_9=spin1_D_9.get()    
 
-    tcycle_1_9 = int(tcyclespinbox_arr[0,8].get())
+    tcycle_1_9 = tcyclespinbox_arr[0,8].get()
   
     hourOn1_9 = time_to_str(hourOn1_9)    
     minOn1_9 = time_to_str(minOn1_9)
     hourOff1_9=time_to_str(hourOff1_9)
     minOff1_9=time_to_str(minOff1_9)
     
-    tcycle_1_9=time_to_str(tcycle_1_9)
+    # tcycle_1_9=time_to_str(tcycle_1_9)
 
     date1_9 = time_to_str(date1_9)
     month1_9 = time_to_str(month1_9)
@@ -6603,14 +6612,14 @@ def getBox1Schedule():
     hourOff1_10=spin1_C_10.get()
     minOff1_10=spin1_D_10.get()   
 
-    tcycle_1_10 = int(tcyclespinbox_arr[0,9].get())
+    tcycle_1_10 = tcyclespinbox_arr[0,9].get()
   
     hourOn1_10 = time_to_str(hourOn1_10)    
     minOn1_10 = time_to_str(minOn1_10)
     hourOff1_10=time_to_str(hourOff1_10)
     minOff1_10=time_to_str(minOff1_10)
     
-    tcycle_1_10 = time_to_str(tcycle_1_10)
+    # tcycle_1_10 = time_to_str(tcycle_1_10)
 
     date1_10 = time_to_str(date1_10)
     month1_10 = time_to_str(month1_10)
@@ -6640,14 +6649,14 @@ def getBox1Schedule():
     hourOff1_11=spin1_C_11.get()
     minOff1_11=spin1_D_11.get() 
 
-    tcycle_1_11 = int(tcyclespinbox_arr[0,10].get())
+    tcycle_1_11 = tcyclespinbox_arr[0,10].get()
   
     hourOn1_11 = time_to_str(hourOn1_11)    
     minOn1_11 = time_to_str(minOn1_11)
     hourOff1_11=time_to_str(hourOff1_11)
     minOff1_11=time_to_str(minOff1_11)
     
-    tcycle_1_11=time_to_str(tcycle_1_11)
+    # tcycle_1_11=time_to_str(tcycle_1_11)
 
     date1_11 = time_to_str(date1_11)
     month1_11 = time_to_str(month1_11)
@@ -6675,14 +6684,14 @@ def getBox1Schedule():
     hourOff1_12=spin1_C_12.get()
     minOff1_12=spin1_D_12.get()
 
-    tcycle_1_12 = int(tcyclespinbox_arr[0,11].get())
+    tcycle_1_12 = tcyclespinbox_arr[0,11].get()
  
     hourOn1_12 = time_to_str(hourOn1_12)    
     minOn1_12 = time_to_str(minOn1_12)
     hourOff1_12=time_to_str(hourOff1_12)
     minOff1_12=time_to_str(minOff1_12)
     
-    tcycle_1_12=time_to_str(tcycle_1_12)
+    # tcycle_1_12=time_to_str(tcycle_1_12)
 
     date1_12 = time_to_str(date1_12)
     month1_12 = time_to_str(month1_12)
@@ -6717,14 +6726,14 @@ def getBox2Schedule():
     minOn2_1=spin2_B_1.get()
     hourOff2_1=spin2_C_1.get()
     minOff2_1=spin2_D_1.get()        
-    tcycle_2_1 = int(tcyclespinbox_arr[1,0].get())
+    tcycle_2_1 = tcyclespinbox_arr[1,0].get()
     
     hourOn2_1 = time_to_str(hourOn2_1)
     minOn2_1 = time_to_str(minOn2_1)
     hourOff2_1=time_to_str(hourOff2_1)
     minOff2_1=time_to_str(minOff2_1)
     
-    tcycle_2_1=time_to_str(tcycle_2_1)
+    # tcycle_2_1=time_to_str(tcycle_2_1)
 
     if var2_1.get()==1:
         dark2_1='0'
@@ -6749,14 +6758,14 @@ def getBox2Schedule():
     hourFrom2_2= spin2_E_2.get()
     minuteFrom2_2= spin2_F_2.get()
 
-    tcycle_2_2 = int(tcyclespinbox_arr[1,1].get())
+    tcycle_2_2 = tcyclespinbox_arr[1,1].get()
   
     hourOn2_2 = time_to_str(hourOn2_2)    
     minOn2_2 = time_to_str(minOn2_2)
     hourOff2_2=time_to_str(hourOff2_2)
     minOff2_2=time_to_str(minOff2_2)
     
-    tcycle_2_2 = time_to_str(tcycle_2_2)
+    # tcycle_2_2 = time_to_str(tcycle_2_2)
 
     date2_2 = time_to_str(date2_2)
     month2_2 = time_to_str(month2_2)
@@ -6785,14 +6794,14 @@ def getBox2Schedule():
     hourOff2_3=spin2_C_3.get()
     minOff2_3=spin2_D_3.get()   
 
-    tcycle_2_3 = int(tcyclespinbox_arr[1,2].get())
+    tcycle_2_3 = tcyclespinbox_arr[1,2].get()
   
     hourOn2_3 = time_to_str(hourOn2_3)    
     minOn2_3 = time_to_str(minOn2_3)
     hourOff2_3=time_to_str(hourOff2_3)
     minOff2_3=time_to_str(minOff2_3)
     
-    tcycle_2_3 = time_to_str(tcycle_2_3)
+    # tcycle_2_3 = time_to_str(tcycle_2_3)
     
     date2_3 = time_to_str(date2_3)
     month2_3 = time_to_str(month2_3)
@@ -6822,14 +6831,14 @@ def getBox2Schedule():
     hourOff2_4=spin2_C_4.get()
     minOff2_4=spin2_D_4.get() 
 
-    tcycle_2_4 = int(tcyclespinbox_arr[1,3].get())
+    tcycle_2_4 = tcyclespinbox_arr[1,3].get()
   
     hourOn2_4 = time_to_str(hourOn2_4)    
     minOn2_4 = time_to_str(minOn2_4)
     hourOff2_4=time_to_str(hourOff2_4)
     minOff2_4=time_to_str(minOff2_4)
     
-    tcycle_2_4=time_to_str(tcycle_2_4)
+    # tcycle_2_4=time_to_str(tcycle_2_4)
 
     date2_4 = time_to_str(date2_4)
     month2_4 = time_to_str(month2_4)
@@ -6858,14 +6867,14 @@ def getBox2Schedule():
     hourOff2_5=spin2_C_5.get()
     minOff2_5=spin2_D_5.get()  
 
-    tcycle_2_5 = int(tcyclespinbox_arr[1,4].get())
+    tcycle_2_5 = tcyclespinbox_arr[1,4].get()
    
     hourOn2_5 = time_to_str(hourOn2_5)    
     minOn2_5 = time_to_str(minOn2_5)
     hourOff2_5 = time_to_str(hourOff2_5)
     minOff2_5 = time_to_str(minOff2_5)
     
-    tcycle_2_5 =time_to_str(tcycle_2_5)
+    # tcycle_2_5 =time_to_str(tcycle_2_5)
 
     date2_5 = time_to_str(date2_5)
     month2_5 = time_to_str(month2_5)
@@ -6894,14 +6903,14 @@ def getBox2Schedule():
     hourOff2_6=spin2_C_6.get()
     minOff2_6=spin2_D_6.get()  
 
-    tcycle_2_6 = int(tcyclespinbox_arr[1,5].get())
+    tcycle_2_6 = tcyclespinbox_arr[1,5].get()
    
     hourOn2_6 = time_to_str(hourOn2_6)    
     minOn2_6 = time_to_str(minOn2_6)
     hourOff2_6=time_to_str(hourOff2_6)
     minOff2_6=time_to_str(minOff2_6)
     
-    tcycle_2_6=time_to_str(tcycle_2_6)
+    # tcycle_2_6=time_to_str(tcycle_2_6)
 
     date2_6 = time_to_str(date2_6)
     month2_6 = time_to_str(month2_6)
@@ -6929,14 +6938,14 @@ def getBox2Schedule():
     hourOff2_7=spin2_C_7.get()
     minOff2_7=spin2_D_7.get()
 
-    tcycle_2_7 = int(tcyclespinbox_arr[1,6].get())
+    tcycle_2_7 = tcyclespinbox_arr[1,6].get()
  
     hourOn2_7 = time_to_str(hourOn2_7)    
     minOn2_7 = time_to_str(minOn2_7)
     hourOff2_7=time_to_str(hourOff2_7)
     minOff2_7=time_to_str(minOff2_7)
     
-    tcycle_2_7=time_to_str(tcycle_2_7)
+    # tcycle_2_7=time_to_str(tcycle_2_7)
 
     date2_7 = time_to_str(date2_7)
     month2_7 = time_to_str(month2_7)
@@ -6964,14 +6973,14 @@ def getBox2Schedule():
     hourOff2_8=spin2_C_8.get()
     minOff2_8=spin2_D_8.get()  
 
-    tcycle_2_8 = int(tcyclespinbox_arr[1,7].get())
+    tcycle_2_8 = tcyclespinbox_arr[1,7].get()
   
     hourOn2_8 = time_to_str(hourOn2_8)    
     minOn2_8 = time_to_str(minOn2_8)
     hourOff2_8=time_to_str(hourOff2_8)
     minOff2_8=time_to_str(minOff2_8)
     
-    tcycle_2_8=time_to_str(tcycle_2_8)
+    # tcycle_2_8=time_to_str(tcycle_2_8)
 
     date2_8 = time_to_str(date2_8)
     month2_8 = time_to_str(month2_8)
@@ -7000,14 +7009,14 @@ def getBox2Schedule():
     hourOff2_9=spin2_C_9.get()
     minOff2_9=spin2_D_9.get()    
 
-    tcycle_2_9 = int(tcyclespinbox_arr[1,8].get())
+    tcycle_2_9 = tcyclespinbox_arr[1,8].get()
   
     hourOn2_9 = time_to_str(hourOn2_9)    
     minOn2_9 = time_to_str(minOn2_9)
     hourOff2_9=time_to_str(hourOff2_9)
     minOff2_9=time_to_str(minOff2_9)
     
-    tcycle_2_9=time_to_str(tcycle_2_9)
+    # tcycle_2_9=time_to_str(tcycle_2_9)
 
     date2_9 = time_to_str(date2_9)
     month2_9 = time_to_str(month2_9)
@@ -7036,14 +7045,14 @@ def getBox2Schedule():
     hourOff2_10=spin2_C_10.get()
     minOff2_10=spin2_D_10.get()   
 
-    tcycle_2_10 = int(tcyclespinbox_arr[1,9].get())
+    tcycle_2_10 = tcyclespinbox_arr[1,9].get()
   
     hourOn2_10 = time_to_str(hourOn2_10)    
     minOn2_10 = time_to_str(minOn2_10)
     hourOff2_10=time_to_str(hourOff2_10)
     minOff2_10=time_to_str(minOff2_10)
     
-    tcycle_2_10 = time_to_str(tcycle_2_10)
+    # tcycle_2_10 = time_to_str(tcycle_2_10)
 
     date2_10 = time_to_str(date2_10)
     month2_10 = time_to_str(month2_10)
@@ -7073,14 +7082,14 @@ def getBox2Schedule():
     hourOff2_11=spin2_C_11.get()
     minOff2_11=spin2_D_11.get() 
 
-    tcycle_2_11 = int(tcyclespinbox_arr[1,10].get())
+    tcycle_2_11 = tcyclespinbox_arr[1,10].get()
   
     hourOn2_11 = time_to_str(hourOn2_11)    
     minOn2_11 = time_to_str(minOn2_11)
     hourOff2_11=time_to_str(hourOff2_11)
     minOff2_11=time_to_str(minOff2_11)
     
-    tcycle_2_11=time_to_str(tcycle_2_11)
+    # tcycle_2_11=time_to_str(tcycle_2_11)
 
     date2_11 = time_to_str(date2_11)
     month2_11 = time_to_str(month2_11)
@@ -7108,14 +7117,14 @@ def getBox2Schedule():
     hourOff2_12=spin2_C_12.get()
     minOff2_12=spin2_D_12.get()
 
-    tcycle_2_12 = int(tcyclespinbox_arr[1,11].get())
+    tcycle_2_12 = tcyclespinbox_arr[1,11].get()
  
     hourOn2_12 = time_to_str(hourOn2_12)    
     minOn2_12 = time_to_str(minOn2_12)
     hourOff2_12=time_to_str(hourOff2_12)
     minOff2_12=time_to_str(minOff2_12)
     
-    tcycle_2_12=time_to_str(tcycle_2_12)
+    # tcycle_2_12=time_to_str(tcycle_2_12)
 
     date2_12 = time_to_str(date2_12)
     month2_12 = time_to_str(month2_12)
@@ -7150,14 +7159,14 @@ def getBox3Schedule():
     minOn3_1=spin3_B_1.get()
     hourOff3_1=spin3_C_1.get()
     minOff3_1=spin3_D_1.get()        
-    tcycle_3_1 = int(tcyclespinbox_arr[2,0].get())
+    tcycle_3_1 = tcyclespinbox_arr[2,0].get()
     
     hourOn3_1 = time_to_str(hourOn3_1)
     minOn3_1 = time_to_str(minOn3_1)
     hourOff3_1=time_to_str(hourOff3_1)
     minOff3_1=time_to_str(minOff3_1)
     
-    tcycle_3_1=time_to_str(tcycle_3_1)
+    # tcycle_3_1=time_to_str(tcycle_3_1)
 
     if var3_1.get()==1:
         dark3_1='0'
@@ -7183,14 +7192,14 @@ def getBox3Schedule():
     hourFrom3_2= spin3_E_2.get()
     minuteFrom3_2= spin3_F_2.get()
 
-    tcycle_3_2 = int(tcyclespinbox_arr[2,1].get())
+    tcycle_3_2 = tcyclespinbox_arr[2,1].get()
   
     hourOn3_2 = time_to_str(hourOn3_2)    
     minOn3_2 = time_to_str(minOn3_2)
     hourOff3_2=time_to_str(hourOff3_2)
     minOff3_2=time_to_str(minOff3_2)
     
-    tcycle_3_2 = time_to_str(tcycle_3_2)
+    # tcycle_3_2 = time_to_str(tcycle_3_2)
 
     date3_2 = time_to_str(date3_2)
     month3_2 = time_to_str(month3_2)
@@ -7219,14 +7228,14 @@ def getBox3Schedule():
     hourOff3_3=spin3_C_3.get()
     minOff3_3=spin3_D_3.get()   
 
-    tcycle_3_3 = int(tcyclespinbox_arr[2,2].get())
+    tcycle_3_3 = tcyclespinbox_arr[2,2].get()
   
     hourOn3_3 = time_to_str(hourOn3_3)    
     minOn3_3 = time_to_str(minOn3_3)
     hourOff3_3=time_to_str(hourOff3_3)
     minOff3_3=time_to_str(minOff3_3)
     
-    tcycle_3_3 = time_to_str(tcycle_3_3)
+    # tcycle_3_3 = time_to_str(tcycle_3_3)
     
     date3_3 = time_to_str(date3_3)
     month3_3 = time_to_str(month3_3)
@@ -7256,14 +7265,14 @@ def getBox3Schedule():
     hourOff3_4=spin3_C_4.get()
     minOff3_4=spin3_D_4.get() 
 
-    tcycle_3_4 = int(tcyclespinbox_arr[2,3].get())
+    tcycle_3_4 = tcyclespinbox_arr[2,3].get()
   
     hourOn3_4 = time_to_str(hourOn3_4)    
     minOn3_4 = time_to_str(minOn3_4)
     hourOff3_4=time_to_str(hourOff3_4)
     minOff3_4=time_to_str(minOff3_4)
     
-    tcycle_3_4=time_to_str(tcycle_3_4)
+    # tcycle_3_4=time_to_str(tcycle_3_4)
 
     date3_4 = time_to_str(date3_4)
     month3_4 = time_to_str(month3_4)
@@ -7292,14 +7301,14 @@ def getBox3Schedule():
     hourOff3_5=spin3_C_5.get()
     minOff3_5=spin3_D_5.get()  
 
-    tcycle_3_5 = int(tcyclespinbox_arr[2,4].get())
+    tcycle_3_5 = tcyclespinbox_arr[2,4].get()
    
     hourOn3_5 = time_to_str(hourOn3_5)    
     minOn3_5 = time_to_str(minOn3_5)
     hourOff3_5 = time_to_str(hourOff3_5)
     minOff3_5 = time_to_str(minOff3_5)
     
-    tcycle_3_5 =time_to_str(tcycle_3_5)
+    # tcycle_3_5 =time_to_str(tcycle_3_5)
 
     date3_5 = time_to_str(date3_5)
     month3_5 = time_to_str(month3_5)
@@ -7328,14 +7337,14 @@ def getBox3Schedule():
     hourOff3_6=spin3_C_6.get()
     minOff3_6=spin3_D_6.get()  
 
-    tcycle_3_6 = int(tcyclespinbox_arr[2,5].get())
+    tcycle_3_6 = tcyclespinbox_arr[2,5].get()
    
     hourOn3_6 = time_to_str(hourOn3_6)    
     minOn3_6 = time_to_str(minOn3_6)
     hourOff3_6=time_to_str(hourOff3_6)
     minOff3_6=time_to_str(minOff3_6)
     
-    tcycle_3_6=time_to_str(tcycle_3_6)
+    # tcycle_3_6=time_to_str(tcycle_3_6)
 
     date3_6 = time_to_str(date3_6)
     month3_6 = time_to_str(month3_6)
@@ -7363,14 +7372,14 @@ def getBox3Schedule():
     hourOff3_7=spin3_C_7.get()
     minOff3_7=spin3_D_7.get()
 
-    tcycle_3_7 = int(tcyclespinbox_arr[2,6].get())
+    tcycle_3_7 = tcyclespinbox_arr[2,6].get()
  
     hourOn3_7 = time_to_str(hourOn3_7)    
     minOn3_7 = time_to_str(minOn3_7)
     hourOff3_7=time_to_str(hourOff3_7)
     minOff3_7=time_to_str(minOff3_7)
     
-    tcycle_3_7=time_to_str(tcycle_3_7)
+    # tcycle_3_7=time_to_str(tcycle_3_7)
 
     date3_7 = time_to_str(date3_7)
     month3_7 = time_to_str(month3_7)
@@ -7398,14 +7407,14 @@ def getBox3Schedule():
     hourOff3_8=spin3_C_8.get()
     minOff3_8=spin3_D_8.get()  
 
-    tcycle_3_8 = int(tcyclespinbox_arr[2,7].get())
+    tcycle_3_8 = tcyclespinbox_arr[2,7].get()
   
     hourOn3_8 = time_to_str(hourOn3_8)    
     minOn3_8 = time_to_str(minOn3_8)
     hourOff3_8=time_to_str(hourOff3_8)
     minOff3_8=time_to_str(minOff3_8)
     
-    tcycle_3_8=time_to_str(tcycle_3_8)
+    # tcycle_3_8=time_to_str(tcycle_3_8)
 
     date3_8 = time_to_str(date3_8)
     month3_8 = time_to_str(month3_8)
@@ -7434,14 +7443,14 @@ def getBox3Schedule():
     hourOff3_9=spin3_C_9.get()
     minOff3_9=spin3_D_9.get()    
 
-    tcycle_3_9 = int(tcyclespinbox_arr[2,8].get())
+    tcycle_3_9 = tcyclespinbox_arr[2,8].get()
   
     hourOn3_9 = time_to_str(hourOn3_9)    
     minOn3_9 = time_to_str(minOn3_9)
     hourOff3_9=time_to_str(hourOff3_9)
     minOff3_9=time_to_str(minOff3_9)
     
-    tcycle_3_9=time_to_str(tcycle_3_9)
+    # tcycle_3_9=time_to_str(tcycle_3_9)
 
     date3_9 = time_to_str(date3_9)
     month3_9 = time_to_str(month3_9)
@@ -7470,14 +7479,14 @@ def getBox3Schedule():
     hourOff3_10=spin3_C_10.get()
     minOff3_10=spin3_D_10.get()   
 
-    tcycle_3_10 = int(tcyclespinbox_arr[2,9].get())
+    tcycle_3_10 = tcyclespinbox_arr[2,9].get()
   
     hourOn3_10 = time_to_str(hourOn3_10)    
     minOn3_10 = time_to_str(minOn3_10)
     hourOff3_10=time_to_str(hourOff3_10)
     minOff3_10=time_to_str(minOff3_10)
     
-    tcycle_3_10 = time_to_str(tcycle_3_10)
+    # tcycle_3_10 = time_to_str(tcycle_3_10)
 
     date3_10 = time_to_str(date3_10)
     month3_10 = time_to_str(month3_10)
@@ -7507,14 +7516,14 @@ def getBox3Schedule():
     hourOff3_11=spin3_C_11.get()
     minOff3_11=spin3_D_11.get() 
 
-    tcycle_3_11 = int(tcyclespinbox_arr[2,10].get())
+    tcycle_3_11 = tcyclespinbox_arr[2,10].get()
   
     hourOn3_11 = time_to_str(hourOn3_11)    
     minOn3_11 = time_to_str(minOn3_11)
     hourOff3_11=time_to_str(hourOff3_11)
     minOff3_11=time_to_str(minOff3_11)
     
-    tcycle_3_11=time_to_str(tcycle_3_11)
+    # tcycle_3_11=time_to_str(tcycle_3_11)
 
     date3_11 = time_to_str(date3_11)
     month3_11 = time_to_str(month3_11)
@@ -7542,14 +7551,14 @@ def getBox3Schedule():
     hourOff3_12=spin3_C_12.get()
     minOff3_12=spin3_D_12.get()
 
-    tcycle_3_12 = int(tcyclespinbox_arr[2,11].get())
+    tcycle_3_12 = tcyclespinbox_arr[2,11].get()
  
     hourOn3_12 = time_to_str(hourOn3_12)    
     minOn3_12 = time_to_str(minOn3_12)
     hourOff3_12=time_to_str(hourOff3_12)
     minOff3_12=time_to_str(minOff3_12)
     
-    tcycle_3_12=time_to_str(tcycle_3_12)
+    # tcycle_3_12=time_to_str(tcycle_3_12)
 
     date3_12 = time_to_str(date3_12)
     month3_12 = time_to_str(month3_12)
@@ -7584,14 +7593,14 @@ def getBox4Schedule():
     minOn4_1=spin4_B_1.get()
     hourOff4_1=spin4_C_1.get()
     minOff4_1=spin4_D_1.get()        
-    tcycle_4_1 = int(tcyclespinbox_arr[3,0].get())
+    tcycle_4_1 = tcyclespinbox_arr[3,0].get()
     
     hourOn4_1 = time_to_str(hourOn4_1)
     minOn4_1 = time_to_str(minOn4_1)
     hourOff4_1=time_to_str(hourOff4_1)
     minOff4_1=time_to_str(minOff4_1)
     
-    tcycle_4_1=time_to_str(tcycle_4_1)
+    # tcycle_4_1=time_to_str(tcycle_4_1)
 
     if var4_1.get()==1:
         dark4_1='0'
@@ -7621,14 +7630,14 @@ def getBox4Schedule():
     hourFrom4_2= spin4_E_2.get()
     minuteFrom4_2= spin4_F_2.get()
 
-    tcycle_4_2 = int(tcyclespinbox_arr[3,1].get())
+    tcycle_4_2 = tcyclespinbox_arr[3,1].get()
   
     hourOn4_2 = time_to_str(hourOn4_2)    
     minOn4_2 = time_to_str(minOn4_2)
     hourOff4_2=time_to_str(hourOff4_2)
     minOff4_2=time_to_str(minOff4_2)
     
-    tcycle_4_2 = time_to_str(tcycle_4_2)
+    # tcycle_4_2 = time_to_str(tcycle_4_2)
 
     date4_2 = time_to_str(date4_2)
     month4_2 = time_to_str(month4_2)
@@ -7659,14 +7668,14 @@ def getBox4Schedule():
     hourOff4_3=spin4_C_3.get()
     minOff4_3=spin4_D_3.get()   
 
-    tcycle_4_3 = int(tcyclespinbox_arr[3,2].get())
+    tcycle_4_3 = tcyclespinbox_arr[3,2].get()
   
     hourOn4_3 = time_to_str(hourOn4_3)    
     minOn4_3 = time_to_str(minOn4_3)
     hourOff4_3=time_to_str(hourOff4_3)
     minOff4_3=time_to_str(minOff4_3)
     
-    tcycle_4_3 = time_to_str(tcycle_4_3)
+    # tcycle_4_3 = time_to_str(tcycle_4_3)
     
     date4_3 = time_to_str(date4_3)
     month4_3 = time_to_str(month4_3)
@@ -7696,14 +7705,14 @@ def getBox4Schedule():
     hourOff4_4=spin4_C_4.get()
     minOff4_4=spin4_D_4.get() 
 
-    tcycle_4_4 = int(tcyclespinbox_arr[3,3].get())
+    tcycle_4_4 = tcyclespinbox_arr[3,3].get()
   
     hourOn4_4 = time_to_str(hourOn4_4)    
     minOn4_4 = time_to_str(minOn4_4)
     hourOff4_4=time_to_str(hourOff4_4)
     minOff4_4=time_to_str(minOff4_4)
     
-    tcycle_4_4=time_to_str(tcycle_4_4)
+    # tcycle_4_4=time_to_str(tcycle_4_4)
 
     date4_4 = time_to_str(date4_4)
     month4_4 = time_to_str(month4_4)
@@ -7732,14 +7741,14 @@ def getBox4Schedule():
     hourOff4_5=spin4_C_5.get()
     minOff4_5=spin4_D_5.get()  
 
-    tcycle_4_5 = int(tcyclespinbox_arr[3,4].get())
+    tcycle_4_5 = tcyclespinbox_arr[3,4].get()
    
     hourOn4_5 = time_to_str(hourOn4_5)    
     minOn4_5 = time_to_str(minOn4_5)
     hourOff4_5 = time_to_str(hourOff4_5)
     minOff4_5 = time_to_str(minOff4_5)
     
-    tcycle_4_5 =time_to_str(tcycle_4_5)
+    # tcycle_4_5 =time_to_str(tcycle_4_5)
 
     date4_5 = time_to_str(date4_5)
     month4_5 = time_to_str(month4_5)
@@ -7768,14 +7777,14 @@ def getBox4Schedule():
     hourOff4_6=spin4_C_6.get()
     minOff4_6=spin4_D_6.get()  
 
-    tcycle_4_6 = int(tcyclespinbox_arr[3,5].get())
+    tcycle_4_6 = tcyclespinbox_arr[3,5].get()
    
     hourOn4_6 = time_to_str(hourOn4_6)    
     minOn4_6 = time_to_str(minOn4_6)
     hourOff4_6=time_to_str(hourOff4_6)
     minOff4_6=time_to_str(minOff4_6)
     
-    tcycle_4_6=time_to_str(tcycle_4_6)
+    # tcycle_4_6=time_to_str(tcycle_4_6)
 
     date4_6 = time_to_str(date4_6)
     month4_6 = time_to_str(month4_6)
@@ -7803,14 +7812,14 @@ def getBox4Schedule():
     hourOff4_7=spin4_C_7.get()
     minOff4_7=spin4_D_7.get()
 
-    tcycle_4_7 = int(tcyclespinbox_arr[3,6].get())
+    tcycle_4_7 = tcyclespinbox_arr[3,6].get()
  
     hourOn4_7 = time_to_str(hourOn4_7)    
     minOn4_7 = time_to_str(minOn4_7)
     hourOff4_7=time_to_str(hourOff4_7)
     minOff4_7=time_to_str(minOff4_7)
     
-    tcycle_4_7=time_to_str(tcycle_4_7)
+    # tcycle_4_7=time_to_str(tcycle_4_7)
 
     date4_7 = time_to_str(date4_7)
     month4_7 = time_to_str(month4_7)
@@ -7838,14 +7847,14 @@ def getBox4Schedule():
     hourOff4_8=spin4_C_8.get()
     minOff4_8=spin4_D_8.get()  
 
-    tcycle_4_8 = int(tcyclespinbox_arr[3,7].get())
+    tcycle_4_8 = tcyclespinbox_arr[3,7].get()
   
     hourOn4_8 = time_to_str(hourOn4_8)    
     minOn4_8 = time_to_str(minOn4_8)
     hourOff4_8=time_to_str(hourOff4_8)
     minOff4_8=time_to_str(minOff4_8)
     
-    tcycle_4_8=time_to_str(tcycle_4_8)
+    # tcycle_4_8=time_to_str(tcycle_4_8)
 
     date4_8 = time_to_str(date4_8)
     month4_8 = time_to_str(month4_8)
@@ -7874,14 +7883,14 @@ def getBox4Schedule():
     hourOff4_9=spin4_C_9.get()
     minOff4_9=spin4_D_9.get()    
 
-    tcycle_4_9 = int(tcyclespinbox_arr[3,8].get())
+    tcycle_4_9 = tcyclespinbox_arr[3,8].get()
   
     hourOn4_9 = time_to_str(hourOn4_9)    
     minOn4_9 = time_to_str(minOn4_9)
     hourOff4_9=time_to_str(hourOff4_9)
     minOff4_9=time_to_str(minOff4_9)
     
-    tcycle_4_9=time_to_str(tcycle_4_9)
+    # tcycle_4_9=time_to_str(tcycle_4_9)
 
     date4_9 = time_to_str(date4_9)
     month4_9 = time_to_str(month4_9)
@@ -7910,14 +7919,14 @@ def getBox4Schedule():
     hourOff4_10=spin4_C_10.get()
     minOff4_10=spin4_D_10.get()   
 
-    tcycle_4_10 = int(tcyclespinbox_arr[3,9].get())
+    tcycle_4_10 = tcyclespinbox_arr[3,9].get()
   
     hourOn4_10 = time_to_str(hourOn4_10)    
     minOn4_10 = time_to_str(minOn4_10)
     hourOff4_10=time_to_str(hourOff4_10)
     minOff4_10=time_to_str(minOff4_10)
     
-    tcycle_4_10 = time_to_str(tcycle_4_10)
+    # tcycle_4_10 = time_to_str(tcycle_4_10)
 
     date4_10 = time_to_str(date4_10)
     month4_10 = time_to_str(month4_10)
@@ -7947,14 +7956,14 @@ def getBox4Schedule():
     hourOff4_11=spin4_C_11.get()
     minOff4_11=spin4_D_11.get() 
 
-    tcycle_4_11 = int(tcyclespinbox_arr[3,10].get())
+    tcycle_4_11 = tcyclespinbox_arr[3,10].get()
   
     hourOn4_11 = time_to_str(hourOn4_11)    
     minOn4_11 = time_to_str(minOn4_11)
     hourOff4_11=time_to_str(hourOff4_11)
     minOff4_11=time_to_str(minOff4_11)
     
-    tcycle_4_11=time_to_str(tcycle_4_11)
+    # tcycle_4_11=time_to_str(tcycle_4_11)
 
     date4_11 = time_to_str(date4_11)
     month4_11 = time_to_str(month4_11)
@@ -7982,14 +7991,14 @@ def getBox4Schedule():
     hourOff4_12=spin4_C_12.get()
     minOff4_12=spin4_D_12.get()
 
-    tcycle_4_12 = int(tcyclespinbox_arr[3,11].get())
+    tcycle_4_12 = tcyclespinbox_arr[3,11].get()
  
     hourOn4_12 = time_to_str(hourOn4_12)    
     minOn4_12 = time_to_str(minOn4_12)
     hourOff4_12=time_to_str(hourOff4_12)
     minOff4_12=time_to_str(minOff4_12)
     
-    tcycle_4_12=time_to_str(tcycle_4_12)
+    # tcycle_4_12=time_to_str(tcycle_4_12)
 
     date4_12 = time_to_str(date4_12)
     month4_12 = time_to_str(month4_12)
@@ -8024,14 +8033,14 @@ def getBox5Schedule():
     minOn5_1=spin5_B_1.get()
     hourOff5_1=spin5_C_1.get()
     minOff5_1=spin5_D_1.get()        
-    tcycle_5_1 = int(tcyclespinbox_arr[4,0].get())
+    tcycle_5_1 = tcyclespinbox_arr[4,0].get()
     
     hourOn5_1 = time_to_str(hourOn5_1)
     minOn5_1 = time_to_str(minOn5_1)
     hourOff5_1=time_to_str(hourOff5_1)
     minOff5_1=time_to_str(minOff5_1)
     
-    tcycle_5_1=time_to_str(tcycle_5_1)
+    # tcycle_5_1=time_to_str(tcycle_5_1)
 
     if var5_1.get()==1:
         dark5_1='0'
@@ -8057,14 +8066,14 @@ def getBox5Schedule():
     hourFrom5_2= spin5_E_2.get()
     minuteFrom5_2= spin5_F_2.get()
 
-    tcycle_5_2 = int(tcyclespinbox_arr[4,1].get())
+    tcycle_5_2 = tcyclespinbox_arr[4,1].get()
   
     hourOn5_2 = time_to_str(hourOn5_2)    
     minOn5_2 = time_to_str(minOn5_2)
     hourOff5_2=time_to_str(hourOff5_2)
     minOff5_2=time_to_str(minOff5_2)
     
-    tcycle_5_2 = time_to_str(tcycle_5_2)
+    # tcycle_5_2 = time_to_str(tcycle_5_2)
 
     date5_2 = time_to_str(date5_2)
     month5_2 = time_to_str(month5_2)
@@ -8095,14 +8104,14 @@ def getBox5Schedule():
     hourOff5_3=spin5_C_3.get()
     minOff5_3=spin5_D_3.get()   
 
-    tcycle_5_3 = int(tcyclespinbox_arr[4,2].get())
+    tcycle_5_3 = tcyclespinbox_arr[4,2].get()
   
     hourOn5_3 = time_to_str(hourOn5_3)    
     minOn5_3 = time_to_str(minOn5_3)
     hourOff5_3=time_to_str(hourOff5_3)
     minOff5_3=time_to_str(minOff5_3)
     
-    tcycle_5_3 = time_to_str(tcycle_5_3)
+    # tcycle_5_3 = time_to_str(tcycle_5_3)
     
     date5_3 = time_to_str(date5_3)
     month5_3 = time_to_str(month5_3)
@@ -8134,14 +8143,14 @@ def getBox5Schedule():
     hourOff5_4=spin5_C_4.get()
     minOff5_4=spin5_D_4.get() 
 
-    tcycle_5_4 = int(tcyclespinbox_arr[4,3].get())
+    tcycle_5_4 = tcyclespinbox_arr[4,3].get()
   
     hourOn5_4 = time_to_str(hourOn5_4)    
     minOn5_4 = time_to_str(minOn5_4)
     hourOff5_4=time_to_str(hourOff5_4)
     minOff5_4=time_to_str(minOff5_4)
     
-    tcycle_5_4=time_to_str(tcycle_5_4)
+    # tcycle_5_4=time_to_str(tcycle_5_4)
 
     date5_4 = time_to_str(date5_4)
     month5_4 = time_to_str(month5_4)
@@ -8170,14 +8179,14 @@ def getBox5Schedule():
     hourOff5_5=spin5_C_5.get()
     minOff5_5=spin5_D_5.get()  
 
-    tcycle_5_5 = int(tcyclespinbox_arr[4,4].get())
+    tcycle_5_5 = tcyclespinbox_arr[4,4].get()
    
     hourOn5_5 = time_to_str(hourOn5_5)    
     minOn5_5 = time_to_str(minOn5_5)
     hourOff5_5 = time_to_str(hourOff5_5)
     minOff5_5 = time_to_str(minOff5_5)
     
-    tcycle_5_5 =time_to_str(tcycle_5_5)
+    # tcycle_5_5 =time_to_str(tcycle_5_5)
 
     date5_5 = time_to_str(date5_5)
     month5_5 = time_to_str(month5_5)
@@ -8206,14 +8215,14 @@ def getBox5Schedule():
     hourOff5_6=spin5_C_6.get()
     minOff5_6=spin5_D_6.get()  
 
-    tcycle_5_6 = int(tcyclespinbox_arr[4,5].get())
+    tcycle_5_6 = tcyclespinbox_arr[4,5].get()
    
     hourOn5_6 = time_to_str(hourOn5_6)    
     minOn5_6 = time_to_str(minOn5_6)
     hourOff5_6=time_to_str(hourOff5_6)
     minOff5_6=time_to_str(minOff5_6)
     
-    tcycle_5_6=time_to_str(tcycle_5_6)
+    # tcycle_5_6=time_to_str(tcycle_5_6)
 
     date5_6 = time_to_str(date5_6)
     month5_6 = time_to_str(month5_6)
@@ -8241,14 +8250,14 @@ def getBox5Schedule():
     hourOff5_7=spin5_C_7.get()
     minOff5_7=spin5_D_7.get()
 
-    tcycle_5_7 = int(tcyclespinbox_arr[4,6].get())
+    tcycle_5_7 = tcyclespinbox_arr[4,6].get()
  
     hourOn5_7 = time_to_str(hourOn5_7)    
     minOn5_7 = time_to_str(minOn5_7)
     hourOff5_7=time_to_str(hourOff5_7)
     minOff5_7=time_to_str(minOff5_7)
     
-    tcycle_5_7=time_to_str(tcycle_5_7)
+    # tcycle_5_7=time_to_str(tcycle_5_7)
 
     date5_7 = time_to_str(date5_7)
     month5_7 = time_to_str(month5_7)
@@ -8276,14 +8285,14 @@ def getBox5Schedule():
     hourOff5_8=spin5_C_8.get()
     minOff5_8=spin5_D_8.get()  
 
-    tcycle_5_8 = int(tcyclespinbox_arr[4,7].get())
+    tcycle_5_8 = tcyclespinbox_arr[4,7].get()
   
     hourOn5_8 = time_to_str(hourOn5_8)    
     minOn5_8 = time_to_str(minOn5_8)
     hourOff5_8=time_to_str(hourOff5_8)
     minOff5_8=time_to_str(minOff5_8)
     
-    tcycle_5_8=time_to_str(tcycle_5_8)
+    # tcycle_5_8=time_to_str(tcycle_5_8)
 
     date5_8 = time_to_str(date5_8)
     month5_8 = time_to_str(month5_8)
@@ -8312,14 +8321,14 @@ def getBox5Schedule():
     hourOff5_9=spin5_C_9.get()
     minOff5_9=spin5_D_9.get()    
 
-    tcycle_5_9 = int(tcyclespinbox_arr[4,8].get())
+    tcycle_5_9 = tcyclespinbox_arr[4,8].get()
   
     hourOn5_9 = time_to_str(hourOn5_9)    
     minOn5_9 = time_to_str(minOn5_9)
     hourOff5_9=time_to_str(hourOff5_9)
     minOff5_9=time_to_str(minOff5_9)
     
-    tcycle_5_9=time_to_str(tcycle_5_9)
+    # tcycle_5_9=time_to_str(tcycle_5_9)
 
     date5_9 = time_to_str(date5_9)
     month5_9 = time_to_str(month5_9)
@@ -8348,14 +8357,14 @@ def getBox5Schedule():
     hourOff5_10=spin5_C_10.get()
     minOff5_10=spin5_D_10.get()   
 
-    tcycle_5_10 = int(tcyclespinbox_arr[4,9].get())
+    tcycle_5_10 = tcyclespinbox_arr[4,9].get()
   
     hourOn5_10 = time_to_str(hourOn5_10)    
     minOn5_10 = time_to_str(minOn5_10)
     hourOff5_10=time_to_str(hourOff5_10)
     minOff5_10=time_to_str(minOff5_10)
     
-    tcycle_5_10 = time_to_str(tcycle_5_10)
+    # tcycle_5_10 = time_to_str(tcycle_5_10)
 
     date5_10 = time_to_str(date5_10)
     month5_10 = time_to_str(month5_10)
@@ -8385,14 +8394,14 @@ def getBox5Schedule():
     hourOff5_11=spin5_C_11.get()
     minOff5_11=spin5_D_11.get() 
 
-    tcycle_5_11 = int(tcyclespinbox_arr[4,10].get())
+    tcycle_5_11 = tcyclespinbox_arr[4,10].get()
   
     hourOn5_11 = time_to_str(hourOn5_11)    
     minOn5_11 = time_to_str(minOn5_11)
     hourOff5_11=time_to_str(hourOff5_11)
     minOff5_11=time_to_str(minOff5_11)
     
-    tcycle_5_11=time_to_str(tcycle_5_11)
+    # tcycle_5_11=time_to_str(tcycle_5_11)
 
     date5_11 = time_to_str(date5_11)
     month5_11 = time_to_str(month5_11)
@@ -8420,14 +8429,14 @@ def getBox5Schedule():
     hourOff5_12=spin5_C_12.get()
     minOff5_12=spin5_D_12.get()
 
-    tcycle_5_12 = int(tcyclespinbox_arr[4,11].get())
+    tcycle_5_12 = tcyclespinbox_arr[4,11].get()
  
     hourOn5_12 = time_to_str(hourOn5_12)    
     minOn5_12 = time_to_str(minOn5_12)
     hourOff5_12=time_to_str(hourOff5_12)
     minOff5_12=time_to_str(minOff5_12)
     
-    tcycle_5_12=time_to_str(tcycle_5_12)
+    # tcycle_5_12=time_to_str(tcycle_5_12)
 
     date5_12 = time_to_str(date5_12)
     month5_12 = time_to_str(month5_12)
@@ -8456,14 +8465,14 @@ def getBox6Schedule():
     minOn6_1=spin6_B_1.get()
     hourOff6_1=spin6_C_1.get()
     minOff6_1=spin6_D_1.get()        
-    tcycle_6_1 = int(tcyclespinbox_arr[5,0].get())
+    tcycle_6_1 = tcyclespinbox_arr[5,0].get()
     
     hourOn6_1 = time_to_str(hourOn6_1)
     minOn6_1 = time_to_str(minOn6_1)
     hourOff6_1=time_to_str(hourOff6_1)
     minOff6_1=time_to_str(minOff6_1)
     
-    tcycle_6_1=time_to_str(tcycle_6_1)
+    # tcycle_6_1=time_to_str(tcycle_6_1)
 
     if var6_1.get()==1:
         dark6_1='0'
@@ -8489,14 +8498,14 @@ def getBox6Schedule():
     hourFrom6_2= spin6_E_2.get()
     minuteFrom6_2= spin6_F_2.get()
 
-    tcycle_6_2 = int(tcyclespinbox_arr[5,1].get())
+    tcycle_6_2 = tcyclespinbox_arr[5,1].get()
   
     hourOn6_2 = time_to_str(hourOn6_2)    
     minOn6_2 = time_to_str(minOn6_2)
     hourOff6_2=time_to_str(hourOff6_2)
     minOff6_2=time_to_str(minOff6_2)
     
-    tcycle_6_2 = time_to_str(tcycle_6_2)
+    # tcycle_6_2 = time_to_str(tcycle_6_2)
 
     date6_2 = time_to_str(date6_2)
     month6_2 = time_to_str(month6_2)
@@ -8527,14 +8536,14 @@ def getBox6Schedule():
     hourOff6_3=spin6_C_3.get()
     minOff6_3=spin6_D_3.get()   
 
-    tcycle_6_3 = int(tcyclespinbox_arr[5,2].get())
+    tcycle_6_3 = tcyclespinbox_arr[5,2].get()
   
     hourOn6_3 = time_to_str(hourOn6_3)    
     minOn6_3 = time_to_str(minOn6_3)
     hourOff6_3=time_to_str(hourOff6_3)
     minOff6_3=time_to_str(minOff6_3)
     
-    tcycle_6_3 = time_to_str(tcycle_6_3)
+    # tcycle_6_3 = time_to_str(tcycle_6_3)
     
     date6_3 = time_to_str(date6_3)
     month6_3 = time_to_str(month6_3)
@@ -8566,14 +8575,14 @@ def getBox6Schedule():
     hourOff6_4=spin6_C_4.get()
     minOff6_4=spin6_D_4.get() 
 
-    tcycle_6_4 = int(tcyclespinbox_arr[5,3].get())
+    tcycle_6_4 = tcyclespinbox_arr[5,3].get()
   
     hourOn6_4 = time_to_str(hourOn6_4)    
     minOn6_4 = time_to_str(minOn6_4)
     hourOff6_4=time_to_str(hourOff6_4)
     minOff6_4=time_to_str(minOff6_4)
     
-    tcycle_6_4=time_to_str(tcycle_6_4)
+    # tcycle_6_4=time_to_str(tcycle_6_4)
 
     date6_4 = time_to_str(date6_4)
     month6_4 = time_to_str(month6_4)
@@ -8602,14 +8611,14 @@ def getBox6Schedule():
     hourOff6_5=spin6_C_5.get()
     minOff6_5=spin6_D_5.get()  
 
-    tcycle_6_5 = int(tcyclespinbox_arr[5,4].get())
+    tcycle_6_5 = tcyclespinbox_arr[5,4].get()
    
     hourOn6_5 = time_to_str(hourOn6_5)    
     minOn6_5 = time_to_str(minOn6_5)
     hourOff6_5 = time_to_str(hourOff6_5)
     minOff6_5 = time_to_str(minOff6_5)
     
-    tcycle_6_5 =time_to_str(tcycle_6_5)
+    # tcycle_6_5 =time_to_str(tcycle_6_5)
 
     date6_5 = time_to_str(date6_5)
     month6_5 = time_to_str(month6_5)
@@ -8638,14 +8647,14 @@ def getBox6Schedule():
     hourOff6_6=spin6_C_6.get()
     minOff6_6=spin6_D_6.get()  
 
-    tcycle_6_6 = int(tcyclespinbox_arr[5,5].get())
+    tcycle_6_6 = tcyclespinbox_arr[5,5].get()
    
     hourOn6_6 = time_to_str(hourOn6_6)    
     minOn6_6 = time_to_str(minOn6_6)
     hourOff6_6=time_to_str(hourOff6_6)
     minOff6_6=time_to_str(minOff6_6)
     
-    tcycle_6_6=time_to_str(tcycle_6_6)
+    # tcycle_6_6=time_to_str(tcycle_6_6)
 
     date6_6 = time_to_str(date6_6)
     month6_6 = time_to_str(month6_6)
@@ -8673,14 +8682,14 @@ def getBox6Schedule():
     hourOff6_7=spin6_C_7.get()
     minOff6_7=spin6_D_7.get()
 
-    tcycle_6_7 = int(tcyclespinbox_arr[5,6].get())
+    tcycle_6_7 = tcyclespinbox_arr[5,6].get()
  
     hourOn6_7 = time_to_str(hourOn6_7)    
     minOn6_7 = time_to_str(minOn6_7)
     hourOff6_7=time_to_str(hourOff6_7)
     minOff6_7=time_to_str(minOff6_7)
     
-    tcycle_6_7=time_to_str(tcycle_6_7)
+    # tcycle_6_7=time_to_str(tcycle_6_7)
 
     date6_7 = time_to_str(date6_7)
     month6_7 = time_to_str(month6_7)
@@ -8708,14 +8717,14 @@ def getBox6Schedule():
     hourOff6_8=spin6_C_8.get()
     minOff6_8=spin6_D_8.get()  
 
-    tcycle_6_8 = int(tcyclespinbox_arr[5,7].get())
+    tcycle_6_8 = tcyclespinbox_arr[5,7].get()
   
     hourOn6_8 = time_to_str(hourOn6_8)    
     minOn6_8 = time_to_str(minOn6_8)
     hourOff6_8=time_to_str(hourOff6_8)
     minOff6_8=time_to_str(minOff6_8)
     
-    tcycle_6_8=time_to_str(tcycle_6_8)
+    # tcycle_6_8=time_to_str(tcycle_6_8)
 
     date6_8 = time_to_str(date6_8)
     month6_8 = time_to_str(month6_8)
@@ -8744,14 +8753,14 @@ def getBox6Schedule():
     hourOff6_9=spin6_C_9.get()
     minOff6_9=spin6_D_9.get()    
 
-    tcycle_6_9 = int(tcyclespinbox_arr[5,8].get())
+    tcycle_6_9 = tcyclespinbox_arr[5,8].get()
   
     hourOn6_9 = time_to_str(hourOn6_9)    
     minOn6_9 = time_to_str(minOn6_9)
     hourOff6_9=time_to_str(hourOff6_9)
     minOff6_9=time_to_str(minOff6_9)
     
-    tcycle_6_9=time_to_str(tcycle_6_9)
+    # tcycle_6_9=time_to_str(tcycle_6_9)
 
     date6_9 = time_to_str(date6_9)
     month6_9 = time_to_str(month6_9)
@@ -8780,14 +8789,14 @@ def getBox6Schedule():
     hourOff6_10=spin6_C_10.get()
     minOff6_10=spin6_D_10.get()   
 
-    tcycle_6_10 = int(tcyclespinbox_arr[5,9].get())
+    tcycle_6_10 = tcyclespinbox_arr[5,9].get()
   
     hourOn6_10 = time_to_str(hourOn6_10)    
     minOn6_10 = time_to_str(minOn6_10)
     hourOff6_10=time_to_str(hourOff6_10)
     minOff6_10=time_to_str(minOff6_10)
     
-    tcycle_6_10 = time_to_str(tcycle_6_10)
+    # tcycle_6_10 = time_to_str(tcycle_6_10)
 
     date6_10 = time_to_str(date6_10)
     month6_10 = time_to_str(month6_10)
@@ -8817,14 +8826,14 @@ def getBox6Schedule():
     hourOff6_11=spin6_C_11.get()
     minOff6_11=spin6_D_11.get() 
 
-    tcycle_6_11 = int(tcyclespinbox_arr[5,10].get())
+    tcycle_6_11 = tcyclespinbox_arr[5,10].get()
   
     hourOn6_11 = time_to_str(hourOn6_11)    
     minOn6_11 = time_to_str(minOn6_11)
     hourOff6_11=time_to_str(hourOff6_11)
     minOff6_11=time_to_str(minOff6_11)
     
-    tcycle_6_11=time_to_str(tcycle_6_11)
+    # tcycle_6_11=time_to_str(tcycle_6_11)
 
     date6_11 = time_to_str(date6_11)
     month6_11 = time_to_str(month6_11)
@@ -8852,14 +8861,14 @@ def getBox6Schedule():
     hourOff6_12=spin6_C_12.get()
     minOff6_12=spin6_D_12.get()
 
-    tcycle_6_12 = int(tcyclespinbox_arr[5,11].get())
+    tcycle_6_12 = tcyclespinbox_arr[5,11].get()
  
     hourOn6_12 = time_to_str(hourOn6_12)    
     minOn6_12 = time_to_str(minOn6_12)
     hourOff6_12=time_to_str(hourOff6_12)
     minOff6_12=time_to_str(minOff6_12)
     
-    tcycle_6_12=time_to_str(tcycle_6_12)
+    # tcycle_6_12=time_to_str(tcycle_6_12)
 
     date6_12 = time_to_str(date6_12)
     month6_12 = time_to_str(month6_12)
@@ -9695,11 +9704,11 @@ if __name__ == '__main__':
  # Box1 main
 
     for i in range(0,12):
-        tcyclelength = Spinbox(tab1,from_=12, to=48, width=3)
+        tcyclelength = Spinbox(tab1,from_=12, to=48, width=3,format="%.1f",increment=0.1)
 
         tcyclelength.grid(column=26, row=2+i+row_adj, pady=5)
         tcyclelength.delete(0,'end')
-        tcyclelength.insert(0,24)
+        tcyclelength.insert(0,24.0)
         tcyclespinbox_arr[0,i] = tcyclelength
     
     tcyclespinbox_arr[0,0].grid(column=26, row=1+row_adj, pady=5)
@@ -10635,10 +10644,10 @@ if __name__ == '__main__':
     tcyclelabel2.grid(column=26, row=1, padx=3, pady=5)
 
     for i in range(0,12): 
-        tcyclelength = Spinbox(tab2, from_=12, to=48, width=3)
+        tcyclelength = Spinbox(tab2, from_=12, to=48, width=3,format="%.1f",increment=0.1)
         tcyclelength.grid(column=26, row=2+i+row_adj, padx=3,pady=5)
         tcyclelength.delete(0,'end')
-        tcyclelength.insert(0,24)
+        tcyclelength.insert(0,24.0)
         tcyclespinbox_arr[1,i] = tcyclelength
         
     tcyclespinbox_arr[1,0].grid(column=26, row=1+row_adj, pady=5)
@@ -11530,10 +11539,10 @@ if __name__ == '__main__':
     tcyclelabel3.grid(column=26, row=1, padx=3, pady=5)
 
     for i in range(0,12): 
-        tcyclelength = Spinbox(tab3, from_=12, to=48, width=3)
+        tcyclelength = Spinbox(tab3, from_=12, to=48, width=3,format="%.1f",increment=0.1)
         tcyclelength.grid(column=26, row=2+i+row_adj, padx=3,pady=5)
         tcyclelength.delete(0,'end')
-        tcyclelength.insert(0,24)
+        tcyclelength.insert(0,24.0)
         tcyclespinbox_arr[2,i] = tcyclelength
         
     tcyclespinbox_arr[2,0].grid(column=26, row=1+row_adj, pady=5)
@@ -12430,10 +12439,10 @@ if __name__ == '__main__':
     tcyclelabel4.grid(column=26, row=1, padx=3, pady=5)
 
     for i in range(0,12): 
-        tcyclelength = Spinbox(tab4, from_=12, to=48, width=3) 
+        tcyclelength = Spinbox(tab4, from_=12, to=48, width=3,format="%.1f",increment=0.1)
         tcyclelength.grid(column=26, row=2+i+row_adj, padx=3,pady=5)
         tcyclelength.delete(0,'end')
-        tcyclelength.insert(0,24)
+        tcyclelength.insert(0,24.0)
         tcyclespinbox_arr[3,i] = tcyclelength
         
     tcyclespinbox_arr[3,0].grid(column=26, row=1+row_adj, pady=5)
@@ -13333,10 +13342,10 @@ if __name__ == '__main__':
     tcyclelabel5.grid(column=26, row=1, padx=3, pady=5)
 
     for i in range(0,12): 
-        tcyclelength = Spinbox(tab5, from_=12, to=48, width=3)
+        tcyclelength = Spinbox(tab5, from_=12, to=48, width=3,format="%.1f",increment=0.1)
         tcyclelength.grid(column=26, row=2+i+row_adj, padx=3,pady=5)
         tcyclelength.delete(0,'end')
-        tcyclelength.insert(0,24)
+        tcyclelength.insert(0,24.0)
         tcyclespinbox_arr[4,i] = tcyclelength
         
     tcyclespinbox_arr[4,0].grid(column=26, row=1+row_adj, pady=5)
@@ -14233,10 +14242,10 @@ if __name__ == '__main__':
     tcyclelabel6.grid(column=26, row=1, padx=3, pady=5)
 
     for i in range(0,12): 
-        tcyclelength = Spinbox(tab6, from_=12, to=48, width=3)
+        tcyclelength = Spinbox(tab6, from_=12, to=48, width=3,format="%.1f",increment=0.1)
         tcyclelength.grid(column=26, row=2+i+row_adj, padx=3,pady=5)
         tcyclelength.delete(0,'end')
-        tcyclelength.insert(0,24)
+        tcyclelength.insert(0,24.0)
         tcyclespinbox_arr[5,i] = tcyclelength
         
     tcyclespinbox_arr[5,0].grid(column=26, row=1+row_adj, pady=5)

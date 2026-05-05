@@ -8,7 +8,7 @@ from matplotlib.colors import ListedColormap
 from matplotlib.pyplot import figure
 import matplotlib.dates as mdates
 
-style.use('seaborn-colorblind')
+# style.use('seaborn-colorblind')
 pd.set_option("display.max_rows", None)
 
 
@@ -170,7 +170,6 @@ def plot_doubleplot(box, pir, led, filename):
                 axes[j, 0].axes.set_ylim(1,1000)
                 axes[j, 0].axes.set_ylabel(
                     str(group[pir].index.date[0].month) + '/' + str(group[pir].index.date[0].day) + ' ', rotation=0, size=9)
-
 
                 axes[j, 0].axes.set_xlim([pd.to_datetime(group['MO/DY/YEAR'][0]+' ' + '00:00:00',
                                     format="%m/%d/%Y %H:%M:%S"), pd.to_datetime(group['MO/DY/YEAR'][0]+' ' + '23:59:00',

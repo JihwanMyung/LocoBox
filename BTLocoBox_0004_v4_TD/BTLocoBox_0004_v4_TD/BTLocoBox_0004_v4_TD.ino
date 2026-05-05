@@ -216,23 +216,23 @@ int light12[6] = {0, 0, 0, 0, 0, 0};               // phase 12
 int dark12[6] = {0, 0, 0, 0, 0, 0};                // phase 12
 
 // T-cycle inputs
-float Tcycle1[6] = {24, 24, 24, 24, 24, 24};
-float Tcycle2[6] = {24, 24, 24, 24, 24, 24};
-float Tcycle3[6] = {24, 24, 24, 24, 24, 24};
-float Tcycle4[6] = {24, 24, 24, 24, 24, 24};
-float Tcycle5[6] = {24, 24, 24, 24, 24, 24};
-float Tcycle6[6] = {24, 24, 24, 24, 24, 24};
-float Tcycle7[6] = {24, 24, 24, 24, 24, 24};
-float Tcycle8[6] = {24, 24, 24, 24, 24, 24};
-float Tcycle9[6] = {24, 24, 24, 24, 24, 24};
-float Tcycle10[6] = {24, 24, 24, 24, 24, 24};
-float Tcycle11[6] = {24, 24, 24, 24, 24, 24};
-float Tcycle12[6] = {24, 24, 24, 24, 24, 24};
-float Tcycle[6] = {24, 24, 24, 24, 24, 24};
+float Tcycle1[6] = {24.0, 24.0, 24.0, 24.0, 24.0, 24.0};
+float Tcycle2[6] = {24.0, 24.0, 24.0, 24.0, 24.0, 24.0};
+float Tcycle3[6] = {24.0, 24.0, 24.0, 24.0, 24.0, 24.0};
+float Tcycle4[6] = {24.0, 24.0, 24.0, 24.0, 24.0, 24.0};
+float Tcycle5[6] = {24.0, 24.0, 24.0, 24.0, 24.0, 24.0};
+float Tcycle6[6] = {24.0, 24.0, 24.0, 24.0, 24.0, 24.0};
+float Tcycle7[6] = {24.0, 24.0, 24.0, 24.0, 24.0, 24.0};
+float Tcycle8[6] = {24.0, 24.0, 24.0, 24.0, 24.0, 24.0};
+float Tcycle9[6] = {24.0, 24.0, 24.0, 24.0, 24.0, 24.0};
+float Tcycle10[6] = {24.0, 24.0, 24.0, 24.0, 24.0, 24.0};
+float Tcycle11[6] = {24.0, 24.0, 24.0, 24.0, 24.0, 24.0};
+float Tcycle12[6] = {24.0, 24.0, 24.0, 24.0, 24.0, 24.0};
+float Tcycle[6] = {24.0, 24.0, 24.0, 24.0, 24.0, 24.0};
 uint32_t Tcycle_time[6] ;
 uint32_t unix_time;
 int init_time_flag;
-float Tcycle_ratio = 1;
+float Tcycle_ratio = 1.0;
 DateTime now[6];
 DateTime realtime;
 
@@ -250,7 +250,7 @@ uint8_t anIn[6] = {A1, A2, A3, A4, A5, A6};  // Luminance sensor evens number an
 int LightFlag[6] = {0, 0, 0, 0, 0, 0};
 int TimeSet = 0;
 int initSet = 0;
-int LightSet[51] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; // add/subtract(4) for phase checkpoints
+int LightSet[53] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; // add/subtract(4) for phase checkpoints
 int InitialFlag = 0;
 
 // Interval (note the use of long)
@@ -267,6 +267,14 @@ int getInt(String text)
   char temp[6];
   text.toCharArray(temp, 5);
   int x = atoi(temp);
+  return x;
+}
+
+float getFloat(String text)
+{
+  char temp[6];
+  text.toCharArray(temp, 5);
+  float x = atof(temp);
   return x;
 }
 
@@ -1747,125 +1755,152 @@ void loop()
     LightSet[46] = 1;
   }
 
-  if (Serial.available() == 36 && InitialFlag == 0 && TimeSet == 1 && LightSet[46] == 1 && LightSet[47] == 0)
+  if (Serial.available() == 48 && InitialFlag == 0 && TimeSet == 1 && LightSet[46] == 1 && LightSet[47] == 0)
   {
     lightIn13 = Serial.readString(); 
 
-    Tcycle1[0] = getInt(lightIn13.substring(0, 2));
-    Tcycle2[0] = getInt(lightIn13.substring(2, 4));
-    Tcycle3[0] = getInt(lightIn13.substring(4, 6));
-    Tcycle4[0] = getInt(lightIn13.substring(6, 8));
-    Tcycle5[0] = getInt(lightIn13.substring(8, 10));
-    Tcycle6[0] = getInt(lightIn13.substring(10, 12));
-    Tcycle7[0] = getInt(lightIn13.substring(12, 14));
-    Tcycle8[0] = getInt(lightIn13.substring(14, 16));
-    Tcycle9[0] = getInt(lightIn13.substring(16, 18));
-    Tcycle10[0] = getInt(lightIn13.substring(18, 20));
-    Tcycle11[0] = getInt(lightIn13.substring(20, 22));
-    Tcycle12[0] = getInt(lightIn13.substring(22, 24));
+    Tcycle1[0] = getFloat(lightIn13.substring(0, 4));
+    Tcycle2[0] = getFloat(lightIn13.substring(4, 8));
+    Tcycle3[0] = getFloat(lightIn13.substring(8, 12));
+    Tcycle4[0] = getFloat(lightIn13.substring(12, 16));
 
-    Tcycle1[1] = getInt(lightIn13.substring(24, 26));
-    Tcycle2[1] = getInt(lightIn13.substring(26, 28));
-    Tcycle3[1] = getInt(lightIn13.substring(28, 30));
-    Tcycle4[1] = getInt(lightIn13.substring(30, 32));
-    Tcycle5[1] = getInt(lightIn13.substring(32, 34));
-    Tcycle6[1] = getInt(lightIn13.substring(34, 36));
+    Tcycle5[0] = getFloat(lightIn13.substring(16, 20));
+    Tcycle6[0] = getFloat(lightIn13.substring(20, 24));
+    Tcycle7[0] = getFloat(lightIn13.substring(24, 28));
+    Tcycle8[0] = getFloat(lightIn13.substring(28, 32));
+
+    Tcycle9[0] = getFloat(lightIn13.substring(32, 36));
+    Tcycle10[0] = getFloat(lightIn13.substring(36, 40));
+    Tcycle11[0] = getFloat(lightIn13.substring(40, 44));
+    Tcycle12[0] = getFloat(lightIn13.substring(44, 48));
+
+
 
     Serial.println(lightIn13);
     LightSet[47] = 1;
   }
 
-  if (Serial.available() == 36 && InitialFlag == 0 && TimeSet == 1 && LightSet[47] == 1 && LightSet[48] == 0)
+  if (Serial.available() == 48 && InitialFlag == 0 && TimeSet == 1 && LightSet[47] == 1 && LightSet[48] == 0)
   {
     lightIn13 = Serial.readString(); 
 
-    Tcycle7[1] = getInt(lightIn13.substring(0, 2));
-    Tcycle8[1] = getInt(lightIn13.substring(2, 4));
-    Tcycle9[1] = getInt(lightIn13.substring(4, 6));
-    Tcycle10[1] = getInt(lightIn13.substring(6, 8));
-    Tcycle11[1] = getInt(lightIn13.substring(8, 10));
-    Tcycle12[1] = getInt(lightIn13.substring(10, 12));
+    Tcycle1[1] = getFloat(lightIn13.substring(0, 4));
+    Tcycle2[1] = getFloat(lightIn13.substring(4, 8));
+    Tcycle3[1] = getFloat(lightIn13.substring(8, 12));
+    Tcycle4[1] = getFloat(lightIn13.substring(12, 16));
 
-    Tcycle1[2] = getInt(lightIn13.substring(12, 14));
-    Tcycle2[2] = getInt(lightIn13.substring(14, 16));
-    Tcycle3[2] = getInt(lightIn13.substring(16, 18));
-    Tcycle4[2] = getInt(lightIn13.substring(18, 20));
-    Tcycle5[2] = getInt(lightIn13.substring(20, 22));
-    Tcycle6[2] = getInt(lightIn13.substring(22, 24));
-    Tcycle7[2] = getInt(lightIn13.substring(24, 26));
-    Tcycle8[2] = getInt(lightIn13.substring(26, 28));
-    Tcycle9[2] = getInt(lightIn13.substring(28, 30));
-    Tcycle10[2] = getInt(lightIn13.substring(30, 32));
-    Tcycle11[2] = getInt(lightIn13.substring(32, 34));
-    Tcycle12[2] = getInt(lightIn13.substring(34, 36));
+    Tcycle5[1] = getFloat(lightIn13.substring(16, 20));
+    Tcycle6[1] = getFloat(lightIn13.substring(20, 24));
+    Tcycle7[1] = getFloat(lightIn13.substring(24, 28));
+    Tcycle8[1] = getFloat(lightIn13.substring(28, 32));
+
+    Tcycle9[1] = getFloat(lightIn13.substring(32, 36));
+    Tcycle10[1] = getFloat(lightIn13.substring(36, 40));
+    Tcycle11[1] = getFloat(lightIn13.substring(40, 44));
+    Tcycle12[1] = getFloat(lightIn13.substring(44, 48));
 
     Serial.println(lightIn13);
     LightSet[48] = 1;
   }
 
 
-  if (Serial.available() == 36 && InitialFlag == 0 && TimeSet == 1 && LightSet[48] == 1 && LightSet[49] == 0)
+  if (Serial.available() == 48 && InitialFlag == 0 && TimeSet == 1 && LightSet[48] == 1 && LightSet[49] == 0)
   {
-    lightIn14 = Serial.readString(); 
+    lightIn13 = Serial.readString(); 
 
-    Tcycle1[3] = getInt(lightIn14.substring(0, 2));
-    Tcycle2[3] = getInt(lightIn14.substring(2, 4));
-    Tcycle3[3] = getInt(lightIn14.substring(4, 6));
-    Tcycle4[3] = getInt(lightIn14.substring(6, 8));
-    Tcycle5[3] = getInt(lightIn14.substring(8, 10));
-    Tcycle6[3] = getInt(lightIn14.substring(10, 12));
+    Tcycle1[2] = getFloat(lightIn13.substring(0, 4));
+    Tcycle2[2] = getFloat(lightIn13.substring(4, 8));
+    Tcycle3[2] = getFloat(lightIn13.substring(8, 12));
+    Tcycle4[2] = getFloat(lightIn13.substring(12, 16));
 
-    Tcycle7[3] = getInt(lightIn14.substring(12, 14));
-    Tcycle8[3] = getInt(lightIn14.substring(14, 16));
-    Tcycle9[3] = getInt(lightIn14.substring(16, 18));
-    Tcycle10[3] = getInt(lightIn14.substring(18, 20));
-    Tcycle11[3] = getInt(lightIn14.substring(20, 22));
-    Tcycle12[3] = getInt(lightIn14.substring(22, 24));
+    Tcycle5[2] = getFloat(lightIn13.substring(16, 20));
+    Tcycle6[2] = getFloat(lightIn13.substring(20, 24));
+    Tcycle7[2] = getFloat(lightIn13.substring(24, 28));
+    Tcycle8[2] = getFloat(lightIn13.substring(28, 32));
 
-    Tcycle1[4] = getInt(lightIn14.substring(24, 26));
-    Tcycle2[4] = getInt(lightIn14.substring(26, 28));
-    Tcycle3[4] = getInt(lightIn14.substring(28, 30));
-    Tcycle4[4] = getInt(lightIn14.substring(30, 32));
-    Tcycle5[4] = getInt(lightIn14.substring(32, 34));
-    Tcycle6[4] = getInt(lightIn14.substring(34, 36));
+    Tcycle9[2] = getFloat(lightIn13.substring(32, 36));
+    Tcycle10[2] = getFloat(lightIn13.substring(36, 40));
+    Tcycle11[2] = getFloat(lightIn13.substring(40, 44));
+    Tcycle12[2] = getFloat(lightIn13.substring(44, 48));
 
-    Serial.println(lightIn14);
+    Serial.println(lightIn13);
     LightSet[49] = 1;
   }
 
 
-  if (Serial.available() == 36 && InitialFlag == 0 && TimeSet == 1 && LightSet[49] == 1 && LightSet[50] == 0)
+  if (Serial.available() == 48 && InitialFlag == 0 && TimeSet == 1 && LightSet[49] == 1 && LightSet[50] == 0)
   {
-    lightIn14 = Serial.readString(); 
+    lightIn13 = Serial.readString(); 
 
-    Tcycle7[4] = getInt(lightIn14.substring(0, 2));
-    Tcycle8[4] = getInt(lightIn14.substring(2, 4));
-    Tcycle9[4] = getInt(lightIn14.substring(4, 6));
-    Tcycle10[4] = getInt(lightIn14.substring(6, 8));
-    Tcycle11[4] = getInt(lightIn14.substring(8, 10));
-    Tcycle12[4] = getInt(lightIn14.substring(10, 12));
+    Tcycle1[3] = getFloat(lightIn13.substring(0, 4));
+    Tcycle2[3] = getFloat(lightIn13.substring(4, 8));
+    Tcycle3[3] = getFloat(lightIn13.substring(8, 12));
+    Tcycle4[3] = getFloat(lightIn13.substring(12, 16));
 
-    Tcycle1[5] = getInt(lightIn14.substring(12, 14));
-    Tcycle2[5] = getInt(lightIn14.substring(14, 16));
-    Tcycle3[5] = getInt(lightIn14.substring(16, 18));
-    Tcycle4[5] = getInt(lightIn14.substring(18, 20));
-    Tcycle5[5] = getInt(lightIn14.substring(20, 22));
-    Tcycle6[5] = getInt(lightIn14.substring(22, 24));
-    
-    Tcycle7[5] = getInt(lightIn14.substring(24, 26));
-    Tcycle8[5] = getInt(lightIn14.substring(26, 28));
-    Tcycle9[5] = getInt(lightIn14.substring(28, 30));
-    Tcycle10[5] = getInt(lightIn14.substring(30, 32));
-    Tcycle11[5] = getInt(lightIn14.substring(32, 34));
-    Tcycle12[5] = getInt(lightIn14.substring(34, 36));
+    Tcycle5[3] = getFloat(lightIn13.substring(16, 20));
+    Tcycle6[3] = getFloat(lightIn13.substring(20, 24));
+    Tcycle7[3] = getFloat(lightIn13.substring(24, 28));
+    Tcycle8[3] = getFloat(lightIn13.substring(28, 32));
 
-    Serial.println(lightIn14);
+    Tcycle9[3] = getFloat(lightIn13.substring(32, 36));
+    Tcycle10[3] = getFloat(lightIn13.substring(36, 40));
+    Tcycle11[3] = getFloat(lightIn13.substring(40, 44));
+    Tcycle12[3] = getFloat(lightIn13.substring(44, 48));
+
+
+
+    Serial.println(lightIn13);
     LightSet[50] = 1;
   }
 
+  if (Serial.available() == 48 && InitialFlag == 0 && TimeSet == 1 && LightSet[50] == 1 && LightSet[51] == 0)
+  {
+    lightIn13 = Serial.readString(); 
+
+    Tcycle1[4] = getFloat(lightIn13.substring(0, 4));
+    Tcycle2[4] = getFloat(lightIn13.substring(4, 8));
+    Tcycle3[4] = getFloat(lightIn13.substring(8, 12));
+    Tcycle4[4] = getFloat(lightIn13.substring(12, 16));
+
+    Tcycle5[4] = getFloat(lightIn13.substring(16, 20));
+    Tcycle6[4] = getInt(lightIn13.substring(20, 24));
+    Tcycle7[4] = getFloat(lightIn13.substring(24, 28));
+    Tcycle8[4] = getFloat(lightIn13.substring(28, 32));
+
+    Tcycle9[4] = getFloat(lightIn13.substring(32, 36));
+    Tcycle10[4] = getFloat(lightIn13.substring(36, 40));
+    Tcycle11[4] = getFloat(lightIn13.substring(40, 44));
+    Tcycle12[4] = getFloat(lightIn13.substring(44, 48));
+
+    Serial.println(lightIn13);
+    LightSet[51] = 1;
+  }
   
+  if (Serial.available() == 48 && InitialFlag == 0 && TimeSet == 1 && LightSet[51] == 1 && LightSet[52] == 0)
+  {
+    lightIn13 = Serial.readString(); 
+
+    Tcycle1[5] = getFloat(lightIn13.substring(0, 4));
+    Tcycle2[5] = getFloat(lightIn13.substring(4, 8));
+    Tcycle3[5] = getFloat(lightIn13.substring(8, 12));
+    Tcycle4[5] = getFloat(lightIn13.substring(12, 16));
+
+    Tcycle5[5] = getFloat(lightIn13.substring(16, 20));
+    Tcycle6[5] = getFloat(lightIn13.substring(20, 24));
+    Tcycle7[5] = getFloat(lightIn13.substring(24, 28));
+    Tcycle8[5] = getFloat(lightIn13.substring(28, 32));
+
+    Tcycle9[5] = getFloat(lightIn13.substring(32, 36));
+    Tcycle10[5] = getFloat(lightIn13.substring(36, 40));
+    Tcycle11[5] = getFloat(lightIn13.substring(40, 44));
+    Tcycle12[5] = getFloat(lightIn13.substring(44, 48));
+
+    Serial.println(lightIn13);
+    LightSet[52] = 1;
+  }
+
   // Begin to print the headers and set light flag
-  if (InitialFlag == 0 && TimeSet == 1 && LightSet[50] == 1)
+  if (InitialFlag == 0 && TimeSet == 1 && LightSet[52] == 1)
   {
     //    Serial.println("HH:MM:SS MO/DY/YEAR LED01 PIR01 ANG011 ANG012 LED02 PIR02 ANG021 ANG022 LED03 PIR03 ANG031 ANG032 LED04 PIR04 ANG041 ANG042 LED05 PIR05 ANG051 ANG052");
     Serial.println("HH:MM:SS MO/DY/YEAR LED01 PIR01 LUM01 LED02 PIR02 LUM02 LED03 PIR03 LUM03 LED04 PIR04 LUM04 LED05 PIR05 LUM05 LED06 PIR06 LUM06");
@@ -1888,7 +1923,7 @@ void loop()
     if (init_time_flag == 1){
       for (int i = 0; i < 6; i++)
       {
-        Tcycle_time[i] += round(60 *  24 / Tcycle[i] );
+        Tcycle_time[i] += round(60.0 *  24.0 / Tcycle[i]);
         now[i] = DateTime(Tcycle_time[i]);
       }
     }
